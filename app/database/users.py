@@ -1,6 +1,8 @@
 from sqlalchemy import Column, Integer, String, Float, Enum
-from app.database import Base, getDatabase
-from passlib.hash import bcrypt
+from app.database import Base, SessionLocal
+from passlib.hash import pbkdf2_sha256 as encrypt
+
+session = SessionLocal()
 
 
 class UserRole(str, Enum):
@@ -20,12 +22,13 @@ class User(Base):
 
 def createUser(username, password, role=None):
     try:
-        db = getDatabase()
-        hashedPassword = bcrypt.hash(password)
+        hashedPassword = encrypt.hash(password)
         user = User(username=username, passwordHash=hashedPassword, userRole=role)
-        db.session.add(user)
-        db.session.commit()
+        session.add(user)
+        session.commit()
         return {"message": "User created successfully"}
     except Exception as e:
-        db.session.rollback()
+        session.rollback()
         return {"error": str(e)}
+    finally:
+        session.close()
