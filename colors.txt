@@ -21,7 +21,7 @@ Text_4Red: #a4868d
 
 #dfdfdf - light gray (BG Color)
 #cccccc - dark gray
-#16505d - dark magenta (TEXT Color)
+#324b4c - dark green (TEXT Color)
 
 
 pip freeze > requirements.txt
