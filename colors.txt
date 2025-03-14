@@ -1,0 +1,49 @@
+DARK: #16191d
+Accent_1: #1f232a
+Accent_2: #2c313c
+Accent_3: #343b47
+Text_1: #fff
+Text_2: #838ea2
+Text_3: #495466
+Text_4Red: #a4868d
+
+#885a5a
+#7d3636
+#422929 - red
+#676431
+#163E3A - dark green
+#32c192 - acceptGreen
+
+
+pip freeze > requirements.txt
+pip install -r requirements.txt
+pyside6-rcc resources.qrc -o resources_rc.py
+
+QToolButton{
+padding: 5px;
+font: 700 11pt "Segoe UI";
+}
+QToolButton::pressed{
+color: #a4868d;
+}
+QAbstractItemView:disabled{
+background-color: #1f232a;
+color: #495466;
+}
+QAbstractItemView:enabled{
+background-color: #1f232a;
+color: #838ea2;
+}
+QAbstractItemView:pressed{
+background-color: #a4868d;
+}
+#qt_calendar_prevmonth {
+    background-color: #1f232a;
+    icon-size: 30px;
+    qproperty-icon: url(:/icons/Icons/chevron-left.svg);
+}
+#qt_calendar_nextmonth {
+    background-color: #1f232a;
+    icon-size: 30px;
+    qproperty-icon: url(:/icons/Icons/chevron-right.svg);
+}
