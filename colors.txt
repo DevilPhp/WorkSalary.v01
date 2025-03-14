@@ -15,35 +15,15 @@ Text_4Red: #a4868d
 #32c192 - acceptGreen
 
 
+
+##### KNITEX #####
+
+
+#dfdfdf - light gray (BG Color)
+#cccccc - dark gray
+#16505d - dark magenta (TEXT Color)
+
+
 pip freeze > requirements.txt
 pip install -r requirements.txt
 pyside6-rcc resources.qrc -o resources_rc.py
-
-QToolButton{
-padding: 5px;
-font: 700 11pt "Segoe UI";
-}
-QToolButton::pressed{
-color: #a4868d;
-}
-QAbstractItemView:disabled{
-background-color: #1f232a;
-color: #495466;
-}
-QAbstractItemView:enabled{
-background-color: #1f232a;
-color: #838ea2;
-}
-QAbstractItemView:pressed{
-background-color: #a4868d;
-}
-#qt_calendar_prevmonth {
-    background-color: #1f232a;
-    icon-size: 30px;
-    qproperty-icon: url(:/icons/Icons/chevron-left.svg);
-}
-#qt_calendar_nextmonth {
-    background-color: #1f232a;
-    icon-size: 30px;
-    qproperty-icon: url(:/icons/Icons/chevron-right.svg);
-}

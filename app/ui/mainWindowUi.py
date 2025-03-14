@@ -4,7 +4,7 @@ import locale
 
 from app.ui.ui_MainWindow import *
 from app.database import createTable
-from app.database.users import createUser
+from app.database.users import UsersFuncs
 
 locale.setlocale(locale.LC_TIME, 'bg_BG.utf8')
 
@@ -20,8 +20,8 @@ class MainWindow(QMainWindow):
         self.setAttribute(Qt.WA_TranslucentBackground)
 
         createTable()
-        user = createUser('test', '000')
-        print(user)
+        # user = UsersFuncs.createUser('test', '000')
+        # print(user)
 
 
 

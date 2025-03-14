@@ -20,15 +20,18 @@ class User(Base):
     userRole = Column(String(), default='Guest', nullable=False)
 
 
-def createUser(username, password, role=None):
-    try:
-        hashedPassword = encrypt.hash(password)
-        user = User(username=username, passwordHash=hashedPassword, userRole=role)
-        session.add(user)
-        session.commit()
-        return {"message": "User created successfully"}
-    except Exception as e:
-        session.rollback()
-        return {"error": str(e)}
-    finally:
-        session.close()
+class UsersFuncs():
+
+    @staticmethod
+    def createUser(username, password, role=None):
+        try:
+            hashedPassword = encrypt.hash(password)
+            user = User(username=username, passwordHash=hashedPassword, userRole=role)
+            session.add(user)
+            session.commit()
+            return {"message": "User created successfully"}
+        except Exception as e:
+            session.rollback()
+            return {"error": str(e)}
+        finally:
+            session.close()
