@@ -1,10 +1,10 @@
 import sys
-import os
 import locale
 
-from app.ui.ui_MainWindow import *
+from app.ui.widgets.ui_MainWindow import *
 from app.database import createTable
-from app.database.users import UsersFuncs
+from app.ui.logInPage import LoginPage
+
 
 locale.setlocale(locale.LC_TIME, 'bg_BG.utf8')
 
@@ -17,8 +17,8 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.setWindowTitle("Knitex-96 Work Salary")
-        self.setAttribute(Qt.WA_TranslucentBackground)
-
+        # self.setAttribute(Qt.WA_TranslucentBackground)
+        LoginPage(self)
         createTable()
         # user = UsersFuncs.createUser('test', '000')
         # print(user)
