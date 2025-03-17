@@ -2,9 +2,9 @@ import pyodbc
 import psycopg2
 import pandas as pd
 from sqlalchemy import create_engine
+from config import DATABASE_URL
 
 ACCESS_DB_PATH = r"E:\fedbase\ts4rep_new.accdb"
-POSTGRESQL_URL = "postgresql://knitex:eb564ff0@localhost:5400/knitex"
 
 accessConn = pyodbc.connect(
     r"DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};"
@@ -13,7 +13,7 @@ accessConn = pyodbc.connect(
 
 accessCursor = accessConn.cursor()
 
-pgEngine = create_engine(POSTGRESQL_URL)
+pgEngine = create_engine(DATABASE_URL)
 pgConn = pgEngine.connect()
 
 def getUserTables(cursor):

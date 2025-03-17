@@ -25,4 +25,5 @@ def getDatabase():
 
 def createTable():
     from app.database.users import User
+    from app.database.workers import Worker, Cehove
     Base.metadata.create_all(bind=engine)

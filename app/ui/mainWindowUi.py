@@ -1,9 +1,12 @@
 import sys
 import locale
 
+from PySide6.QtWidgets import QMdiSubWindow
+
 from app.ui.widgets.ui_MainWindow import *
 from app.database import createTable
 from app.ui.logInPage import LoginPage
+from app.ui.workersPage import WorkersPageCustomWidget
 
 
 locale.setlocale(locale.LC_TIME, 'bg_BG.utf8')
@@ -20,8 +23,16 @@ class MainWindow(QMainWindow):
         # self.setAttribute(Qt.WA_TranslucentBackground)
         LoginPage(self)
         createTable()
+        self.ui.pageBtn.clicked.connect(lambda: self.changePage())
         # user = UsersFuncs.createUser('test', '000')
         # print(user)
+
+    def changePage(self):
+        subWindow = QMdiSubWindow()
+        newWindow = WorkersPageCustomWidget(self)
+        subWindow.setWidget(newWindow)
+        self.ui.mainWindowsArea.addSubWindow(subWindow)
+        subWindow.show()
 
 
 

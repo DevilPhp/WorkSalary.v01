@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons">
+    <file>app/assets/icons/Add-Square--Streamline-Solar-Broken.svg</file>
     <file>app/assets/icons/Eye-Off--Streamline-Feather.svg</file>
     <file>app/assets/icons/Eye--Streamline-Feather.svg</file>
     <file>app/assets/icons/User--Streamline-Feather (1).svg</file>
