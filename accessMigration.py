@@ -32,14 +32,17 @@ def fetch_access_data(table_name):
 
 
 def insert_data_to_postgres(table_name, df):
-    columnsNames = {
-        "Група": "group",
-        "ГрупаName": "groupName",
-        "Вид": "type",
-        "SupervisorNo": "supervisorNo"
-    }
-    df = df.rename(columns=columnsNames)
-    df = df[list(columnsNames.values())]
+    # columnsNames = {
+    #     "Група": "group",
+    #     "ГрупаName": "groupName",
+    #     "Вид": "type",
+    #     "SupervisorNo": "supervisorNo"
+    # }
+    # df = df.rename(columns=columnsNames)
+    # df = df[list(columnsNames.values())]
+    if 'ВидОперация' in df.columns:
+        df['ВидОперация'] = pd.to_numeric(df['ВидОперация'], errors='coerce').fillna(0).astype(int)
+        print(df['ВидОперация'])
 
     """ Inserts data into a PostgreSQL table """
     engine = create_engine(DATABASE_URL)
@@ -49,7 +52,6 @@ def insert_data_to_postgres(table_name, df):
 
 
 def map_data_type(accessType):
-    print(accessType)
     typeMapping = {
         str: String,
         int: Integer,
@@ -92,14 +94,15 @@ def create_postgres_table(table_name, columns, foreign_keys=None):
 
 def extract_and_transform_data():
     # Fetch data from Access table
-    data = fetch_access_data("Cehove")
+    data = fetch_access_data("Длъжности")
     access_columns = data[0]
 
     # Clean and transform data as needed (e.g., handling missing values, data type conversion)
-    foreign_keys = {"Група": "Cehove.Група"}
+    foreign_keys = {"ВидОперация": "workerPositions.ВидОперация"}
     # Insert transformed data into PostgreSQL table
     # create_postgres_table("cehove", access_columns)
-    insert_data_to_postgres("cehove", data[1])
+    # print(data[1])
+    insert_data_to_postgres("workerPositions", data[1])
 
 
 
