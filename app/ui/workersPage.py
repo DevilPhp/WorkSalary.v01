@@ -16,7 +16,7 @@ class WorkersPageCustomWidget(QWidget, Ui_workersPageWidget):
 
     def leadData(self):
         print('Fetching data from database...')
-        tableName = 'cehove'
+        tableName = 'workerPositions'
         data = fetch_data_from_db(tableName)
         # print(data)
         model = TableModel(data)

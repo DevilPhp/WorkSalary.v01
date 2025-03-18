@@ -31,6 +31,19 @@ def fetch_access_data(table_name):
     return columns, df
 
 
+def insert_data_to_postgres_with_fkey(table_name, df):
+
+    """ Inserts data into a PostgreSQL table """
+    engine = create_engine(DATABASE_URL)
+    with engine.connect() as conn:
+        result = conn.execute(text("SELECT COUNT(*) FROM operationTypes WHERE OperTypeID = 0"))
+        if result.scalar() == 0:
+            conn.execute(text("INSERT INTO operationTypes (OperTypeID, OperName) VALUES (0, '')"))
+            conn.commit()
+        df.to_sql(table_name, conn, if_exists="append", index=False)
+        print(f"✅ {len(df)} records inserted into '{table_name}' successfully!")
+
+
 def insert_data_to_postgres(table_name, df):
     # columnsNames = {
     #     "Група": "group",
@@ -40,9 +53,6 @@ def insert_data_to_postgres(table_name, df):
     # }
     # df = df.rename(columns=columnsNames)
     # df = df[list(columnsNames.values())]
-    if 'ВидОперация' in df.columns:
-        df['ВидОперация'] = pd.to_numeric(df['ВидОперация'], errors='coerce').fillna(0).astype(int)
-        print(df['ВидОперация'])
 
     """ Inserts data into a PostgreSQL table """
     engine = create_engine(DATABASE_URL)

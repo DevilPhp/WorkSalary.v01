@@ -20,12 +20,12 @@ class Cehove(Base):
 class WorkerPosition(Base):
     __tablename__ = "workerPositions"
     id = Column(Integer, primary_key=True)
-    ДлъжностКод = Column(String, nullable=True)
+    ДлъжностКод = Column(Integer, nullable=True)
     Длъжност = Column(String, nullable=True)
     Коефициент = Column(Float, nullable=True)
     ВидОперация = Column(Integer, ForeignKey("operationTypes.OperTypeID"), nullable=True)
 
-    operType = relationship("OperationType", back_populates="workerPositions")
+    operationTypes = relationship("OperationType", back_populates="workerPositions")
 
 
 class OperationType(Base):
