@@ -1,3 +1,5 @@
+from numpy import float64
+
 from app.ui.widgets.ui_workersPageCustomWidget import *
 from app.models.tableModel import TableModel
 from app.services.tableServices import fetch_data_from_db
@@ -18,10 +20,10 @@ class WorkersPageCustomWidget(QWidget, Ui_workersPageWidget):
         print('Fetching data from database...')
         tableName = 'workerPositions'
         data = fetch_data_from_db(tableName)
-        # print(data)
+        print(data.dtypes)
         model = TableModel(data)
         self.tableView.setModel(model)
-        self.proxymodelWorkers = CaseInsensitiveProxyModel(numericColumns=[0, 5, 6, 8, 11, 15, 16, 17, 18],
+        self.proxymodelWorkers = CaseInsensitiveProxyModel(numericColumns=[0],
                                                            parent=self)
         self.setProxyModel(self.proxymodelWorkers, model, self.tableView)
         self.tableView.resizeColumnsToContents()
