@@ -20,7 +20,7 @@ class TableModel(QAbstractTableModel):
 
         if role == Qt.ItemDataRole.DisplayRole:
             value = self._data.iloc[index.row(), index.column()]
-
+            print(value)
             # Format floats to 2 decimal places
             if isinstance(value, float):
                 return f"{value:.2f}"

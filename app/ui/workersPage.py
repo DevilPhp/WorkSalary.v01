@@ -2,7 +2,7 @@ from numpy import float64
 
 from app.ui.widgets.ui_workersPageCustomWidget import *
 from app.models.tableModel import TableModel
-from app.services.tableServices import fetch_data_from_db
+from app.services.tableServices import fetchDataFromDbWithRelations
 from app.models.sortingModel import CaseInsensitiveProxyModel
 
 class WorkersPageCustomWidget(QWidget, Ui_workersPageWidget):
@@ -19,7 +19,7 @@ class WorkersPageCustomWidget(QWidget, Ui_workersPageWidget):
     def leadData(self):
         print('Fetching data from database...')
         tableName = 'workerPositions'
-        data = fetch_data_from_db(tableName)
+        data = fetchDataFromDbWithRelations(tableName)
         print(data.dtypes)
         model = TableModel(data)
         self.tableView.setModel(model)
