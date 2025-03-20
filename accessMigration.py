@@ -6,6 +6,8 @@ import pandas as pd
 from sqlalchemy import create_engine, text, Column, MetaData, Table, String, DateTime, Integer, Double, Boolean, \
     BINARY, ForeignKey
 from config import DATABASE_URL
+from app.database import SessionLocal
+from app.database.workers import OperationType
 
 ACCESS_DB_PATH = r"E:\fedbase\ts4rep_new.accdb"
 
@@ -26,9 +28,9 @@ def fetch_access_data(table_name):
     # Query to get table structure
     df = pd.read_sql(f"SELECT * FROM {table_name};", conn)
     cursor.execute(f"SELECT * FROM {table_name} WHERE 1=0")  # Fetch only metadata
-    columns = [(column[0], map_data_type(column[1])) for column in cursor.description]
+    # columns = [(column[0], map_data_type(column[1])) for column in cursor.description]
     conn.close()
-    return columns, df
+    return df
 
 
 def insert_data_to_postgres_with_fkey(table_name, df):
@@ -102,17 +104,42 @@ def create_postgres_table(table_name, columns, foreign_keys=None):
         print(f"Table '{table_name}' created successfully!")
 
 
+def insertZeroOperationType():
+    # engine = create_engine(DATABASE_URL)
+    session = SessionLocal()
+    try:
+        zeroOperType = OperationType(OperTypeID=0, OperName="")
+        session.add(zeroOperType)
+        session.commit()
+        print("Zero OperationType inserted successfully!")
+    except Exception as e:
+        print(f"Error inserting Zero OperationType: {str(e)}")
+        session.rollback()
+    finally:
+        session.close()
+
+
 def extract_and_transform_data():
-    # Fetch data from Access table
-    data = fetch_access_data("Длъжности")
-    access_columns = data[0]
+    # ####Fetch data from Access table and add in to db####
+    # dataCehove = fetch_access_data("cehove")
+    # insert_data_to_postgres("cehove", dataCehove)
+    #
+    # dataOperationTypes = fetch_access_data("operationTypes")
+    # insertZeroOperationType()
+    # insert_data_to_postgres("operationTypes", dataOperationTypes)
+    #
+    # dataWorkers = fetch_access_data("Длъжности")
+    # insert_data_to_postgres("workerPositions", dataWorkers)
+
+    #####
 
     # Clean and transform data as needed (e.g., handling missing values, data type conversion)
-    foreign_keys = {"ВидОперация": "workerPositions.ВидОперация"}
+    # foreign_keys = {"ВидОперация": "workerPositions.ВидОперация"}
     # Insert transformed data into PostgreSQL table
     # create_postgres_table("cehove", access_columns)
     # print(data[1])
-    insert_data_to_postgres("workerPositions", data[1])
+    # insert_data_to_postgres("workerPositions", dataWorkers)
+    pass
 
 
 

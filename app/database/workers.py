@@ -19,17 +19,19 @@ class Cehove(Base):
 
 class WorkerPosition(Base):
     __tablename__ = "workerPositions"
-    id = Column(Integer, primary_key=True)
-    ДлъжностКод = Column(Integer, nullable=True)
+    # id = Column(Integer, primary_key=True)
+    ДлъжностКод = Column(Integer, primary_key=True)
     Длъжност = Column(String, nullable=True)
     Коефициент = Column(Float, nullable=True)
     ВидОперация = Column(Integer, ForeignKey("operationTypes.OperTypeID"), nullable=True)
 
-    operationTypes = relationship("OperationType", back_populates="workerPositions")
+    operationType = relationship("OperationType", back_populates="workerPositions")
 
 
 class OperationType(Base):
     __tablename__ = "operationTypes"
     OperTypeID = Column(Integer, primary_key=True)
     OperName = Column(String, nullable=True)
+
+    workerPositions = relationship("WorkerPosition", back_populates="operationType")
 

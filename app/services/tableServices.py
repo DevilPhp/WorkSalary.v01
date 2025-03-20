@@ -14,7 +14,6 @@ def fetchDataFromDb(tableName):
 
 def fetchDataFromDbWithRelations(tableName, relationships=None):
     """ Fetches data from PostgreSQL table with related data """
-    session = SessionLocal()
     # try:
     #     df = pd.read_sql(f'SELECT w.*, op.* FROM "{tableName}" w LEFT JOIN "operationTypes" op'
     #                      f' ON w.id = op."OperTypeID";', session.bind)
@@ -27,27 +26,25 @@ def fetchDataFromDbWithRelations(tableName, relationships=None):
     #     session.close()
 
     if tableName == 'workerPositions':
-        workers = session.query(WorkerPosition).order_by(WorkerPosition.ДлъжностКод.asc()).all()
-        print(workers)  # This will print the SQL query executed by SQLAlchemy.
-        return
+        session = SessionLocal()
+        try:
+            result = session.query(WorkerPosition).all()
 
-        query = session.query(WorkerPosition).options(joinedload(WorkerPosition.operationTypes))
-        result = query.all()
-
-        print(result)  # This will print the SQL query executed by SQLAlchemy.
-
-        data = []
-        for item in result:
-            data.append({
-                'id': item.id,
-                'ДлъжностКод': item.ДлъжностКод,
-                'Длъжност': item.Длъжност,
-                'Коефициент': item.Коефициент,
-                'ВидОперация': item.operationTypes.OperName if item.operationTypes else ''
-            })
-
-        df = pd.DataFrame(data)
-        session.close()
-        return df
+            data = []
+            for item in result:
+                data.append({
+                    'ДлъжностКод': item.ДлъжностКод,
+                    'Длъжност': item.Длъжност,
+                    'Коефициент': item.Коефициент,
+                    'ВидОперация': item.operationType.OperName if item.operationType else ''
+                })
+            df = pd.DataFrame(data)
+            session.close()
+            return df
+        except Exception as e:
+            print(f"Error fetching data from database: {e}")
+            return fetchDataFromDb(tableName)
+        finally:
+            session.close()
     else:
         return fetchDataFromDb(tableName)

@@ -20,10 +20,12 @@ class TableModel(QAbstractTableModel):
 
         if role == Qt.ItemDataRole.DisplayRole:
             value = self._data.iloc[index.row(), index.column()]
-            print(value)
             # Format floats to 2 decimal places
             if isinstance(value, float):
-                return f"{value:.2f}"
+                if int(value) == value:
+                    return int(value)
+                else:
+                    return f"{value:.2f}"
             # Convert any other non-string values to strings
             elif value == '' or pd.isna(value) or value is None:
                 return ""
@@ -37,7 +39,7 @@ class TableModel(QAbstractTableModel):
             if orientation == Qt.Orientation.Horizontal:
                 return self._data.columns[section]
             elif orientation == Qt.Orientation.Vertical:
-                return str(self._data.index[section])
+                return '   '
         return None
 
     def flags(self, index):

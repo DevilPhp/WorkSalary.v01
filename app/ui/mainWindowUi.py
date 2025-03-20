@@ -23,16 +23,19 @@ class MainWindow(QMainWindow):
         # self.setAttribute(Qt.WA_TranslucentBackground)
         LoginPage(self)
         createTable()
-        self.ui.pageBtn.clicked.connect(lambda: self.changePage())
+        windows = ['workerPositions']
+        self.ui.pageBtn.clicked.connect(lambda: self.changePage(windows))
+
         # user = UsersFuncs.createUser('test', '000')
         # print(user)
 
-    def changePage(self):
-        subWindow = QMdiSubWindow()
-        newWindow = WorkersPageCustomWidget(self)
-        subWindow.setWidget(newWindow)
-        self.ui.mainWindowsArea.addSubWindow(subWindow)
-        subWindow.show()
+    def changePage(self, windows):
+        for window in windows:
+            subWindow = QMdiSubWindow()
+            newWindow = WorkersPageCustomWidget(self, window)
+            subWindow.setWidget(newWindow)
+            self.ui.mainWindowsArea.addSubWindow(subWindow)
+            subWindow.show()
 
 
 

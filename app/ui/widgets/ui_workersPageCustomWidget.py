@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'workersPageCustomWidgetKKOJID.ui'
+## Form generated from reading UI file 'workersPageCustomWidgetxUZoGk.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -119,10 +119,11 @@ class Ui_workersPageWidget(object):
         self.tableView.setObjectName(u"tableView")
         self.tableView.setStyleSheet(u"QHeaderView:section{\n"
 "	font: 700 10pt \"Segoe UI\";\n"
+"	selection-background-color: rgba(50, 75, 76, 50);\n"
 "}\n"
 "\n"
-"QVerticalView:section{\n"
-"	font: 700 1 \"Segoe UI\";\n"
+"QAbstractItemView:item::hover, QHeaderView::section:hover{\n"
+"	background-color: rgba(6, 132, 136, 10);\n"
 "}")
         self.tableView.setAlternatingRowColors(True)
         self.tableView.setSelectionMode(QAbstractItemView.MultiSelection)

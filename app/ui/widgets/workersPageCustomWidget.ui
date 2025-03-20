@@ -149,10 +149,11 @@ QTableView::Item:selected {
         <property name="styleSheet">
          <string notr="true">QHeaderView:section{
 	font: 700 10pt &quot;Segoe UI&quot;;
+	selection-background-color: rgba(50, 75, 76, 50);
 }
 
-QVerticalView:section{
-	font: 700 1 &quot;Segoe UI&quot;;
+QAbstractItemView:item::hover, QHeaderView::section:hover{
+	background-color: rgba(6, 132, 136, 10);
 }</string>
         </property>
         <property name="alternatingRowColors">
