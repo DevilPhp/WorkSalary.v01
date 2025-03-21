@@ -23,7 +23,7 @@ class MainWindow(QMainWindow):
         # self.setAttribute(Qt.WA_TranslucentBackground)
         LoginPage(self)
         createTable()
-        windows = ['workerPositions']
+        windows = ['workers']
         self.ui.pageBtn.clicked.connect(lambda: self.changePage(windows))
 
         # user = UsersFuncs.createUser('test', '000')

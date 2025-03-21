@@ -2,7 +2,7 @@ import pandas as pd
 from app.database import engine
 from sqlalchemy.orm import joinedload
 from app.database import SessionLocal
-from app.database.workers import WorkerPosition, OperationType
+from app.database.workers import WorkerPosition, OperationType, Worker
 
 
 def fetchDataFromDb(tableName):
@@ -24,6 +24,23 @@ def fetchDataFromDbWithRelations(tableName, relationships=None):
     #     return df
     # finally:
     #     session.close()
+
+    if tableName == 'workers':
+        session = SessionLocal()
+        try:
+            column = "Група"
+            df = fetchDataFromDb(tableName)
+            for index, item in enumerate(df[column]):
+                if not pd.isna(item):
+                    workerGroup = session.query(Worker).get(int(item))
+                    df.at[index, column] = workerGroup.cehove.Група
+            session.close()
+            return df
+        except Exception as e:
+            print(f"Error fetching data from database: {e}")
+            return fetchDataFromDb(tableName)
+        finally:
+            session.close()
 
     if tableName == 'workerPositions':
         session = SessionLocal()

@@ -7,7 +7,7 @@ from sqlalchemy import create_engine, text, Column, MetaData, Table, String, Dat
     BINARY, ForeignKey
 from config import DATABASE_URL
 from app.database import SessionLocal
-from app.database.workers import OperationType
+from app.database.workers import OperationType, PaymentType, Cehove
 
 ACCESS_DB_PATH = r"E:\fedbase\ts4rep_new.accdb"
 
@@ -28,6 +28,8 @@ def fetch_access_data(table_name):
     # Query to get table structure
     df = pd.read_sql(f"SELECT * FROM {table_name};", conn)
     cursor.execute(f"SELECT * FROM {table_name} WHERE 1=0")  # Fetch only metadata
+    print(df)
+    return
     # columns = [(column[0], map_data_type(column[1])) for column in cursor.description]
     conn.close()
     return df
@@ -118,11 +120,49 @@ def insertZeroOperationType():
     finally:
         session.close()
 
+def renameColumnsAndReplaceData(df):
+    # Rename columns as required
+    columnsNames = {
+        "гр/с": "гр_с",
+        "Трудов стаж-Години": "ТрудовСтажГодини",
+        "Трудов стаж-Месеци": "ТрудовСтажМесеци",
+        "Трудов стаж-Дни": "ТрудовСтажДни",
+    }
+    for column in df.columns:
+        if column in columnsNames:
+            df.rename(columns={column: columnsNames[column]}, inplace=True)
+        if column == "Група":
+            session = SessionLocal()
+            try:
+                # cehove = session.query(Cehove).order_by(Cehove.id.asc()).all()
+                # for ceh in cehove:
+                #     if ceh.ГрупаName in df[column]:
+                #         print(f"Updating Cehove with id {ceh.id} and name {ceh.ГрупаName}")
+                for index, row in enumerate(df[column]):
+                    # print(cehove[index].ГрупаName)
+                    # print(row)
+                    if row:
+                        ceh = session.query(Cehove).filter(Cehove.Група == row).first()
+                        df.at[index, "Група"] = ceh.id
+                    else:
+                        df.at[index, "Група"] = None
+                    # df.at[index, "Група"] = cehove[index].Група
+                # print(df[column])
+            # print(Cehove.ГрупаName)
+                # df.at[index, "Група"] = Cehove[row]
+                session.close()
+            except Exception as e:
+                print(f"Error inserting or updating Cehove data: {str(e)}")
+                session.rollback()
+                session.close()
+
+    return df
+
 
 def extract_and_transform_data():
     # ####Fetch data from Access table and add in to db####
-    # dataCehove = fetch_access_data("cehove")
-    # insert_data_to_postgres("cehove", dataCehove)
+    dataCehove = fetch_access_data("cehove")
+    insert_data_to_postgres("cehove", dataCehove)
     #
     # dataOperationTypes = fetch_access_data("operationTypes")
     # insertZeroOperationType()
@@ -132,6 +172,10 @@ def extract_and_transform_data():
     # insert_data_to_postgres("workerPositions", dataWorkers)
 
     #####
+
+    data = fetch_access_data("Персонал")
+    data = renameColumnsAndReplaceData(data)
+    insert_data_to_postgres("workers", data)
 
     # Clean and transform data as needed (e.g., handling missing values, data type conversion)
     # foreign_keys = {"ВидОперация": "workerPositions.ВидОперация"}

@@ -21,6 +21,7 @@ class TableModel(QAbstractTableModel):
         if role == Qt.ItemDataRole.DisplayRole:
             value = self._data.iloc[index.row(), index.column()]
             # Format floats to 2 decimal places
+            # print(value)
             if isinstance(value, float):
                 if int(value) == value:
                     return int(value)
