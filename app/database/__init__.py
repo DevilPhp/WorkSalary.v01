@@ -26,4 +26,29 @@ def getDatabase():
 def createTable():
     from app.database.users import User
     from app.database.workers import Worker, Cehove
+    from app.database.models import VidObleklo, Client, Yarn, ProductionModel
     Base.metadata.create_all(bind=engine)
+    createDefaultPaymentTypes()
+
+
+def createDefaultPaymentTypes():
+    from app.database.workers import PaymentType
+    db = SessionLocal()
+    paymentTypes = ['Няма', 'Повременна', 'Сделна', 'Щатна', 'Майки', 'Други', 'Напуснали']
+    try:
+        existingPaymentTypes = db.query(PaymentType).all()
+        if len(existingPaymentTypes) != 0:
+            return
+        count = 0
+        for paymentType in paymentTypes:
+            newPaymentType = PaymentType(id=count, Name=paymentType)
+            db.add(newPaymentType)
+            count += 1
+        db.commit()
+        print("Default payment types created successfully.")
+        return
+    except Exception as e:
+        print(f"Error creating default payment types: {e}")
+        db.rollback()
+    finally:
+        db.close()

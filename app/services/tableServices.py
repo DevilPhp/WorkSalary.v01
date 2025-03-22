@@ -31,8 +31,9 @@ def fetchDataFromDbWithRelations(tableName, relationships=None):
             column = "Група"
             df = fetchDataFromDb(tableName)
             for index, item in enumerate(df[column]):
+                # print(f"index: {index}, item: {item}")
                 if not pd.isna(item):
-                    workerGroup = session.query(Worker).get(int(item))
+                    workerGroup = session.query(Worker).filter(Worker.Група == item).first()
                     df.at[index, column] = workerGroup.cehove.Група
             session.close()
             return df

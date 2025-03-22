@@ -11,13 +11,13 @@ class Worker(Base):
     Презиме = Column(String, nullable=True)
     Фамилия = Column(String, nullable=True)
     Група = Column(Integer, ForeignKey("cehove.id"), nullable=True)
-    Длъжност = Column(String, nullable=True)
+    Длъжност = Column(Integer, ForeignKey("workerPositions.ДлъжностКод"), nullable=True)
     Коефициент = Column(Float, nullable=True)
     ЕГН = Column(String, nullable=True)
     КасаКод = Column(Integer, autoincrement=True)
     ДатаНаПостъпване = Column(DateTime, nullable=True)
     ДатаНаНапускане = Column(DateTime, nullable=True)
-    СистемаЗаплащане = Column(String, nullable=True)
+    СистемаЗаплащане = Column(Integer, ForeignKey("paymentTypes.id"), default=0)
     гр_с = Column(String, nullable=True)
     Адрес = Column(String, nullable=True)
     Телефон = Column(String, nullable=True)
@@ -27,8 +27,8 @@ class Worker(Base):
     ДатаНачалоТрудСтаж = Column(DateTime, nullable=True)
 
     cehove = relationship("Cehove", back_populates="workers")
-    # workerPosition = relationship("WorkerPosition", back_populates="worker")
-    # paymentType = relationship("PaymentType", back_populates="worker")
+    workerPosition = relationship("WorkerPosition", back_populates="workers")
+    paymentType = relationship("PaymentType", back_populates="workers")
 
 
 class PaymentType(Base):
@@ -36,7 +36,7 @@ class PaymentType(Base):
     id = Column(Integer, primary_key=True)
     Name = Column(String, nullable=True)
 
-    # worker = relationship("Worker", back_populates="paymentType")
+    workers = relationship("Worker", back_populates="paymentType")
 
 
 class Cehove(Base):
@@ -59,7 +59,7 @@ class WorkerPosition(Base):
     ВидОперация = Column(Integer, ForeignKey("operationTypes.OperTypeID"), nullable=True)
 
     operationType = relationship("OperationType", back_populates="workerPositions")
-    # worker = relationship("Worker", back_populates="workerPosition")
+    workers = relationship("Worker", back_populates="workerPosition")
 
 
 class OperationType(Base):

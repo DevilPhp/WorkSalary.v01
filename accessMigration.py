@@ -25,11 +25,16 @@ def fetch_access_data(table_name):
     conn = pyodbc.connect(conn_str)
     cursor = conn.cursor()
 
+    if table_name == "cehove":
+        df = pd.read_sql(f"SELECT * FROM {table_name} ORDER BY {'Група'}", conn)
+    else:
+        df = pd.read_sql(f"SELECT * FROM {table_name}", conn)
+
     # Query to get table structure
-    df = pd.read_sql(f"SELECT * FROM {table_name};", conn)
+    # df = pd.read_sql(f"SELECT * FROM {table_name} ORDER BY {'Група'}", conn)
     cursor.execute(f"SELECT * FROM {table_name} WHERE 1=0")  # Fetch only metadata
-    print(df)
-    return
+    # print(df)
+    # return
     # columns = [(column[0], map_data_type(column[1])) for column in cursor.description]
     conn.close()
     return df
@@ -48,7 +53,20 @@ def insert_data_to_postgres_with_fkey(table_name, df):
         print(f"✅ {len(df)} records inserted into '{table_name}' successfully!")
 
 
+def checkForColumns(table_name, df):
+    if table_name == 'clients':
+        culumns = ["КодСчетоводство", "СчетПоръчка"]
+        df.drop(columns=culumns, inplace=True)
+
+    return df
+
+
 def insert_data_to_postgres(table_name, df):
+
+    checkForColumns(table_name, df)
+    # print(df.columns)
+    # return
+
     # columnsNames = {
     #     "Група": "group",
     #     "ГрупаName": "groupName",
@@ -128,6 +146,8 @@ def renameColumnsAndReplaceData(df):
         "Трудов стаж-Месеци": "ТрудовСтажМесеци",
         "Трудов стаж-Дни": "ТрудовСтажДни",
     }
+    # print(df.dtypes)
+    # return
     for column in df.columns:
         if column in columnsNames:
             df.rename(columns={column: columnsNames[column]}, inplace=True)
@@ -156,13 +176,18 @@ def renameColumnsAndReplaceData(df):
                 session.rollback()
                 session.close()
 
+        elif column == "СистемаЗаплащане":
+            for index, row in enumerate(df[column]):
+                if pd.isna(row):
+                    df.at[index, column] = 0
+
     return df
 
 
 def extract_and_transform_data():
     # ####Fetch data from Access table and add in to db####
-    dataCehove = fetch_access_data("cehove")
-    insert_data_to_postgres("cehove", dataCehove)
+    # dataCehove = fetch_access_data("cehove")
+    # insert_data_to_postgres("cehove", dataCehove)
     #
     # dataOperationTypes = fetch_access_data("operationTypes")
     # insertZeroOperationType()
@@ -171,11 +196,15 @@ def extract_and_transform_data():
     # dataWorkers = fetch_access_data("Длъжности")
     # insert_data_to_postgres("workerPositions", dataWorkers)
 
-    #####
+    # dataWorkers = fetch_access_data("Персонал")
+    # dataWorkers = renameColumnsAndReplaceData(dataWorkers)
+    # insert_data_to_postgres("workers", dataWorkers)
 
-    data = fetch_access_data("Персонал")
-    data = renameColumnsAndReplaceData(data)
-    insert_data_to_postgres("workers", data)
+    data = fetch_access_data("Клиенти")
+    insert_data_to_postgres("clients", data)
+    # print(data)
+
+    #####
 
     # Clean and transform data as needed (e.g., handling missing values, data type conversion)
     # foreign_keys = {"ВидОперация": "workerPositions.ВидОперация"}

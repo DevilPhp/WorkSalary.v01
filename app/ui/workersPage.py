@@ -26,7 +26,7 @@ class WorkersPageCustomWidget(QWidget, Ui_workersPageWidget):
         print('Fetching data from database...')
         # tableName = 'workerPositions'
         data = fetchDataFromDbWithRelations(self.tableName)
-        print(data.dtypes)
+        # print(data.dtypes)
         model = TableModel(data)
         self.tableView.setModel(model)
         self.proxyModelWorkers = CaseInsensitiveProxyModel(numericColumns=[0],
