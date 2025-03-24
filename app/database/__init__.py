@@ -27,6 +27,7 @@ def createTable():
     from app.database.users import User
     from app.database.workers import Worker, Cehove
     from app.database.models import VidObleklo, Client, Yarn, ProductionModel
+    from app.database.operations import Operation, modelOperationsType
     Base.metadata.create_all(bind=engine)
     createDefaultPaymentTypes()
 
@@ -37,6 +38,7 @@ def createDefaultPaymentTypes():
     paymentTypes = ['Няма', 'Повременна', 'Сделна', 'Щатна', 'Майки', 'Други', 'Напуснали']
     try:
         existingPaymentTypes = db.query(PaymentType).all()
+        print(len(existingPaymentTypes))
         if len(existingPaymentTypes) != 0:
             return
         count = 0

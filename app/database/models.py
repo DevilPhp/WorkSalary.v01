@@ -17,7 +17,7 @@ class Client(Base):
     ClientID = Column(Integer, primary_key=True)
     Клиент = Column(String, nullable=True)
 
-    productionModel = relationship("ProductionModel", back_populates="clients")
+    productionModel = relationship("ProductionModel", back_populates="client")
 
 class Yarn(Base):
     __tablename__ = "yarns"
@@ -26,7 +26,7 @@ class Yarn(Base):
     Състав = Column(String, nullable=True)
     Доставчик = Column(String, nullable=True)
 
-    productionModel = relationship("ProductionModel", back_populates="yarns")
+    productionModel = relationship("ProductionModel", back_populates="yarn")
 
 
 class ProductionModel(Base):
@@ -45,7 +45,7 @@ class ProductionModel(Base):
     Status = Column(String, nullable=True, default=None)
     UserCreated = Column(String, nullable=False)
 
-    client = relationship("Client", back_populates="productionModels")
-    vidObleklo = relationship("VidObleklo", back_populates="productionModels")
-    yarn = relationship("Yarn", back_populates="productionModels")
+    client = relationship("Client", back_populates="productionModel")
+    vidOblekla = relationship("VidObleklo", back_populates="productionModel")
+    yarn = relationship("Yarn", back_populates="productionModel")
 

@@ -3,6 +3,7 @@ from app.database import engine
 from sqlalchemy.orm import joinedload
 from app.database import SessionLocal
 from app.database.workers import WorkerPosition, OperationType, Worker
+from app.database.operations import Operation, modelOperationsType
 
 
 def fetchDataFromDb(tableName):
@@ -40,6 +41,18 @@ def fetchDataFromDbWithRelations(tableName, relationships=None):
         except Exception as e:
             print(f"Error fetching data from database: {e}")
             return fetchDataFromDb(tableName)
+        finally:
+            session.close()
+
+    if tableName == 'operations':
+        session = SessionLocal()
+        try:
+            result = session.query(Operation)
+            for item in result:
+                print(item.Операция)
+        except Exception as e:
+            print(f"Error fetching data from database: {e}")
+            # return fetchDataFromDb(tableName)
         finally:
             session.close()
 

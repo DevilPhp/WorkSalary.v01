@@ -8,6 +8,7 @@ from sqlalchemy import create_engine, text, Column, MetaData, Table, String, Dat
 from config import DATABASE_URL
 from app.database import SessionLocal
 from app.database.workers import OperationType, PaymentType, Cehove
+from app.database.operations import modelOperationsType
 
 ACCESS_DB_PATH = r"E:\fedbase\ts4rep_new.accdb"
 
@@ -41,22 +42,45 @@ def fetch_access_data(table_name):
 
 
 def insert_data_to_postgres_with_fkey(table_name, df):
-
+    # df = df.drop(columns=['TRid'], inplace=True)
     """ Inserts data into a PostgreSQL table """
-    engine = create_engine(DATABASE_URL)
-    with engine.connect() as conn:
-        result = conn.execute(text("SELECT COUNT(*) FROM operationTypes WHERE OperTypeID = 0"))
-        if result.scalar() == 0:
-            conn.execute(text("INSERT INTO operationTypes (OperTypeID, OperName) VALUES (0, '')"))
-            conn.commit()
-        df.to_sql(table_name, conn, if_exists="append", index=False)
-        print(f"✅ {len(df)} records inserted into '{table_name}' successfully!")
+    session = SessionLocal()
+    # print(df)
+    try:
+        for col, row in df.iterrows():
+            # print(row)
+            operType = session.query(OperationType).get(row['OpTypeId'])
+            print(operType.OperName)
+            # newOperation = modelOperationsType(
+            #     ModelOpID=row,
+            # )
+
+            # return
+    except Exception as e:
+        print(f"Error occurred: {e}")
+        return
+    finally:
+        session.close()
+    # engine = create_engine(DATABASE_URL)
+    # with engine.connect() as conn:
+    #     # result = conn.execute(text("SELECT COUNT(*) FROM operationTypes WHERE OperTypeID = 0"))
+    #     # if result.scalar() == 0:
+    #     #     conn.execute(text("INSERT INTO operationTypes (OperTypeID, OperName) VALUES (0, '')"))
+    #     #     conn.commit()
+    #     df.to_sql(table_name, conn, if_exists="append", index=False)
+    #     print(f"✅ {len(df)} records inserted into '{table_name}' successfully!")
 
 
 def checkForColumns(table_name, df):
     if table_name == 'clients':
         culumns = ["КодСчетоводство", "СчетПоръчка"]
         df.drop(columns=culumns, inplace=True)
+    elif table_name == 'vidOblekla':
+        df.drop(columns=['WearTyp'], inplace=True)
+    elif table_name == 'operations':
+        df.drop(columns=['ТипОперация'], inplace=True)
+    elif table_name == 'modelOperationsTypes':
+        df.drop(columns=['TRid'], inplace=True)
 
     return df
 
@@ -188,21 +212,27 @@ def extract_and_transform_data():
     # ####Fetch data from Access table and add in to db####
     # dataCehove = fetch_access_data("cehove")
     # insert_data_to_postgres("cehove", dataCehove)
-    #
     # dataOperationTypes = fetch_access_data("operationTypes")
     # insertZeroOperationType()
     # insert_data_to_postgres("operationTypes", dataOperationTypes)
-    #
     # dataWorkers = fetch_access_data("Длъжности")
     # insert_data_to_postgres("workerPositions", dataWorkers)
-
     # dataWorkers = fetch_access_data("Персонал")
     # dataWorkers = renameColumnsAndReplaceData(dataWorkers)
     # insert_data_to_postgres("workers", dataWorkers)
-
-    data = fetch_access_data("Клиенти")
-    insert_data_to_postgres("clients", data)
+    # dataClients = fetch_access_data("Клиенти")
+    # insert_data_to_postgres("clients", dataClients)
+    # dataOblekla = fetch_access_data("Oblekla")
+    # insert_data_to_postgres("vidOblekla", dataOblekla)
+    # dataYarns = fetch_access_data("Прежда")
+    # insert_data_to_postgres("yarns", dataYarns)
+    # dataOperations = fetch_access_data("Операции")
+    # insert_data_to_postgres("operations", dataOperations)
+    data = fetch_access_data("OperTypeOfModelOper")
+    insert_data_to_postgres("modelOperationsTypes", data)
     # print(data)
+    # insert_data_to_postgres_with_fkey("modelOperationsTypes", data)
+    # insert_data_to_postgres("operations", dataOperations)
 
     #####
 

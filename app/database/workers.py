@@ -68,4 +68,5 @@ class OperationType(Base):
     OperName = Column(String, nullable=True)
 
     workerPositions = relationship("WorkerPosition", back_populates="operationType")
+    operations = relationship("Operation", secondary='modelOperationsTypes', back_populates="operationTypes")
 
