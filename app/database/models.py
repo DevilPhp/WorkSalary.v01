@@ -8,9 +8,10 @@ class VidObleklo(Base):
     __tablename__ = "vidOblekla"
     OblekloVid = Column(Integer, primary_key=True)
     OblekloName = Column(String, nullable=True)
-    # ОперацииПоПодразбиране =
 
+    defaultOperForVidOblekla = relationship("DefaultOperForVidObleklo", back_populates="vidOblekla")
     productionModel = relationship("ProductionModel", back_populates="vidOblekla")
+
 
 class Client(Base):
     __tablename__ = "clients"

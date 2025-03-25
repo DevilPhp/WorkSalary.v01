@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
+from contextlib import contextmanager
 from config import DATABASE_URL
 
 engine = create_engine(
@@ -8,26 +9,52 @@ engine = create_engine(
     max_overflow=5,       # Allow up to 5 extra connections if needed
     pool_timeout=30,      # Wait time before throwing timeout error
     pool_recycle=1800,    # Recycle connections every 30 minutes
-    echo=True            # Disable debug logs for production
+    echo=False            # Disable debug logs for production
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 
+# Context manager approach
+@contextmanager
 def getDatabase():
-    db = SessionLocal()
+    """Context manager for database sessions"""
+    session = SessionLocal()
     try:
-        yield db
+        yield session
+        # session.commit()
+    except Exception as e:
+        raise e
     finally:
-        db.close()
+        session.close()
+
+@contextmanager
+def setDatabase():
+    session = SessionLocal()
+    try:
+        yield session
+        session.commit()
+    except Exception as e:
+        session.rollback()
+        raise e
+    finally:
+        session.close()
+
+# def getDatabase():
+#     db = SessionLocal()
+#     try:
+#         yield db
+#     finally:
+#         db.close()
 
 
 def createTable():
     from app.database.users import User
     from app.database.workers import Worker, Cehove
     from app.database.models import VidObleklo, Client, Yarn, ProductionModel
-    from app.database.operations import Operation, modelOperationsType
+    from app.database.operations import Operation, modelOperationsType, DefaultOperForVidObleklo
+
     Base.metadata.create_all(bind=engine)
     createDefaultPaymentTypes()
 
@@ -38,7 +65,6 @@ def createDefaultPaymentTypes():
     paymentTypes = ['Няма', 'Повременна', 'Сделна', 'Щатна', 'Майки', 'Други', 'Напуснали']
     try:
         existingPaymentTypes = db.query(PaymentType).all()
-        print(len(existingPaymentTypes))
         if len(existingPaymentTypes) != 0:
             return
         count = 0

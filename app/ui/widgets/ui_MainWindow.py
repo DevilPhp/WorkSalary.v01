@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'MainWindowtLZeAy.ui'
+## Form generated from reading UI file 'MainWindowMWwxWx.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -45,12 +45,6 @@ class Ui_MainWindow(object):
 "	padding: 0px 5px;\n"
 "}\n"
 "\n"
-"#userLogoLabel, #userPassVisBtn {\n"
-"	background-color: #dfdfdf;\n"
-"	border: none;\n"
-"}\n"
-"\n"
-"\n"
 "QPushButton {\n"
 "	background-color: #c9c9c9;\n"
 "	border: none;\n"
@@ -59,7 +53,28 @@ class Ui_MainWindow(object):
 "\n"
 "QPushButton:hover {\n"
 "	background-color: #aeaeae;\n"
-"}")
+"}\n"
+"\n"
+"#userLogoLabel, #userPassVisBtn {\n"
+"	background-color: #dfdfdf;\n"
+"	border: none;\n"
+"}\n"
+"\n"
+"#mainMenuWidget QLabel {\n"
+"	font: 900 16pt \"Segoe UI\";\n"
+"	max-height: 30px;\n"
+"	padding: 5px;\n"
+"}\n"
+"\n"
+"#mainMenuWidget QPushButton {\n"
+"	padding: 5px;\n"
+"}\n"
+"\n"
+"#label, #label_8 {\n"
+"	padding-top: 50px;\n"
+"}\n"
+"\n"
+"")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout_2 = QVBoxLayout(self.centralwidget)
@@ -80,7 +95,8 @@ class Ui_MainWindow(object):
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.widget_2 = QWidget(self.widget)
         self.widget_2.setObjectName(u"widget_2")
-        self.widget_2.setMinimumSize(QSize(0, 0))
+        self.widget_2.setMinimumSize(QSize(0, 160))
+        self.widget_2.setMaximumSize(QSize(16777215, 160))
         self.horizontalLayout = QHBoxLayout(self.widget_2)
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -90,10 +106,10 @@ class Ui_MainWindow(object):
         self.label.setMinimumSize(QSize(0, 0))
         self.label.setPixmap(QPixmap(u":/logo/app/assets/logo/KnitexLogo3.png"))
 
-        self.horizontalLayout.addWidget(self.label, 0, Qt.AlignBottom)
+        self.horizontalLayout.addWidget(self.label, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
 
-        self.verticalLayout.addWidget(self.widget_2, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+        self.verticalLayout.addWidget(self.widget_2, 0, Qt.AlignHCenter|Qt.AlignTop)
 
         self.logInHolder = QWidget(self.widget)
         self.logInHolder.setObjectName(u"logInHolder")
@@ -214,8 +230,141 @@ class Ui_MainWindow(object):
         self.mainPage = QWidget()
         self.mainPage.setObjectName(u"mainPage")
         self.horizontalLayout_2 = QHBoxLayout(self.mainPage)
+        self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.widget_6 = QWidget(self.mainPage)
+        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.widget_8 = QWidget(self.mainPage)
+        self.widget_8.setObjectName(u"widget_8")
+        self.verticalLayout_9 = QVBoxLayout(self.widget_8)
+        self.verticalLayout_9.setSpacing(10)
+        self.verticalLayout_9.setObjectName(u"verticalLayout_9")
+        self.verticalLayout_9.setContentsMargins(0, 0, 0, 0)
+        self.widget_10 = QWidget(self.widget_8)
+        self.widget_10.setObjectName(u"widget_10")
+        self.horizontalLayout_6 = QHBoxLayout(self.widget_10)
+        self.horizontalLayout_6.setSpacing(0)
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.widget_12 = QWidget(self.widget_10)
+        self.widget_12.setObjectName(u"widget_12")
+        self.widget_12.setMinimumSize(QSize(0, 160))
+        self.widget_12.setMaximumSize(QSize(16777215, 160))
+        self.horizontalLayout_5 = QHBoxLayout(self.widget_12)
+        self.horizontalLayout_5.setSpacing(0)
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
+        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.label_8 = QLabel(self.widget_12)
+        self.label_8.setObjectName(u"label_8")
+        self.label_8.setMinimumSize(QSize(0, 0))
+        self.label_8.setPixmap(QPixmap(u":/logo/app/assets/logo/KnitexLogo3.png"))
+
+        self.horizontalLayout_5.addWidget(self.label_8, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+
+
+        self.horizontalLayout_6.addWidget(self.widget_12, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+
+
+        self.verticalLayout_9.addWidget(self.widget_10, 0, Qt.AlignTop)
+
+        self.mainMenuWidget = QWidget(self.widget_8)
+        self.mainMenuWidget.setObjectName(u"mainMenuWidget")
+        self.mainMenuWidget.setMinimumSize(QSize(0, 0))
+        self.verticalLayout_10 = QVBoxLayout(self.mainMenuWidget)
+        self.verticalLayout_10.setObjectName(u"verticalLayout_10")
+        self.mainMenuLayout = QGridLayout()
+        self.mainMenuLayout.setObjectName(u"mainMenuLayout")
+        self.mainMenuLayout.setHorizontalSpacing(30)
+        self.mainMenuLayout.setVerticalSpacing(15)
+        self.label_7 = QLabel(self.mainMenuWidget)
+        self.label_7.setObjectName(u"label_7")
+        self.label_7.setAlignment(Qt.AlignCenter)
+
+        self.mainMenuLayout.addWidget(self.label_7, 0, 3, 1, 1)
+
+        self.pushButton_6 = QPushButton(self.mainMenuWidget)
+        self.pushButton_6.setObjectName(u"pushButton_6")
+
+        self.mainMenuLayout.addWidget(self.pushButton_6, 3, 0, 1, 1)
+
+        self.label_6 = QLabel(self.mainMenuWidget)
+        self.label_6.setObjectName(u"label_6")
+        self.label_6.setAlignment(Qt.AlignCenter)
+
+        self.mainMenuLayout.addWidget(self.label_6, 0, 2, 1, 1)
+
+        self.pushButton_2 = QPushButton(self.mainMenuWidget)
+        self.pushButton_2.setObjectName(u"pushButton_2")
+
+        self.mainMenuLayout.addWidget(self.pushButton_2, 1, 1, 1, 1)
+
+        self.label_3 = QLabel(self.mainMenuWidget)
+        self.label_3.setObjectName(u"label_3")
+        self.label_3.setAlignment(Qt.AlignCenter)
+
+        self.mainMenuLayout.addWidget(self.label_3, 0, 1, 1, 1)
+
+        self.pushButton_3 = QPushButton(self.mainMenuWidget)
+        self.pushButton_3.setObjectName(u"pushButton_3")
+
+        self.mainMenuLayout.addWidget(self.pushButton_3, 1, 2, 1, 1)
+
+        self.setDefaultOperBtn = QPushButton(self.mainMenuWidget)
+        self.setDefaultOperBtn.setObjectName(u"setDefaultOperBtn")
+
+        self.mainMenuLayout.addWidget(self.setDefaultOperBtn, 1, 3, 1, 1)
+
+        self.pushButton_5 = QPushButton(self.mainMenuWidget)
+        self.pushButton_5.setObjectName(u"pushButton_5")
+
+        self.mainMenuLayout.addWidget(self.pushButton_5, 2, 0, 1, 1)
+
+        self.label_2 = QLabel(self.mainMenuWidget)
+        self.label_2.setObjectName(u"label_2")
+        self.label_2.setAlignment(Qt.AlignCenter)
+
+        self.mainMenuLayout.addWidget(self.label_2, 0, 0, 1, 1)
+
+        self.pushButton = QPushButton(self.mainMenuWidget)
+        self.pushButton.setObjectName(u"pushButton")
+        sizePolicy.setHeightForWidth(self.pushButton.sizePolicy().hasHeightForWidth())
+        self.pushButton.setSizePolicy(sizePolicy)
+
+        self.mainMenuLayout.addWidget(self.pushButton, 1, 0, 1, 1)
+
+        self.pushButton_7 = QPushButton(self.mainMenuWidget)
+        self.pushButton_7.setObjectName(u"pushButton_7")
+
+        self.mainMenuLayout.addWidget(self.pushButton_7, 4, 0, 1, 1)
+
+
+        self.verticalLayout_10.addLayout(self.mainMenuLayout)
+
+
+        self.verticalLayout_9.addWidget(self.mainMenuWidget, 0, Qt.AlignHCenter)
+
+        self.widget_11 = QWidget(self.widget_8)
+        self.widget_11.setObjectName(u"widget_11")
+        self.horizontalLayout_7 = QHBoxLayout(self.widget_11)
+        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
+        self.horizontalLayout_7.setContentsMargins(10, 10, 10, 10)
+        self.infoLabel_2 = QLabel(self.widget_11)
+        self.infoLabel_2.setObjectName(u"infoLabel_2")
+
+        self.horizontalLayout_7.addWidget(self.infoLabel_2)
+
+
+        self.verticalLayout_9.addWidget(self.widget_11, 0, Qt.AlignHCenter|Qt.AlignBottom)
+
+
+        self.horizontalLayout_2.addWidget(self.widget_8)
+
+        self.stackedWidget.addWidget(self.mainPage)
+        self.settingsPage = QWidget()
+        self.settingsPage.setObjectName(u"settingsPage")
+        self.horizontalLayout_4 = QHBoxLayout(self.settingsPage)
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.widget_6 = QWidget(self.settingsPage)
         self.widget_6.setObjectName(u"widget_6")
         self.widget_6.setStyleSheet(u"QPushButton {\n"
 "	padding: 8px;\n"
@@ -242,20 +391,23 @@ class Ui_MainWindow(object):
         self.verticalLayout_7.addWidget(self.widget_7, 0, Qt.AlignTop)
 
 
-        self.horizontalLayout_2.addWidget(self.widget_6)
+        self.horizontalLayout_4.addWidget(self.widget_6)
 
-        self.mainWindowsArea = QMdiArea(self.mainPage)
+        self.mainWindowsArea = QMdiArea(self.settingsPage)
         self.mainWindowsArea.setObjectName(u"mainWindowsArea")
 
-        self.horizontalLayout_2.addWidget(self.mainWindowsArea)
+        self.horizontalLayout_4.addWidget(self.mainWindowsArea)
 
-        self.stackedWidget.addWidget(self.mainPage)
+        self.stackedWidget.addWidget(self.settingsPage)
 
         self.verticalLayout_2.addWidget(self.stackedWidget)
 
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
+
+        self.stackedWidget.setCurrentIndex(0)
+
 
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
@@ -269,6 +421,19 @@ class Ui_MainWindow(object):
         self.userPassVisBtn.setText("")
         self.loginBtn.setText(QCoreApplication.translate("MainWindow", u" \u0412\u0425\u041e\u0414", None))
         self.infoLabel.setText(QCoreApplication.translate("MainWindow", u"Dev v0.1.010", None))
+        self.label_8.setText("")
+        self.label_7.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438", None))
+        self.pushButton_6.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
+        self.label_6.setText(QCoreApplication.translate("MainWindow", u"\u041c\u043e\u0434\u0435\u043b\u0438", None))
+        self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"\u041f\u0435\u0440\u0441\u043e\u043d\u0430\u043b", None))
+        self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
+        self.setDefaultOperBtn.setText(QCoreApplication.translate("MainWindow", u"\u041e\u043f\u0435\u0440\u0430\u0446\u0438\u0439 \u043f\u043e \u043f\u043e\u0434\u0440\u0430\u0437\u0431\u0438\u0440\u0430\u043d\u0435", None))
+        self.pushButton_5.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"\u041b\u0438\u0441\u0442\u043e\u0432\u0435 \u0437\u0430 \u0432\u0440\u0435\u043c\u0435", None))
+        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
+        self.pushButton_7.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
+        self.infoLabel_2.setText(QCoreApplication.translate("MainWindow", u"Dev v0.1.010", None))
         self.pageBtn.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
     # retranslateUi
 

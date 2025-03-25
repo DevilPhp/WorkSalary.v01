@@ -44,19 +44,56 @@ def fetchDataFromDbWithRelations(tableName, relationships=None):
         finally:
             session.close()
 
-    if tableName == 'operations':
+    # elif tableName == 'test':
+    #     print('Here')
+    #     session = SessionLocal()
+    #     try:
+    #         result = session.query(OperationType).order_by(OperationType.OperTypeID.asc()).all()
+    #         data = []
+    #         for item in result:
+    #             # print(item.OperName)
+    #             op_type_names = []
+    #             for op_type in item.operations:
+    #                 if op_type.Операция:
+    #                     op_type_names.append(op_type.Операция)
+    #                 else:
+    #                     op_type_names.append('')
+    #             # print(op_type_names)
+    #             # return
+    #             data.append({
+    #                 'OperTypeID': item.OperTypeID,
+    #                 'OperName': item.OperName,
+    #                 'ОперацииТип': ', '.join(op_type_names) if op_type_names != [] else ''
+    #             })
+    #         df = pd.DataFrame(data)
+    #         return df
+    #     except Exception as e:
+    #         print(f"Error fetching data from database: {e}")
+    #         # return fetchDataFromDb(tableName)
+    #     finally:
+    #         session.close()
+
+
+    elif tableName == 'operations':
         session = SessionLocal()
         try:
-            result = session.query(Operation)
+            result = session.query(Operation).all()
+            data = []
             for item in result:
-                print(item.Операция)
+                data.append({
+                    'ОперацияNo': item.ОперацияNo,
+                    'Операция': item.Операция,
+                    'ОперацияТип': item.operationTypes[0].OperName if item.operationTypes else '',
+                })
+            df = pd.DataFrame(data)
+            return df
         except Exception as e:
             print(f"Error fetching data from database: {e}")
             # return fetchDataFromDb(tableName)
         finally:
             session.close()
 
-    if tableName == 'workerPositions':
+    elif tableName == 'workerPositions':
         session = SessionLocal()
         try:
             result = session.query(WorkerPosition).all()

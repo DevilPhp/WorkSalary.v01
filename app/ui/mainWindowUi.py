@@ -6,7 +6,10 @@ from PySide6.QtWidgets import QMdiSubWindow
 from app.ui.widgets.ui_MainWindow import *
 from app.database import createTable
 from app.ui.logInPage import LoginPage
+from app.ui.mainMenuPage import MainMenuPage
 from app.ui.workersPage import WorkersPageCustomWidget
+from app.ui.customWidgetForDefaultOper import DefaultOperToModelTypeCustomWidget
+from app.services.operationServices import OperationsServices as OpS
 
 
 locale.setlocale(locale.LC_TIME, 'bg_BG.utf8')
@@ -20,11 +23,14 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.setWindowTitle("Knitex-96 Work Salary")
+        self.newWidget = None
         # self.setAttribute(Qt.WA_TranslucentBackground)
         LoginPage(self)
+        MainMenuPage(self)
         createTable()
         windows = ['clients', 'operations']
         self.ui.pageBtn.clicked.connect(lambda: self.changePage(windows))
+        self.ui.setDefaultOperBtn.clicked.connect(lambda: self.setDefaultOper())
 
         # user = UsersFuncs.createUser('test', '000')
         # print(user)
@@ -36,6 +42,10 @@ class MainWindow(QMainWindow):
             subWindow.setWidget(newWindow)
             self.ui.mainWindowsArea.addSubWindow(subWindow)
             subWindow.show()
+
+    def setDefaultOper(self):
+        self.newWidget = DefaultOperToModelTypeCustomWidget(self)
+        self.newWidget.show()
 
 
 
