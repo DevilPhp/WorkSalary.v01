@@ -66,13 +66,10 @@ class CustomMessageBox(QWidget, Ui_customMessageWidget):
 
         # Position at the bottom center of the parent
         if self.parent():
-            print(self.parent().geometry().x())
-            print(self.width())
             parentРect = self.parent().geometry()
-            x = parentРect.x() + (parentРect.width() - self.width()) // 2
-            y = parentРect.y() + parentРect.height() - self.height() - 50  # 50px from bottom
+            x = parentРect.width() - self.width()
+            y = parentРect.height() - self.height() - 15  # 50px from bottom
             self.setGeometry(x, y, self.width(), self.height())
-            print(f"Positioned at ({x}, {y})")
 
         # Show the widget and start animations
         self.show()

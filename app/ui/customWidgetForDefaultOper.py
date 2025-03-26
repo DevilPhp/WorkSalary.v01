@@ -105,7 +105,7 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
                     lineEdit.setEnabled(False)
                     label.setStyleSheet("")
                 widget.blockSignals(False)
-        MessageManager.showOnWidget(self.widget, 'DefaultOperToModelTypeCustomWidget initialized',
+        MessageManager.showOnWidget(self, 'DefaultOperToModelTypeCustomWidget initialized',
                                     'info')
 
         # self.selectAllCheckbox.blockSignals(False)

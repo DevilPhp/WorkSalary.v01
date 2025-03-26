@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customMessageWidgetQylZNn.ui'
+## Form generated from reading UI file 'customMessageWidgetYSPDIB.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -68,7 +68,8 @@ class Ui_customMessageWidget(object):
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.titleWidget = QWidget(self.widget)
         self.titleWidget.setObjectName(u"titleWidget")
-        self.titleWidget.setMinimumSize(QSize(200, 0))
+        self.titleWidget.setMinimumSize(QSize(200, 45))
+        self.titleWidget.setMaximumSize(QSize(16777215, 45))
         self.horizontalLayout = QHBoxLayout(self.titleWidget)
         self.horizontalLayout.setSpacing(20)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -76,7 +77,21 @@ class Ui_customMessageWidget(object):
         self.formLayout = QFormLayout()
         self.formLayout.setObjectName(u"formLayout")
         self.formLayout.setLabelAlignment(Qt.AlignCenter)
-        self.formLayout.setFormAlignment(Qt.AlignCenter)
+        self.widget_3 = QWidget(self.titleWidget)
+        self.widget_3.setObjectName(u"widget_3")
+        self.horizontalLayout_4 = QHBoxLayout(self.widget_3)
+        self.horizontalLayout_4.setSpacing(0)
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.label = QLabel(self.widget_3)
+        self.label.setObjectName(u"label")
+        self.label.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_4.addWidget(self.label)
+
+
+        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.widget_3)
+
         self.widget_2 = QWidget(self.titleWidget)
         self.widget_2.setObjectName(u"widget_2")
         self.widget_2.setMinimumSize(QSize(0, 0))
@@ -97,21 +112,6 @@ class Ui_customMessageWidget(object):
 
 
         self.formLayout.setWidget(0, QFormLayout.LabelRole, self.widget_2)
-
-        self.widget_3 = QWidget(self.titleWidget)
-        self.widget_3.setObjectName(u"widget_3")
-        self.horizontalLayout_4 = QHBoxLayout(self.widget_3)
-        self.horizontalLayout_4.setSpacing(0)
-        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
-        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
-        self.label = QLabel(self.widget_3)
-        self.label.setObjectName(u"label")
-        self.label.setAlignment(Qt.AlignCenter)
-
-        self.horizontalLayout_4.addWidget(self.label)
-
-
-        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.widget_3)
 
 
         self.horizontalLayout.addLayout(self.formLayout)
@@ -145,8 +145,8 @@ class Ui_customMessageWidget(object):
 
     def retranslateUi(self, customMessageWidget):
         customMessageWidget.setWindowTitle(QCoreApplication.translate("customMessageWidget", u"Form", None))
-        self.iconHolder.setText(QCoreApplication.translate("customMessageWidget", u"HH", None))
         self.label.setText(QCoreApplication.translate("customMessageWidget", u"\u0418\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0438\u044f", None))
+        self.iconHolder.setText("")
         self.textHolder.setHtml(QCoreApplication.translate("customMessageWidget", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
