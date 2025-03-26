@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customMessageWidgetQmhYaY.ui'
+## Form generated from reading UI file 'customMessageWidgetQylZNn.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -15,8 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QPushButton,
-    QSizePolicy, QTextBrowser, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QFormLayout, QHBoxLayout, QLabel,
+    QPushButton, QSizePolicy, QTextBrowser, QVBoxLayout,
+    QWidget)
 import resources_rc
 
 class Ui_customMessageWidget(object):
@@ -45,26 +46,6 @@ class Ui_customMessageWidget(object):
 "	border: none;\n"
 "}\n"
 "\n"
-"QPushButton:hover {\n"
-"	background-color: #aeaeae;\n"
-"}\n"
-"\n"
-"QCheckBox:checked {\n"
-"	color: #008b69;\n"
-"}\n"
-"\n"
-"QLineEdit {\n"
-"	border-bottom: 1px solid #7c9399;\n"
-"}\n"
-"\n"
-"QLineEdit:disabled {\n"
-"	color: #87b0a6;\n"
-"}\n"
-"\n"
-"QCheckBoxl::label {\n"
-"	word-wrap: break-word;\n"
-"}\n"
-"\n"
 "#titleWidget * {\n"
 "	font-size: 13pt;\n"
 "	font-weight: 700;\n"
@@ -87,11 +68,24 @@ class Ui_customMessageWidget(object):
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.titleWidget = QWidget(self.widget)
         self.titleWidget.setObjectName(u"titleWidget")
+        self.titleWidget.setMinimumSize(QSize(200, 0))
         self.horizontalLayout = QHBoxLayout(self.titleWidget)
         self.horizontalLayout.setSpacing(20)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(0, 5, 0, 0)
-        self.iconHolder = QPushButton(self.titleWidget)
+        self.formLayout = QFormLayout()
+        self.formLayout.setObjectName(u"formLayout")
+        self.formLayout.setLabelAlignment(Qt.AlignCenter)
+        self.formLayout.setFormAlignment(Qt.AlignCenter)
+        self.widget_2 = QWidget(self.titleWidget)
+        self.widget_2.setObjectName(u"widget_2")
+        self.widget_2.setMinimumSize(QSize(0, 0))
+        self.widget_2.setMaximumSize(QSize(100, 16777215))
+        self.horizontalLayout_3 = QHBoxLayout(self.widget_2)
+        self.horizontalLayout_3.setSpacing(0)
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.iconHolder = QPushButton(self.widget_2)
         self.iconHolder.setObjectName(u"iconHolder")
         self.iconHolder.setFocusPolicy(Qt.NoFocus)
         icon = QIcon()
@@ -99,12 +93,28 @@ class Ui_customMessageWidget(object):
         self.iconHolder.setIcon(icon)
         self.iconHolder.setIconSize(QSize(36, 36))
 
-        self.horizontalLayout.addWidget(self.iconHolder, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+        self.horizontalLayout_3.addWidget(self.iconHolder)
 
-        self.label = QLabel(self.titleWidget)
+
+        self.formLayout.setWidget(0, QFormLayout.LabelRole, self.widget_2)
+
+        self.widget_3 = QWidget(self.titleWidget)
+        self.widget_3.setObjectName(u"widget_3")
+        self.horizontalLayout_4 = QHBoxLayout(self.widget_3)
+        self.horizontalLayout_4.setSpacing(0)
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.label = QLabel(self.widget_3)
         self.label.setObjectName(u"label")
+        self.label.setAlignment(Qt.AlignCenter)
 
-        self.horizontalLayout.addWidget(self.label, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+        self.horizontalLayout_4.addWidget(self.label)
+
+
+        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.widget_3)
+
+
+        self.horizontalLayout.addLayout(self.formLayout)
 
 
         self.verticalLayout_2.addWidget(self.titleWidget, 0, Qt.AlignHCenter|Qt.AlignVCenter)
@@ -135,7 +145,7 @@ class Ui_customMessageWidget(object):
 
     def retranslateUi(self, customMessageWidget):
         customMessageWidget.setWindowTitle(QCoreApplication.translate("customMessageWidget", u"Form", None))
-        self.iconHolder.setText("")
+        self.iconHolder.setText(QCoreApplication.translate("customMessageWidget", u"HH", None))
         self.label.setText(QCoreApplication.translate("customMessageWidget", u"\u0418\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0438\u044f", None))
         self.textHolder.setHtml(QCoreApplication.translate("customMessageWidget", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"

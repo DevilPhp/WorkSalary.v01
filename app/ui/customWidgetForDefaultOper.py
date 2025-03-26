@@ -15,6 +15,7 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
         self.mainWindow = mainWindow
         self.operations = OpS.getAllOperations()
         self.comboBoxItems = {}
+        print(self.geometry())
         self.setCheckBox()
         self.selectAllCheckbox.stateChanged.connect(lambda: self.selectAllOperations())
         self.modelTypesDict = {}
@@ -104,7 +105,8 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
                     lineEdit.setEnabled(False)
                     label.setStyleSheet("")
                 widget.blockSignals(False)
-        MessageManager.info('DefaultOperToModelTypeCustomWidget initialized', timeout=2500)
+        MessageManager.showOnWidget(self.widget, 'DefaultOperToModelTypeCustomWidget initialized',
+                                    'info')
 
         # self.selectAllCheckbox.blockSignals(False)
 

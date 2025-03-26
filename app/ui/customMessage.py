@@ -54,9 +54,10 @@ class CustomMessageBox(QWidget, Ui_customMessageWidget):
 
         self.currentType = msgТype
         self.textHolder.setText(message)
+        self.textHolder.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         if self.currentType == 'success':
-            self.iconHolder.setIcon(QPixmap("app/assets/icons/Check-Square--Streamline-Solar-Broken-#008b69.svg"))
+            self.iconHolder.setIcon(QIcon("app/assets/icons/Check-Square--Streamline-Solar-Broken-#008b69.svg"))
             self.iconHolder.setIconSize(QSize(36, 36))
             self.label.setStyleSheet("QLabel { color: #008B69; }")
 
@@ -65,10 +66,13 @@ class CustomMessageBox(QWidget, Ui_customMessageWidget):
 
         # Position at the bottom center of the parent
         if self.parent():
+            print(self.parent().geometry().x())
+            print(self.width())
             parentРect = self.parent().geometry()
             x = parentРect.x() + (parentРect.width() - self.width()) // 2
             y = parentРect.y() + parentРect.height() - self.height() - 50  # 50px from bottom
             self.setGeometry(x, y, self.width(), self.height())
+            print(f"Positioned at ({x}, {y})")
 
         # Show the widget and start animations
         self.show()

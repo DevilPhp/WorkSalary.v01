@@ -21,6 +21,16 @@ class MessageManager:
         logger.info("Notification manager initialized")
 
     @classmethod
+    def showOnWidget(cls, widget, message, notification_type, timeout=3000):
+        """Show notification on a specific widget"""
+        if widget:
+            # Create a temporary notification for this widget
+            notification = CustomMessageBox(widget)
+            notification.showМessage(message, notification_type, timeout)
+        else:
+            logger.warning("Cannot show notification: Invalid widget")
+
+    @classmethod
     def info(cls, message, timeout=3000):
         """Show info notification"""
         if cls._notification:
