@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customMessageWidgetPOjybX.ui'
+## Form generated from reading UI file 'customMessageWidgetQmhYaY.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -80,6 +80,7 @@ class Ui_customMessageWidget(object):
         self.widget = QWidget(customMessageWidget)
         self.widget.setObjectName(u"widget")
         self.widget.setMinimumSize(QSize(280, 160))
+        self.widget.setMaximumSize(QSize(280, 160))
         self.verticalLayout_2 = QVBoxLayout(self.widget)
         self.verticalLayout_2.setSpacing(20)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
@@ -98,12 +99,12 @@ class Ui_customMessageWidget(object):
         self.iconHolder.setIcon(icon)
         self.iconHolder.setIconSize(QSize(36, 36))
 
-        self.horizontalLayout.addWidget(self.iconHolder)
+        self.horizontalLayout.addWidget(self.iconHolder, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
         self.label = QLabel(self.titleWidget)
         self.label.setObjectName(u"label")
 
-        self.horizontalLayout.addWidget(self.label)
+        self.horizontalLayout.addWidget(self.label, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
 
         self.verticalLayout_2.addWidget(self.titleWidget, 0, Qt.AlignHCenter|Qt.AlignVCenter)
@@ -113,7 +114,7 @@ class Ui_customMessageWidget(object):
         self.horizontalLayout_2 = QHBoxLayout(self.textWidget)
         self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_2.setContentsMargins(5, 0, 5, 0)
         self.textHolder = QTextBrowser(self.textWidget)
         self.textHolder.setObjectName(u"textHolder")
         self.textHolder.setAcceptRichText(False)
@@ -121,7 +122,7 @@ class Ui_customMessageWidget(object):
         self.horizontalLayout_2.addWidget(self.textHolder)
 
 
-        self.verticalLayout_2.addWidget(self.textWidget)
+        self.verticalLayout_2.addWidget(self.textWidget, 0, Qt.AlignHCenter)
 
 
         self.verticalLayout.addWidget(self.widget, 0, Qt.AlignHCenter|Qt.AlignVCenter)

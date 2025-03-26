@@ -94,6 +94,12 @@ QTextBrowser {
        <height>160</height>
       </size>
      </property>
+     <property name="maximumSize">
+      <size>
+       <width>280</width>
+       <height>160</height>
+      </size>
+     </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <property name="spacing">
        <number>20</number>
@@ -128,7 +134,7 @@ QTextBrowser {
          <property name="bottomMargin">
           <number>0</number>
          </property>
-         <item>
+         <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
           <widget class="QPushButton" name="iconHolder">
            <property name="focusPolicy">
             <enum>Qt::NoFocus</enum>
@@ -148,7 +154,7 @@ QTextBrowser {
            </property>
           </widget>
          </item>
-         <item>
+         <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
           <widget class="QLabel" name="label">
            <property name="text">
             <string>Информация</string>
@@ -158,20 +164,20 @@ QTextBrowser {
         </layout>
        </widget>
       </item>
-      <item>
+      <item alignment="Qt::AlignHCenter">
        <widget class="QWidget" name="textWidget" native="true">
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <property name="spacing">
           <number>0</number>
          </property>
          <property name="leftMargin">
-          <number>0</number>
+          <number>5</number>
          </property>
          <property name="topMargin">
           <number>0</number>
          </property>
          <property name="rightMargin">
-          <number>0</number>
+          <number>5</number>
          </property>
          <property name="bottomMargin">
           <number>0</number>

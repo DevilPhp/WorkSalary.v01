@@ -241,7 +241,7 @@ QTableView::Item:selected {
             <item>
              <widget class="QCheckBox" name="selectAllCheckbox">
               <property name="focusPolicy">
-               <enum>Qt::NoFocus</enum>
+               <enum>Qt::ClickFocus</enum>
               </property>
               <property name="text">
                <string>Всички</string>

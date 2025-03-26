@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'defaultOperToModelTypeCustomWidgetgMcLFW.ui'
+## Form generated from reading UI file 'defaultOperToModelTypeCustomWidgetgqbdIE.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -145,7 +145,7 @@ class Ui_customWidgetForDefaultOper(object):
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 10)
         self.selectAllCheckbox = QCheckBox(self.optionsHolder)
         self.selectAllCheckbox.setObjectName(u"selectAllCheckbox")
-        self.selectAllCheckbox.setFocusPolicy(Qt.NoFocus)
+        self.selectAllCheckbox.setFocusPolicy(Qt.ClickFocus)
 
         self.horizontalLayout_4.addWidget(self.selectAllCheckbox)
 

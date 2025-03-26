@@ -15,8 +15,9 @@ class CustomMessageBox(QWidget, Ui_customMessageWidget):
         self.timeout = 3000
         self._opacity = 0.0
 
-        self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Popup)
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+
 
         # Set up animations
         self.opacityEffect = QGraphicsOpacityEffect(self)
@@ -33,7 +34,7 @@ class CustomMessageBox(QWidget, Ui_customMessageWidget):
         self.timer.timeout.connect(self.hideAnimation)
 
         # Current notification type
-        self.current_type = self.INFO
+        self.currentType = self.INFO
 
     def setOpacity(self, opacity):
         self._opacity = opacity
@@ -51,11 +52,12 @@ class CustomMessageBox(QWidget, Ui_customMessageWidget):
         if timeout is not None:
             self.timeout = timeout
 
-        self.currentТype = msgТype
+        self.currentType = msgТype
         self.textHolder.setText(message)
 
-        if self.currentТype == 'success':
-            self.iconHolder.setPixmap(QPixmap(":/icons/app/assets/icons/Check-Square--Streamline-Solar-Broken-#008b69.svg"))
+        if self.currentType == 'success':
+            self.iconHolder.setIcon(QPixmap("app/assets/icons/Check-Square--Streamline-Solar-Broken-#008b69.svg"))
+            self.iconHolder.setIconSize(QSize(36, 36))
             self.label.setStyleSheet("QLabel { color: #008B69; }")
 
         # Adjust widget size based on text

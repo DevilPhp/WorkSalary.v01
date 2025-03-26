@@ -4,12 +4,14 @@ from app.ui.widgets.ui_customCheckBoxWidget import Ui_customCheckBoxWidget
 from app.services.operationServices import OperationsServices as OpS
 from app.services.modelServices import ModelService as Ms
 from PySide6.QtWidgets import QCheckBox
+from app.ui.messagesManager import MessageManager
 
 
 class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper):
     def __init__(self, mainWindow, parent=None):
         super().__init__(parent)
         self.setupUi(self)
+        # MessageManager.initialize(self)
         self.mainWindow = mainWindow
         self.operations = OpS.getAllOperations()
         self.comboBoxItems = {}
@@ -102,6 +104,7 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
                     lineEdit.setEnabled(False)
                     label.setStyleSheet("")
                 widget.blockSignals(False)
+        MessageManager.info('DefaultOperToModelTypeCustomWidget initialized', timeout=2500)
 
         # self.selectAllCheckbox.blockSignals(False)
 
