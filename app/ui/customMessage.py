@@ -1,0 +1,85 @@
+from PySide6.QtCore import QPropertyAnimation, QEasingCurve, QTimer, Property
+from PySide6.QtWidgets import QGraphicsOpacityEffect
+
+from app.ui.widgets.ui_customMessageWidget import *
+
+class CustomMessageBox(QWidget, Ui_customMessageWidget):
+    INFO = "info"
+    SUCCESS = "success"
+    WARNING = "warning"
+    ERROR = "error"
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setupUi(self)
+        self.timeout = 3000
+        self._opacity = 0.0
+
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Popup)
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+
+        # Set up animations
+        self.opacityEffect = QGraphicsOpacityEffect(self)
+        self.opacityEffect.setOpacity(0.0)
+        self.setGraphicsEffect(self.opacityEffect)
+
+        self.animation = QPropertyAnimation(self, b"opacity")
+        self.animation.setEasingCurve(QEasingCurve.InOutQuad)
+        self.animation.setDuration(300)  # 300ms for fade in/out
+
+        # Timer for auto-hiding
+        self.timer = QTimer(self)
+        self.timer.setSingleShot(True)
+        self.timer.timeout.connect(self.hideAnimation)
+
+        # Current notification type
+        self.current_type = self.INFO
+
+    def setOpacity(self, opacity):
+        self._opacity = opacity
+        self.opacityEffect.setOpacity(opacity)
+
+    def getОpacity(self):
+        return self._opacity
+
+        # Property for QPropertyAnimation
+
+    opacity = Property(float, getОpacity, setOpacity)
+
+    def showМessage(self, message, msgТype=INFO, timeout=None):
+        """Show notification with the given message and type"""
+        if timeout is not None:
+            self.timeout = timeout
+
+        self.currentТype = msgТype
+        self.textHolder.setText(message)
+
+        if self.currentТype == 'success':
+            self.iconHolder.setPixmap(QPixmap(":/icons/app/assets/icons/Check-Square--Streamline-Solar-Broken-#008b69.svg"))
+            self.label.setStyleSheet("QLabel { color: #008B69; }")
+
+        # Adjust widget size based on text
+        self.adjustSize()
+
+        # Position at the bottom center of the parent
+        if self.parent():
+            parentРect = self.parent().geometry()
+            x = parentРect.x() + (parentРect.width() - self.width()) // 2
+            y = parentРect.y() + parentРect.height() - self.height() - 50  # 50px from bottom
+            self.setGeometry(x, y, self.width(), self.height())
+
+        # Show the widget and start animations
+        self.show()
+        self.animation.setStartValue(0.0)
+        self.animation.setEndValue(1.0)
+        self.animation.start()
+
+        # Start timer for auto-hiding
+        self.timer.start(self.timeout)
+
+    def hideAnimation(self):
+        """Start fade-out animation"""
+        self.animation.setStartValue(1.0)
+        self.animation.setEndValue(0.0)
+        self.animation.finished.connect(self.hide)
+        self.animation.start()

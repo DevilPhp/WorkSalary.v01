@@ -1,6 +1,7 @@
 from PySide6.QtGui import QIcon, QColor
 from PySide6.QtWidgets import QLineEdit, QGraphicsDropShadowEffect
 from config import SECRET_LOGIN
+from app.ui.messagesManager import MessageManager
 
 
 class LoginPage:
@@ -15,6 +16,7 @@ class LoginPage:
 
         self.mainWindow.ui.userPassVisBtn.clicked.connect(lambda: self.togglePasswordVisibility())
         self.mainWindow.ui.loginBtn.clicked.connect(lambda: self.mainWindow.ui.stackedWidget.setCurrentIndex(1))
+        MessageManager.info('DefaultOperToModelTypeCustomWidget initialized', timeout=5000)
         # print(self.mainWindow)
         # self.mainWindow.ui.userPassField.setVisible(False)
 

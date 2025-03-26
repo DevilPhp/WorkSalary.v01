@@ -1,5 +1,6 @@
-from app.database import getDatabase
+from app.database import getDatabase, setDatabase
 from app.database.models import VidObleklo
+from app.database.operations import DefaultOperForVidObleklo, Operation
 
 
 class ModelService:
@@ -12,8 +13,20 @@ class ModelService:
     @staticmethod
     def getOperationsForModelType(vidObleklo):
         with getDatabase() as session:
-            operations = session.query(VidObleklo).filter_by(VidObleklo=vidObleklo).all()
+            operations = session.query(DefaultOperForVidObleklo).filter_by(OblekloVid=vidObleklo)\
+                .order_by(DefaultOperForVidObleklo.id.asc()).all()
             if operations:
-                return session.query(VidObleklo).filter_by(OblekloVid=vidObleklo).all()
-            else:
-                return None
+                return operations
+
+
+    @staticmethod
+    def saveOperationsForModelType(modelTypeId, operations):
+        with setDatabase() as session:
+            if session.query(DefaultOperForVidObleklo).filter_by(OblekloVid=modelTypeId).all():
+                session.query(DefaultOperForVidObleklo).filter_by(OblekloVid=modelTypeId).delete()
+            for index, operation in enumerate(operations):
+                newOperation = DefaultOperForVidObleklo(OblekloVid=modelTypeId,
+                                                        ОперацияNo=operation[0],
+                                                        defaultTime=float(operation[2]))
+                session.add(newOperation)
+            return True

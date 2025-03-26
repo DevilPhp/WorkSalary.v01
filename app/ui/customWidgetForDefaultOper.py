@@ -1,3 +1,4 @@
+from app.logger import logger
 from app.ui.widgets.ui_defaultOperToModelTypeCustomWidget import *
 from app.ui.widgets.ui_customCheckBoxWidget import Ui_customCheckBoxWidget
 from app.services.operationServices import OperationsServices as OpS
@@ -17,28 +18,52 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
         self.modelTypesDict = {}
         self.modelTypes = Ms.getAllModelTypes()
         self.setComboBox()
-        self.defaultModelTypeComboBox.currentIndexChanged.connect(self.loadOperationsForModelType)
+        self.loadOperationsForModelType()
+        self.saveBtn.clicked.connect(self.saveOperationsForModelType)
+
+
+    def saveOperationsForModelType(self):
+        modelTypeIndex = self.defaultModelTypeComboBox.currentIndex() + 1
+        selectedOperations = []
+        for index, checkbox in self.comboBoxItems.items():
+            if checkbox[0].isChecked():
+                selectedOperations.append([
+                    index,
+                    checkbox[0].text().split(':  ')[1],
+                    checkbox[1].text() if checkbox[1].text() != '' else 0
+                ])
+                # logger.info(f"Selected operation: {index}")
+                # print(f"index: {index}, checkbox: {checkbox[0].isChecked()}")
+        Ms.saveOperationsForModelType(modelTypeIndex, selectedOperations)
+        logger.info(f"Saved operations for model type {self.modelTypesDict[modelTypeIndex]}")
 
     def loadOperationsForModelType(self):
         defaultModelOpearions = Ms.getOperationsForModelType(
-            self.modelTypesDict[self.defaultModelTypeComboBox.currentText().split()[0]]
+            self.defaultModelTypeComboBox.currentIndex() + 1
         )
         if defaultModelOpearions:
-            print(defaultModelOpearions)
+            for operation in defaultModelOpearions:
+                self.comboBoxItems[operation.ОперацияNo][0].setChecked(True)
+                self.comboBoxItems[operation.ОперацияNo][1].setText(str(operation.defaultTime)
+                                                                    if operation.defaultTime else '')
+            logger.info('Operations Found')
         else:
-            print("No opertaions")
+            for ckeckbox in self.comboBoxItems.values():
+                ckeckbox[0].setChecked(False)
+                ckeckbox[1].setText('')
 
     def setComboBox(self):
         for modelType in self.modelTypes:
             self.modelTypesDict[modelType.OblekloVid] = modelType.OblekloName
-            name = f'{modelType.OblekloVid}- {modelType.OblekloName}'
+            name = f'{modelType.OblekloVid}:  {modelType.OblekloName}'
             self.defaultModelTypeComboBox.addItem(name)
         self.defaultModelTypeComboBox.setMinimumWidth(self.defaultModelTypeComboBox.minimumWidth() + 50)
+        self.defaultModelTypeComboBox.currentIndexChanged.connect(self.loadOperationsForModelType)
 
     def setCheckBox(self):
         for index, operation in enumerate(self.operations):
             newCustomComboBoxItem = CustomCheckboxWidget()
-            name = f'{operation.ОперацияNo}- {operation.Операция}'
+            name = f'{operation.ОперацияNo}:  {operation.Операция}'
 
             # print(newCustomComboBoxItem.checkBox.fontMetrics().boundingRect(name).width())
             # if operation.Операция:
@@ -94,7 +119,6 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
         if isinstance(self.sender(), QCheckBox):
             if self.sender().checkState() == Qt.CheckState.Checked:
                 lineEdit.setEnabled(True)
-
             else:
                 lineEdit.setEnabled(False)
 
@@ -118,7 +142,6 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
             self.selectAllCheckbox.setCheckState(Qt.CheckState.Checked)
         else:
             self.selectAllCheckbox.setCheckState(Qt.CheckState.Unchecked)
-
 
         # Reconnect signal
         self.selectAllCheckbox.blockSignals(False)

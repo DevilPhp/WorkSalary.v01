@@ -1,3 +1,4 @@
+from app.logger import logger
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from contextlib import contextmanager
@@ -25,6 +26,7 @@ def getDatabase():
         yield session
         # session.commit()
     except Exception as e:
+        logger.error(f'Error: {e}')
         raise e
     finally:
         session.close()
@@ -35,11 +37,14 @@ def setDatabase():
     try:
         yield session
         session.commit()
+
     except Exception as e:
+        logger.error(f'Error: {e}')
         session.rollback()
         raise e
     finally:
         session.close()
+        logger.info('Session closed')
 
 # def getDatabase():
 #     db = SessionLocal()

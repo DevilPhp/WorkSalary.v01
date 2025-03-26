@@ -1,6 +1,7 @@
 import sys
 import locale
 
+from app.logger import logger
 from PySide6.QtWidgets import QMdiSubWindow
 
 from app.ui.widgets.ui_MainWindow import *
@@ -9,7 +10,8 @@ from app.ui.logInPage import LoginPage
 from app.ui.mainMenuPage import MainMenuPage
 from app.ui.workersPage import WorkersPageCustomWidget
 from app.ui.customWidgetForDefaultOper import DefaultOperToModelTypeCustomWidget
-from app.services.operationServices import OperationsServices as OpS
+from app.ui.messagesManager import MessageManager
+
 
 
 locale.setlocale(locale.LC_TIME, 'bg_BG.utf8')
@@ -23,11 +25,13 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.setWindowTitle("Knitex-96 Work Salary")
+        MessageManager.initialize(self)
         self.newWidget = None
         # self.setAttribute(Qt.WA_TranslucentBackground)
         LoginPage(self)
         MainMenuPage(self)
         createTable()
+        logger.info('Application started')
         windows = ['clients', 'operations']
         self.ui.pageBtn.clicked.connect(lambda: self.changePage(windows))
         self.ui.setDefaultOperBtn.clicked.connect(lambda: self.setDefaultOper())
