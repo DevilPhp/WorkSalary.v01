@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'defaultOperToModelTypeCustomWidgetcQHdpy.ui'
+## Form generated from reading UI file 'defaultOperToModelTypeCustomWidgetgMcLFW.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -24,8 +24,8 @@ class Ui_customWidgetForDefaultOper(object):
     def setupUi(self, customWidgetForDefaultOper):
         if not customWidgetForDefaultOper.objectName():
             customWidgetForDefaultOper.setObjectName(u"customWidgetForDefaultOper")
-        customWidgetForDefaultOper.resize(1250, 800)
-        customWidgetForDefaultOper.setMinimumSize(QSize(1250, 800))
+        customWidgetForDefaultOper.resize(1143, 893)
+        customWidgetForDefaultOper.setMinimumSize(QSize(800, 700))
         customWidgetForDefaultOper.setStyleSheet(u"*{\n"
 "	background-color: #dfdfdf;\n"
 "	font: 600 12pt \"Segoe UI\";\n"
@@ -59,9 +59,6 @@ class Ui_customWidgetForDefaultOper(object):
 "	color: #324b4c;\n"
 "}\n"
 "\n"
-"QComboBox:hover {\n"
-"	background-color: #aeaeae;\n"
-"}\n"
 "\n"
 "#optionsHolder {\n"
 "	border-bottom: 2px dashed #7c9399;\n"
@@ -91,6 +88,7 @@ class Ui_customWidgetForDefaultOper(object):
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.saveBtn = QPushButton(self.widget_4)
         self.saveBtn.setObjectName(u"saveBtn")
+        self.saveBtn.setFocusPolicy(Qt.NoFocus)
 
         self.horizontalLayout_2.addWidget(self.saveBtn)
 
@@ -132,6 +130,8 @@ class Ui_customWidgetForDefaultOper(object):
         self.verticalLayout_2.setContentsMargins(15, 0, 15, 0)
         self.defaultModelTypeComboBox = QComboBox(self.widget_5)
         self.defaultModelTypeComboBox.setObjectName(u"defaultModelTypeComboBox")
+        self.defaultModelTypeComboBox.setFocusPolicy(Qt.NoFocus)
+        self.defaultModelTypeComboBox.setStyleSheet(u"")
 
         self.verticalLayout_2.addWidget(self.defaultModelTypeComboBox, 0, Qt.AlignHCenter)
 
@@ -145,6 +145,7 @@ class Ui_customWidgetForDefaultOper(object):
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 10)
         self.selectAllCheckbox = QCheckBox(self.optionsHolder)
         self.selectAllCheckbox.setObjectName(u"selectAllCheckbox")
+        self.selectAllCheckbox.setFocusPolicy(Qt.NoFocus)
 
         self.horizontalLayout_4.addWidget(self.selectAllCheckbox)
 
@@ -159,13 +160,13 @@ class Ui_customWidgetForDefaultOper(object):
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.operationsLayout = QGridLayout()
         self.operationsLayout.setObjectName(u"operationsLayout")
-        self.operationsLayout.setHorizontalSpacing(5)
-        self.operationsLayout.setVerticalSpacing(10)
+        self.operationsLayout.setHorizontalSpacing(25)
+        self.operationsLayout.setVerticalSpacing(8)
 
         self.verticalLayout_3.addLayout(self.operationsLayout)
 
 
-        self.verticalLayout_2.addWidget(self.operationsCheckBoxHolder)
+        self.verticalLayout_2.addWidget(self.operationsCheckBoxHolder, 0, Qt.AlignLeft)
 
 
         self.verticalLayout_4.addWidget(self.widget_5)

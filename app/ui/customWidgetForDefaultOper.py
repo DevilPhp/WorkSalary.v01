@@ -1,7 +1,7 @@
 from app.ui.widgets.ui_defaultOperToModelTypeCustomWidget import *
 from app.ui.widgets.ui_customCheckBoxWidget import Ui_customCheckBoxWidget
 from app.services.operationServices import OperationsServices as OpS
-from app.services.modelServices import ModelService as MS
+from app.services.modelServices import ModelService as Ms
 from PySide6.QtWidgets import QCheckBox
 
 
@@ -15,9 +15,18 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
         self.setCheckBox()
         self.selectAllCheckbox.stateChanged.connect(lambda: self.selectAllOperations())
         self.modelTypesDict = {}
-        self.modelTypes = MS.getAllModelTypes()
+        self.modelTypes = Ms.getAllModelTypes()
         self.setComboBox()
+        self.defaultModelTypeComboBox.currentIndexChanged.connect(self.loadOperationsForModelType)
 
+    def loadOperationsForModelType(self):
+        defaultModelOpearions = Ms.getOperationsForModelType(
+            self.modelTypesDict[self.defaultModelTypeComboBox.currentText().split()[0]]
+        )
+        if defaultModelOpearions:
+            print(defaultModelOpearions)
+        else:
+            print("No opertaions")
 
     def setComboBox(self):
         for modelType in self.modelTypes:
@@ -30,12 +39,25 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
         for index, operation in enumerate(self.operations):
             newCustomComboBoxItem = CustomCheckboxWidget()
             name = f'{operation.ОперацияNo}- {operation.Операция}'
+
+            # print(newCustomComboBoxItem.checkBox.fontMetrics().boundingRect(name).width())
+            # if operation.Операция:
+            #     listWords = operation.Операция.split()
+            #     if len(listWords) > 2:
+            #         name = f'{operation.ОперацияNo}- {listWords[0]} {listWords[1]}\n{listWords[2:]}'
+            #     else:
+            #         name = f'{operation.ОперацияNo}- {operation.Операция}'
+            # else:
+            #     name = f'{operation.ОперацияNo}- {operation.Операция}'
             newCustomComboBoxItem.checkBox.setText(name)
+
             newCustomComboBoxItem.checkBox.setObjectName(str(operation.ОперацияNo))
-            row = index % 15
-            col = index // 15
+            row = index % 20
+            col = index // 20
             self.operationsLayout.addWidget(newCustomComboBoxItem, row, col)
-            self.comboBoxItems[operation.ОперацияNo] = [newCustomComboBoxItem.checkBox, newCustomComboBoxItem.lineEdit]
+            self.comboBoxItems[operation.ОперацияNo] = [newCustomComboBoxItem.checkBox,
+                                                        newCustomComboBoxItem.lineEdit,
+                                                        newCustomComboBoxItem.label]
             newCustomComboBoxItem.checkBox.stateChanged.connect(self.updateSelectAllBtn)
 
     def selectAllOperations(self):
@@ -44,13 +66,16 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
         for index in self.comboBoxItems.keys():
             widget = self.comboBoxItems[index][0]
             lineEdit = self.comboBoxItems[index][1]
+            label = self.comboBoxItems[index][2]
             if isinstance(widget, QCheckBox):
                 widget.blockSignals(True)
                 widget.setCheckState(self.selectAllCheckbox.checkState())
                 if widget.checkState() == Qt.CheckState.Checked:
                     lineEdit.setEnabled(True)
+                    label.setStyleSheet("QLabel { color: #008b69; }")
                 else:
                     lineEdit.setEnabled(False)
+                    label.setStyleSheet("")
                 widget.blockSignals(False)
 
         # self.selectAllCheckbox.blockSignals(False)
@@ -69,6 +94,7 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
         if isinstance(self.sender(), QCheckBox):
             if self.sender().checkState() == Qt.CheckState.Checked:
                 lineEdit.setEnabled(True)
+
             else:
                 lineEdit.setEnabled(False)
 
@@ -103,3 +129,11 @@ class CustomCheckboxWidget(QWidget, Ui_customCheckBoxWidget):
         super().__init__(parent)
         self.setupUi(self)
         self.lineEdit.setEnabled(False)
+
+        self.checkBox.stateChanged.connect(self.toggleLabel)
+
+    def toggleLabel(self):
+        if self.checkBox.checkState() == Qt.CheckState.Checked:
+            self.label.setStyleSheet("QLabel { color: #008b69; }")
+        else:
+            self.label.setStyleSheet("")
