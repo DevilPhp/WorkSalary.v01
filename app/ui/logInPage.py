@@ -16,7 +16,7 @@ class LoginPage:
 
         self.mainWindow.ui.userPassVisBtn.clicked.connect(lambda: self.togglePasswordVisibility())
         self.mainWindow.ui.loginBtn.clicked.connect(lambda: self.mainWindow.ui.stackedWidget.setCurrentIndex(1))
-        MessageManager.success('DefaultOperToModelTypeCustomWidget initialized', timeout=5000)
+        MessageManager.info('DefaultOperToModelTypeCustomWidget initialized', timeout=3000)
         # print(self.mainWindow)
         # self.mainWindow.ui.userPassField.setVisible(False)
 
