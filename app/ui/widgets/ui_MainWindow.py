@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'MainWindowMWwxWx.ui'
+## Form generated from reading UI file 'MainWindowFJpZZP.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -72,6 +72,14 @@ class Ui_MainWindow(object):
 "\n"
 "#label, #label_8 {\n"
 "	padding-top: 50px;\n"
+"}\n"
+"\n"
+"#userIcon {\n"
+"	background-color: #dfdfdf;\n"
+"}\n"
+"\n"
+"#usernameLabel {\n"
+"	font-size: 11pt;\n"
 "}\n"
 "\n"
 "")
@@ -245,6 +253,11 @@ class Ui_MainWindow(object):
         self.horizontalLayout_6.setSpacing(0)
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
         self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.widget_13 = QWidget(self.widget_10)
+        self.widget_13.setObjectName(u"widget_13")
+
+        self.horizontalLayout_6.addWidget(self.widget_13)
+
         self.widget_12 = QWidget(self.widget_10)
         self.widget_12.setObjectName(u"widget_12")
         self.widget_12.setMinimumSize(QSize(0, 160))
@@ -262,6 +275,27 @@ class Ui_MainWindow(object):
 
 
         self.horizontalLayout_6.addWidget(self.widget_12, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+
+        self.widget_9 = QWidget(self.widget_10)
+        self.widget_9.setObjectName(u"widget_9")
+        self.horizontalLayout_8 = QHBoxLayout(self.widget_9)
+        self.horizontalLayout_8.setSpacing(10)
+        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
+        self.horizontalLayout_8.setContentsMargins(0, 0, 5, 0)
+        self.userIcon = QPushButton(self.widget_9)
+        self.userIcon.setObjectName(u"userIcon")
+        self.userIcon.setIcon(icon)
+        self.userIcon.setIconSize(QSize(24, 24))
+
+        self.horizontalLayout_8.addWidget(self.userIcon)
+
+        self.usernameLabel = QLabel(self.widget_9)
+        self.usernameLabel.setObjectName(u"usernameLabel")
+
+        self.horizontalLayout_8.addWidget(self.usernameLabel)
+
+
+        self.horizontalLayout_6.addWidget(self.widget_9, 0, Qt.AlignRight|Qt.AlignTop)
 
 
         self.verticalLayout_9.addWidget(self.widget_10, 0, Qt.AlignTop)
@@ -422,6 +456,8 @@ class Ui_MainWindow(object):
         self.loginBtn.setText(QCoreApplication.translate("MainWindow", u" \u0412\u0425\u041e\u0414", None))
         self.infoLabel.setText(QCoreApplication.translate("MainWindow", u"Dev v0.1.010", None))
         self.label_8.setText("")
+        self.userIcon.setText("")
+        self.usernameLabel.setText(QCoreApplication.translate("MainWindow", u"admin", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438", None))
         self.pushButton_6.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"\u041c\u043e\u0434\u0435\u043b\u0438", None))

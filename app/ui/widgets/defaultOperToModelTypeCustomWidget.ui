@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1143</width>
+    <width>1184</width>
     <height>893</height>
    </rect>
   </property>
@@ -53,11 +53,21 @@ QTableView::Item:selected {
 	color: #324b4c;
 }
 
-
 #optionsHolder {
 	border-bottom: 2px dashed #7c9399;
 }
-</string>
+
+#pageTitle {
+	font: 700 13pt &quot;Segoe UI&quot;;
+}
+
+#userIcon {
+	background-color: #dfdfdf;
+}
+
+#usernameLabel {
+	font-size: 11pt;
+}</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
@@ -93,7 +103,7 @@ QTableView::Item:selected {
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <item alignment="Qt::AlignLeft">
+      <item>
        <widget class="QWidget" name="widget_2" native="true">
         <layout class="QHBoxLayout" name="horizontalLayout">
          <property name="spacing">
@@ -143,17 +153,17 @@ QTableView::Item:selected {
           </widget>
          </item>
          <item alignment="Qt::AlignHCenter">
-          <widget class="QLabel" name="label">
+          <widget class="QLabel" name="pageTitle">
            <property name="text">
-            <string>TextLabel</string>
+            <string>ОПЕРАЦИИ ЗА ВИДОВЕ МОДЕЛИ</string>
            </property>
           </widget>
          </item>
-         <item alignment="Qt::AlignHCenter">
+         <item alignment="Qt::AlignRight">
           <widget class="QWidget" name="widget_3" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <property name="spacing">
-             <number>0</number>
+             <number>10</number>
             </property>
             <property name="leftMargin">
              <number>0</number>
@@ -162,15 +172,32 @@ QTableView::Item:selected {
              <number>0</number>
             </property>
             <property name="rightMargin">
-             <number>0</number>
+             <number>5</number>
             </property>
             <property name="bottomMargin">
              <number>0</number>
             </property>
             <item>
-             <widget class="QLabel" name="label_2">
+             <widget class="QPushButton" name="userIcon">
               <property name="text">
-               <string>TextLabel</string>
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="../../../resources.qrc">
+                <normaloff>:/icons/app/assets/icons/User--Streamline-Feather.svg</normaloff>:/icons/app/assets/icons/User--Streamline-Feather.svg</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="usernameLabel">
+              <property name="text">
+               <string>admin</string>
               </property>
              </widget>
             </item>

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'defaultOperToModelTypeCustomWidgetgqbdIE.ui'
+## Form generated from reading UI file 'defaultOperToModelTypeCustomWidgetVkrAEx.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -24,7 +24,7 @@ class Ui_customWidgetForDefaultOper(object):
     def setupUi(self, customWidgetForDefaultOper):
         if not customWidgetForDefaultOper.objectName():
             customWidgetForDefaultOper.setObjectName(u"customWidgetForDefaultOper")
-        customWidgetForDefaultOper.resize(1143, 893)
+        customWidgetForDefaultOper.resize(1184, 893)
         customWidgetForDefaultOper.setMinimumSize(QSize(800, 700))
         customWidgetForDefaultOper.setStyleSheet(u"*{\n"
 "	background-color: #dfdfdf;\n"
@@ -59,11 +59,21 @@ class Ui_customWidgetForDefaultOper(object):
 "	color: #324b4c;\n"
 "}\n"
 "\n"
-"\n"
 "#optionsHolder {\n"
 "	border-bottom: 2px dashed #7c9399;\n"
 "}\n"
-"")
+"\n"
+"#pageTitle {\n"
+"	font: 700 13pt \"Segoe UI\";\n"
+"}\n"
+"\n"
+"#userIcon {\n"
+"	background-color: #dfdfdf;\n"
+"}\n"
+"\n"
+"#usernameLabel {\n"
+"	font-size: 11pt;\n"
+"}")
         self.verticalLayout = QVBoxLayout(customWidgetForDefaultOper)
         self.verticalLayout.setSpacing(10)
         self.verticalLayout.setObjectName(u"verticalLayout")
@@ -95,27 +105,36 @@ class Ui_customWidgetForDefaultOper(object):
 
         self.horizontalLayout.addWidget(self.widget_4, 0, Qt.AlignLeft)
 
-        self.label = QLabel(self.widget_2)
-        self.label.setObjectName(u"label")
+        self.pageTitle = QLabel(self.widget_2)
+        self.pageTitle.setObjectName(u"pageTitle")
 
-        self.horizontalLayout.addWidget(self.label, 0, Qt.AlignHCenter)
+        self.horizontalLayout.addWidget(self.pageTitle, 0, Qt.AlignHCenter)
 
         self.widget_3 = QWidget(self.widget_2)
         self.widget_3.setObjectName(u"widget_3")
         self.horizontalLayout_3 = QHBoxLayout(self.widget_3)
-        self.horizontalLayout_3.setSpacing(0)
+        self.horizontalLayout_3.setSpacing(10)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.label_2 = QLabel(self.widget_3)
-        self.label_2.setObjectName(u"label_2")
+        self.horizontalLayout_3.setContentsMargins(0, 0, 5, 0)
+        self.userIcon = QPushButton(self.widget_3)
+        self.userIcon.setObjectName(u"userIcon")
+        icon = QIcon()
+        icon.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.userIcon.setIcon(icon)
+        self.userIcon.setIconSize(QSize(24, 24))
 
-        self.horizontalLayout_3.addWidget(self.label_2)
+        self.horizontalLayout_3.addWidget(self.userIcon)
+
+        self.usernameLabel = QLabel(self.widget_3)
+        self.usernameLabel.setObjectName(u"usernameLabel")
+
+        self.horizontalLayout_3.addWidget(self.usernameLabel)
 
 
-        self.horizontalLayout.addWidget(self.widget_3, 0, Qt.AlignHCenter)
+        self.horizontalLayout.addWidget(self.widget_3, 0, Qt.AlignRight)
 
 
-        self.verticalLayout_4.addWidget(self.widget_2, 0, Qt.AlignLeft)
+        self.verticalLayout_4.addWidget(self.widget_2)
 
         self.widget_5 = QWidget(self.widget)
         self.widget_5.setObjectName(u"widget_5")
@@ -183,8 +202,9 @@ class Ui_customWidgetForDefaultOper(object):
     def retranslateUi(self, customWidgetForDefaultOper):
         customWidgetForDefaultOper.setWindowTitle(QCoreApplication.translate("customWidgetForDefaultOper", u"Form", None))
         self.saveBtn.setText(QCoreApplication.translate("customWidgetForDefaultOper", u"\u0417\u0430\u043f\u0430\u0437\u0432\u0430\u043d\u0435", None))
-        self.label.setText(QCoreApplication.translate("customWidgetForDefaultOper", u"TextLabel", None))
-        self.label_2.setText(QCoreApplication.translate("customWidgetForDefaultOper", u"TextLabel", None))
+        self.pageTitle.setText(QCoreApplication.translate("customWidgetForDefaultOper", u"\u041e\u041f\u0415\u0420\u0410\u0426\u0418\u0418 \u0417\u0410 \u0412\u0418\u0414\u041e\u0412\u0415 \u041c\u041e\u0414\u0415\u041b\u0418", None))
+        self.userIcon.setText("")
+        self.usernameLabel.setText(QCoreApplication.translate("customWidgetForDefaultOper", u"admin", None))
         self.selectAllCheckbox.setText(QCoreApplication.translate("customWidgetForDefaultOper", u"\u0412\u0441\u0438\u0447\u043a\u0438", None))
     # retranslateUi
 

@@ -20,7 +20,7 @@ class MessageManager:
         cls._notification = CustomMessageBox(mainWindow)
 
     @classmethod
-    def showOnWidget(cls, widget, message, notification_type, timeout=3000):
+    def showOnWidget(cls, widget, message, notification_type, timeout=2000):
         """Show notification on a specific widget"""
         if widget:
             # Create a temporary notification for this widget
@@ -30,7 +30,7 @@ class MessageManager:
             logger.warning("Cannot show notification: Invalid widget")
 
     @classmethod
-    def info(cls, message, timeout=3000):
+    def info(cls, message, timeout=2000):
         """Show info notification"""
         if cls._notification:
             logger.info(f"Notification (INFO): {message}")
@@ -39,7 +39,7 @@ class MessageManager:
             logger.warning("Notification manager not initialized")
 
     @classmethod
-    def success(cls, message, timeout=3000):
+    def success(cls, message, timeout=2000):
         """Show success notification"""
         if cls._notification:
             logger.info(f"Notification (SUCCESS): {message}")
@@ -48,7 +48,7 @@ class MessageManager:
             logger.warning("Notification manager not initialized")
 
     @classmethod
-    def warning(cls, message, timeout=3000):
+    def warning(cls, message, timeout=2000):
         """Show warning notification"""
         if cls._notification:
             logger.warning(f"Notification (WARNING): {message}")
@@ -57,7 +57,7 @@ class MessageManager:
             logger.warning("Notification manager not initialized")
 
     @classmethod
-    def error(cls, message, timeout=4000):
+    def error(cls, message, timeout=3000):
         """Show error notification (longer timeout by default)"""
         if cls._notification:
             logger.error(f"Notification (ERROR): {message}")

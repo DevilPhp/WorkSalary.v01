@@ -2,6 +2,9 @@
   <qresource prefix="icons">
     <file>app/assets/icons/Check-Square--Streamline-Solar-Broken.svg</file>
     <file>app/assets/icons/Question-Square--Streamline-Solar-Broken.svg</file>
+    <file>app/assets/icons/Danger-Square--Streamline-Solar-Broken-#e4bb4e.svg</file>
+    <file>app/assets/icons/Danger-Triangle--Streamline-Solar-Broken-#C75f59.svg</file>
+    <file>app/assets/icons/Danger-Square--Streamline-Solar-Broken-#b8920d.svg</file>
     <file>app/assets/icons/Info-Square--Streamline-Solar-Broken-#c75f59.svg</file>
     <file>app/assets/icons/Check-Square--Streamline-Solar-Broken-#008b69.svg</file>
     <file>app/assets/icons/Info-Square--Streamline-Solar-Broken.svg</file>

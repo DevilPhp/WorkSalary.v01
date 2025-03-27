@@ -15,7 +15,7 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
         self.mainWindow = mainWindow
         self.operations = OpS.getAllOperations()
         self.comboBoxItems = {}
-        print(self.geometry())
+        # print(self.geometry())
         self.setCheckBox()
         self.selectAllCheckbox.stateChanged.connect(lambda: self.selectAllOperations())
         self.modelTypesDict = {}
@@ -37,10 +37,18 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
                 ])
                 # logger.info(f"Selected operation: {index}")
                 # print(f"index: {index}, checkbox: {checkbox[0].isChecked()}")
-        Ms.saveOperationsForModelType(modelTypeIndex, selectedOperations)
-        logger.info(f"Saved operations for model type {self.modelTypesDict[modelTypeIndex]}")
+        if selectedOperations:
+            Ms.saveOperationsForModelType(modelTypeIndex, selectedOperations)
+            name = self.defaultModelTypeComboBox.currentText().split(':  ')[1]
+            MessageManager.showOnWidget(self, f'Успешно запаметяване на операции за вид {name}',
+                                        'success')
+            logger.info(f"Saved operations for model type {self.modelTypesDict[modelTypeIndex]}")
+        else:
+            MessageManager.showOnWidget(self, 'Не сте избрали операция', 'info')
+            return
 
     def loadOperationsForModelType(self):
+        self.resetAllOperations()
         defaultModelOpearions = Ms.getOperationsForModelType(
             self.defaultModelTypeComboBox.currentIndex() + 1
         )
@@ -49,11 +57,11 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
                 self.comboBoxItems[operation.ОперацияNo][0].setChecked(True)
                 self.comboBoxItems[operation.ОперацияNo][1].setText(str(operation.defaultTime)
                                                                     if operation.defaultTime else '')
-            logger.info('Operations Found')
-        else:
-            for ckeckbox in self.comboBoxItems.values():
-                ckeckbox[0].setChecked(False)
-                ckeckbox[1].setText('')
+
+    def resetAllOperations(self):
+        for checkbox in self.comboBoxItems.values():
+            checkbox[0].setChecked(False)
+            checkbox[1].setText('')
 
     def setComboBox(self):
         for modelType in self.modelTypes:
@@ -105,8 +113,6 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
                     lineEdit.setEnabled(False)
                     label.setStyleSheet("")
                 widget.blockSignals(False)
-        MessageManager.showOnWidget(self, 'DefaultOperToModelTypeCustomWidget initialized',
-                                    'info')
 
         # self.selectAllCheckbox.blockSignals(False)
 

@@ -81,7 +81,36 @@ def checkForColumns(table_name, df):
         df.drop(columns=['ТипОперация'], inplace=True)
     elif table_name == 'modelOperationsTypes':
         df.drop(columns=['TRid'], inplace=True)
+    elif table_name == 'machines':
+        columns = {
+            "MashineTyp": "MachineType",
+            "MachFine": "MachineFine",
+            "MachSys": "MachineSystem",
+        }
+        df.rename(columns=columns, inplace=True)
+    elif table_name == 'productionModels':
+        df.drop(columns=['ОблеклоВид', 'ЦелГрупа', 'ЗаповедNo', 'ЗаповедДата', 'Picture', 'ModelNoPlanSys',
+                         'СтаусВръзка'], inplace=True)
+        columns = {
+            'MashTyp': 'MachineId',
+            'WearTyp': 'WearType',
+            'YarnTyp': 'YarnType',
+            'DateInpMod': 'DateCreated',
+            'ModifiedBy': 'UserCreated'
+        }
+        df.rename(columns=columns, inplace=True)
 
+        for index, row in enumerate(df['UserCreated']):
+            if row is None:
+                df.at[index, 'UserCreated'] = 'admin'
+        for index, row in enumerate(df['MachineId']):
+            if row == 0:
+                df.at[index, 'MachineId'] = None
+        for index, row in enumerate(df['Actual']):
+            if row == 'y':
+                df.at[index, 'Actual'] = True
+            else:
+                df.at[index, 'Actual'] = False
     return df
 
 
@@ -210,26 +239,31 @@ def renameColumnsAndReplaceData(df):
 
 def extract_and_transform_data():
     # ####Fetch data from Access table and add in to db####
-    dataCehove = fetch_access_data("cehove")
-    insert_data_to_postgres("cehove", dataCehove)
-    dataOperationTypes = fetch_access_data("operationTypes")
-    insertZeroOperationType()
-    insert_data_to_postgres("operationTypes", dataOperationTypes)
-    dataWorkersType = fetch_access_data("Длъжности")
-    insert_data_to_postgres("workerPositions", dataWorkersType)
-    dataWorkers = fetch_access_data("Персонал")
-    dataWorkers = renameColumnsAndReplaceData(dataWorkers)
-    insert_data_to_postgres("workers", dataWorkers)
-    dataClients = fetch_access_data("Клиенти")
-    insert_data_to_postgres("clients", dataClients)
-    dataOblekla = fetch_access_data("Oblekla")
-    insert_data_to_postgres("vidOblekla", dataOblekla)
-    dataYarns = fetch_access_data("Прежда")
-    insert_data_to_postgres("yarns", dataYarns)
-    dataOperations = fetch_access_data("Операции")
-    insert_data_to_postgres("operations", dataOperations)
-    data = fetch_access_data("OperTypeOfModelOper")
-    insert_data_to_postgres("modelOperationsTypes", data)
+    # dataCehove = fetch_access_data("cehove")
+    # insert_data_to_postgres("cehove", dataCehove)
+    # dataOperationTypes = fetch_access_data("operationTypes")
+    # insertZeroOperationType()
+    # insert_data_to_postgres("operationTypes", dataOperationTypes)
+    # dataWorkersType = fetch_access_data("Длъжности")
+    # insert_data_to_postgres("workerPositions", dataWorkersType)
+    # dataWorkers = fetch_access_data("Персонал")
+    # dataWorkers = renameColumnsAndReplaceData(dataWorkers)
+    # insert_data_to_postgres("workers", dataWorkers)
+    # dataClients = fetch_access_data("Клиенти")
+    # insert_data_to_postgres("clients", dataClients)
+    # dataOblekla = fetch_access_data("Oblekla")
+    # insert_data_to_postgres("vidOblekla", dataOblekla)
+    # dataYarns = fetch_access_data("Прежда")
+    # insert_data_to_postgres("yarns", dataYarns)
+    # dataOperations = fetch_access_data("Операции")
+    # insert_data_to_postgres("operations", dataOperations)
+    # dataOperType = fetch_access_data("OperTypeOfModelOper")
+    # insert_data_to_postgres("modelOperationsTypes", dataOperType)
+    # dataMachines = fetch_access_data("Machines")
+    # insert_data_to_postgres("machines", dataMachines)
+    dataModels = fetch_access_data("Models")
+    insert_data_to_postgres("productionModels", dataModels)
+
     # print(data)
     # insert_data_to_postgres_with_fkey("modelOperationsTypes", data)
     # insert_data_to_postgres("operations", dataOperations)

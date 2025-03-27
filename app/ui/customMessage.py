@@ -1,5 +1,6 @@
 from PySide6.QtCore import QPropertyAnimation, QEasingCurve, QTimer, Property
-from PySide6.QtWidgets import QGraphicsOpacityEffect
+from PySide6.QtGui import QTextOption
+from PySide6.QtWidgets import QGraphicsOpacityEffect, QGraphicsDropShadowEffect
 
 from app.ui.widgets.ui_customMessageWidget import *
 
@@ -14,10 +15,14 @@ class CustomMessageBox(QWidget, Ui_customMessageWidget):
         self.setupUi(self)
         self.timeout = 3000
         self._opacity = 0.0
-
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
-        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
+        # shadow = QGraphicsDropShadowEffect(self.widget)
+        # shadow.setBlurRadius(15)
+        # shadow.setXOffset(2)
+        # shadow.setYOffset(2)
+        # shadow.setColor(QColor("#7f7f7f"))
+        # self.widget.setGraphicsEffect(shadow)
 
         # Set up animations
         self.opacityEffect = QGraphicsOpacityEffect(self)
@@ -26,7 +31,7 @@ class CustomMessageBox(QWidget, Ui_customMessageWidget):
 
         self.animation = QPropertyAnimation(self, b"opacity")
         self.animation.setEasingCurve(QEasingCurve.InOutQuad)
-        self.animation.setDuration(300)  # 300ms for fade in/out
+        self.animation.setDuration(200)  # 300ms for fade in/out
 
         # Timer for auto-hiding
         self.timer = QTimer(self)
@@ -54,22 +59,34 @@ class CustomMessageBox(QWidget, Ui_customMessageWidget):
 
         self.currentType = msgТype
         self.textHolder.setText(message)
-        self.textHolder.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.titleWidget.layout().setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         if self.currentType == 'success':
             self.iconHolder.setIcon(QIcon("app/assets/icons/Check-Square--Streamline-Solar-Broken-#008b69.svg"))
-            self.iconHolder.setIconSize(QSize(36, 36))
-            self.label.setStyleSheet("QLabel { color: #008B69; }")
+            # self.iconHolder.setIconSize(QSize(36, 36))
+            self.title.setStyleSheet("QLabel { color: #008B69; }")
+            self.title.setText("Успешно")
+            self.widget.setStyleSheet("QWidget { border-color: #008B69; }")
 
-        # Adjust widget size based on text
-        # self.adjustSize()
+        elif self.currentType == 'error':
+            self.iconHolder.setIcon(QIcon("app/assets/icons/Danger-Triangle--Streamline-Solar-Broken-#C75f59.svg"))
+            # self.iconHolder.setIconSize(QSize(30, 30))
+            self.title.setStyleSheet("QLabel { color: #C75f59; }")
+            self.title.setText("Грешка")
+            self.widget.setStyleSheet("QWidget { border-color: #C75f59; }")
+
+        elif self.currentType == 'warning':
+            self.iconHolder.setIcon(QIcon("app/assets/icons/Danger-Square--Streamline-Solar-Broken-#b8920d.svg"))
+            # self.iconHolder.setIconSize(QSize(36, 36))
+            self.title.setStyleSheet("QLabel { color: #b8920d; }")
+            self.title.setText("Внимание")
+            self.widget.setStyleSheet("QWidget { border-color: #b8920d; }")
+
 
         # Position at the bottom center of the parent
         if self.parent():
-            parentРect = self.parent().geometry()
-            x = parentРect.width() - self.width()
-            y = parentРect.height() - self.height() - 15  # 50px from bottom
+            parentRect = self.parent().geometry()
+            x = parentRect.width() - self.width() - 10
+            y = parentRect.height() - self.height() - 10  # 50px from bottom
             self.setGeometry(x, y, self.width(), self.height())
 
         # Show the widget and start animations

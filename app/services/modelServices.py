@@ -13,8 +13,7 @@ class ModelService:
     @staticmethod
     def getOperationsForModelType(vidObleklo):
         with getDatabase() as session:
-            operations = session.query(DefaultOperForVidObleklo).filter_by(OblekloVid=vidObleklo)\
-                .order_by(DefaultOperForVidObleklo.id.asc()).all()
+            operations = session.query(DefaultOperForVidObleklo).filter_by(OblekloVid=vidObleklo).all()
             if operations:
                 return operations
 

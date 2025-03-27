@@ -35,6 +35,7 @@ class MainWindow(QMainWindow):
         windows = ['clients', 'operations']
         self.ui.pageBtn.clicked.connect(lambda: self.changePage(windows))
         self.ui.setDefaultOperBtn.clicked.connect(lambda: self.setDefaultOper())
+        # MessageManager.success('DefaultOperToModelTypeCustomWidget initialized', timeout=3000)
 
         # user = UsersFuncs.createUser('test', '000')
         # print(user)

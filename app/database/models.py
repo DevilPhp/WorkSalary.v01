@@ -20,6 +20,7 @@ class Client(Base):
 
     productionModel = relationship("ProductionModel", back_populates="client")
 
+
 class Yarn(Base):
     __tablename__ = "yarns"
     YarnID = Column(Integer, primary_key=True)
@@ -30,6 +31,16 @@ class Yarn(Base):
     productionModel = relationship("ProductionModel", back_populates="yarn")
 
 
+class Machine(Base):
+    __tablename__ = "machines"
+    MachineId = Column(Integer, primary_key=True)
+    MachineType = Column(String, nullable=True)
+    MachineFine = Column(Float, nullable=True)
+    MachineSystem = Column(String, nullable=True)
+
+    productionModel = relationship("ProductionModel", back_populates="machine")
+
+
 class ProductionModel(Base):
     __tablename__ = "productionModels"
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -37,6 +48,7 @@ class ProductionModel(Base):
     Descr = Column(String, nullable=True, default=None)
     Actual = Column(Boolean, default=True)
     ClientID = Column(Integer, ForeignKey("clients.ClientID"), nullable=True)
+    MachineId = Column(Integer, ForeignKey("machines.MachineId"), nullable=True)
     Fain = Column(String, nullable=True)
     WearType = Column(Integer, ForeignKey("vidOblekla.OblekloVid"), nullable=True)
     YarnType = Column(Integer, ForeignKey("yarns.YarnID"), nullable=True)
@@ -49,4 +61,5 @@ class ProductionModel(Base):
     client = relationship("Client", back_populates="productionModel")
     vidOblekla = relationship("VidObleklo", back_populates="productionModel")
     yarn = relationship("Yarn", back_populates="productionModel")
+    machine = relationship("Machine", back_populates="productionModel")
 
