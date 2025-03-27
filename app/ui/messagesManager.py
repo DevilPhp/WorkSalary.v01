@@ -18,7 +18,6 @@ class MessageManager:
         """Initialize the notification manager with the main window"""
         cls._mainWindow = mainWindow
         cls._notification = CustomMessageBox(mainWindow)
-        logger.info("Notification manager initialized")
 
     @classmethod
     def showOnWidget(cls, widget, message, notification_type, timeout=3000):

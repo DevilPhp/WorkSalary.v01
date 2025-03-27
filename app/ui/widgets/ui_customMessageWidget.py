@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customMessageWidgetkWuGCQ.ui'
+## Form generated from reading UI file 'customMessageWidgetGNJhKU.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -15,8 +15,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QPushButton,
-    QSizePolicy, QTextBrowser, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QSizePolicy,
+    QTextBrowser, QVBoxLayout, QWidget)
 import resources_rc
 
 class Ui_customMessageWidget(object):
@@ -29,7 +29,8 @@ class Ui_customMessageWidget(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(customMessageWidget.sizePolicy().hasHeightForWidth())
         customMessageWidget.setSizePolicy(sizePolicy)
-        customMessageWidget.setMinimumSize(QSize(0, 0))
+        customMessageWidget.setMinimumSize(QSize(280, 160))
+        customMessageWidget.setMaximumSize(QSize(280, 160))
         customMessageWidget.setStyleSheet(u"*{\n"
 "	background-color: rgba(255, 255, 255, 0);\n"
 "	font: 600 11pt \"Segoe UI\";\n"
@@ -74,15 +75,6 @@ class Ui_customMessageWidget(object):
         self.horizontalLayout.setSpacing(20)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(0, 10, 0, 0)
-        self.pushButton = QPushButton(self.titleWidget)
-        self.pushButton.setObjectName(u"pushButton")
-        icon = QIcon()
-        icon.addFile(u":/icons/app/assets/icons/Question-Square--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.pushButton.setIcon(icon)
-        self.pushButton.setIconSize(QSize(36, 36))
-
-        self.horizontalLayout.addWidget(self.pushButton)
-
         self.label = QLabel(self.titleWidget)
         self.label.setObjectName(u"label")
         self.label.setPixmap(QPixmap(u":/icons/app/assets/icons/Question-Square--Streamline-Solar-Broken.svg"))
@@ -120,7 +112,6 @@ class Ui_customMessageWidget(object):
 
     def retranslateUi(self, customMessageWidget):
         customMessageWidget.setWindowTitle(QCoreApplication.translate("customMessageWidget", u"Form", None))
-        self.pushButton.setText("")
         self.label.setText(QCoreApplication.translate("customMessageWidget", u"\u0418\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0438\u044f", None))
         self.textHolder.setHtml(QCoreApplication.translate("customMessageWidget", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"

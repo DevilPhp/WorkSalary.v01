@@ -55,6 +55,7 @@ class CustomMessageBox(QWidget, Ui_customMessageWidget):
         self.currentType = msgТype
         self.textHolder.setText(message)
         self.textHolder.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.titleWidget.layout().setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         if self.currentType == 'success':
             self.iconHolder.setIcon(QIcon("app/assets/icons/Check-Square--Streamline-Solar-Broken-#008b69.svg"))
@@ -62,7 +63,7 @@ class CustomMessageBox(QWidget, Ui_customMessageWidget):
             self.label.setStyleSheet("QLabel { color: #008B69; }")
 
         # Adjust widget size based on text
-        self.adjustSize()
+        # self.adjustSize()
 
         # Position at the bottom center of the parent
         if self.parent():
