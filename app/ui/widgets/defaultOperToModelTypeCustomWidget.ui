@@ -179,6 +179,9 @@ QTableView::Item:selected {
             </property>
             <item>
              <widget class="QPushButton" name="userIcon">
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
+              </property>
               <property name="text">
                <string/>
               </property>

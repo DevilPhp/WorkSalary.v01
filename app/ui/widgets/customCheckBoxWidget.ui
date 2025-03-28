@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>385</width>
+    <width>389</width>
     <height>24</height>
    </rect>
   </property>
@@ -148,7 +148,7 @@ QCheckBoxl::label {
            </property>
            <property name="minimumSize">
             <size>
-             <width>40</width>
+             <width>50</width>
              <height>0</height>
             </size>
            </property>

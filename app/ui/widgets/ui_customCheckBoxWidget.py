@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customCheckBoxWidgetNWPuqz.ui'
+## Form generated from reading UI file 'customCheckBoxWidgetXRBTjP.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -23,7 +23,7 @@ class Ui_customCheckBoxWidget(object):
     def setupUi(self, customCheckBoxWidget):
         if not customCheckBoxWidget.objectName():
             customCheckBoxWidget.setObjectName(u"customCheckBoxWidget")
-        customCheckBoxWidget.resize(385, 24)
+        customCheckBoxWidget.resize(389, 24)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -90,7 +90,7 @@ class Ui_customCheckBoxWidget(object):
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.lineEdit.sizePolicy().hasHeightForWidth())
         self.lineEdit.setSizePolicy(sizePolicy1)
-        self.lineEdit.setMinimumSize(QSize(40, 0))
+        self.lineEdit.setMinimumSize(QSize(50, 0))
         self.lineEdit.setMaximumSize(QSize(40, 16777215))
         self.lineEdit.setFocusPolicy(Qt.StrongFocus)
         self.lineEdit.setInputMethodHints(Qt.ImhDigitsOnly)

@@ -518,6 +518,9 @@ QPushButton:hover {
                  </property>
                  <item>
                   <widget class="QPushButton" name="userIcon">
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                   </property>
                    <property name="text">
                     <string/>
                    </property>
@@ -607,20 +610,6 @@ QPushButton:hover {
                   </property>
                  </widget>
                 </item>
-                <item row="1" column="2">
-                 <widget class="QPushButton" name="pushButton_3">
-                  <property name="text">
-                   <string>PushButton</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="3">
-                 <widget class="QPushButton" name="setDefaultOperBtn">
-                  <property name="text">
-                   <string>Операций по подразбиране</string>
-                  </property>
-                 </widget>
-                </item>
                 <item row="2" column="0">
                  <widget class="QPushButton" name="pushButton_5">
                   <property name="text">
@@ -655,6 +644,33 @@ QPushButton:hover {
                  <widget class="QPushButton" name="pushButton_7">
                   <property name="text">
                    <string>PushButton</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="3">
+                 <widget class="QPushButton" name="pushButton_3">
+                  <property name="text">
+                   <string>PushButton</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="2">
+                 <widget class="QPushButton" name="setDefaultOperBtn">
+                  <property name="focusPolicy">
+                   <enum>Qt::NoFocus</enum>
+                  </property>
+                  <property name="text">
+                   <string>Операций по подразбиране</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="2">
+                 <widget class="QPushButton" name="setModelsOperBtn">
+                  <property name="focusPolicy">
+                   <enum>Qt::NoFocus</enum>
+                  </property>
+                  <property name="text">
+                   <string>Модели и Операции</string>
                   </property>
                  </widget>
                 </item>

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'MainWindowFJpZZP.ui'
+## Form generated from reading UI file 'MainWindowEkjpIv.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -284,6 +284,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_8.setContentsMargins(0, 0, 5, 0)
         self.userIcon = QPushButton(self.widget_9)
         self.userIcon.setObjectName(u"userIcon")
+        self.userIcon.setFocusPolicy(Qt.NoFocus)
         self.userIcon.setIcon(icon)
         self.userIcon.setIconSize(QSize(24, 24))
 
@@ -337,16 +338,6 @@ class Ui_MainWindow(object):
 
         self.mainMenuLayout.addWidget(self.label_3, 0, 1, 1, 1)
 
-        self.pushButton_3 = QPushButton(self.mainMenuWidget)
-        self.pushButton_3.setObjectName(u"pushButton_3")
-
-        self.mainMenuLayout.addWidget(self.pushButton_3, 1, 2, 1, 1)
-
-        self.setDefaultOperBtn = QPushButton(self.mainMenuWidget)
-        self.setDefaultOperBtn.setObjectName(u"setDefaultOperBtn")
-
-        self.mainMenuLayout.addWidget(self.setDefaultOperBtn, 1, 3, 1, 1)
-
         self.pushButton_5 = QPushButton(self.mainMenuWidget)
         self.pushButton_5.setObjectName(u"pushButton_5")
 
@@ -369,6 +360,23 @@ class Ui_MainWindow(object):
         self.pushButton_7.setObjectName(u"pushButton_7")
 
         self.mainMenuLayout.addWidget(self.pushButton_7, 4, 0, 1, 1)
+
+        self.pushButton_3 = QPushButton(self.mainMenuWidget)
+        self.pushButton_3.setObjectName(u"pushButton_3")
+
+        self.mainMenuLayout.addWidget(self.pushButton_3, 1, 3, 1, 1)
+
+        self.setDefaultOperBtn = QPushButton(self.mainMenuWidget)
+        self.setDefaultOperBtn.setObjectName(u"setDefaultOperBtn")
+        self.setDefaultOperBtn.setFocusPolicy(Qt.NoFocus)
+
+        self.mainMenuLayout.addWidget(self.setDefaultOperBtn, 2, 2, 1, 1)
+
+        self.setModelsOperBtn = QPushButton(self.mainMenuWidget)
+        self.setModelsOperBtn.setObjectName(u"setModelsOperBtn")
+        self.setModelsOperBtn.setFocusPolicy(Qt.NoFocus)
+
+        self.mainMenuLayout.addWidget(self.setModelsOperBtn, 1, 2, 1, 1)
 
 
         self.verticalLayout_10.addLayout(self.mainMenuLayout)
@@ -463,12 +471,13 @@ class Ui_MainWindow(object):
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"\u041c\u043e\u0434\u0435\u043b\u0438", None))
         self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"\u041f\u0435\u0440\u0441\u043e\u043d\u0430\u043b", None))
-        self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
-        self.setDefaultOperBtn.setText(QCoreApplication.translate("MainWindow", u"\u041e\u043f\u0435\u0440\u0430\u0446\u0438\u0439 \u043f\u043e \u043f\u043e\u0434\u0440\u0430\u0437\u0431\u0438\u0440\u0430\u043d\u0435", None))
         self.pushButton_5.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"\u041b\u0438\u0441\u0442\u043e\u0432\u0435 \u0437\u0430 \u0432\u0440\u0435\u043c\u0435", None))
         self.pushButton.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
         self.pushButton_7.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
+        self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
+        self.setDefaultOperBtn.setText(QCoreApplication.translate("MainWindow", u"\u041e\u043f\u0435\u0440\u0430\u0446\u0438\u0439 \u043f\u043e \u043f\u043e\u0434\u0440\u0430\u0437\u0431\u0438\u0440\u0430\u043d\u0435", None))
+        self.setModelsOperBtn.setText(QCoreApplication.translate("MainWindow", u"\u041c\u043e\u0434\u0435\u043b\u0438 \u0438 \u041e\u043f\u0435\u0440\u0430\u0446\u0438\u0438", None))
         self.infoLabel_2.setText(QCoreApplication.translate("MainWindow", u"Dev v0.1.010", None))
         self.pageBtn.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
     # retranslateUi

@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Float, Enum, ForeignKey, DateTim
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from app.database import Base, SessionLocal
-from app.database.models import VidObleklo
+from app.database.models import VidObleklo, ProductionModel
 
 modelOperationsType = Table(
     'modelOperationsTypes', Base.metadata,
@@ -19,6 +19,7 @@ class Operation(Base):
 
     operationTypes = relationship('OperationType', secondary='modelOperationsTypes', back_populates='operations')
     defaultOperForVidOblekla = relationship('DefaultOperForVidObleklo', back_populates='operations')
+    productionModelOperations = relationship('ProductionModelOperations', back_populates='operations')
 
 
 class DefaultOperForVidObleklo(Base):
@@ -31,3 +32,16 @@ class DefaultOperForVidObleklo(Base):
     operations = relationship('Operation', back_populates='defaultOperForVidOblekla')
     vidOblekla = relationship('VidObleklo', back_populates='defaultOperForVidOblekla')
 
+
+class ProductionModelOperations(Base):
+    __tablename__ = "productionModelOperations"
+    id = Column(Integer, primary_key=True)
+    ПоръчкаNo = Column(Integer, ForeignKey("productionModels.id"), primary_key=True, index=True)
+    ОперацияNo = Column(Integer, ForeignKey("operations.ОперацияNo"), primary_key=True)
+    TimeForOper = Column(Float, default=0)
+    Razcenka = Column(Float, default=0)
+    LastUpdated = Column(DateTime, default=datetime.now)
+    UpdatedBy = Column(String, default="System")
+
+    productionModel = relationship("ProductionModel", back_populates="productionModelOperations")
+    operations = relationship("Operation", back_populates="productionModelOperations")

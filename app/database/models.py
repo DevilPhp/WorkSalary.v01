@@ -62,4 +62,5 @@ class ProductionModel(Base):
     vidOblekla = relationship("VidObleklo", back_populates="productionModel")
     yarn = relationship("Yarn", back_populates="productionModel")
     machine = relationship("Machine", back_populates="productionModel")
+    productionModelOperations = relationship('ProductionModelOperations', back_populates='productionModel')
 

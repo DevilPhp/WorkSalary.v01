@@ -1,14 +1,24 @@
 from app.database import getDatabase, setDatabase
-from app.database.models import VidObleklo
+from app.database.models import VidObleklo, Client, ProductionModel
 from app.database.operations import DefaultOperForVidObleklo, Operation
 
 
 class ModelService:
+
+    @staticmethod
+    def getClients():
+        with getDatabase() as session:
+            return session.query(Client).all()
+
+    @staticmethod
+    def getAllModels():
+        with getDatabase() as session:
+            return session.query(ProductionModel).all()
+
     @staticmethod
     def getAllModelTypes():
         with getDatabase() as session:
             return session.query(VidObleklo).order_by(VidObleklo.OblekloVid.asc()).all()
-
 
     @staticmethod
     def getOperationsForModelType(vidObleklo):
@@ -16,7 +26,6 @@ class ModelService:
             operations = session.query(DefaultOperForVidObleklo).filter_by(OblekloVid=vidObleklo).all()
             if operations:
                 return operations
-
 
     @staticmethod
     def saveOperationsForModelType(modelTypeId, operations):

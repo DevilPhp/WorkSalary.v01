@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1184</width>
-    <height>893</height>
+    <width>1263</width>
+    <height>995</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>800</width>
-    <height>700</height>
+    <width>900</width>
+    <height>800</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -38,7 +38,7 @@ QPushButton:hover{
 	background-color: #aeaeae;
 }
 
-#operationsHolder QCheckBox:checked {
+#operationsHolder QCheckBox:checked, #newModelHolder QCheckBox:checked{
 	color: #008b69;
 }
 
@@ -182,6 +182,9 @@ QLineEdit {
             </property>
             <item>
              <widget class="QPushButton" name="userIcon">
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
+              </property>
               <property name="text">
                <string/>
               </property>
@@ -295,7 +298,7 @@ QLineEdit {
                   </widget>
                  </item>
                  <item row="0" column="1">
-                  <widget class="QLineEdit" name="lineEdit">
+                  <widget class="QLineEdit" name="clientsLineEdit">
                    <property name="text">
                     <string/>
                    </property>
@@ -309,7 +312,35 @@ QLineEdit {
                   </widget>
                  </item>
                  <item row="1" column="1">
-                  <widget class="QLineEdit" name="lineEdit_2"/>
+                  <widget class="QLineEdit" name="modelsLineEdit"/>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="QWidget" name="widget_2" native="true">
+                   <layout class="QHBoxLayout" name="horizontalLayout_7">
+                    <property name="spacing">
+                     <number>0</number>
+                    </property>
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item alignment="Qt::AlignHCenter">
+                     <widget class="QCheckBox" name="modelActualCheckBox">
+                      <property name="text">
+                       <string>Активен</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -363,6 +394,9 @@ QLineEdit {
                    <height>0</height>
                   </size>
                  </property>
+                 <property name="focusPolicy">
+                  <enum>Qt::ClickFocus</enum>
+                 </property>
                  <property name="text">
                   <string>Създаване на нов модел</string>
                  </property>
@@ -384,6 +418,9 @@ QLineEdit {
                    <bold>true</bold>
                   </font>
                  </property>
+                 <property name="focusPolicy">
+                  <enum>Qt::ClickFocus</enum>
+                 </property>
                  <property name="text">
                   <string>Като Модел</string>
                  </property>
@@ -401,21 +438,26 @@ QLineEdit {
                </size>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_8">
+               <property name="spacing">
+                <number>15</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
                <item>
                 <layout class="QGridLayout" name="newModelLayout">
                  <property name="spacing">
                   <number>10</number>
                  </property>
-                 <item row="1" column="2">
-                  <widget class="QLabel" name="label_9">
-                   <property name="text">
-                    <string>Брой</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="3">
-                  <widget class="QLineEdit" name="lineEdit_3"/>
-                 </item>
                  <item row="0" column="0">
                   <widget class="QLabel" name="label_5">
                    <property name="text">
@@ -423,67 +465,108 @@ QLineEdit {
                    </property>
                   </widget>
                  </item>
-                 <item row="2" column="3">
-                  <widget class="QLineEdit" name="lineEdit_4"/>
+                 <item row="0" column="1">
+                  <widget class="QLineEdit" name="newModelLineEdit"/>
                  </item>
-                 <item row="2" column="2">
-                  <widget class="QLabel" name="label_10">
-                   <property name="text">
-                    <string>Описание</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="1">
-                  <widget class="QComboBox" name="machineComboBox"/>
-                 </item>
-                 <item row="2" column="1">
-                  <widget class="QComboBox" name="modelTypeComboBox"/>
-                 </item>
-                 <item row="2" column="0">
-                  <widget class="QLabel" name="label_7">
-                   <property name="text">
-                    <string>Вид Модел</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="2">
+                 <item row="1" column="2">
                   <widget class="QLabel" name="label_8">
                    <property name="text">
                     <string>Прежда</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="0" column="4">
-                  <widget class="QLabel" name="label_11">
-                   <property name="text">
-                    <string>Актуален</string>
+                 <item row="1" column="3">
+                  <widget class="QComboBox" name="yarnComboBox">
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
                    </property>
                   </widget>
                  </item>
-                 <item row="0" column="1">
-                  <widget class="QLineEdit" name="operNoLineEdit"/>
-                 </item>
-                 <item row="0" column="5">
-                  <widget class="QCheckBox" name="checkBox_2">
+                 <item row="0" column="2">
+                  <widget class="QLabel" name="label_7">
                    <property name="text">
-                    <string/>
+                    <string>Вид Модел</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="1" column="0">
+                 <item row="0" column="3">
+                  <widget class="QComboBox" name="modelTypeComboBox">
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0">
                   <widget class="QLabel" name="label_6">
                    <property name="text">
                     <string>Машина/Цех</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="0" column="3">
-                  <widget class="QComboBox" name="yarnComboBox"/>
+                 <item row="2" column="1">
+                  <widget class="QComboBox" name="machineComboBox">
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_9">
+                   <property name="text">
+                    <string>Брой</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QLineEdit" name="piecesLineEdit"/>
+                 </item>
+                 <item row="2" column="2">
+                  <widget class="QLabel" name="label_3">
+                   <property name="text">
+                    <string>Фаин</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="3">
+                  <widget class="QLineEdit" name="machineGaugeLineEdit"/>
+                 </item>
+                 <item row="0" column="4">
+                  <widget class="QLabel" name="label_10">
+                   <property name="text">
+                    <string>Описание</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="5">
+                  <widget class="QLineEdit" name="descrLineEdit"/>
+                 </item>
+                 <item row="1" column="5" alignment="Qt::AlignVCenter">
+                  <widget class="QCheckBox" name="actualCheckBox">
+                   <property name="focusPolicy">
+                    <enum>Qt::ClickFocus</enum>
+                   </property>
+                   <property name="layoutDirection">
+                    <enum>Qt::LeftToRight</enum>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="4">
+                  <widget class="QLabel" name="label_11">
+                   <property name="text">
+                    <string>Актуален</string>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
                <item alignment="Qt::AlignHCenter">
                 <widget class="QPushButton" name="saveNewModel">
+                 <property name="focusPolicy">
+                  <enum>Qt::NoFocus</enum>
+                 </property>
                  <property name="text">
                   <string>Добавяне</string>
                  </property>

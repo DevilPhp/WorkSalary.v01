@@ -1,10 +1,12 @@
+from PySide6.QtGui import QDoubleValidator
+
 from app.logger import logger
+from app.ui.messagesManager import MessageManager
 from app.ui.widgets.ui_defaultOperToModelTypeCustomWidget import *
 from app.ui.widgets.ui_customCheckBoxWidget import Ui_customCheckBoxWidget
 from app.services.operationServices import OperationsServices as OpS
 from app.services.modelServices import ModelService as Ms
 from PySide6.QtWidgets import QCheckBox
-from app.ui.messagesManager import MessageManager
 
 
 class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper):
@@ -13,6 +15,7 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
         self.setupUi(self)
         # MessageManager.initialize(self)
         self.mainWindow = mainWindow
+        self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
         self.operations = OpS.getAllOperations()
         self.comboBoxItems = {}
         # print(self.geometry())
@@ -23,7 +26,6 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
         self.setComboBox()
         self.loadOperationsForModelType()
         self.saveBtn.clicked.connect(self.saveOperationsForModelType)
-
 
     def saveOperationsForModelType(self):
         modelTypeIndex = self.defaultModelTypeComboBox.currentIndex() + 1
@@ -76,15 +78,6 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
             newCustomComboBoxItem = CustomCheckboxWidget()
             name = f'{operation.ОперацияNo}:  {operation.Операция}'
 
-            # print(newCustomComboBoxItem.checkBox.fontMetrics().boundingRect(name).width())
-            # if operation.Операция:
-            #     listWords = operation.Операция.split()
-            #     if len(listWords) > 2:
-            #         name = f'{operation.ОперацияNo}- {listWords[0]} {listWords[1]}\n{listWords[2:]}'
-            #     else:
-            #         name = f'{operation.ОперацияNo}- {operation.Операция}'
-            # else:
-            #     name = f'{operation.ОперацияNo}- {operation.Операция}'
             newCustomComboBoxItem.checkBox.setText(name)
 
             newCustomComboBoxItem.checkBox.setObjectName(str(operation.ОперацияNo))
@@ -117,13 +110,6 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
         # self.selectAllCheckbox.blockSignals(False)
 
     def updateSelectAllBtn(self):
-        # widget = self.comboBoxItems[operationNo][0]
-        # print(widget)
-        # if isinstance(widget, QCheckBox):
-        #     if widget.checkState() != Qt.CheckState.Checked:
-        #         self.selectAllCheckbox.setCheckState(Qt.CheckState.Unchecked)
-
-        # Prevent recursion by temporarily disconnecting signal
         self.selectAllCheckbox.blockSignals(True)
         operId = int(self.sender().objectName())
         lineEdit = self.comboBoxItems[operId][1]
@@ -163,8 +149,19 @@ class CustomCheckboxWidget(QWidget, Ui_customCheckBoxWidget):
         super().__init__(parent)
         self.setupUi(self)
         self.lineEdit.setEnabled(False)
-
         self.checkBox.stateChanged.connect(self.toggleLabel)
+        validator = QDoubleValidator(0.1, float('inf'), 2)
+        validator.setNotation(QDoubleValidator.StandardNotation)
+        validator.setLocale(QLocale.English)
+        self.lineEdit.setValidator(validator)
+        self.lineEdit.textChanged.connect(self.updateLabel)
+
+    def updateLabel(self):
+        text = self.lineEdit.text()
+        if ',' in text:
+            text = text.split(',')[0]
+            text = text + '.'
+        self.lineEdit.setText(text)
 
     def toggleLabel(self):
         if self.checkBox.checkState() == Qt.CheckState.Checked:

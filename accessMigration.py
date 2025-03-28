@@ -9,6 +9,7 @@ from config import DATABASE_URL
 from app.database import SessionLocal
 from app.database.workers import OperationType, PaymentType, Cehove
 from app.database.operations import modelOperationsType
+from app.database.models import ProductionModel
 
 ACCESS_DB_PATH = r"E:\fedbase\ts4rep_new.accdb"
 
@@ -25,19 +26,24 @@ def fetch_access_data(table_name):
     """ Fetch data from an MS Access table """
     conn = pyodbc.connect(conn_str)
     cursor = conn.cursor()
-
+    # for table in cursor.fetchall()
     if table_name == "cehove":
         df = pd.read_sql(f"SELECT * FROM {table_name} ORDER BY {'Група'}", conn)
+    elif table_name == "Модел и оперции":
+        df = pd.read_sql(f'''SELECT * FROM "{table_name}"''', conn)
+        df = df[df['Операция'].notna() & (df['Операция'] != '') & (df['LastModified'] >= '2023-01-01 00:00:00')]
     else:
-        df = pd.read_sql(f"SELECT * FROM {table_name}", conn)
+        df = pd.read_sql(f'''SELECT * FROM "{table_name}"''', conn)
 
     # Query to get table structure
     # df = pd.read_sql(f"SELECT * FROM {table_name} ORDER BY {'Група'}", conn)
-    cursor.execute(f"SELECT * FROM {table_name} WHERE 1=0")  # Fetch only metadata
+    cursor.execute(f'''SELECT * FROM "{table_name}" WHERE 1=0''')  # Fetch only metadata
     # print(df)
     # return
     # columns = [(column[0], map_data_type(column[1])) for column in cursor.description]
     conn.close()
+    # print(df['LastModified'])
+    print(len(df))
     return df
 
 
@@ -50,7 +56,6 @@ def insert_data_to_postgres_with_fkey(table_name, df):
         for col, row in df.iterrows():
             # print(row)
             operType = session.query(OperationType).get(row['OpTypeId'])
-            print(operType.OperName)
             # newOperation = modelOperationsType(
             #     ModelOpID=row,
             # )
@@ -75,12 +80,16 @@ def checkForColumns(table_name, df):
     if table_name == 'clients':
         culumns = ["КодСчетоводство", "СчетПоръчка"]
         df.drop(columns=culumns, inplace=True)
+
     elif table_name == 'vidOblekla':
         df.drop(columns=['WearTyp'], inplace=True)
+
     elif table_name == 'operations':
         df.drop(columns=['ТипОперация'], inplace=True)
+
     elif table_name == 'modelOperationsTypes':
         df.drop(columns=['TRid'], inplace=True)
+
     elif table_name == 'machines':
         columns = {
             "MashineTyp": "MachineType",
@@ -88,6 +97,7 @@ def checkForColumns(table_name, df):
             "MachSys": "MachineSystem",
         }
         df.rename(columns=columns, inplace=True)
+
     elif table_name == 'productionModels':
         df.drop(columns=['ОблеклоВид', 'ЦелГрупа', 'ЗаповедNo', 'ЗаповедДата', 'Picture', 'ModelNoPlanSys',
                          'СтаусВръзка'], inplace=True)
@@ -99,7 +109,6 @@ def checkForColumns(table_name, df):
             'ModifiedBy': 'UserCreated'
         }
         df.rename(columns=columns, inplace=True)
-
         for index, row in enumerate(df['UserCreated']):
             if row is None:
                 df.at[index, 'UserCreated'] = 'admin'
@@ -111,6 +120,24 @@ def checkForColumns(table_name, df):
                 df.at[index, 'Actual'] = True
             else:
                 df.at[index, 'Actual'] = False
+
+    elif table_name == 'productionModelOperations':
+        session = SessionLocal()
+        df.drop(columns=['ОперацияID', 'Операция'], inplace=True)
+        columns = {
+            'ВремеЗаОп-я': 'TimeForOper',
+            'LastModified': 'LastUpdated',
+            'ModifiedBy': 'UpdatedBy'
+        }
+        df.rename(columns=columns, inplace=True)
+
+        for index, row in enumerate(df['ПоръчкаNo']):
+            model = session.query(ProductionModel).filter(ProductionModel.ПоръчкаNo == row).first()
+            if model and int(model.id):
+                df.at[index, 'ПоръчкаNo'] = model.id
+            else:
+                df.at[index, 'ПоръчкаNo'] = 0
+
     return df
 
 
@@ -261,8 +288,10 @@ def extract_and_transform_data():
     # insert_data_to_postgres("modelOperationsTypes", dataOperType)
     # dataMachines = fetch_access_data("Machines")
     # insert_data_to_postgres("machines", dataMachines)
-    dataModels = fetch_access_data("Models")
-    insert_data_to_postgres("productionModels", dataModels)
+    # dataModels = fetch_access_data("Models")
+    # insert_data_to_postgres("productionModels", dataModels)
+    dataModelsForOperations = fetch_access_data('Модел и оперции')
+    insert_data_to_postgres("productionModelOperations", dataModelsForOperations)
 
     # print(data)
     # insert_data_to_postgres_with_fkey("modelOperationsTypes", data)

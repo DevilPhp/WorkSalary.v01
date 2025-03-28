@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'defaultOperToModelTypeCustomWidgetVkrAEx.ui'
+## Form generated from reading UI file 'defaultOperToModelTypeCustomWidgetVdSkGT.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -118,6 +118,7 @@ class Ui_customWidgetForDefaultOper(object):
         self.horizontalLayout_3.setContentsMargins(0, 0, 5, 0)
         self.userIcon = QPushButton(self.widget_3)
         self.userIcon.setObjectName(u"userIcon")
+        self.userIcon.setFocusPolicy(Qt.NoFocus)
         icon = QIcon()
         icon.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.userIcon.setIcon(icon)

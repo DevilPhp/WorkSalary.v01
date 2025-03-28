@@ -10,6 +10,7 @@ from app.ui.logInPage import LoginPage
 from app.ui.mainMenuPage import MainMenuPage
 from app.ui.workersPage import WorkersPageCustomWidget
 from app.ui.customWidgetForDefaultOper import DefaultOperToModelTypeCustomWidget
+from app.ui.customModelsOperWidget import CustomWidgetForModelOper
 from app.ui.messagesManager import MessageManager
 
 
@@ -26,7 +27,8 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
         self.setWindowTitle("Knitex-96 Work Salary")
         MessageManager.initialize(self)
-        self.newWidget = None
+        self.defaultModelOperPage = None
+        self.modelOperPage = None
         # self.setAttribute(Qt.WA_TranslucentBackground)
         LoginPage(self)
         MainMenuPage(self)
@@ -34,11 +36,18 @@ class MainWindow(QMainWindow):
         logger.info('Application started')
         windows = ['clients', 'operations']
         self.ui.pageBtn.clicked.connect(lambda: self.changePage(windows))
-        self.ui.setDefaultOperBtn.clicked.connect(lambda: self.setDefaultOper())
+        self.ui.setDefaultOperBtn.clicked.connect(self.setDefaultOperPage)
+        self.ui.setModelsOperBtn.clicked.connect(self.setModelOperPage)
         # MessageManager.success('DefaultOperToModelTypeCustomWidget initialized', timeout=3000)
 
         # user = UsersFuncs.createUser('test', '000')
         # print(user)
+
+    def resetDefaultOperPage(self):
+        self.defaultModelOperPage = None
+
+    def resetModelOperPage(self):
+        self.modelOperPage = None
 
     def changePage(self, windows):
         for window in windows:
@@ -48,9 +57,21 @@ class MainWindow(QMainWindow):
             self.ui.mainWindowsArea.addSubWindow(subWindow)
             subWindow.show()
 
-    def setDefaultOper(self):
-        self.newWidget = DefaultOperToModelTypeCustomWidget(self)
-        self.newWidget.show()
+    def setDefaultOperPage(self):
+        if self.defaultModelOperPage is None:
+            self.defaultModelOperPage = DefaultOperToModelTypeCustomWidget(self)
+            self.defaultModelOperPage.show()
+            self.defaultModelOperPage.destroyed.connect(self.resetDefaultOperPage)
+        else:
+            self.defaultModelOperPage.activateWindow()
+
+    def setModelOperPage(self):
+        if self.modelOperPage is None:
+            self.modelOperPage = CustomWidgetForModelOper(self)
+            self.modelOperPage.show()
+            self.modelOperPage.destroyed.connect(self.resetModelOperPage)
+        else:
+            self.modelOperPage.activateWindow()
 
 
 
