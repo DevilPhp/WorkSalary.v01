@@ -31,7 +31,9 @@ def fetch_access_data(table_name):
         df = pd.read_sql(f"SELECT * FROM {table_name} ORDER BY {'Група'}", conn)
     elif table_name == "Модел и оперции":
         df = pd.read_sql(f'''SELECT * FROM "{table_name}"''', conn)
-        df = df[df['Операция'].notna() & (df['Операция'] != '') & (df['LastModified'] >= '2023-01-01 00:00:00')]
+        df = df[df['Операция'].notna() & (df['Операция'] != '') &
+                (df['LastModified'] >= '2024-10-01 00:00:00')]
+        # & (df['LastModified'] <= '2025-01-01 00:00:00')
     else:
         df = pd.read_sql(f'''SELECT * FROM "{table_name}"''', conn)
 
@@ -122,7 +124,7 @@ def checkForColumns(table_name, df):
                 df.at[index, 'Actual'] = False
 
     elif table_name == 'productionModelOperations':
-        session = SessionLocal()
+        # session = SessionLocal()
         df.drop(columns=['ОперацияID', 'Операция'], inplace=True)
         columns = {
             'ВремеЗаОп-я': 'TimeForOper',
@@ -130,20 +132,41 @@ def checkForColumns(table_name, df):
             'ModifiedBy': 'UpdatedBy'
         }
         df.rename(columns=columns, inplace=True)
-
+        models = getProductionModels()
+        count = 0
         for index, row in enumerate(df['ПоръчкаNo']):
-            model = session.query(ProductionModel).filter(ProductionModel.ПоръчкаNo == row).first()
-            if model and int(model.id):
-                df.at[index, 'ПоръчкаNo'] = model.id
+            if '004' in row:
+                print(f"Found model with ID: {row}")
+            # model = session.query(ProductionModel).filter(ProductionModel.ПоръчкаNo == row).first()
+            if row and row in models.keys():
+                df.at[index, 'ПоръчкаNo'] = int(models[row])
+                # print(df.at[index, 'ПоръчкаNo'])
+                # print(f"Found model with ID: {models[row]}")
+                count += 1
             else:
                 df.at[index, 'ПоръчкаNo'] = 0
+                # print(df.at[index, 'ПоръчкаNo'])
+
+            if '004' in row:
+                print(f"Found model with ID: {row}")
+        print(f"Found {count} models")
 
     return df
+
+def getProductionModels():
+    dictModels = {}
+    session = SessionLocal()
+    models = session.query(ProductionModel).all()
+    for model in models:
+        dictModels[model.ПоръчкаNo] = model.id
+    return dictModels
+
 
 
 def insert_data_to_postgres(table_name, df):
 
     checkForColumns(table_name, df)
+    # return
     # print(df.columns)
     # return
 
