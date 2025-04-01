@@ -7,5 +7,6 @@ class Utils:
     def setupCompleter(listNames, widget):
         completer = QCompleter(listNames, widget)
         completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
+        completer.setFilterMode(Qt.MatchFlag.MatchContains)
         widget.setCompleter(completer)
         # widget.completer().setCompletionMode(QCompleter.InlineCompletion)

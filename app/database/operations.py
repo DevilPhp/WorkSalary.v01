@@ -36,8 +36,10 @@ class DefaultOperForVidObleklo(Base):
 class ProductionModelOperations(Base):
     __tablename__ = "productionModelOperations"
     id = Column(Integer, primary_key=True)
-    ПоръчкаNo = Column(Integer, ForeignKey("productionModels.id"), primary_key=True, index=True)
-    ОперацияNo = Column(Integer, ForeignKey("operations.ОперацияNo"), primary_key=True)
+    OrderId = Column(Integer, ForeignKey("productionModels.id"), nullable=True)
+    ПоръчкаNo = Column(String, index=True)
+    ОперацияNo = Column(Integer, ForeignKey("operations.ОперацияNo"), nullable=True)
+    Операция = Column(String, nullable=False)
     TimeForOper = Column(Float, default=0)
     Razcenka = Column(Float, default=0)
     LastUpdated = Column(DateTime, default=datetime.now)

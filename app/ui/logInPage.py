@@ -16,6 +16,7 @@ class LoginPage:
 
         self.mainWindow.ui.userPassVisBtn.clicked.connect(lambda: self.togglePasswordVisibility())
         self.mainWindow.ui.loginBtn.clicked.connect(lambda: self.mainWindow.ui.stackedWidget.setCurrentIndex(1))
+        self.mainWindow.ui.userPassField.returnPressed.connect(lambda: self.mainWindow.ui.loginBtn.click())
         # MessageManager.info('DefaultOperToModelTypeCustomWidget initialized', timeout=3000)
         # MessageManager.error('DefaultOperToModelTypeCustomWidget initialized', timeout=2000)
         # print(self.mainWindow)

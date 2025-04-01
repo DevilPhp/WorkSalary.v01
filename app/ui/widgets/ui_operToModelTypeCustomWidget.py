@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'operToModelTypeCustomWidgetsusJKi.ui'
+## Form generated from reading UI file 'operToModelTypeCustomWidgetBxDwCY.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -45,7 +45,7 @@ class Ui_customWidgetForModelOper(object):
 "	background-color: #aeaeae;\n"
 "}\n"
 "\n"
-"#operationsHolder QCheckBox:checked, #newModelHolder QCheckBox:checked{\n"
+"#operationsHolder QCheckBox:checked, #modelHolder QCheckBox:checked{\n"
 "	color: #008b69;\n"
 "}\n"
 "\n"
@@ -196,19 +196,30 @@ class Ui_customWidgetForModelOper(object):
 
         self.modeLayout.setWidget(1, QFormLayout.FieldRole, self.modelsLineEdit)
 
-        self.widget_2 = QWidget(self.widget_7)
-        self.widget_2.setObjectName(u"widget_2")
-        self.horizontalLayout_7 = QHBoxLayout(self.widget_2)
-        self.horizontalLayout_7.setSpacing(0)
-        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
-        self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
-        self.modelActualCheckBox = QCheckBox(self.widget_2)
+        self.label_13 = QLabel(self.widget_7)
+        self.label_13.setObjectName(u"label_13")
+
+        self.modeLayout.setWidget(2, QFormLayout.LabelRole, self.label_13)
+
+        self.widget_6 = QWidget(self.widget_7)
+        self.widget_6.setObjectName(u"widget_6")
+        self.horizontalLayout_8 = QHBoxLayout(self.widget_6)
+        self.horizontalLayout_8.setSpacing(0)
+        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
+        self.horizontalLayout_8.setContentsMargins(0, 0, 0, 0)
+        self.modelActualCheckBox = QCheckBox(self.widget_6)
         self.modelActualCheckBox.setObjectName(u"modelActualCheckBox")
+        self.modelActualCheckBox.setFocusPolicy(Qt.ClickFocus)
 
-        self.horizontalLayout_7.addWidget(self.modelActualCheckBox, 0, Qt.AlignHCenter)
+        self.horizontalLayout_8.addWidget(self.modelActualCheckBox, 0, Qt.AlignHCenter)
 
 
-        self.modeLayout.setWidget(2, QFormLayout.FieldRole, self.widget_2)
+        self.modeLayout.setWidget(3, QFormLayout.FieldRole, self.widget_6)
+
+        self.dataUpdatedLabel = QLabel(self.widget_7)
+        self.dataUpdatedLabel.setObjectName(u"dataUpdatedLabel")
+
+        self.modeLayout.setWidget(2, QFormLayout.FieldRole, self.dataUpdatedLabel)
 
 
         self.verticalLayout_7.addLayout(self.modeLayout)
@@ -238,18 +249,6 @@ class Ui_customWidgetForModelOper(object):
         self.newModelCheckBox.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_6.addWidget(self.newModelCheckBox)
-
-        self.likeModelCheckBox = QCheckBox(self.widget_3)
-        self.likeModelCheckBox.setObjectName(u"likeModelCheckBox")
-        font = QFont()
-        font.setFamilies([u"Segoe UI"])
-        font.setPointSize(11)
-        font.setBold(True)
-        font.setItalic(False)
-        self.likeModelCheckBox.setFont(font)
-        self.likeModelCheckBox.setFocusPolicy(Qt.ClickFocus)
-
-        self.horizontalLayout_6.addWidget(self.likeModelCheckBox)
 
 
         self.verticalLayout_6.addWidget(self.widget_3, 0, Qt.AlignHCenter|Qt.AlignTop)
@@ -430,9 +429,10 @@ class Ui_customWidgetForModelOper(object):
         self.label_2.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041a\u043b\u0438\u0435\u043d\u0442:", None))
         self.clientsLineEdit.setText("")
         self.label_4.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041c\u043e\u0434\u0435\u043b:", None))
+        self.label_13.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0414\u0430\u0442\u0430:", None))
         self.modelActualCheckBox.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0410\u043a\u0442\u0438\u0432\u0435\u043d", None))
+        self.dataUpdatedLabel.setText("")
         self.newModelCheckBox.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0421\u044a\u0437\u0434\u0430\u0432\u0430\u043d\u0435 \u043d\u0430 \u043d\u043e\u0432 \u043c\u043e\u0434\u0435\u043b", None))
-        self.likeModelCheckBox.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041a\u0430\u0442\u043e \u041c\u043e\u0434\u0435\u043b", None))
         self.label_5.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0418\u043c\u0435/\u041f\u043e\u0440\u044a\u0447\u043a\u0430\u2116", None))
         self.label_8.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041f\u0440\u0435\u0436\u0434\u0430", None))
         self.label_7.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0412\u0438\u0434 \u041c\u043e\u0434\u0435\u043b", None))

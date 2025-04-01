@@ -31,8 +31,7 @@ def fetch_access_data(table_name):
         df = pd.read_sql(f"SELECT * FROM {table_name} ORDER BY {'Група'}", conn)
     elif table_name == "Модел и оперции":
         df = pd.read_sql(f'''SELECT * FROM "{table_name}"''', conn)
-        df = df[df['Операция'].notna() & (df['Операция'] != '') &
-                (df['LastModified'] >= '2024-10-01 00:00:00')]
+        df = df[df['Операция'].notna() & (df['Операция'] != '') & (df['LastModified'] >= '2024-10-01 00:00:00')]
         # & (df['LastModified'] <= '2025-01-01 00:00:00')
     else:
         df = pd.read_sql(f'''SELECT * FROM "{table_name}"''', conn)
@@ -125,7 +124,7 @@ def checkForColumns(table_name, df):
 
     elif table_name == 'productionModelOperations':
         # session = SessionLocal()
-        df.drop(columns=['ОперацияID', 'Операция'], inplace=True)
+        df.drop(columns=['ОперацияID'], inplace=True)
         columns = {
             'ВремеЗаОп-я': 'TimeForOper',
             'LastModified': 'LastUpdated',
@@ -134,22 +133,23 @@ def checkForColumns(table_name, df):
         df.rename(columns=columns, inplace=True)
         models = getProductionModels()
         count = 0
-        for index, row in enumerate(df['ПоръчкаNo']):
-            if '004' in row:
-                print(f"Found model with ID: {row}")
-            # model = session.query(ProductionModel).filter(ProductionModel.ПоръчкаNo == row).first()
-            if row and row in models.keys():
-                df.at[index, 'ПоръчкаNo'] = int(models[row])
+        zeroCount = 0
+        orderIdRows = []
+        for index, row in df.iterrows():
+            if row['ПоръчкаNo'] in models.keys():
+                # df['orderId'] = models[row['ПоръчкаNo']]
+                orderIdRows.append(models[row['ПоръчкаNo']])
                 # print(df.at[index, 'ПоръчкаNo'])
                 # print(f"Found model with ID: {models[row]}")
                 count += 1
             else:
-                df.at[index, 'ПоръчкаNo'] = 0
-                # print(df.at[index, 'ПоръчкаNo'])
+                orderIdRows.append(None)
+                zeroCount += 1
+        df['OrderId'] = orderIdRows
 
-            if '004' in row:
-                print(f"Found model with ID: {row}")
+        # print(df['orderId'])
         print(f"Found {count} models")
+        print(f"Found {zeroCount} models without orderId")
 
     return df
 
@@ -166,6 +166,10 @@ def getProductionModels():
 def insert_data_to_postgres(table_name, df):
 
     checkForColumns(table_name, df)
+    # for index, row in df.iterrows():
+    #     if row['orderId'] == 0 or row['orderId'] is None:
+    #         print(row['orderId'])
+    # return
     # return
     # print(df.columns)
     # return

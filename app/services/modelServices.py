@@ -1,9 +1,14 @@
 from app.database import getDatabase, setDatabase
-from app.database.models import VidObleklo, Client, ProductionModel
+from app.database.models import VidObleklo, Client, ProductionModel, Machine, Yarn
 from app.database.operations import DefaultOperForVidObleklo, Operation
 
 
 class ModelService:
+
+    @staticmethod
+    def getDfaultOperations(vidOblekloId):
+        with getDatabase() as session:
+            return session.query(VidObleklo).filter_by(OblekloVid=vidOblekloId).first().defaultOperForVidOblekla
 
     @staticmethod
     def getClients():
@@ -16,9 +21,41 @@ class ModelService:
             return session.query(ProductionModel).all()
 
     @staticmethod
+    def getModelsForClient(clientId):
+        with getDatabase() as session:
+            return session.query(ProductionModel).filter_by(ClientID=clientId).all()
+
+    @staticmethod
     def getAllModelTypes():
         with getDatabase() as session:
             return session.query(VidObleklo).order_by(VidObleklo.OblekloVid.asc()).all()
+
+    @staticmethod
+    def getVidObjekla():
+        returnedData = {}
+        with getDatabase() as session:
+            vidObjekla = session.query(VidObleklo).order_by(VidObleklo.OblekloVid.asc()).all()
+            for vidObleklo in vidObjekla:
+                returnedData[vidObleklo.OblekloName] = vidObleklo.OblekloVid
+            return returnedData
+
+    @staticmethod
+    def getMachines():
+        returnedData = {}
+        with getDatabase() as session:
+            machines = session.query(Machine).order_by(Machine.MachineId.asc()).all()
+            for machine in machines:
+                returnedData[machine.MachineType] = [machine.MachineId, machine.MachineFine]
+            return returnedData
+
+    @staticmethod
+    def getYarns():
+        returnedData = {}
+        with getDatabase() as session:
+            yarns = session.query(Yarn).order_by(Yarn.YarnID.asc()).all()
+            for yarn in yarns:
+                returnedData[yarn.ПреждаТип] = [yarn.YarnID]
+            return returnedData
 
     @staticmethod
     def getOperationsForModelType(vidObleklo):

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customMessageWidgetnZPkzS.ui'
+## Form generated from reading UI file 'customMessageWidgetelexCb.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -71,6 +71,7 @@ class Ui_customMessageWidget(object):
         self.horizontalLayout.setContentsMargins(0, 5, 0, 0)
         self.iconHolder = QPushButton(self.titleWidget)
         self.iconHolder.setObjectName(u"iconHolder")
+        self.iconHolder.setFocusPolicy(Qt.NoFocus)
         icon = QIcon()
         icon.addFile(u":/icons/app/assets/icons/Question-Square--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.iconHolder.setIcon(icon)

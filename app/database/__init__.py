@@ -30,6 +30,7 @@ def getDatabase():
         raise e
     finally:
         session.close()
+        logger.info('Session closed')
 
 @contextmanager
 def setDatabase():
