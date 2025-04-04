@@ -41,6 +41,18 @@ class Machine(Base):
     productionModel = relationship("ProductionModel", back_populates="machine")
 
 
+class ProducedPiecesForModel(Base):
+    __tablename__ = "producedPiecesForModels"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    orderNo = Column(Integer, ForeignKey('productionModels.id'))
+    ПоръчкаNo = Column(String, nullable=True)
+    OrderPieces = Column(Integer, nullable=True)
+    Produced = Column(Integer, nullable=True)
+    Rest = Column(Integer, nullable=True)
+
+    productionModel = relationship("ProductionModel", back_populates="producedPiecesForModels")
+
+
 class ProductionModel(Base):
     __tablename__ = "productionModels"
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -63,4 +75,5 @@ class ProductionModel(Base):
     yarn = relationship("Yarn", back_populates="productionModel")
     machine = relationship("Machine", back_populates="productionModel")
     productionModelOperations = relationship('ProductionModelOperations', back_populates='productionModel')
+    producedPiecesForModels = relationship('ProducedPiecesForModel', back_populates='productionModel')
 

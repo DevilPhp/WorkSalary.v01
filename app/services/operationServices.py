@@ -8,7 +8,7 @@ class OperationsServices:
             return session.query(Operation).order_by(Operation.ОперацияNo.asc()).all()
 
     @staticmethod
-    def getOperationsForModel(operationNo):
+    def getOperationsForModel(orderId):
         with getDatabase() as session:
-            print(operationNo)
-            return session.query(ProductionModelOperations).filter_by(ПоръчкаNo=operationNo).all()
+            print(orderId)
+            return session.query(ProductionModelOperations).filter_by(OrderId=orderId).all()

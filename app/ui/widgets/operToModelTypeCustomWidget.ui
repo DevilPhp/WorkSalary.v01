@@ -302,6 +302,9 @@ QLineEdit {
                    <property name="text">
                     <string/>
                    </property>
+                   <property name="placeholderText">
+                    <string/>
+                   </property>
                   </widget>
                  </item>
                  <item row="1" column="0">
@@ -476,8 +479,17 @@ QLineEdit {
                  </item>
                  <item row="1" column="3">
                   <widget class="QComboBox" name="yarnComboBox">
+                   <property name="maximumSize">
+                    <size>
+                     <width>200</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
                    <property name="focusPolicy">
                     <enum>Qt::NoFocus</enum>
+                   </property>
+                   <property name="duplicatesEnabled">
+                    <bool>true</bool>
                    </property>
                   </widget>
                  </item>
@@ -493,6 +505,9 @@ QLineEdit {
                    <property name="focusPolicy">
                     <enum>Qt::NoFocus</enum>
                    </property>
+                   <property name="duplicatesEnabled">
+                    <bool>true</bool>
+                   </property>
                   </widget>
                  </item>
                  <item row="2" column="0">
@@ -507,6 +522,9 @@ QLineEdit {
                    <property name="focusPolicy">
                     <enum>Qt::NoFocus</enum>
                    </property>
+                   <property name="duplicatesEnabled">
+                    <bool>true</bool>
+                   </property>
                   </widget>
                  </item>
                  <item row="1" column="0">
@@ -517,7 +535,11 @@ QLineEdit {
                   </widget>
                  </item>
                  <item row="1" column="1">
-                  <widget class="QLineEdit" name="piecesLineEdit"/>
+                  <widget class="QLineEdit" name="piecesLineEdit">
+                   <property name="placeholderText">
+                    <string>0</string>
+                   </property>
+                  </widget>
                  </item>
                  <item row="2" column="2">
                   <widget class="QLabel" name="label_3">

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'operToModelTypeCustomWidgetBxDwCY.ui'
+## Form generated from reading UI file 'operToModelTypeCustomWidgetSJqrSY.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -280,7 +280,9 @@ class Ui_customWidgetForModelOper(object):
 
         self.yarnComboBox = QComboBox(self.newModelInfoHolder)
         self.yarnComboBox.setObjectName(u"yarnComboBox")
+        self.yarnComboBox.setMaximumSize(QSize(200, 16777215))
         self.yarnComboBox.setFocusPolicy(Qt.NoFocus)
+        self.yarnComboBox.setDuplicatesEnabled(True)
 
         self.newModelLayout.addWidget(self.yarnComboBox, 1, 3, 1, 1)
 
@@ -292,6 +294,7 @@ class Ui_customWidgetForModelOper(object):
         self.modelTypeComboBox = QComboBox(self.newModelInfoHolder)
         self.modelTypeComboBox.setObjectName(u"modelTypeComboBox")
         self.modelTypeComboBox.setFocusPolicy(Qt.NoFocus)
+        self.modelTypeComboBox.setDuplicatesEnabled(True)
 
         self.newModelLayout.addWidget(self.modelTypeComboBox, 0, 3, 1, 1)
 
@@ -303,6 +306,7 @@ class Ui_customWidgetForModelOper(object):
         self.machineComboBox = QComboBox(self.newModelInfoHolder)
         self.machineComboBox.setObjectName(u"machineComboBox")
         self.machineComboBox.setFocusPolicy(Qt.NoFocus)
+        self.machineComboBox.setDuplicatesEnabled(True)
 
         self.newModelLayout.addWidget(self.machineComboBox, 2, 1, 1, 1)
 
@@ -428,6 +432,7 @@ class Ui_customWidgetForModelOper(object):
         self.label.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0422\u044a\u0440\u0441\u0435\u043d\u0435", None))
         self.label_2.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041a\u043b\u0438\u0435\u043d\u0442:", None))
         self.clientsLineEdit.setText("")
+        self.clientsLineEdit.setPlaceholderText("")
         self.label_4.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041c\u043e\u0434\u0435\u043b:", None))
         self.label_13.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0414\u0430\u0442\u0430:", None))
         self.modelActualCheckBox.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0410\u043a\u0442\u0438\u0432\u0435\u043d", None))
@@ -438,6 +443,7 @@ class Ui_customWidgetForModelOper(object):
         self.label_7.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0412\u0438\u0434 \u041c\u043e\u0434\u0435\u043b", None))
         self.label_6.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041c\u0430\u0448\u0438\u043d\u0430/\u0426\u0435\u0445", None))
         self.label_9.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0411\u0440\u043e\u0439", None))
+        self.piecesLineEdit.setPlaceholderText(QCoreApplication.translate("customWidgetForModelOper", u"0", None))
         self.label_3.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0424\u0430\u0438\u043d", None))
         self.label_10.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435", None))
         self.actualCheckBox.setText("")
