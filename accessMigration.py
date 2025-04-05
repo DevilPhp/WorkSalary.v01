@@ -44,7 +44,7 @@ def fetch_access_data(table_name):
     # columns = [(column[0], map_data_type(column[1])) for column in cursor.description]
     conn.close()
     # print(df['LastModified'])
-    print(len(df))
+    # print(len(df))
     return df
 
 
@@ -151,6 +151,26 @@ def checkForColumns(table_name, df):
         print(f"Found {count} models")
         print(f"Found {zeroCount} models without orderId")
 
+    elif table_name == 'paymentPerMinutes':
+        df.drop(columns=['MinuteRabID'], inplace=True)
+        euroRate = 1.95584
+        paymentInEuro = []
+        levToEuro = []
+        columns = {
+            'MinuteRabVal': 'PaymentValue',
+            'DateValid': 'DateActive',
+            'Коментар': 'Comment',
+            'LastModified': 'LastUpdated',
+            'ModifiedBy': 'UpdatedBy'
+        }
+        df.rename(columns=columns, inplace=True)
+        for index, row in enumerate(df['PaymentValue']):
+            df.at[index, 'PaymentValue'] = round(row, 4)
+            paymentInEuro.append(round(row / euroRate, 4))
+            levToEuro.append(euroRate)
+        df['PaymentInEuro'] = paymentInEuro
+        df['LevToEuro'] = levToEuro
+
     return df
 
 def getProductionModels():
@@ -159,6 +179,7 @@ def getProductionModels():
     models = session.query(ProductionModel).all()
     for model in models:
         dictModels[model.ПоръчкаNo] = model.id
+    session.close()
     return dictModels
 
 
@@ -317,8 +338,11 @@ def extract_and_transform_data():
     # insert_data_to_postgres("machines", dataMachines)
     # dataModels = fetch_access_data("Models")
     # insert_data_to_postgres("productionModels", dataModels)
-    dataModelsForOperations = fetch_access_data('Модел и оперции')
-    insert_data_to_postgres("productionModelOperations", dataModelsForOperations)
+    # dataModelsForOperations = fetch_access_data('Модел и оперции')
+    # insert_data_to_postgres("productionModelOperations", dataModelsForOperations)  # Specify Date for shorter time
+    # paymentsData = fetch_access_data("MinutaStafka")
+    # insert_data_to_postgres("paymentPerMinutes", paymentsData)
+
 
     # print(data)
     # insert_data_to_postgres_with_fkey("modelOperationsTypes", data)

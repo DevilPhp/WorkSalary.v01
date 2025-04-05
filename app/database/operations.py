@@ -1,8 +1,7 @@
 from sqlalchemy import Column, Integer, String, Float, Enum, ForeignKey, DateTime, Boolean, Table
 from sqlalchemy.orm import relationship
 from datetime import datetime
-from app.database import Base, SessionLocal
-from app.database.models import VidObleklo, ProductionModel
+from app.database import Base
 
 modelOperationsType = Table(
     'modelOperationsTypes', Base.metadata,
@@ -42,7 +41,7 @@ class ProductionModelOperations(Base):
     Операция = Column(String, nullable=False)
     TimeForOper = Column(Float, default=0)
     Razcenka = Column(Float, default=0)
-    LastUpdated = Column(DateTime, default=datetime.now)
+    LastUpdated = Column(DateTime, default=datetime.now, onupdate=datetime.now)
     UpdatedBy = Column(String, default="System")
 
     productionModel = relationship("ProductionModel", back_populates="productionModelOperations")

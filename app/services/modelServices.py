@@ -76,8 +76,9 @@ class ModelService:
         with getDatabase() as session:
             model = session.query(ProductionModel).filter_by(id=modelId).first()
             modelFine = model.Fain if model else None
-            modelMachine = f'{model.MachineId}: {model.machine.MachineType}' if model.machine else None
-            modelYarn = f'{model.YarnType}: {model.yarn.ПреждаТип}' if model.yarn else None
+            modelMachine = f'{model.MachineId}: {model.machine.MachineType} :  {model.machine.MachineFine}E' \
+                if model.machine else None
+            modelYarn = f'{model.YarnType}: {model.yarn.ПреждаТип} :  {model.yarn.Състав}' if model.yarn else None
             modelObleklo = f'{model.WearType}: {model.vidOblekla.OblekloName}'
             return [modelFine, modelMachine, modelYarn, modelObleklo]
 

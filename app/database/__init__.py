@@ -59,6 +59,7 @@ def createTable():
     from app.database.workers import Worker, Cehove
     from app.database.models import VidObleklo, Client, Yarn, ProductionModel
     from app.database.operations import Operation, modelOperationsType, DefaultOperForVidObleklo
+    from app.database.payment import PaymentPerMinute
 
     Base.metadata.create_all(bind=engine)
     createDefaultPaymentTypes()

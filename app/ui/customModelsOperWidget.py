@@ -1,7 +1,9 @@
 from PySide6.QtGui import QDoubleValidator
+from PySide6.QtWidgets import QDialog
 
 from app.logger import logger
 from app.ui.messagesManager import MessageManager
+from app.ui.customYesNoMessage import CustomYesNowDialog
 from app.ui.widgets.ui_operToModelTypeCustomWidget import *
 from app.ui.customWidgetForDefaultOper import CustomCheckboxWidget
 from app.services.operationServices import OperationsServices as OpS
@@ -46,12 +48,22 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.actualCheckBox.stateChanged.connect(self.updateActualCheckBox)
         self.newModelCheckBox.stateChanged.connect(self.updateNewModelInfo)
         self.modelTypeComboBox.currentIndexChanged.connect(self.updateModelTypeCheckBox)
-        self.saveNewModel.clicked.connect(self.saveModelWithOperations)
+        self.saveNewModel.clicked.connect(self.checkAcceptAddingNewModel)
         self.piecesLineEdit.textChanged.connect(self.updatePiecesLineEdit)
+        self.machineComboBox.currentIndexChanged.connect(self.updateMachineComboBox)
 
         # logger.info('Models and Operations Page initialized successfully!')
         # MessageManager.showOnWidget(self, 'Models and Operations Page initialized successfully!',
         #                             'info')
+
+    def checkAcceptAddingNewModel(self):
+        self.newDialog = CustomYesNowDialog()
+        self.newDialog.setMessage(name='TEST', message='Сигурен ли сте, че искате да добавите нова поръчка?', mode='adding')
+        result = self.newDialog.exec()
+        if result == QDialog.Accepted:
+            print('Accept adding new model')
+        else:
+            print('Decline adding new model')
 
     def saveModelWithOperations(self):
         if self.newModelLineEdit.text() == '':
@@ -125,14 +137,21 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             MessageManager.showOnWidget(self, f'Успешно добавен модел: {newModelAdded}',
                                         'success')
             logger.info(f'Model Added: {newModelAdded}')
-            clientName = self.clientsLineEdit.text()
-            self.clientsLineEdit.setText(clientName)
+            self.resetNewModelInfo()
+            self.newModelCheckBox.setCheckState(Qt.CheckState.Unchecked)
+            self.resetAllOperations(True)
+            self.setModelsForClient()
+            self.modelsLineEdit.clear()
+            self.modelsLineEdit.setFocus()
+
         else:
             MessageManager.showOnWidget(self, 'Неуспешно добавен модел!', 'error')
             logger.error(f'Failed to add Model: {self.newModel}')
             return
 
-
+    def updateMachineComboBox(self):
+        machineFine = self.machineComboBox.currentText().split(' :  ')[1].strip('E')
+        self.machineGaugeLineEdit.setText(machineFine)
 
     def updateModelTypeCheckBox(self):
         if self.modelsLineEdit != '':
@@ -178,12 +197,15 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             self.clientsLineEdit.selectAll()
             self.clientsLineEdit.setFocus()
             return
+        self.setModelsForClient()
+        self.modelsLineEdit.editingFinished.connect(self.selectModel)
+
+    def setModelsForClient(self):
         self.models = Ms.getModelsForClient(self.clientNames[self.clientsLineEdit.text()])
         for model in self.models:
             if model.ClientID == self.clientNames[self.clientsLineEdit.text()]:
                 self.modelNames[model.ПоръчкаNo] = [model.id, model.Actual, model.DateCreated]
         Utils.setupCompleter(self.modelNames.keys(), self.modelsLineEdit)
-        self.modelsLineEdit.editingFinished.connect(self.selectModel)
 
     def selectModel(self):
         self.modelExistingOperations.clear()
@@ -214,13 +236,16 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
                 self.comboBoxItems[operation.ОперацияNo][0].setChecked(True)
                 self.comboBoxItems[operation.ОперацияNo][1].setText(str(round(operation.TimeForOper, 2)))
 
-    def resetAllOperations(self):
+    def resetAllOperations(self, clearOperations=False):
         for checkbox in self.comboBoxItems.values():
-            if int(checkbox[0].objectName()) in self.newModelOperations:
+            if int(checkbox[0].objectName()) in self.newModelOperations and not clearOperations:
                 checkbox[0].setCheckState(Qt.CheckState.Checked)
             else:
                 checkbox[0].setChecked(False)
                 checkbox[1].setText('')
+
+        if clearOperations:
+            self.newModelOperations = []
 
     def updateActualCheckBox(self):
         if self.actualCheckBox.isChecked():
@@ -242,6 +267,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             self.newModelInfoHolder.setEnabled(True)
             self.actualCheckBox.setCheckState(Qt.CheckState.Checked)
         else:
+            self.resetNewModelInfo()
             self.newModelInfoHolder.setEnabled(False)
             self.actualCheckBox.setCheckState(Qt.CheckState.Unchecked)
 
@@ -259,7 +285,9 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             self.machineGaugeLineEdit.setText(modelInfo[0])
 
     def resetNewModelInfo(self):
+        self.machineComboBox.blockSignals(True)
         self.machineComboBox.setCurrentIndex(-1)
+        self.machineComboBox.blockSignals(False)
         self.yarnComboBox.setCurrentIndex(-1)
         self.machineGaugeLineEdit.clear()
         self.newModelLineEdit.clear()
