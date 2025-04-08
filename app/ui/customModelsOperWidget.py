@@ -57,15 +57,6 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         #                             'info')
 
     def checkAcceptAddingNewModel(self):
-        self.newDialog = CustomYesNowDialog()
-        self.newDialog.setMessage(name='TEST', message='Сигурен ли сте, че искате да добавите нова поръчка?', mode='adding')
-        result = self.newDialog.exec()
-        if result == QDialog.Accepted:
-            print('Accept adding new model')
-        else:
-            print('Decline adding new model')
-
-    def saveModelWithOperations(self):
         if self.newModelLineEdit.text() == '':
             MessageManager.showOnWidget(self, 'Моля въведете Поръчка№!', 'error')
             self.newModelLineEdit.setFocus()
@@ -74,6 +65,27 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             MessageManager.showOnWidget(self, 'Поръчка с такъв номер вече съществъва!', 'error')
             self.newModelLineEdit.setFocus()
             return
+
+        for checkbox in self.comboBoxItems.values():
+            if checkbox[0].isChecked():
+                self.addOperationsForNewModel[int(checkbox[0].objectName())] = [checkbox[0].text().split(':  ')[1],
+                                                                                float(checkbox[1].text())
+                                                                                if checkbox[1].text() != '' else 0]
+
+        if not self.addOperationsForNewModel:
+            MessageManager.showOnWidget(self, 'Моля изберете поне една операция', 'error')
+            return
+
+        self.newDialog = CustomYesNowDialog()
+        message = 'Добавяне на нова поръчка?'
+        self.newDialog.setMessage(name=self.newModelLineEdit.text(), message=message, mode='adding')
+        result = self.newDialog.exec()
+        if result == QDialog.Accepted:
+            self.saveModelWithOperations()
+        else:
+            return
+
+    def saveModelWithOperations(self):
         orderNo = self.newModelLineEdit.text()
         orderPieces = None
         machineId = None
@@ -104,16 +116,6 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         if fain == '':
             if self.machineComboBox.currentText() != '':
                 fain = self.machines[self.machineComboBox.currentText().split(' :  ')[0]][1]
-
-        for checkbox in self.comboBoxItems.values():
-            if checkbox[0].isChecked():
-                self.addOperationsForNewModel[int(checkbox[0].objectName())] = [checkbox[0].text().split(':  ')[1],
-                                                                                float(checkbox[1].text())
-                                                                                if checkbox[1].text() != '' else 0]
-
-        if not self.addOperationsForNewModel:
-            MessageManager.showOnWidget(self, 'Моля изберете поне една операция', 'error')
-            return
 
         self.newModel = {
             'orderNo': orderNo,
@@ -208,6 +210,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         Utils.setupCompleter(self.modelNames.keys(), self.modelsLineEdit)
 
     def selectModel(self):
+        self.resetAllOperations(True)
         self.modelExistingOperations.clear()
         if self.modelsLineEdit.text() == '':
             self.resetAllOperations()
@@ -264,10 +267,12 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             self.setModelInfoIfExists()
 
         if self.newModelCheckBox.isChecked():
+            self.saveBtn.setEnabled(False)
             self.newModelInfoHolder.setEnabled(True)
             self.actualCheckBox.setCheckState(Qt.CheckState.Checked)
         else:
             self.resetNewModelInfo()
+            self.saveBtn.setEnabled(True)
             self.newModelInfoHolder.setEnabled(False)
             self.actualCheckBox.setCheckState(Qt.CheckState.Unchecked)
 

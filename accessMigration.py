@@ -342,7 +342,16 @@ def extract_and_transform_data():
     # insert_data_to_postgres("productionModelOperations", dataModelsForOperations)  # Specify Date for shorter time
     # paymentsData = fetch_access_data("MinutaStafka")
     # insert_data_to_postgres("paymentPerMinutes", paymentsData)
-
+    startTime = []
+    endTime = []
+    testData = fetch_access_data("Дневник за часове")
+    for index, row in testData.iterrows():
+        if row['Начало на работа']:
+            if row['Начало на работа'].time() not in startTime:
+                startTime.append(row['Начало на работа'].time())
+                endTime.append(row['Край на работа'].time())
+    for start, end in zip(startTime, endTime):
+        print(f"Start: {start}, End: {end}")
 
     # print(data)
     # insert_data_to_postgres_with_fkey("modelOperationsTypes", data)
