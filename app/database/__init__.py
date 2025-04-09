@@ -56,7 +56,7 @@ def setDatabase():
 
 def createTable():
     from app.database.users import User
-    from app.database.workers import Worker, Cehove, TimePaper, TimePaperOperation
+    from app.database.workers import Worker, Cehove, TimePaperOperation, TimePaper
     from app.database.models import VidObleklo, Client, Yarn, ProductionModel
     from app.database.operations import Operation, modelOperationsType, DefaultOperForVidObleklo, ProductionModelOperations
     from app.database.payment import PaymentPerMinute

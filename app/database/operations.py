@@ -46,4 +46,4 @@ class ProductionModelOperations(Base):
 
     productionModel = relationship("ProductionModel", back_populates="productionModelOperations")
     operations = relationship("Operation", back_populates="productionModelOperations")
-    timePaperOperation = relationship("TimePaperOperation", back_populates="modelOperation")
+    timePaperOperations = relationship("TimePaperOperation", back_populates="productionModelOperations")

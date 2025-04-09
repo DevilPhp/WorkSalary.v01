@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Float, Enum, ForeignKey, DateTim
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from app.database import Base, SessionLocal
+# from app.database.operations import ProductionModelOperations
 
 
 class Worker(Base):
@@ -29,7 +30,7 @@ class Worker(Base):
     cehove = relationship("Cehove", back_populates="workers")
     workerPosition = relationship("WorkerPosition", back_populates="workers")
     paymentType = relationship("PaymentType", back_populates="workers")
-    timePaper = relationship("TimePaper", back_populates="worker")
+    timePapers = relationship("TimePaper", back_populates="workers")
 
 
 class PaymentType(Base):
@@ -81,14 +82,14 @@ class TimePaper(Base):
     IsOvertime = Column(Integer, ForeignKey('overtimePays.id'), nullable=True)
     WorkerId = Column(Integer, ForeignKey('workers.Номер'), nullable=False)
     OrderId = Column(Integer, ForeignKey('productionModels.id'), nullable=True)
-    modelOperationsId = Column(Integer, ForeignKey('timePaperOperations.id'), nullable=True)
+    # modelOperationsId = Column(Integer, ForeignKey('timePaperOperations.id'), nullable=True)
 
-    shift = relationship("WorkingShift", back_populates="timePaper")
-    isHourlyPaid = relationship("HourlyPay", back_populates="timePaper")
-    isOvertime = relationship("OvertimePay", back_populates="timePaper")
-    worker = relationship("Worker", back_populates="timePaper")
-    productionModel = relationship("ProductionModel", back_populates="timePaper")
-    timePaperOperation = relationship("TimePaperOperation", back_populates="timePaper")
+    workingShifts = relationship("WorkingShift", back_populates="timePapers")
+    hourlyPays = relationship("HourlyPay", back_populates="timePapers")
+    overtimePays = relationship("OvertimePay", back_populates="timePapers")
+    workers = relationship("Worker", back_populates="timePapers")
+    productionModels = relationship("ProductionModel", back_populates="timePapers")
+    timePaperOperations = relationship("TimePaperOperation", back_populates="timePaper")
 
 
 class TimePaperOperation(Base):
@@ -99,8 +100,8 @@ class TimePaperOperation(Base):
     Pieces = Column(Integer, nullable=False, default=0)
     WorkingTime = Column(Float, nullable=False, default=0)
 
-    timePaper = relationship("TimePaper", back_populates="timePaperOperation")
-    modelOperation = relationship("ProductionModelOperation", back_populates="timePaperOperation")
+    timePaper = relationship("TimePaper", back_populates="timePaperOperations")
+    productionModelOperations = relationship("ProductionModelOperation", back_populates="timePaperOperations")
 
 class WorkingShift(Base):
     __tablename__ = "workingShifts"
@@ -113,7 +114,7 @@ class WorkingShift(Base):
     DateUpdated = Column(DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
     UserUpdated = Column(String, nullable=False)
 
-    timePaper = relationship("TimePaper", back_populates="shift")
+    timePapers = relationship("TimePaper", back_populates="workingShifts")
 
 
 class HourlyPay(Base):
@@ -127,7 +128,7 @@ class HourlyPay(Base):
     DateUpdated = Column(DateTime, nullable=False, default=datetime.now)
     UserUpdated = Column(String, nullable=False)
 
-    timePaper = relationship("TimePaper", back_populates="isHourlyPaid")
+    timePapers = relationship("TimePaper", back_populates="hourlyPays")
 
 
 class OvertimePay(Base):
@@ -141,4 +142,4 @@ class OvertimePay(Base):
     DateUpdated = Column(DateTime, nullable=False, default=datetime.now)
     UserUpdated = Column(String, nullable=False)
 
-    timePaper = relationship("TimePaper", back_populates="isOvertime")
+    timePapers = relationship("TimePaper", back_populates="overtimePays")
