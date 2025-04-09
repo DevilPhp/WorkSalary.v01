@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, Enum, ForeignKey, DateTime, Boolean, Table
+from sqlalchemy import Column, Integer, String, Float, Enum, ForeignKey, DateTime, Boolean, Table, Time, Date
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from app.database import Base, SessionLocal
@@ -95,23 +95,24 @@ class TimePaper(Base):
 class TimePaperOperation(Base):
     __tablename__ = 'timePaperOperations'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    TimePaperId = Column(Integer, ForeignKey('timePapers.id'), nullable=False),
+    TimePaperId = Column(Integer, ForeignKey('timePapers.id'), nullable=False)
     ModelOperationId = Column(Integer, ForeignKey('productionModelOperations.id'), nullable=True)
     Pieces = Column(Integer, nullable=False, default=0)
-    WorkingTime = Column(Float, nullable=False, default=0)
+    WorkingTimeMinutes = Column(Integer, nullable=False, default=0)
 
     timePaper = relationship("TimePaper", back_populates="timePaperOperations")
-    productionModelOperations = relationship("ProductionModelOperation", back_populates="timePaperOperations")
+    productionModelOperations = relationship("ProductionModelOperations", back_populates="timePaperOperations")
+
 
 class WorkingShift(Base):
     __tablename__ = "workingShifts"
     id = Column(Integer, primary_key=True)
     ShiftName = Column(String, nullable=True)
-    StartTime = Column(DateTime, nullable=False)
-    EndTime = Column(DateTime, nullable=False)
-    BreakTime = Column(Integer, nullable=True, default=30)
+    StartTime = Column(Time, nullable=False)
+    EndTime = Column(Time, nullable=False)
+    BreakTime = Column(Integer, nullable=True, default=60)
     Efficiency = Column(Float, nullable=False)
-    DateUpdated = Column(DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
+    DateUpdated = Column(Date, nullable=False, default=datetime.today(), onupdate=datetime.today())
     UserUpdated = Column(String, nullable=False)
 
     timePapers = relationship("TimePaper", back_populates="workingShifts")

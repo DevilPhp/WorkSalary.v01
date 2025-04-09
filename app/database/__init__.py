@@ -10,7 +10,7 @@ engine = create_engine(
     max_overflow=5,       # Allow up to 5 extra connections if needed
     pool_timeout=30,      # Wait time before throwing timeout error
     pool_recycle=1800,    # Recycle connections every 30 minutes
-    echo=False            # Disable debug logs for production
+    echo=True            # Disable debug logs for production
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -56,9 +56,10 @@ def setDatabase():
 
 def createTable():
     from app.database.users import User
-    from app.database.workers import Worker, Cehove, TimePaperOperation, TimePaper
+    from app.database.workers import Worker, Cehove
     from app.database.models import VidObleklo, Client, Yarn, ProductionModel
     from app.database.operations import Operation, modelOperationsType, DefaultOperForVidObleklo, ProductionModelOperations
+    from app.database.workers import TimePaperOperation, TimePaper
     from app.database.payment import PaymentPerMinute
 
     Base.metadata.create_all(bind=engine)

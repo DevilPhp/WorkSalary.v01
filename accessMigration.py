@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import pyodbc
 import psycopg2
@@ -7,7 +7,7 @@ from sqlalchemy import create_engine, text, Column, MetaData, Table, String, Dat
     BINARY, ForeignKey
 from config import DATABASE_URL
 from app.database import SessionLocal
-from app.database.workers import OperationType, PaymentType, Cehove
+from app.database.workers import OperationType, PaymentType, Cehove, WorkingShift
 from app.database.operations import modelOperationsType
 from app.database.models import ProductionModel
 
@@ -33,6 +33,9 @@ def fetch_access_data(table_name):
         df = pd.read_sql(f'''SELECT * FROM "{table_name}"''', conn)
         df = df[df['Операция'].notna() & (df['Операция'] != '') & (df['LastModified'] >= '2024-10-01 00:00:00')]
         # & (df['LastModified'] <= '2025-01-01 00:00:00')
+    elif table_name == "Обща" or table_name == "Дневник за часове":
+        df = pd.read_sql(f'''SELECT * FROM "{table_name}" ORDER BY {"WorkDayID"}''', conn)
+        df = df[df['Дата'] >= '2024-10-01 00:00:00']
     else:
         df = pd.read_sql(f'''SELECT * FROM "{table_name}"''', conn)
 
@@ -210,6 +213,75 @@ def insert_data_to_postgres(table_name, df):
         df.to_sql(table_name, conn, if_exists="append", index=False)
         print(f"✅ {len(df)} records inserted into '{table_name}' successfully!")
 
+def insert_data_to_postgres_special(tablename, df):
+    if tablename == 'workingShifts':
+        startTime = []
+        endTime = []
+
+        for index, row in df.iterrows():
+            if row['Начало на работа']:
+                if row['Начало на работа'].time() not in startTime:
+                    startTime.append(row['Начало на работа'].time())
+                    endTime.append(row['Край на работа'].time())
+
+        session = SessionLocal()
+        try:
+            count = 1
+            for start, end in zip(startTime, endTime):
+                start = datetime.combine(datetime.today(), start)
+                end = datetime.combine(datetime.today(), end)
+                diff = end - start
+                if start > end:
+                    diff += timedelta(days=1)
+                efficiency = int((diff.total_seconds() / 60) - 60)
+                # print(start.time())
+                # print(f"Efficiency: {efficiency}")
+                start = start.time()
+                end = end.time()
+                newWorkShift = WorkingShift(
+                    ShiftName=str(count),
+                    StartTime=start,
+                    EndTime=end,
+                    Efficiency=efficiency,
+                    DateUpdated=datetime.today(),
+                    UserUpdated='admin'
+                )
+                session.add(newWorkShift)
+                count += 1
+            session.commit()
+            print(f"{len(startTime)} records successfully inserted in working shifts")
+            return
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            session.rollback()
+        finally:
+            session.close()
+
+def insert_data_to_postgres_multi(df1, df2):
+    session = SessionLocal()
+    shifts = session.query(WorkingShift).all()
+    workingShifts = []
+    df1.drop(columns=['ОперацияID', 'TransactionID'], inplace=True)
+    # df2.drop(columns=['WorkDayID'], inplace=True)
+    # print(df1)
+    # print(df2)
+    for index, row1, row2 in zip(df2['WorkDayID'], df2['Начало на работа'], df2['Край на работа']):
+        print(index , row1, row2)
+        for shift in shifts:
+            if row1.time() == shift.StartTime and row2.time() == shift.EndTime:
+                workingShifts.append(shift.id)
+    print(workingShifts)
+    # for index, row in df2.iterrows():
+    #     if row['Начало на работа']:
+    #         print(row['WorkDayID'])
+    #         for shift in shifts:
+    #             if row['Начало на работа'].time() == shift.StartTime and row['Край на работа'].time() == shift.EndTime:
+    #                 workingShifts.append(shift.id)
+    # print(workingShifts)
+
+
+    # for row in df2[]
+
 
 def map_data_type(accessType):
     typeMapping = {
@@ -342,16 +414,13 @@ def extract_and_transform_data():
     # insert_data_to_postgres("productionModelOperations", dataModelsForOperations)  # Specify Date for shorter time
     # paymentsData = fetch_access_data("MinutaStafka")
     # insert_data_to_postgres("paymentPerMinutes", paymentsData)
-    startTime = []
-    endTime = []
-    testData = fetch_access_data("Дневник за часове")
-    for index, row in testData.iterrows():
-        if row['Начало на работа']:
-            if row['Начало на работа'].time() not in startTime:
-                startTime.append(row['Начало на работа'].time())
-                endTime.append(row['Край на работа'].time())
-    for start, end in zip(startTime, endTime):
-        print(f"Start: {start}, End: {end}")
+    # shiftsData = fetch_access_data("Дневник за часове")
+    # insert_data_to_postgres_special('workingShifts', shiftsData)
+
+    timePapersData = fetch_access_data("Обща")
+    workingHoursData = fetch_access_data("Дневник за часове")
+    insert_data_to_postgres_multi(timePapersData, workingHoursData)
+
 
     # print(data)
     # insert_data_to_postgres_with_fkey("modelOperationsTypes", data)
