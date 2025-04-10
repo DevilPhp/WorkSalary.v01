@@ -10,7 +10,7 @@ engine = create_engine(
     max_overflow=5,       # Allow up to 5 extra connections if needed
     pool_timeout=30,      # Wait time before throwing timeout error
     pool_recycle=1800,    # Recycle connections every 30 minutes
-    echo=True            # Disable debug logs for production
+    echo=False            # Disable debug logs for production
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

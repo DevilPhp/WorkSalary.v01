@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 
 import pyodbc
 import psycopg2
@@ -7,9 +7,10 @@ from sqlalchemy import create_engine, text, Column, MetaData, Table, String, Dat
     BINARY, ForeignKey
 from config import DATABASE_URL
 from app.database import SessionLocal
-from app.database.workers import OperationType, PaymentType, Cehove, WorkingShift
+from app.database.workers import OperationType, PaymentType, Cehove, WorkingShift, HourlyPay
 from app.database.operations import modelOperationsType
 from app.database.models import ProductionModel
+import time as t
 
 ACCESS_DB_PATH = r"E:\fedbase\ts4rep_new.accdb"
 
@@ -20,6 +21,16 @@ conn_str = (
 )
 
 tables = []
+
+
+def fetch_access_data_special(table_name):
+    """ Fetch data from an MS Access table """
+    conn = pyodbc.connect(conn_str)
+    cursor = conn.cursor()
+    df = pd.read_sql(f'''SELECT * FROM "{table_name}"''', conn)
+    cursor.execute(f'''SELECT * FROM "{table_name}" WHERE 1=0''')  # Fetch only metadata
+    conn.close()
+    return df
 
 
 def fetch_access_data(table_name):
@@ -176,6 +187,7 @@ def checkForColumns(table_name, df):
 
     return df
 
+
 def getProductionModels():
     dictModels = {}
     session = SessionLocal()
@@ -186,9 +198,7 @@ def getProductionModels():
     return dictModels
 
 
-
 def insert_data_to_postgres(table_name, df):
-
     checkForColumns(table_name, df)
     # for index, row in df.iterrows():
     #     if row['orderId'] == 0 or row['orderId'] is None:
@@ -212,6 +222,7 @@ def insert_data_to_postgres(table_name, df):
     with engine.connect() as conn:
         df.to_sql(table_name, conn, if_exists="append", index=False)
         print(f"✅ {len(df)} records inserted into '{table_name}' successfully!")
+
 
 def insert_data_to_postgres_special(tablename, df):
     if tablename == 'workingShifts':
@@ -257,30 +268,93 @@ def insert_data_to_postgres_special(tablename, df):
         finally:
             session.close()
 
+
 def insert_data_to_postgres_multi(df1, df2):
     session = SessionLocal()
     shifts = session.query(WorkingShift).all()
+    worksheets = []
+    data = {}
+    orders = {}
     workingShifts = []
+    hourlyPaid = []
+    timeZero = time()
     df1.drop(columns=['ОперацияID', 'TransactionID'], inplace=True)
     # df2.drop(columns=['WorkDayID'], inplace=True)
     # print(df1)
     # print(df2)
-    for index, row1, row2 in zip(df2['WorkDayID'], df2['Начало на работа'], df2['Край на работа']):
-        print(index , row1, row2)
-        for shift in shifts:
-            if row1.time() == shift.StartTime and row2.time() == shift.EndTime:
-                workingShifts.append(shift.id)
-    print(workingShifts)
-    # for index, row in df2.iterrows():
-    #     if row['Начало на работа']:
-    #         print(row['WorkDayID'])
-    #         for shift in shifts:
-    #             if row['Начало на работа'].time() == shift.StartTime and row['Край на работа'].time() == shift.EndTime:
-    #                 workingShifts.append(shift.id)
-    # print(workingShifts)
+    for index, row in df2.iterrows():
+        worksheets.append(row['WorkDayID'])
+        # print(index, row1, row2)
+        # for shift in shifts:
+        #     if row['Начало на работа'].time() == shift.StartTime and row['Край на работа'].time() == shift.EndTime:
+        #         workingShifts.append(shift.id)
+        #     else:
+        #         workingShifts.append(None)
+        # if row['Начало на Почасова Работа_I'].time() != timeZero and row[
+        #     'Край на Почасова работа_I'].time() != timeZero:
+        #     hourPaidId = createHourlyPaid(row['Начало на Почасова Работа_I'].time(),
+        #                                   row['Край на Почасова работа_I'].time())
+        #     hourlyPaid.append(hourPaidId)
+        # else:
+        #     hourlyPaid.append(None)
+    for index, row in df1.iterrows():
+        if row['WorkDayID'] in worksheets:
+            if row['WorkDayID'] not in data.keys():
+                data[row['WorkDayID']] = [row['ОперацияNo']]
+            else:
+                data[row['WorkDayID']].append(row['ОперацияNo'])
+            # print(row['Номер'], row['ОперацияNo'], row['ПоръчкаNo'])
+            # workData = getWorkDataForTimePapers(row['ПоръчкаNo'], row['ОперацияNo'])
+            # data.append(workData)
+    print(data)
+    # print(len(worksheets))
+    print(len(data))
 
 
-    # for row in df2[]
+def createHourlyPaid(start, end):
+    dateStart = datetime.combine(datetime.today(), start)
+    dateEnd = datetime.combine(datetime.today(), end)
+    diff = dateEnd - dateStart
+    if dateStart > dateEnd:
+        diff += timedelta(days=1)
+    if diff >= timedelta(minutes=450):
+        efficiency = int((diff.total_seconds() / 60) - 60)
+    else:
+        efficiency = int(diff.total_seconds() / 60)
+
+    session = SessionLocal()
+    try:
+        newHourPaid = HourlyPay(
+            Start=start,
+            End=end,
+            Efficiency=efficiency,
+            DateUpdated=datetime.today(),
+            UserUpdated='admin'
+        )
+        session.add(newHourPaid)
+        session.commit()
+        return newHourPaid.id
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        session.rollback()
+        return None
+    finally:
+        session.close()
+
+
+def getWorkDataForTimePapers(orderNo, operationId):
+    session = SessionLocal()
+    try:
+        orderId = session.query(ProductionModel).filter_by(ПоръчкаNo=orderNo).first().id
+
+        return orderId
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        session.rollback()
+        return None
+    finally:
+        session.close()
+
 
 
 def map_data_type(accessType):
@@ -320,7 +394,7 @@ def create_postgres_table(table_name, columns, foreign_keys=None):
     table = Table(table_name, metadata, *column_objects)
     tables.append(table)
     with engine.connect() as conn:
-        metadata.create_all(engine, tables=tables) # Create table if it doesn't exist already'
+        metadata.create_all(engine, tables=tables)  # Create table if it doesn't exist already'
         print(f"Table '{table_name}' created successfully!")
 
 
@@ -337,6 +411,7 @@ def insertZeroOperationType():
         session.rollback()
     finally:
         session.close()
+
 
 def renameColumnsAndReplaceData(df):
     # Rename columns as required
@@ -368,7 +443,7 @@ def renameColumnsAndReplaceData(df):
                         df.at[index, "Група"] = None
                     # df.at[index, "Група"] = cehove[index].Група
                 # print(df[column])
-            # print(Cehove.ГрупаName)
+                # print(Cehove.ГрупаName)
                 # df.at[index, "Група"] = Cehove[row]
                 session.close()
             except Exception as e:
@@ -385,6 +460,7 @@ def renameColumnsAndReplaceData(df):
 
 
 def extract_and_transform_data():
+    startTime = t.time()
     # ####Fetch data from Access table and add in to db####
     # dataCehove = fetch_access_data("cehove")
     # insert_data_to_postgres("cehove", dataCehove)
@@ -414,13 +490,12 @@ def extract_and_transform_data():
     # insert_data_to_postgres("productionModelOperations", dataModelsForOperations)  # Specify Date for shorter time
     # paymentsData = fetch_access_data("MinutaStafka")
     # insert_data_to_postgres("paymentPerMinutes", paymentsData)
-    # shiftsData = fetch_access_data("Дневник за часове")
+    # shiftsData = fetch_access_data_special("Дневник за часове")
     # insert_data_to_postgres_special('workingShifts', shiftsData)
 
     timePapersData = fetch_access_data("Обща")
     workingHoursData = fetch_access_data("Дневник за часове")
     insert_data_to_postgres_multi(timePapersData, workingHoursData)
-
 
     # print(data)
     # insert_data_to_postgres_with_fkey("modelOperationsTypes", data)
@@ -434,8 +509,9 @@ def extract_and_transform_data():
     # create_postgres_table("cehove", access_columns)
     # print(data[1])
     # insert_data_to_postgres("workerPositions", dataWorkers)
-    pass
-
+    endTime = t.time()
+    executionTime = endTime - startTime
+    print(f"\n\n#####################################\nExecution time: {executionTime:.2f} seconds")
 
 
 if __name__ == "__main__":
