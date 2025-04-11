@@ -7,7 +7,8 @@ from sqlalchemy import create_engine, text, Column, MetaData, Table, String, Dat
     BINARY, ForeignKey
 from config import DATABASE_URL
 from app.database import SessionLocal
-from app.database.workers import OperationType, PaymentType, Cehove, WorkingShift, HourlyPay
+from app.database.workers import OperationType, PaymentType, Cehove, WorkingShift, HourlyPay,\
+    TimePaper, TimePaperOperation
 from app.database.operations import modelOperationsType
 from app.database.models import ProductionModel
 import time as t
@@ -273,10 +274,7 @@ def insert_data_to_postgres_multi(df1, df2):
     session = SessionLocal()
     shifts = session.query(WorkingShift).all()
     worksheets = []
-    data = {}
-    orders = {}
-    workingShifts = []
-    hourlyPaid = []
+    timePaperData = {}
     timeZero = time()
     df1.drop(columns=['ОперацияID', 'TransactionID'], inplace=True)
     # df2.drop(columns=['WorkDayID'], inplace=True)
@@ -284,32 +282,57 @@ def insert_data_to_postgres_multi(df1, df2):
     # print(df2)
     for index, row in df2.iterrows():
         worksheets.append(row['WorkDayID'])
+        timePaperData[row['WorkDayID']] = {}
+        timePaperData[row['WorkDayID']]['WorkerId'] = row['Номер']
+        timePaperData[row['WorkDayID']]['Date'] = row['Дата']
+        isShiftFound = False
         # print(index, row1, row2)
-        # for shift in shifts:
-        #     if row['Начало на работа'].time() == shift.StartTime and row['Край на работа'].time() == shift.EndTime:
-        #         workingShifts.append(shift.id)
-        #     else:
-        #         workingShifts.append(None)
-        # if row['Начало на Почасова Работа_I'].time() != timeZero and row[
-        #     'Край на Почасова работа_I'].time() != timeZero:
-        #     hourPaidId = createHourlyPaid(row['Начало на Почасова Работа_I'].time(),
-        #                                   row['Край на Почасова работа_I'].time())
-        #     hourlyPaid.append(hourPaidId)
-        # else:
-        #     hourlyPaid.append(None)
-    for index, row in df1.iterrows():
-        if row['WorkDayID'] in worksheets:
-            if row['WorkDayID'] not in data.keys():
-                data[row['WorkDayID']] = [row['ОперацияNo']]
-            else:
-                data[row['WorkDayID']].append(row['ОперацияNo'])
-            # print(row['Номер'], row['ОперацияNo'], row['ПоръчкаNo'])
-            # workData = getWorkDataForTimePapers(row['ПоръчкаNo'], row['ОперацияNo'])
-            # data.append(workData)
-    print(data)
-    # print(len(worksheets))
-    print(len(data))
+        for shift in shifts:
+            # print(count, len(shifts))
+            if row['Начало на работа'].time() == shift.StartTime and row['Край на работа'].time() == shift.EndTime:
+                timePaperData[row['WorkDayID']]['ShiftId'] = shift.id
+                isShiftFound = True
+                break
+        if not isShiftFound:
+            timePaperData[row['WorkDayID']]['ShiftId'] = None
+        # timePaperData[row['WorkDayID']]['ShiftId'] = workingShifts
 
+        if row['Начало на Почасова Работа_I'].time() != timeZero and row[
+                'Край на Почасова работа_I'].time() != timeZero:
+            hourPaidId = createHourlyPaid(row['Начало на Почасова Работа_I'].time(),
+                                          row['Край на Почасова работа_I'].time())
+            timePaperData[row['WorkDayID']]['HourlyPaidId'] = hourPaidId
+            # hourlyPaid.append(hourPaidId)
+        else:
+            timePaperData[row['WorkDayID']]['HourlyPaidId'] = None
+    # df = pd.DataFrame(timePaperData).T
+    # orderIds = []
+
+    for index, row in df1.iterrows():
+        if row['WorkDayID'] in timePaperData.keys():
+            if row['ПоръчкаNo'] not in timePaperData[row['WorkDayID']].keys():
+                # orderIds.append(row['ПоръчкаNo'])
+                timePaperData[row['WorkDayID']][row['ПоръчкаNo']] = [row['ОперацияNo']]
+            else:
+                timePaperData[row['WorkDayID']][row['ПоръчкаNo']].append(row['ОперацияNo'])
+    # df['OrderId'] = orderIds
+    # print(df)
+    addTimePaper(timePaperData)
+
+
+def addTimePaper(timePaperData):
+    session = SessionLocal()
+
+    try:
+        pass
+        for workDayId, data in timePaperData.items():
+
+        print(f"{len(timePaperData.keys())} records successfully inserted in time papers")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        session.rollback()
+    finally:
+        session.close()
 
 def createHourlyPaid(start, end):
     dateStart = datetime.combine(datetime.today(), start)
@@ -350,7 +373,6 @@ def getWorkDataForTimePapers(orderNo, operationId):
         return orderId
     except Exception as e:
         print(f"An error occurred: {e}")
-        session.rollback()
         return None
     finally:
         session.close()

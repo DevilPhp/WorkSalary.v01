@@ -81,14 +81,14 @@ class TimePaper(Base):
     IsHourlyPaid = Column(Integer, ForeignKey('hourlyPays.id'), nullable=True)
     IsOvertime = Column(Integer, ForeignKey('overtimePays.id'), nullable=True, default=None)
     WorkerId = Column(Integer, ForeignKey('workers.Номер'), nullable=False)
-    OrderId = Column(Integer, ForeignKey('productionModels.id'), nullable=True)
+    userCreated = Column(String, nullable=False)
+
     # modelOperationsId = Column(Integer, ForeignKey('timePaperOperations.id'), nullable=True)
 
     workingShifts = relationship("WorkingShift", back_populates="timePapers")
     hourlyPays = relationship("HourlyPay", back_populates="timePapers")
     overtimePays = relationship("OvertimePay", back_populates="timePapers")
     workers = relationship("Worker", back_populates="timePapers")
-    productionModels = relationship("ProductionModel", back_populates="timePapers")
     timePaperOperations = relationship("TimePaperOperation", back_populates="timePaper")
 
 
@@ -96,11 +96,13 @@ class TimePaperOperation(Base):
     __tablename__ = 'timePaperOperations'
     id = Column(Integer, primary_key=True, autoincrement=True)
     TimePaperId = Column(Integer, ForeignKey('timePapers.id'), nullable=False)
+    OrderId = Column(Integer, ForeignKey('productionModels.id'), nullable=True)
     ModelOperationId = Column(Integer, ForeignKey('productionModelOperations.id'), nullable=True)
     Pieces = Column(Integer, nullable=False, default=0)
     WorkingTimeMinutes = Column(Integer, nullable=False, default=0)
 
     timePaper = relationship("TimePaper", back_populates="timePaperOperations")
+    productionModels = relationship("ProductionModel", back_populates="timePaperOperations")
     productionModelOperations = relationship("ProductionModelOperations", back_populates="timePaperOperations")
 
 
