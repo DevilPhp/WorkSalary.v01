@@ -38,7 +38,7 @@ class ProductionModelOperations(Base):
     OrderId = Column(Integer, ForeignKey("productionModels.id"), nullable=True)
     ПоръчкаNo = Column(String, index=True)
     ОперацияNo = Column(Integer, ForeignKey("operations.ОперацияNo"), nullable=True)
-    Операция = Column(String, nullable=False)
+    Операция = Column(String, nullable=True)
     TimeForOper = Column(Float, default=0)
     Razcenka = Column(Float, default=0)
     LastUpdated = Column(DateTime, default=datetime.now, onupdate=datetime.now)

@@ -9,7 +9,7 @@ from config import DATABASE_URL
 from app.database import SessionLocal
 from app.database.workers import OperationType, PaymentType, Cehove, WorkingShift, HourlyPay,\
     TimePaper, TimePaperOperation
-from app.database.operations import modelOperationsType
+from app.database.operations import modelOperationsType, ProductionModelOperations, Operation
 from app.database.models import ProductionModel
 import time as t
 
@@ -43,11 +43,11 @@ def fetch_access_data(table_name):
         df = pd.read_sql(f"SELECT * FROM {table_name} ORDER BY {'Група'}", conn)
     elif table_name == "Модел и оперции":
         df = pd.read_sql(f'''SELECT * FROM "{table_name}"''', conn)
-        df = df[df['Операция'].notna() & (df['Операция'] != '') & (df['LastModified'] >= '2024-10-01 00:00:00')]
+        df = df[(df['ВремеЗаОп-я'] != 0) & (df['LastModified'] <= '2023-01-01 00:00:00')]
         # & (df['LastModified'] <= '2025-01-01 00:00:00')
     elif table_name == "Обща" or table_name == "Дневник за часове":
         df = pd.read_sql(f'''SELECT * FROM "{table_name}" ORDER BY {"WorkDayID"}''', conn)
-        df = df[df['Дата'] >= '2024-10-01 00:00:00']
+        df = df[df['Дата'] >= '2024-01-01 00:00:00']
     else:
         df = pd.read_sql(f'''SELECT * FROM "{table_name}"''', conn)
 
@@ -90,6 +90,41 @@ def insert_data_to_postgres_with_fkey(table_name, df):
     #     #     conn.commit()
     #     df.to_sql(table_name, conn, if_exists="append", index=False)
     #     print(f"✅ {len(df)} records inserted into '{table_name}' successfully!")
+
+
+def insert_data_for_operations_to_postgres(table_name, df1, df2):
+    # session = SessionLocal()
+    df1.drop(columns=['ОперацияID'], inplace=True)
+    columns = {
+        'ВремеЗаОп-я': 'TimeForOper',
+        'LastModified': 'LastUpdated',
+        'ModifiedBy': 'UpdatedBy'
+    }
+    df1.rename(columns=columns, inplace=True)
+    models = getProductionModels()
+    count = 0
+    zeroCount = 0
+    orderIdRows = []
+    for index, row in df1.iterrows():
+        if row['ПоръчкаNo'] in models.keys():
+            # df['orderId'] = models[row['ПоръчкаNo']]
+            orderIdRows.append(models[row['ПоръчкаNo']])
+            # print(df.at[index, 'ПоръчкаNo'])
+            # print(f"Found model with ID: {models[row]}")
+            count += 1
+        else:
+            orderIdRows.append(None)
+            zeroCount += 1
+    df1['OrderId'] = orderIdRows
+
+    # listOperations = [9, 17, 24, 27, 28, 57, 58, 59]
+
+    # print(df['orderId'])
+    print(f"Found {count} models")
+    print(f"Found {zeroCount} models without orderId")
+
+    insert_data_to_postgres(table_name, df1)
+    # for operationId in listOperations:
 
 
 def checkForColumns(table_name, df):
@@ -136,35 +171,6 @@ def checkForColumns(table_name, df):
                 df.at[index, 'Actual'] = True
             else:
                 df.at[index, 'Actual'] = False
-
-    elif table_name == 'productionModelOperations':
-        # session = SessionLocal()
-        df.drop(columns=['ОперацияID'], inplace=True)
-        columns = {
-            'ВремеЗаОп-я': 'TimeForOper',
-            'LastModified': 'LastUpdated',
-            'ModifiedBy': 'UpdatedBy'
-        }
-        df.rename(columns=columns, inplace=True)
-        models = getProductionModels()
-        count = 0
-        zeroCount = 0
-        orderIdRows = []
-        for index, row in df.iterrows():
-            if row['ПоръчкаNo'] in models.keys():
-                # df['orderId'] = models[row['ПоръчкаNo']]
-                orderIdRows.append(models[row['ПоръчкаNo']])
-                # print(df.at[index, 'ПоръчкаNo'])
-                # print(f"Found model with ID: {models[row]}")
-                count += 1
-            else:
-                orderIdRows.append(None)
-                zeroCount += 1
-        df['OrderId'] = orderIdRows
-
-        # print(df['orderId'])
-        print(f"Found {count} models")
-        print(f"Found {zeroCount} models without orderId")
 
     elif table_name == 'paymentPerMinutes':
         df.drop(columns=['MinuteRabID'], inplace=True)
@@ -322,10 +328,38 @@ def insert_data_to_postgres_multi(df1, df2):
 
 def addTimePaper(timePaperData):
     session = SessionLocal()
-
+    keys = ['Date', 'ShiftId', 'HourlyPaidId', 'WorkerId']
     try:
-        pass
         for workDayId, data in timePaperData.items():
+            # newTimePaper = TimePaper(
+            #     Date=data['Date'],
+            #     ShiftId=data['ShiftId'],
+            #     IsHourlyPaid=data['HourlyPaidId'] is not None,
+            #     WorkerId=data['WorkerId'],
+            #     userCreated='admin'
+            # )
+            # session.add(newTimePaper)
+            # session.flush()
+
+            for operations in data.keys():
+                if operations not in keys:
+                    # print(f"Operations: {operations}")
+                    orderId = session.query(ProductionModel).filter_by(ПоръчкаNo=operations).first()
+                    if orderId:
+                        print(workDayId)
+                        print(operations)
+                        print(data[operations])
+                        for value in data[operations]:
+                            print(value)
+                            operation = session.query(ProductionModelOperations).filter_by(
+                                OrderId=orderId.id, ОперацияNo=value).first()
+                            print(operation.id, operation.Операция, operation.TimeForOper)
+                            # newOperation = TimePaperOperation(
+                            #     TimePaperId=newTimePaper.id,
+                            #     OrderId=operations,
+                            #     ModelOperationId=value,
+                            # )
+                            # session.add(newOperation)
 
         print(f"{len(timePaperData.keys())} records successfully inserted in time papers")
     except Exception as e:
@@ -483,7 +517,9 @@ def renameColumnsAndReplaceData(df):
 
 def extract_and_transform_data():
     startTime = t.time()
+
     # ####Fetch data from Access table and add in to db####
+
     # dataCehove = fetch_access_data("cehove")
     # insert_data_to_postgres("cehove", dataCehove)
     # dataOperationTypes = fetch_access_data("operationTypes")
@@ -508,12 +544,14 @@ def extract_and_transform_data():
     # insert_data_to_postgres("machines", dataMachines)
     # dataModels = fetch_access_data("Models")
     # insert_data_to_postgres("productionModels", dataModels)
+    # dataForNoneOperations = fetch_access_data_special("Обща")
     # dataModelsForOperations = fetch_access_data('Модел и оперции')
-    # insert_data_to_postgres("productionModelOperations", dataModelsForOperations)  # Specify Date for shorter time
-    # paymentsData = fetch_access_data("MinutaStafka")
-    # insert_data_to_postgres("paymentPerMinutes", paymentsData)
-    # shiftsData = fetch_access_data_special("Дневник за часове")
-    # insert_data_to_postgres_special('workingShifts', shiftsData)
+    # insert_data_for_operations_to_postgres("productionModelOperations", dataModelsForOperations,
+    #                                        dataForNoneOperations)  # Specify Date for shorter time
+    paymentsData = fetch_access_data("MinutaStafka")
+    insert_data_to_postgres("paymentPerMinutes", paymentsData)
+    shiftsData = fetch_access_data_special("Дневник за часове")
+    insert_data_to_postgres_special('workingShifts', shiftsData)
 
     timePapersData = fetch_access_data("Обща")
     workingHoursData = fetch_access_data("Дневник за часове")
