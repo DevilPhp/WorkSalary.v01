@@ -548,10 +548,10 @@ def extract_and_transform_data():
     # dataModelsForOperations = fetch_access_data('Модел и оперции')
     # insert_data_for_operations_to_postgres("productionModelOperations", dataModelsForOperations,
     #                                        dataForNoneOperations)  # Specify Date for shorter time
-    paymentsData = fetch_access_data("MinutaStafka")
-    insert_data_to_postgres("paymentPerMinutes", paymentsData)
-    shiftsData = fetch_access_data_special("Дневник за часове")
-    insert_data_to_postgres_special('workingShifts', shiftsData)
+    # paymentsData = fetch_access_data("MinutaStafka")
+    # insert_data_to_postgres("paymentPerMinutes", paymentsData)
+    # shiftsData = fetch_access_data_special("Дневник за часове")
+    # insert_data_to_postgres_special('workingShifts', shiftsData)
 
     timePapersData = fetch_access_data("Обща")
     workingHoursData = fetch_access_data("Дневник за часове")
