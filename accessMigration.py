@@ -331,7 +331,6 @@ def insert_data_to_postgres_multi(df1, df2):
 
 def addTimePaper(timePaperData):
     print(timePaperData)
-    return
     session = SessionLocal()
     keys = ['Date', 'ShiftId', 'HourlyPaidId', 'WorkerId']
     try:
@@ -347,22 +346,25 @@ def addTimePaper(timePaperData):
             # session.flush()
 
             for operations in data.keys():
-                if operations not in keys:
+                if operations not in keys and operations!= f'{operations} :TP':
                     # print(f"Operations: {operations}")
                     orderId = session.query(ProductionModel).filter_by(ПоръчкаNo=operations).first()
                     if orderId:
                         print(workDayId)
                         print(operations)
                         print(data[operations])
-                        for value in data[operations]:
+                        for index, value in enumerate(data[operations]):
                             print(value)
                             operation = session.query(ProductionModelOperations).filter_by(
                                 OrderId=orderId.id, ОперацияNo=value).first()
                             if operation:
                                 print(operation.id, operation.Операция, operation.TimeForOper)
                             else:
-                                print(f"Operation with OrderId {orderId.id} and OperationNo {value} not found")
-                                # timeForOper =
+                                # print(f"Operation with OrderId {orderId.id} and OperationNo {value} not found")
+                                time = timePaperData[workDayId][f'{operations} :TP'][index][1]
+                                pieces = timePaperData[workDayId][f'{operations} :TP'][index][0]
+                                timeForOper = round(pieces / time, 2)
+                                # print(timeForOper)
                                 newOperation = ProductionModelOperations(
                                     OrderId=orderId.id,
                                     ПоръчкаNo=orderId.ПоръчкаNo,
