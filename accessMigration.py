@@ -43,8 +43,8 @@ def fetch_access_data(table_name):
         df = pd.read_sql(f"SELECT * FROM {table_name} ORDER BY {'Група'}", conn)
     elif table_name == "Модел и оперции":
         df = pd.read_sql(f'''SELECT * FROM "{table_name}"''', conn)
-        df = df[(df['ВремеЗаОп-я'] != 0) & (df['LastModified'] <= '2023-01-01 00:00:00')]
-        # & (df['LastModified'] <= '2025-01-01 00:00:00')
+        df = df[(df['ВремеЗаОп-я'] != 0) & (df['LastModified'] >= '2020-01-01 00:00:00')]
+        # & (df['LastModified'] >= '2025-01-01 00:00:00')
     elif table_name == "Обща" or table_name == "Дневник за часове":
         df = pd.read_sql(f'''SELECT * FROM "{table_name}" ORDER BY {"WorkDayID"}''', conn)
         df = df[df['Дата'] >= '2024-01-01 00:00:00']
@@ -319,14 +319,19 @@ def insert_data_to_postgres_multi(df1, df2):
             if row['ПоръчкаNo'] not in timePaperData[row['WorkDayID']].keys():
                 # orderIds.append(row['ПоръчкаNo'])
                 timePaperData[row['WorkDayID']][row['ПоръчкаNo']] = [row['ОперацияNo']]
+                timePaperData[row['WorkDayID']][f'{row["ПоръчкаNo"]} :TP'] = [[round(row['Време'], 2), int(row['Бройки'])]]
             else:
                 timePaperData[row['WorkDayID']][row['ПоръчкаNo']].append(row['ОперацияNo'])
+                timePaperData[row['WorkDayID']][f'{row["ПоръчкаNo"]} :TP'].append([round(row['Време'], 2), int(row['Бройки'])])
+
     # df['OrderId'] = orderIds
     # print(df)
     addTimePaper(timePaperData)
 
 
 def addTimePaper(timePaperData):
+    print(timePaperData)
+    return
     session = SessionLocal()
     keys = ['Date', 'ShiftId', 'HourlyPaidId', 'WorkerId']
     try:
@@ -353,7 +358,21 @@ def addTimePaper(timePaperData):
                             print(value)
                             operation = session.query(ProductionModelOperations).filter_by(
                                 OrderId=orderId.id, ОперацияNo=value).first()
-                            print(operation.id, operation.Операция, operation.TimeForOper)
+                            if operation:
+                                print(operation.id, operation.Операция, operation.TimeForOper)
+                            else:
+                                print(f"Operation with OrderId {orderId.id} and OperationNo {value} not found")
+                                # timeForOper =
+                                newOperation = ProductionModelOperations(
+                                    OrderId=orderId.id,
+                                    ПоръчкаNo=orderId.ПоръчкаNo,
+                                    ОперацияNo=value,
+                                    Операция=value,
+                                    TimeForOper=0,
+                                )
+                                session.add(newOperation)
+                                session.commit()
+                                print(f"Operation with OrderId {orderId.id} and OperationNo {value} created")
                             # newOperation = TimePaperOperation(
                             #     TimePaperId=newTimePaper.id,
                             #     OrderId=operations,
