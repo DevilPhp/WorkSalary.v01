@@ -7,7 +7,7 @@ from sqlalchemy import create_engine, text, Column, MetaData, Table, String, Dat
     BINARY, ForeignKey
 from config import DATABASE_URL
 from app.database import SessionLocal
-from app.database.workers import OperationType, PaymentType, Cehove, WorkingShift, HourlyPay,\
+from app.database.workers import OperationType, PaymentType, Cehove, WorkingShift, HourlyPay, \
     TimePaper, TimePaperOperation
 from app.database.operations import modelOperationsType, ProductionModelOperations, Operation
 from app.database.models import ProductionModel
@@ -283,6 +283,7 @@ def insert_data_to_postgres_multi(df1, df2):
     timePaperData = {}
     timeZero = time()
     df1.drop(columns=['ОперацияID', 'TransactionID'], inplace=True)
+    df1 = df1[df1['Време'].notna() & df1['Бройки'].notna()]
     # df2.drop(columns=['WorkDayID'], inplace=True)
     # print(df1)
     # print(df2)
@@ -330,64 +331,91 @@ def insert_data_to_postgres_multi(df1, df2):
 
 
 def addTimePaper(timePaperData):
-    print(timePaperData)
+    # print(timePaperData)
     session = SessionLocal()
     keys = ['Date', 'ShiftId', 'HourlyPaidId', 'WorkerId']
+    check = []
     try:
         for workDayId, data in timePaperData.items():
-            # newTimePaper = TimePaper(
-            #     Date=data['Date'],
-            #     ShiftId=data['ShiftId'],
-            #     IsHourlyPaid=data['HourlyPaidId'] is not None,
-            #     WorkerId=data['WorkerId'],
-            #     userCreated='admin'
-            # )
-            # session.add(newTimePaper)
-            # session.flush()
+            newTimePaper = TimePaper(
+                Date=data['Date'],
+                ShiftId=data['ShiftId'],
+                IsHourlyPaid=data['HourlyPaidId'],
+                WorkerId=data['WorkerId'],
+                userCreated='admin'
+            )
+            session.add(newTimePaper)
+            session.flush()
 
             for operations in data.keys():
-                if operations not in keys and operations!= f'{operations} :TP':
+                if operations not in keys and operations != f'{operations} :TP':
                     # print(f"Operations: {operations}")
                     orderId = session.query(ProductionModel).filter_by(ПоръчкаNo=operations).first()
                     if orderId:
-                        print(workDayId)
-                        print(operations)
-                        print(data[operations])
                         for index, value in enumerate(data[operations]):
-                            print(value)
+                            zeroCount = 0
                             operation = session.query(ProductionModelOperations).filter_by(
                                 OrderId=orderId.id, ОперацияNo=value).first()
-                            if operation:
-                                print(operation.id, operation.Операция, operation.TimeForOper)
-                            else:
-                                # print(f"Operation with OrderId {orderId.id} and OperationNo {value} not found")
+                            if not operation:
                                 time = timePaperData[workDayId][f'{operations} :TP'][index][1]
                                 pieces = timePaperData[workDayId][f'{operations} :TP'][index][0]
-                                timeForOper = round(pieces / time, 2)
+                                defaultOperation = session.query(Operation).filter_by(ОперацияNo=value).first()
+                                if not time or time == 0 or not pieces or pieces == 0:
+                                    timeForOper = 0
+                                else:
+                                    timeForOper = round(pieces / time, 2)
                                 # print(timeForOper)
                                 newOperation = ProductionModelOperations(
                                     OrderId=orderId.id,
                                     ПоръчкаNo=orderId.ПоръчкаNo,
                                     ОперацияNo=value,
-                                    Операция=value,
-                                    TimeForOper=0,
+                                    Операция=defaultOperation.Операция,
+                                    TimeForOper=timeForOper,
                                 )
                                 session.add(newOperation)
-                                session.commit()
-                                print(f"Operation with OrderId {orderId.id} and OperationNo {value} created")
-                            # newOperation = TimePaperOperation(
-                            #     TimePaperId=newTimePaper.id,
-                            #     OrderId=operations,
-                            #     ModelOperationId=value,
-                            # )
-                            # session.add(newOperation)
-
-        print(f"{len(timePaperData.keys())} records successfully inserted in time papers")
+                                session.flush()
+                                # print(f"Operation with OrderId {orderId.id} and OperationNo {value} created")
+                                zeroCount += 1
+                                check.append(workDayId)
+                                operation = newOperation
+                                # print(f"Operation with OrderId {orderId.id} and OperationNo {value} not found")
+                            # print(operation.id, operation.Операция, operation.TimeForOper)
+                            operTime = timePaperData[workDayId][f'{operations} :TP'][index][1]
+                            operPieces = timePaperData[workDayId][f'{operations} :TP'][index][0]
+                            newTimePaperOperation = TimePaperOperation(
+                                TimePaperId=newTimePaper.id,
+                                OrderId=orderId.id,
+                                ModelOperationId=operation.id,
+                                Pieces=operPieces,
+                                WorkingTimeMinutes=operTime
+                            )
+                            session.add(newTimePaperOperation)
+                            session.flush()
+        session.commit()
+        existOpers = len(timePaperData.keys()) - zeroCount
+        print(f"{existOpers} records successful and {zeroCount} records created")
+        print(check)
     except Exception as e:
         print(f"An error occurred: {e}")
         session.rollback()
     finally:
         session.close()
+
+
+def addOperationToTimePaper(timePaperId, orderId, operation):
+    session = SessionLocal()
+    try:
+
+        session.add(newTimePaperOperation)
+        session.commit()
+        return newTimePaperOperation.id
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        session.rollback()
+        return None
+    finally:
+        session.close()
+
 
 def createHourlyPaid(start, end):
     dateStart = datetime.combine(datetime.today(), start)
