@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="icons">
+    <file>app/assets/icons/Alt-Arrow-Left--Streamline-Solar-Broken.svg</file>
+    <file>app/assets/icons/Alt-Arrow-Right--Streamline-Solar-Broken.svg</file>
     <file>app/assets/icons/Check-Square--Streamline-Solar-Broken.svg</file>
     <file>app/assets/icons/Question-Square--Streamline-Solar-Broken.svg</file>
     <file>app/assets/icons/Danger-Square--Streamline-Solar-Broken-#e4bb4e.svg</file>

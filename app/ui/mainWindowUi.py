@@ -11,6 +11,7 @@ from app.ui.mainMenuPage import MainMenuPage
 from app.ui.workersPage import WorkersPageCustomWidget
 from app.ui.customWidgetForDefaultOper import DefaultOperToModelTypeCustomWidget
 from app.ui.customModelsOperWidget import CustomWidgetForModelOper
+from app.ui.customTimePapersWidget import CustomTimePapersWidget
 from app.ui.messagesManager import MessageManager
 
 
@@ -29,6 +30,7 @@ class MainWindow(QMainWindow):
         MessageManager.initialize(self)
         self.defaultModelOperPage = None
         self.modelOperPage = None
+        self.timePapersPage = None
         # self.setAttribute(Qt.WA_TranslucentBackground)
         LoginPage(self)
         MainMenuPage(self)
@@ -38,6 +40,7 @@ class MainWindow(QMainWindow):
         self.ui.pageBtn.clicked.connect(lambda: self.changePage(windows))
         self.ui.setDefaultOperBtn.clicked.connect(self.setDefaultOperPage)
         self.ui.setModelsOperBtn.clicked.connect(self.setModelOperPage)
+        self.ui.timePapersBtn.clicked.connect(self.setTimePapersPage)
         # MessageManager.success('DefaultOperToModelTypeCustomWidget initialized', timeout=3000)
 
         # user = UsersFuncs.createUser('test', '000')
@@ -49,6 +52,9 @@ class MainWindow(QMainWindow):
     def resetModelOperPage(self):
         self.modelOperPage = None
 
+    def resetTimePapersPage(self):
+        self.timePapersPage = None
+
     def changePage(self, windows):
         for window in windows:
             subWindow = QMdiSubWindow()
@@ -56,6 +62,14 @@ class MainWindow(QMainWindow):
             subWindow.setWidget(newWindow)
             self.ui.mainWindowsArea.addSubWindow(subWindow)
             subWindow.show()
+
+    def setTimePapersPage(self):
+        if self.timePapersPage is None:
+            self.timePapersPage = CustomTimePapersWidget(self)
+            self.timePapersPage.show()
+            self.timePapersPage.destroyed.connect(self.resetTimePapersPage)
+        else:
+            self.timePapersPage.activateWindow()
 
     def setDefaultOperPage(self):
         if self.defaultModelOperPage is None:

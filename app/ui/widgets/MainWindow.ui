@@ -611,7 +611,7 @@ QPushButton:hover {
                  </widget>
                 </item>
                 <item row="2" column="0">
-                 <widget class="QPushButton" name="pushButton_5">
+                 <widget class="QPushButton" name="timePapersBtn">
                   <property name="text">
                    <string>Преглед</string>
                   </property>
