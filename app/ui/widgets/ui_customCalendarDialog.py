@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customCalendarDialoghihuTn.ui'
+## Form generated from reading UI file 'customCalendarDialogynmdGY.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -133,7 +133,7 @@ class Ui_CustomCalendarDialog(object):
                         " 0px 8px;\n"
 "}\n"
 "QTableView::item:selected{\n"
-"border:2.5px solid #2b2b2c;\n"
+"border:2.5px solid #324b4c;\n"
 "border-radius:11px;\n"
 "}\n"
 "\n"
@@ -170,7 +170,7 @@ class Ui_CustomCalendarDialog(object):
 "	font-weight: 900;\n"
 "}")
 
-        self.verticalLayout_3.addWidget(self.todayBtn)
+        self.verticalLayout_3.addWidget(self.todayBtn, 0, Qt.AlignHCenter)
 
 
         self.verticalLayout.addWidget(self.widget)

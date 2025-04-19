@@ -38,11 +38,15 @@ QPushButton:hover{
 	background-color: #aeaeae;
 }
 
+QDateEdit::up-button, QDateEdit::down-button{
+	width: 0px;
+}
+
 #operationsHolder QCheckBox:checked, #modelHolder QCheckBox:checked{
 	color: #008b69;
 }
 
-QLineEdit {
+QLineEdit, QDateEdit{
 	border: none;
 	font-size: 11pt;
 	border-bottom: 1px solid #7c9399;
@@ -60,7 +64,7 @@ QLineEdit {
 	font: 700 13pt &quot;Segoe UI&quot;;
 }
 
-#userIcon {
+#userIcon, #calendarBtn {
 	background-color: #dfdfdf;
 }
 
@@ -305,7 +309,14 @@ QLineEdit {
                   </widget>
                  </item>
                  <item row="1" column="1">
-                  <widget class="QLineEdit" name="workerLastNameLineEdit"/>
+                  <widget class="QLineEdit" name="workerLastNameLineEdit">
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                   </property>
+                   <property name="readOnly">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
                  </item>
                  <item row="2" column="0">
                   <widget class="QLabel" name="label_13">
@@ -315,7 +326,14 @@ QLineEdit {
                   </widget>
                  </item>
                  <item row="2" column="1">
-                  <widget class="QLineEdit" name="workerNumberLineEdit"/>
+                  <widget class="QLineEdit" name="workerNumberLineEdit">
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                   </property>
+                   <property name="readOnly">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -508,12 +526,12 @@ QLineEdit {
                  <item row="0" column="6">
                   <widget class="QLabel" name="label_21">
                    <property name="text">
-                    <string>Общо мин:</string>
+                    <string>Общо:</string>
                    </property>
                   </widget>
                  </item>
                  <item row="1" column="3">
-                  <widget class="QWidget" name="widget_6" native="true">
+                  <widget class="QWidget" name="hourlyStartWidget" native="true">
                    <layout class="QHBoxLayout" name="horizontalLayout_10">
                     <property name="spacing">
                      <number>5</number>
@@ -553,10 +571,24 @@ QLineEdit {
                    </property>
                   </widget>
                  </item>
+                 <item row="2" column="7">
+                  <widget class="QLabel" name="overtimeTotalMins">
+                   <property name="text">
+                    <string>0</string>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="2" column="4">
                   <widget class="QLabel" name="label_18">
                    <property name="text">
                     <string>Край:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="6">
+                  <widget class="QLabel" name="label_23">
+                   <property name="text">
+                    <string>Общо</string>
                    </property>
                   </widget>
                  </item>
@@ -568,7 +600,7 @@ QLineEdit {
                   </widget>
                  </item>
                  <item row="0" column="5">
-                  <widget class="QWidget" name="widget_5" native="true">
+                  <widget class="QWidget" name="shiftEndWidget" native="true">
                    <layout class="QHBoxLayout" name="horizontalLayout_9">
                     <property name="spacing">
                      <number>5</number>
@@ -607,7 +639,7 @@ QLineEdit {
                   </widget>
                  </item>
                  <item row="2" column="3">
-                  <widget class="QWidget" name="widget_9" native="true">
+                  <widget class="QWidget" name="overtimeStartWidget" native="true">
                    <layout class="QHBoxLayout" name="horizontalLayout_6">
                     <property name="spacing">
                      <number>5</number>
@@ -638,7 +670,7 @@ QLineEdit {
                   </widget>
                  </item>
                  <item row="1" column="5">
-                  <widget class="QWidget" name="widget_8" native="true">
+                  <widget class="QWidget" name="hourlyEndWidget" native="true">
                    <layout class="QHBoxLayout" name="horizontalLayout_11">
                     <property name="spacing">
                      <number>5</number>
@@ -675,6 +707,13 @@ QLineEdit {
                    </property>
                   </widget>
                  </item>
+                 <item row="2" column="6">
+                  <widget class="QLabel" name="label_24">
+                   <property name="text">
+                    <string>Общо</string>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="2" column="1">
                   <widget class="QCheckBox" name="isOvertimeWorking">
                    <property name="focusPolicy">
@@ -682,6 +721,13 @@ QLineEdit {
                    </property>
                    <property name="text">
                     <string/>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="7">
+                  <widget class="QLabel" name="shiftTotalMins">
+                   <property name="text">
+                    <string>480</string>
                    </property>
                   </widget>
                  </item>
@@ -693,10 +739,20 @@ QLineEdit {
                    <property name="text">
                     <string/>
                    </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="7">
+                  <widget class="QLabel" name="hourlyTotalMins">
+                   <property name="text">
+                    <string>0</string>
+                   </property>
                   </widget>
                  </item>
                  <item row="2" column="5">
-                  <widget class="QWidget" name="widget_10" native="true">
+                  <widget class="QWidget" name="overtimeEndWidget" native="true">
                    <layout class="QHBoxLayout" name="horizontalLayout_7">
                     <property name="spacing">
                      <number>5</number>
@@ -731,7 +787,7 @@ QLineEdit {
                   </widget>
                  </item>
                  <item row="0" column="3">
-                  <widget class="QWidget" name="widget_2" native="true">
+                  <widget class="QWidget" name="shiftStartWidget" native="true">
                    <layout class="QHBoxLayout" name="horizontalLayout_8">
                     <property name="spacing">
                      <number>5</number>
@@ -775,7 +831,7 @@ QLineEdit {
                  <item row="0" column="2">
                   <widget class="QLabel" name="label_7">
                    <property name="text">
-                    <string>Начало;</string>
+                    <string>Начало:</string>
                    </property>
                   </widget>
                  </item>
@@ -807,38 +863,24 @@ QLineEdit {
                    </property>
                   </widget>
                  </item>
-                 <item row="0" column="7">
-                  <widget class="QLabel" name="shiftTotalMins">
+                 <item row="0" column="8">
+                  <widget class="QLabel" name="label_27">
                    <property name="text">
-                    <string>480</string>
+                    <string>мин.</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="1" column="6">
-                  <widget class="QLabel" name="label_23">
+                 <item row="1" column="8">
+                  <widget class="QLabel" name="label_28">
                    <property name="text">
-                    <string>Общо мин:</string>
+                    <string>мин.</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="2" column="6">
-                  <widget class="QLabel" name="label_24">
+                 <item row="2" column="8">
+                  <widget class="QLabel" name="label_29">
                    <property name="text">
-                    <string>Общо мин:</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="7">
-                  <widget class="QLabel" name="hourlyTotalMins">
-                   <property name="text">
-                    <string>0</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="7">
-                  <widget class="QLabel" name="overtimeTotalMins">
-                   <property name="text">
-                    <string>0</string>
+                    <string>мин.</string>
                    </property>
                   </widget>
                  </item>
@@ -954,7 +996,7 @@ QLineEdit {
                  <property name="bottomMargin">
                   <number>0</number>
                  </property>
-                 <item>
+                 <item alignment="Qt::AlignVCenter">
                   <widget class="QLabel" name="label_25">
                    <property name="text">
                     <string>Дата: </string>
@@ -962,19 +1004,48 @@ QLineEdit {
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="timePaperDateLineEdit"/>
-                 </item>
-                 <item>
-                  <widget class="QDateEdit" name="dateEdit">
-                   <property name="calendarPopup">
-                    <bool>true</bool>
+                  <widget class="QDateEdit" name="timePaperDateEdit">
+                   <property name="frame">
+                    <bool>false</bool>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="correctionMode">
+                    <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                   </property>
+                   <property name="minimumDateTime">
+                    <datetime>
+                     <hour>21</hour>
+                     <minute>0</minute>
+                     <second>0</second>
+                     <year>1990</year>
+                     <month>9</month>
+                     <day>13</day>
+                    </datetime>
+                   </property>
+                   <property name="displayFormat">
+                    <string>d.M.yy 'г.'</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="pushButton">
+                  <widget class="QPushButton" name="calendarBtn">
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                   </property>
                    <property name="text">
-                    <string>PushButton</string>
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../../../resources.qrc">
+                     <normaloff>:/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg</normaloff>:/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>24</width>
+                     <height>24</height>
+                    </size>
                    </property>
                   </widget>
                  </item>

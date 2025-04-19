@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customTimePapersWidgetDNDlke.ui'
+## Form generated from reading UI file 'customTimePapersWidgetOUBJsV.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -15,10 +15,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QCheckBox, QDateEdit, QFormLayout,
-    QFrame, QGridLayout, QHBoxLayout, QLabel,
-    QLineEdit, QPushButton, QSizePolicy, QTimeEdit,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QAbstractSpinBox, QApplication, QCheckBox, QDateEdit,
+    QFormLayout, QFrame, QGridLayout, QHBoxLayout,
+    QLabel, QLineEdit, QPushButton, QSizePolicy,
+    QTimeEdit, QVBoxLayout, QWidget)
 import resources_rc
 
 class Ui_customTimePapersWidget(object):
@@ -45,11 +45,15 @@ class Ui_customTimePapersWidget(object):
 "	background-color: #aeaeae;\n"
 "}\n"
 "\n"
+"QDateEdit::up-button, QDateEdit::down-button{\n"
+"	width: 0px;\n"
+"}\n"
+"\n"
 "#operationsHolder QCheckBox:checked, #modelHolder QCheckBox:checked{\n"
 "	color: #008b69;\n"
 "}\n"
 "\n"
-"QLineEdit {\n"
+"QLineEdit, QDateEdit{\n"
 "	border: none;\n"
 "	font-size: 11pt;\n"
 "	border-bottom: 1px solid #7c9399;\n"
@@ -67,7 +71,7 @@ class Ui_customTimePapersWidget(object):
 "	font: 700 13pt \"Segoe UI\";\n"
 "}\n"
 "\n"
-"#userIcon {\n"
+"#userIcon, #calendarBtn {\n"
 "	background-color: #dfdfdf;\n"
 "}\n"
 "\n"
@@ -187,6 +191,8 @@ class Ui_customTimePapersWidget(object):
 
         self.workerLastNameLineEdit = QLineEdit(self.widget_7)
         self.workerLastNameLineEdit.setObjectName(u"workerLastNameLineEdit")
+        self.workerLastNameLineEdit.setFocusPolicy(Qt.NoFocus)
+        self.workerLastNameLineEdit.setReadOnly(True)
 
         self.modeLayout.setWidget(1, QFormLayout.FieldRole, self.workerLastNameLineEdit)
 
@@ -197,6 +203,8 @@ class Ui_customTimePapersWidget(object):
 
         self.workerNumberLineEdit = QLineEdit(self.widget_7)
         self.workerNumberLineEdit.setObjectName(u"workerNumberLineEdit")
+        self.workerNumberLineEdit.setFocusPolicy(Qt.NoFocus)
+        self.workerNumberLineEdit.setReadOnly(True)
 
         self.modeLayout.setWidget(2, QFormLayout.FieldRole, self.workerNumberLineEdit)
 
@@ -302,102 +310,117 @@ class Ui_customTimePapersWidget(object):
 
         self.newModelLayout.addWidget(self.label_21, 0, 6, 1, 1)
 
-        self.widget_6 = QWidget(self.newModelInfoHolder)
-        self.widget_6.setObjectName(u"widget_6")
-        self.horizontalLayout_10 = QHBoxLayout(self.widget_6)
+        self.hourlyStartWidget = QWidget(self.newModelInfoHolder)
+        self.hourlyStartWidget.setObjectName(u"hourlyStartWidget")
+        self.horizontalLayout_10 = QHBoxLayout(self.hourlyStartWidget)
         self.horizontalLayout_10.setSpacing(5)
         self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
         self.horizontalLayout_10.setContentsMargins(0, 0, 0, 0)
-        self.hourlyStart = QTimeEdit(self.widget_6)
+        self.hourlyStart = QTimeEdit(self.hourlyStartWidget)
         self.hourlyStart.setObjectName(u"hourlyStart")
 
         self.horizontalLayout_10.addWidget(self.hourlyStart)
 
-        self.label_16 = QLabel(self.widget_6)
+        self.label_16 = QLabel(self.hourlyStartWidget)
         self.label_16.setObjectName(u"label_16")
 
         self.horizontalLayout_10.addWidget(self.label_16)
 
 
-        self.newModelLayout.addWidget(self.widget_6, 1, 3, 1, 1)
+        self.newModelLayout.addWidget(self.hourlyStartWidget, 1, 3, 1, 1)
 
         self.shiftNameLineEdit = QLineEdit(self.newModelInfoHolder)
         self.shiftNameLineEdit.setObjectName(u"shiftNameLineEdit")
 
         self.newModelLayout.addWidget(self.shiftNameLineEdit, 0, 1, 1, 1)
 
+        self.overtimeTotalMins = QLabel(self.newModelInfoHolder)
+        self.overtimeTotalMins.setObjectName(u"overtimeTotalMins")
+
+        self.newModelLayout.addWidget(self.overtimeTotalMins, 2, 7, 1, 1)
+
         self.label_18 = QLabel(self.newModelInfoHolder)
         self.label_18.setObjectName(u"label_18")
 
         self.newModelLayout.addWidget(self.label_18, 2, 4, 1, 1)
+
+        self.label_23 = QLabel(self.newModelInfoHolder)
+        self.label_23.setObjectName(u"label_23")
+
+        self.newModelLayout.addWidget(self.label_23, 1, 6, 1, 1)
 
         self.label_5 = QLabel(self.newModelInfoHolder)
         self.label_5.setObjectName(u"label_5")
 
         self.newModelLayout.addWidget(self.label_5, 0, 0, 1, 1)
 
-        self.widget_5 = QWidget(self.newModelInfoHolder)
-        self.widget_5.setObjectName(u"widget_5")
-        self.horizontalLayout_9 = QHBoxLayout(self.widget_5)
+        self.shiftEndWidget = QWidget(self.newModelInfoHolder)
+        self.shiftEndWidget.setObjectName(u"shiftEndWidget")
+        self.horizontalLayout_9 = QHBoxLayout(self.shiftEndWidget)
         self.horizontalLayout_9.setSpacing(5)
         self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
         self.horizontalLayout_9.setContentsMargins(0, 0, 0, 0)
-        self.shiftEnd = QTimeEdit(self.widget_5)
+        self.shiftEnd = QTimeEdit(self.shiftEndWidget)
         self.shiftEnd.setObjectName(u"shiftEnd")
         self.shiftEnd.setTime(QTime(17, 0, 0))
 
         self.horizontalLayout_9.addWidget(self.shiftEnd)
 
-        self.label_15 = QLabel(self.widget_5)
+        self.label_15 = QLabel(self.shiftEndWidget)
         self.label_15.setObjectName(u"label_15")
 
         self.horizontalLayout_9.addWidget(self.label_15)
 
 
-        self.newModelLayout.addWidget(self.widget_5, 0, 5, 1, 1)
+        self.newModelLayout.addWidget(self.shiftEndWidget, 0, 5, 1, 1)
 
-        self.widget_9 = QWidget(self.newModelInfoHolder)
-        self.widget_9.setObjectName(u"widget_9")
-        self.horizontalLayout_6 = QHBoxLayout(self.widget_9)
+        self.overtimeStartWidget = QWidget(self.newModelInfoHolder)
+        self.overtimeStartWidget.setObjectName(u"overtimeStartWidget")
+        self.horizontalLayout_6 = QHBoxLayout(self.overtimeStartWidget)
         self.horizontalLayout_6.setSpacing(5)
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
         self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
-        self.overtimeStart = QTimeEdit(self.widget_9)
+        self.overtimeStart = QTimeEdit(self.overtimeStartWidget)
         self.overtimeStart.setObjectName(u"overtimeStart")
 
         self.horizontalLayout_6.addWidget(self.overtimeStart)
 
-        self.label_19 = QLabel(self.widget_9)
+        self.label_19 = QLabel(self.overtimeStartWidget)
         self.label_19.setObjectName(u"label_19")
 
         self.horizontalLayout_6.addWidget(self.label_19)
 
 
-        self.newModelLayout.addWidget(self.widget_9, 2, 3, 1, 1)
+        self.newModelLayout.addWidget(self.overtimeStartWidget, 2, 3, 1, 1)
 
-        self.widget_8 = QWidget(self.newModelInfoHolder)
-        self.widget_8.setObjectName(u"widget_8")
-        self.horizontalLayout_11 = QHBoxLayout(self.widget_8)
+        self.hourlyEndWidget = QWidget(self.newModelInfoHolder)
+        self.hourlyEndWidget.setObjectName(u"hourlyEndWidget")
+        self.horizontalLayout_11 = QHBoxLayout(self.hourlyEndWidget)
         self.horizontalLayout_11.setSpacing(5)
         self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
         self.horizontalLayout_11.setContentsMargins(0, 0, 0, 0)
-        self.hourlyEnd = QTimeEdit(self.widget_8)
+        self.hourlyEnd = QTimeEdit(self.hourlyEndWidget)
         self.hourlyEnd.setObjectName(u"hourlyEnd")
 
         self.horizontalLayout_11.addWidget(self.hourlyEnd)
 
-        self.label_17 = QLabel(self.widget_8)
+        self.label_17 = QLabel(self.hourlyEndWidget)
         self.label_17.setObjectName(u"label_17")
 
         self.horizontalLayout_11.addWidget(self.label_17)
 
 
-        self.newModelLayout.addWidget(self.widget_8, 1, 5, 1, 1)
+        self.newModelLayout.addWidget(self.hourlyEndWidget, 1, 5, 1, 1)
 
         self.label_8 = QLabel(self.newModelInfoHolder)
         self.label_8.setObjectName(u"label_8")
 
         self.newModelLayout.addWidget(self.label_8, 1, 2, 1, 1)
+
+        self.label_24 = QLabel(self.newModelInfoHolder)
+        self.label_24.setObjectName(u"label_24")
+
+        self.newModelLayout.addWidget(self.label_24, 2, 6, 1, 1)
 
         self.isOvertimeWorking = QCheckBox(self.newModelInfoHolder)
         self.isOvertimeWorking.setObjectName(u"isOvertimeWorking")
@@ -405,52 +428,63 @@ class Ui_customTimePapersWidget(object):
 
         self.newModelLayout.addWidget(self.isOvertimeWorking, 2, 1, 1, 1)
 
+        self.shiftTotalMins = QLabel(self.newModelInfoHolder)
+        self.shiftTotalMins.setObjectName(u"shiftTotalMins")
+
+        self.newModelLayout.addWidget(self.shiftTotalMins, 0, 7, 1, 1)
+
         self.isHourlyWorking = QCheckBox(self.newModelInfoHolder)
         self.isHourlyWorking.setObjectName(u"isHourlyWorking")
         self.isHourlyWorking.setFocusPolicy(Qt.NoFocus)
+        self.isHourlyWorking.setChecked(False)
 
         self.newModelLayout.addWidget(self.isHourlyWorking, 1, 1, 1, 1)
 
-        self.widget_10 = QWidget(self.newModelInfoHolder)
-        self.widget_10.setObjectName(u"widget_10")
-        self.horizontalLayout_7 = QHBoxLayout(self.widget_10)
+        self.hourlyTotalMins = QLabel(self.newModelInfoHolder)
+        self.hourlyTotalMins.setObjectName(u"hourlyTotalMins")
+
+        self.newModelLayout.addWidget(self.hourlyTotalMins, 1, 7, 1, 1)
+
+        self.overtimeEndWidget = QWidget(self.newModelInfoHolder)
+        self.overtimeEndWidget.setObjectName(u"overtimeEndWidget")
+        self.horizontalLayout_7 = QHBoxLayout(self.overtimeEndWidget)
         self.horizontalLayout_7.setSpacing(5)
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
         self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
-        self.overtimeEnd = QTimeEdit(self.widget_10)
+        self.overtimeEnd = QTimeEdit(self.overtimeEndWidget)
         self.overtimeEnd.setObjectName(u"overtimeEnd")
         self.overtimeEnd.setCursor(QCursor(Qt.ArrowCursor))
 
         self.horizontalLayout_7.addWidget(self.overtimeEnd)
 
-        self.label_20 = QLabel(self.widget_10)
+        self.label_20 = QLabel(self.overtimeEndWidget)
         self.label_20.setObjectName(u"label_20")
 
         self.horizontalLayout_7.addWidget(self.label_20)
 
 
-        self.newModelLayout.addWidget(self.widget_10, 2, 5, 1, 1)
+        self.newModelLayout.addWidget(self.overtimeEndWidget, 2, 5, 1, 1)
 
-        self.widget_2 = QWidget(self.newModelInfoHolder)
-        self.widget_2.setObjectName(u"widget_2")
-        self.horizontalLayout_8 = QHBoxLayout(self.widget_2)
+        self.shiftStartWidget = QWidget(self.newModelInfoHolder)
+        self.shiftStartWidget.setObjectName(u"shiftStartWidget")
+        self.horizontalLayout_8 = QHBoxLayout(self.shiftStartWidget)
         self.horizontalLayout_8.setSpacing(5)
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
         self.horizontalLayout_8.setContentsMargins(0, 0, 0, 0)
-        self.shiftStart = QTimeEdit(self.widget_2)
+        self.shiftStart = QTimeEdit(self.shiftStartWidget)
         self.shiftStart.setObjectName(u"shiftStart")
         self.shiftStart.setCalendarPopup(False)
         self.shiftStart.setTime(QTime(8, 0, 0))
 
         self.horizontalLayout_8.addWidget(self.shiftStart)
 
-        self.label_14 = QLabel(self.widget_2)
+        self.label_14 = QLabel(self.shiftStartWidget)
         self.label_14.setObjectName(u"label_14")
 
         self.horizontalLayout_8.addWidget(self.label_14)
 
 
-        self.newModelLayout.addWidget(self.widget_2, 0, 3, 1, 1)
+        self.newModelLayout.addWidget(self.shiftStartWidget, 0, 3, 1, 1)
 
         self.label_7 = QLabel(self.newModelInfoHolder)
         self.label_7.setObjectName(u"label_7")
@@ -477,30 +511,20 @@ class Ui_customTimePapersWidget(object):
 
         self.newModelLayout.addWidget(self.label_10, 0, 4, 1, 1)
 
-        self.shiftTotalMins = QLabel(self.newModelInfoHolder)
-        self.shiftTotalMins.setObjectName(u"shiftTotalMins")
+        self.label_27 = QLabel(self.newModelInfoHolder)
+        self.label_27.setObjectName(u"label_27")
 
-        self.newModelLayout.addWidget(self.shiftTotalMins, 0, 7, 1, 1)
+        self.newModelLayout.addWidget(self.label_27, 0, 8, 1, 1)
 
-        self.label_23 = QLabel(self.newModelInfoHolder)
-        self.label_23.setObjectName(u"label_23")
+        self.label_28 = QLabel(self.newModelInfoHolder)
+        self.label_28.setObjectName(u"label_28")
 
-        self.newModelLayout.addWidget(self.label_23, 1, 6, 1, 1)
+        self.newModelLayout.addWidget(self.label_28, 1, 8, 1, 1)
 
-        self.label_24 = QLabel(self.newModelInfoHolder)
-        self.label_24.setObjectName(u"label_24")
+        self.label_29 = QLabel(self.newModelInfoHolder)
+        self.label_29.setObjectName(u"label_29")
 
-        self.newModelLayout.addWidget(self.label_24, 2, 6, 1, 1)
-
-        self.hourlyTotalMins = QLabel(self.newModelInfoHolder)
-        self.hourlyTotalMins.setObjectName(u"hourlyTotalMins")
-
-        self.newModelLayout.addWidget(self.hourlyTotalMins, 1, 7, 1, 1)
-
-        self.overtimeTotalMins = QLabel(self.newModelInfoHolder)
-        self.overtimeTotalMins.setObjectName(u"overtimeTotalMins")
-
-        self.newModelLayout.addWidget(self.overtimeTotalMins, 2, 7, 1, 1)
+        self.newModelLayout.addWidget(self.label_29, 2, 8, 1, 1)
 
 
         self.verticalLayout_8.addLayout(self.newModelLayout)
@@ -553,23 +577,26 @@ class Ui_customTimePapersWidget(object):
         self.label_25 = QLabel(self.widget_14)
         self.label_25.setObjectName(u"label_25")
 
-        self.horizontalLayout_14.addWidget(self.label_25)
+        self.horizontalLayout_14.addWidget(self.label_25, 0, Qt.AlignVCenter)
 
-        self.timePaperDateLineEdit = QLineEdit(self.widget_14)
-        self.timePaperDateLineEdit.setObjectName(u"timePaperDateLineEdit")
+        self.timePaperDateEdit = QDateEdit(self.widget_14)
+        self.timePaperDateEdit.setObjectName(u"timePaperDateEdit")
+        self.timePaperDateEdit.setFrame(False)
+        self.timePaperDateEdit.setAlignment(Qt.AlignCenter)
+        self.timePaperDateEdit.setCorrectionMode(QAbstractSpinBox.CorrectToNearestValue)
+        self.timePaperDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 9, 13), QTime(21, 0, 0)))
 
-        self.horizontalLayout_14.addWidget(self.timePaperDateLineEdit)
+        self.horizontalLayout_14.addWidget(self.timePaperDateEdit)
 
-        self.dateEdit = QDateEdit(self.widget_14)
-        self.dateEdit.setObjectName(u"dateEdit")
-        self.dateEdit.setCalendarPopup(True)
+        self.calendarBtn = QPushButton(self.widget_14)
+        self.calendarBtn.setObjectName(u"calendarBtn")
+        self.calendarBtn.setFocusPolicy(Qt.NoFocus)
+        icon1 = QIcon()
+        icon1.addFile(u":/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.calendarBtn.setIcon(icon1)
+        self.calendarBtn.setIconSize(QSize(24, 24))
 
-        self.horizontalLayout_14.addWidget(self.dateEdit)
-
-        self.pushButton = QPushButton(self.widget_14)
-        self.pushButton.setObjectName(u"pushButton")
-
-        self.horizontalLayout_14.addWidget(self.pushButton)
+        self.horizontalLayout_14.addWidget(self.calendarBtn)
 
 
         self.operationsLayout.addWidget(self.widget_14, 0, 0, 1, 1, Qt.AlignLeft)
@@ -609,31 +636,35 @@ class Ui_customTimePapersWidget(object):
         self.label_26.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0420\u0430\u0431.\u041c\u044f\u0441\u0442\u043e:", None))
         self.workerPlaceLineEdit.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041d\u0435 \u0435 \u0443\u043a\u0430\u0437\u0430\u043d\u043e", None))
         self.label_9.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041f\u043e\u0447\u0430\u0441\u043e\u0432\u0430 \u0420\u0430\u0431.:", None))
-        self.label_21.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041e\u0431\u0449\u043e \u043c\u0438\u043d:", None))
+        self.label_21.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041e\u0431\u0449\u043e:", None))
         self.label_16.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0447.", None))
         self.shiftNameLineEdit.setText("")
         self.shiftNameLineEdit.setPlaceholderText(QCoreApplication.translate("customTimePapersWidget", u"\u0420\u0435\u0434\u043e\u0432\u043d\u0430", None))
+        self.overtimeTotalMins.setText(QCoreApplication.translate("customTimePapersWidget", u"0", None))
         self.label_18.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041a\u0440\u0430\u0439:", None))
+        self.label_23.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041e\u0431\u0449\u043e", None))
         self.label_5.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0421\u043c\u044f\u043d\u0430:", None))
         self.label_15.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0447.", None))
         self.label_19.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0447.", None))
         self.label_17.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0447.", None))
         self.label_8.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041d\u0430\u0447\u0430\u043b\u043e:", None))
+        self.label_24.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041e\u0431\u0449\u043e", None))
         self.isOvertimeWorking.setText("")
+        self.shiftTotalMins.setText(QCoreApplication.translate("customTimePapersWidget", u"480", None))
         self.isHourlyWorking.setText("")
+        self.hourlyTotalMins.setText(QCoreApplication.translate("customTimePapersWidget", u"0", None))
         self.label_20.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0447.", None))
         self.label_14.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0447.", None))
-        self.label_7.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041d\u0430\u0447\u0430\u043b\u043e;", None))
+        self.label_7.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041d\u0430\u0447\u0430\u043b\u043e:", None))
         self.label_3.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041d\u0430\u0447\u0430\u043b\u043e:", None))
         self.label_11.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041a\u0440\u0430\u0439:", None))
         self.label_6.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0418\u0437\u0432\u044a\u043d\u0440\u0435\u0434\u043d\u0430 \u0420\u0430\u0431.:", None))
         self.label_10.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041a\u0440\u0430\u0439:", None))
-        self.shiftTotalMins.setText(QCoreApplication.translate("customTimePapersWidget", u"480", None))
-        self.label_23.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041e\u0431\u0449\u043e \u043c\u0438\u043d:", None))
-        self.label_24.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041e\u0431\u0449\u043e \u043c\u0438\u043d:", None))
-        self.hourlyTotalMins.setText(QCoreApplication.translate("customTimePapersWidget", u"0", None))
-        self.overtimeTotalMins.setText(QCoreApplication.translate("customTimePapersWidget", u"0", None))
+        self.label_27.setText(QCoreApplication.translate("customTimePapersWidget", u"\u043c\u0438\u043d.", None))
+        self.label_28.setText(QCoreApplication.translate("customTimePapersWidget", u"\u043c\u0438\u043d.", None))
+        self.label_29.setText(QCoreApplication.translate("customTimePapersWidget", u"\u043c\u0438\u043d.", None))
         self.label_25.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0414\u0430\u0442\u0430: ", None))
-        self.pushButton.setText(QCoreApplication.translate("customTimePapersWidget", u"PushButton", None))
+        self.timePaperDateEdit.setDisplayFormat(QCoreApplication.translate("customTimePapersWidget", u"d.M.yy '\u0433.'", None))
+        self.calendarBtn.setText("")
     # retranslateUi
 

@@ -32,6 +32,21 @@ class Utils:
         completer.setCompletionColumn(0)
         widget.setCompleter(completer)
 
+    @staticmethod
+    def calculateMinutes(startTime, endTime):
+        '''Calculate the time difference between two time strings in minutes.
+        Start and end times are in 24-hour format.
+        Returns the difference in minutes.'''
+        start = startTime.time()
+        end = endTime.time()
+
+        duration = start.msecsTo(end) // 60000
+        if start.hour() > end.hour():
+            duration += 24 * 60
+        if duration > 300:
+            duration -= 60
+        return duration
+
 
 class CustomCompleter(QCompleter):
     def __init__(self, parent=None):
