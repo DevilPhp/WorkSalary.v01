@@ -76,7 +76,7 @@ class OperationType(Base):
 class TimePaper(Base):
     __tablename__ = "timePapers"
     id = Column(Integer, primary_key=True)
-    Date = Column(DateTime, nullable=False)
+    Date = Column(Date, nullable=False)
     ShiftId = Column(Integer, ForeignKey('workingShifts.id'), nullable=True)
     IsHourlyPaid = Column(Integer, ForeignKey('hourlyPays.id'), nullable=True)
     IsOvertime = Column(Integer, ForeignKey('overtimePays.id'), nullable=True, default=None)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customCalendarDialogynmdGY.ui'
+## Form generated from reading UI file 'customCalendarDialogjyubFG.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -24,7 +24,7 @@ class Ui_CustomCalendarDialog(object):
     def setupUi(self, CustomCalendarDialog):
         if not CustomCalendarDialog.objectName():
             CustomCalendarDialog.setObjectName(u"CustomCalendarDialog")
-        CustomCalendarDialog.resize(295, 278)
+        CustomCalendarDialog.resize(342, 353)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -35,7 +35,7 @@ class Ui_CustomCalendarDialog(object):
         CustomCalendarDialog.setStyleSheet(u"*{\n"
 "	font-family: \"Segoe UI\";\n"
 "	border-radius: 10px;\n"
-"	background-color: #9fabb3;\n"
+"	background-color: #bebebe;\n"
 "	padding: 0;\n"
 "	margin: 0;\n"
 "	color: #324b4c;\n"
@@ -48,7 +48,7 @@ class Ui_CustomCalendarDialog(object):
 "\n"
 "}\n"
 "#mainWidget{\n"
-"	background-color: #9fabb3;\n"
+"	background-color: #bebebe;\n"
 "}")
         self.verticalLayout_2 = QVBoxLayout(CustomCalendarDialog)
         self.verticalLayout_2.setSpacing(0)
@@ -59,11 +59,11 @@ class Ui_CustomCalendarDialog(object):
         sizePolicy.setHeightForWidth(self.mainWidget.sizePolicy().hasHeightForWidth())
         self.mainWidget.setSizePolicy(sizePolicy)
         self.mainWidget.setMinimumSize(QSize(0, 0))
-        self.mainWidget.setMaximumSize(QSize(250, 235))
+        self.mainWidget.setMaximumSize(QSize(260, 245))
         self.verticalLayout = QVBoxLayout(self.mainWidget)
-        self.verticalLayout.setSpacing(0)
+        self.verticalLayout.setSpacing(3)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setContentsMargins(3, 3, 3, 3)
         self.calFrame = QFrame(self.mainWidget)
         self.calFrame.setObjectName(u"calFrame")
         self.calFrame.setMaximumSize(QSize(16777215, 16777215))
@@ -72,7 +72,7 @@ class Ui_CustomCalendarDialog(object):
         self.horizontalLayout = QHBoxLayout(self.calFrame)
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout.setContentsMargins(3, 3, 3, 3)
         self.calendarCustomWidget = QCalendarWidget(self.calFrame)
         self.calendarCustomWidget.setObjectName(u"calendarCustomWidget")
         self.calendarCustomWidget.setEnabled(True)
@@ -81,8 +81,8 @@ class Ui_CustomCalendarDialog(object):
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.calendarCustomWidget.sizePolicy().hasHeightForWidth())
         self.calendarCustomWidget.setSizePolicy(sizePolicy1)
-        self.calendarCustomWidget.setMinimumSize(QSize(250, 0))
-        self.calendarCustomWidget.setMaximumSize(QSize(250, 16777215))
+        self.calendarCustomWidget.setMinimumSize(QSize(245, 0))
+        self.calendarCustomWidget.setMaximumSize(QSize(245, 16777215))
         self.calendarCustomWidget.setBaseSize(QSize(0, 0))
         font = QFont()
         font.setFamilies([u"Segoe UI"])
@@ -96,21 +96,21 @@ class Ui_CustomCalendarDialog(object):
 "padding: 5px;\n"
 "}\n"
 "QAbstractItemView{\n"
-"background-color: #9fabb3;\n"
-"selection-background-color: #9fabb3;\n"
+"background-color: #bebebe;\n"
+"selection-background-color: #bebebe;\n"
 "selection-color: #2b2b2c;\n"
 "}\n"
 "QAbstractItemView:disabled{\n"
-"background-color: #9fabb3;\n"
+"background-color: #bebebe;\n"
 "color: #495466;\n"
 "}\n"
 "#qt_calendar_prevmonth {\n"
-"    background-color: #9fabb3;\n"
+"    background-color: #bebebe;\n"
 "    icon-size: 24px;\n"
 "    qproperty-icon: url(:/icons/app/assets/icons/Alt-Arrow-Left--Streamline-Solar-Broken.svg);\n"
 "}\n"
 "#qt_calendar_nextmonth {\n"
-"    background-color: #9fabb3;\n"
+"    background-color: #bebebe;\n"
 "    icon-size: 24px;\n"
 "    qproperty-icon: url(:/icons/app/assets/icons/Alt-Arrow-Right--Streamline-Solar-Broken.svg);\n"
 "}\n"
@@ -135,6 +135,7 @@ class Ui_CustomCalendarDialog(object):
 "QTableView::item:selected{\n"
 "border:2.5px solid #324b4c;\n"
 "border-radius:11px;\n"
+"\n"
 "}\n"
 "\n"
 "\n"
@@ -166,6 +167,7 @@ class Ui_CustomCalendarDialog(object):
         font1.setPointSize(10)
         font1.setBold(True)
         self.todayBtn.setFont(font1)
+        self.todayBtn.setFocusPolicy(Qt.NoFocus)
         self.todayBtn.setStyleSheet(u"* {\n"
 "	font-weight: 900;\n"
 "}")

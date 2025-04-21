@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>295</width>
-    <height>278</height>
+    <width>342</width>
+    <height>353</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -32,7 +32,7 @@
    <string notr="true">*{
 	font-family: &quot;Segoe UI&quot;;
 	border-radius: 10px;
-	background-color: #9fabb3;
+	background-color: #bebebe;
 	padding: 0;
 	margin: 0;
 	color: #324b4c;
@@ -45,7 +45,7 @@ QDialog{
 
 }
 #mainWidget{
-	background-color: #9fabb3;
+	background-color: #bebebe;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -80,25 +80,25 @@ QDialog{
      </property>
      <property name="maximumSize">
       <size>
-       <width>250</width>
-       <height>235</height>
+       <width>260</width>
+       <height>245</height>
       </size>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="spacing">
-       <number>0</number>
+       <number>3</number>
       </property>
       <property name="leftMargin">
-       <number>0</number>
+       <number>3</number>
       </property>
       <property name="topMargin">
-       <number>0</number>
+       <number>3</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>3</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>3</number>
       </property>
       <item>
        <widget class="QFrame" name="calFrame">
@@ -119,16 +119,16 @@ QDialog{
           <number>0</number>
          </property>
          <property name="leftMargin">
-          <number>0</number>
+          <number>3</number>
          </property>
          <property name="topMargin">
-          <number>0</number>
+          <number>3</number>
          </property>
          <property name="rightMargin">
-          <number>0</number>
+          <number>3</number>
          </property>
          <property name="bottomMargin">
-          <number>0</number>
+          <number>3</number>
          </property>
          <item>
           <widget class="QCalendarWidget" name="calendarCustomWidget">
@@ -143,13 +143,13 @@ QDialog{
            </property>
            <property name="minimumSize">
             <size>
-             <width>250</width>
+             <width>245</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>250</width>
+             <width>245</width>
              <height>16777215</height>
             </size>
            </property>
@@ -180,21 +180,21 @@ font: 700 11pt &quot;Segoe UI&quot;;
 padding: 5px;
 }
 QAbstractItemView{
-background-color: #9fabb3;
-selection-background-color: #9fabb3;
+background-color: #bebebe;
+selection-background-color: #bebebe;
 selection-color: #2b2b2c;
 }
 QAbstractItemView:disabled{
-background-color: #9fabb3;
+background-color: #bebebe;
 color: #495466;
 }
 #qt_calendar_prevmonth {
-    background-color: #9fabb3;
+    background-color: #bebebe;
     icon-size: 24px;
     qproperty-icon: url(:/icons/app/assets/icons/Alt-Arrow-Left--Streamline-Solar-Broken.svg);
 }
 #qt_calendar_nextmonth {
-    background-color: #9fabb3;
+    background-color: #bebebe;
     icon-size: 24px;
     qproperty-icon: url(:/icons/app/assets/icons/Alt-Arrow-Right--Streamline-Solar-Broken.svg);
 }
@@ -218,6 +218,7 @@ padding: 0px 8px 0px 8px;
 QTableView::item:selected{
 border:2.5px solid #324b4c;
 border-radius:11px;
+
 }
 
 
@@ -278,6 +279,9 @@ border-radius:11px;
              <pointsize>10</pointsize>
              <bold>true</bold>
             </font>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
            </property>
            <property name="styleSheet">
             <string notr="true">* {

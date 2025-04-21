@@ -6,6 +6,12 @@ from app.database.operations import DefaultOperForVidObleklo, ProductionModelOpe
 class ModelService:
 
     @staticmethod
+    def getClientsAndModels():
+        with getDatabase() as session:
+            return session.query(Client, ProductionModel).join(ProductionModel).all()
+
+
+    @staticmethod
     def getDfaultOperations(vidOblekloId):
         with getDatabase() as session:
             return session.query(VidObleklo).filter_by(OblekloVid=vidOblekloId).first().defaultOperForVidOblekla

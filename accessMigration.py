@@ -47,7 +47,7 @@ def fetch_access_data(table_name):
         # & (df['LastModified'] >= '2025-01-01 00:00:00')
     elif table_name == "Обща" or table_name == "Дневник за часове":
         df = pd.read_sql(f'''SELECT * FROM "{table_name}" ORDER BY {"WorkDayID"}''', conn)
-        df = df[df['Дата'] >= '2024-01-01 00:00:00']
+        df = df[df['Дата'] >= '2024-10-01 00:00:00']
     else:
         df = pd.read_sql(f'''SELECT * FROM "{table_name}"''', conn)
 
