@@ -42,6 +42,15 @@ class Utils:
         # widget.completer().setCompletionMode(QCompleter.InlineCompletion)
 
     @staticmethod
+    def setupCompleterWithModel(model, widget):
+        completer = QCompleter()
+        completer.setModel(model)
+        # completer.setCompletionColumn(0)
+        completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
+        completer.setFilterMode(Qt.MatchFlag.MatchContains)
+        widget.setCompleter(completer)
+
+    @staticmethod
     def setCustomQCompleter(list, widget):
         model = QStringListModel()
         completer = CustomCompleter()

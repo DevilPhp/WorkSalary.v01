@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customTimePapersWidgetjVGGxP.ui'
+## Form generated from reading UI file 'customTimePapersWidgetUnBkRh.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -26,7 +26,7 @@ class Ui_customTimePapersWidget(object):
     def setupUi(self, customTimePapersWidget):
         if not customTimePapersWidget.objectName():
             customTimePapersWidget.setObjectName(u"customTimePapersWidget")
-        customTimePapersWidget.resize(1024, 915)
+        customTimePapersWidget.resize(1096, 915)
         customTimePapersWidget.setMinimumSize(QSize(900, 800))
         customTimePapersWidget.setStyleSheet(u"*{\n"
 "	background-color: #dfdfdf;\n"
@@ -64,7 +64,7 @@ class Ui_customTimePapersWidget(object):
 "	font-size: 10pt;\n"
 "}\n"
 "\n"
-"#optionsHolder {\n"
+"#optionsHolder, #optionsHolder_2 {\n"
 "	border-bottom: 2px dashed #7c9399;\n"
 "}\n"
 "\n"
@@ -80,9 +80,9 @@ class Ui_customTimePapersWidget(object):
 "	font-size: 11pt;\n"
 "}\n"
 "\n"
-"#workerPlaceLineEdit, #workerPositionLineEdit {\n"
-""
-                        "	font-weight: 700;\n"
+"#workerPlaceLineEdit, #workerPos"
+                        "itionLineEdit {\n"
+"	font-weight: 700;\n"
 "}\n"
 "\n"
 "#widget_3 * {\n"
@@ -549,9 +549,7 @@ class Ui_customTimePapersWidget(object):
         sizePolicy.setHeightForWidth(self.operationsHolder.sizePolicy().hasHeightForWidth())
         self.operationsHolder.setSizePolicy(sizePolicy)
         self.verticalLayout_2 = QVBoxLayout(self.operationsHolder)
-        self.verticalLayout_2.setSpacing(10)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.verticalLayout_2.setContentsMargins(15, 0, 15, 0)
         self.optionsHolder = QFrame(self.operationsHolder)
         self.optionsHolder.setObjectName(u"optionsHolder")
         self.optionsHolder.setFrameShape(QFrame.StyledPanel)
@@ -563,43 +561,7 @@ class Ui_customTimePapersWidget(object):
 
         self.verticalLayout_2.addWidget(self.optionsHolder)
 
-        self.operationsCheckBoxHolder = QWidget(self.operationsHolder)
-        self.operationsCheckBoxHolder.setObjectName(u"operationsCheckBoxHolder")
-        self.operationsCheckBoxHolder.setMinimumSize(QSize(0, 0))
-        self.verticalLayout_3 = QVBoxLayout(self.operationsCheckBoxHolder)
-        self.verticalLayout_3.setSpacing(5)
-        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.operationsLayout = QGridLayout()
-        self.operationsLayout.setObjectName(u"operationsLayout")
-        self.operationsLayout.setHorizontalSpacing(25)
-        self.operationsLayout.setVerticalSpacing(8)
-        self.label_32 = QLabel(self.operationsCheckBoxHolder)
-        self.label_32.setObjectName(u"label_32")
-
-        self.operationsLayout.addWidget(self.label_32, 3, 0, 1, 1)
-
-        self.pushButton = QPushButton(self.operationsCheckBoxHolder)
-        self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setFocusPolicy(Qt.NoFocus)
-        self.pushButton.setStyleSheet(u"*{\n"
-"	padding: 0px;\n"
-"	background-color: #dfdfdf;\n"
-"}")
-        icon1 = QIcon()
-        icon1.addFile(u":/icons/app/assets/icons/Check-Square--Streamline-Solar-Broken-#008b69.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.pushButton.setIcon(icon1)
-        self.pushButton.setIconSize(QSize(24, 24))
-
-        self.operationsLayout.addWidget(self.pushButton, 4, 2, 1, 1, Qt.AlignHCenter|Qt.AlignVCenter)
-
-        self.clientModelsLineEdit = QLineEdit(self.operationsCheckBoxHolder)
-        self.clientModelsLineEdit.setObjectName(u"clientModelsLineEdit")
-        self.clientModelsLineEdit.setMinimumSize(QSize(280, 0))
-
-        self.operationsLayout.addWidget(self.clientModelsLineEdit, 2, 1, 1, 1)
-
-        self.widget_5 = QWidget(self.operationsCheckBoxHolder)
+        self.widget_5 = QWidget(self.operationsHolder)
         self.widget_5.setObjectName(u"widget_5")
         self.horizontalLayout_15 = QHBoxLayout(self.widget_5)
         self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
@@ -625,49 +587,88 @@ class Ui_customTimePapersWidget(object):
         self.calendarBtn.setStyleSheet(u"*{\n"
 "	padding: 0px;\n"
 "}")
-        icon2 = QIcon()
-        icon2.addFile(u":/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.calendarBtn.setIcon(icon2)
+        icon1 = QIcon()
+        icon1.addFile(u":/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.calendarBtn.setIcon(icon1)
         self.calendarBtn.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_15.addWidget(self.calendarBtn, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
 
-        self.operationsLayout.addWidget(self.widget_5, 1, 0, 1, 1)
+        self.verticalLayout_2.addWidget(self.widget_5, 0, Qt.AlignLeft)
 
-        self.lineEdit_3 = QLineEdit(self.operationsCheckBoxHolder)
-        self.lineEdit_3.setObjectName(u"lineEdit_3")
+        self.modelAndOperationHolder = QWidget(self.operationsHolder)
+        self.modelAndOperationHolder.setObjectName(u"modelAndOperationHolder")
+        self.verticalLayout_13 = QVBoxLayout(self.modelAndOperationHolder)
+        self.verticalLayout_13.setSpacing(5)
+        self.verticalLayout_13.setObjectName(u"verticalLayout_13")
+        self.verticalLayout_13.setContentsMargins(0, 0, 0, 0)
+        self.timePapersHolder = QWidget(self.modelAndOperationHolder)
+        self.timePapersHolder.setObjectName(u"timePapersHolder")
+        self.timePapersHolder.setMinimumSize(QSize(0, 0))
+        self.verticalLayout_3 = QVBoxLayout(self.timePapersHolder)
+        self.verticalLayout_3.setSpacing(5)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.operationsLayout = QGridLayout()
+        self.operationsLayout.setObjectName(u"operationsLayout")
+        self.operationsLayout.setHorizontalSpacing(25)
+        self.operationsLayout.setVerticalSpacing(8)
+        self.pushButton = QPushButton(self.timePapersHolder)
+        self.pushButton.setObjectName(u"pushButton")
+        self.pushButton.setFocusPolicy(Qt.NoFocus)
+        self.pushButton.setStyleSheet(u"*{\n"
+"	padding: 0px;\n"
+"	background-color: #dfdfdf;\n"
+"}")
+        icon2 = QIcon()
+        icon2.addFile(u":/icons/app/assets/icons/Check-Square--Streamline-Solar-Broken-#008b69.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.pushButton.setIcon(icon2)
+        self.pushButton.setIconSize(QSize(24, 24))
 
-        self.operationsLayout.addWidget(self.lineEdit_3, 3, 1, 1, 1)
+        self.operationsLayout.addWidget(self.pushButton, 4, 2, 1, 1, Qt.AlignHCenter|Qt.AlignVCenter)
 
-        self.label_34 = QLabel(self.operationsCheckBoxHolder)
+        self.clientModelsLineEdit = QLineEdit(self.timePapersHolder)
+        self.clientModelsLineEdit.setObjectName(u"clientModelsLineEdit")
+        self.clientModelsLineEdit.setMinimumSize(QSize(260, 0))
+
+        self.operationsLayout.addWidget(self.clientModelsLineEdit, 2, 1, 1, 1)
+
+        self.modelOperationLineEdit = QLineEdit(self.timePapersHolder)
+        self.modelOperationLineEdit.setObjectName(u"modelOperationLineEdit")
+        self.modelOperationLineEdit.setReadOnly(True)
+
+        self.operationsLayout.addWidget(self.modelOperationLineEdit, 3, 1, 1, 1)
+
+        self.label_34 = QLabel(self.timePapersHolder)
         self.label_34.setObjectName(u"label_34")
 
         self.operationsLayout.addWidget(self.label_34, 2, 4, 1, 1)
 
-        self.lineEdit_2 = QLineEdit(self.operationsCheckBoxHolder)
-        self.lineEdit_2.setObjectName(u"lineEdit_2")
-        self.lineEdit_2.setMinimumSize(QSize(200, 0))
+        self.modelPiecesLineEdit = QLineEdit(self.timePapersHolder)
+        self.modelPiecesLineEdit.setObjectName(u"modelPiecesLineEdit")
+        self.modelPiecesLineEdit.setMinimumSize(QSize(200, 0))
+        self.modelPiecesLineEdit.setReadOnly(True)
 
-        self.operationsLayout.addWidget(self.lineEdit_2, 2, 3, 1, 1)
+        self.operationsLayout.addWidget(self.modelPiecesLineEdit, 2, 3, 1, 1)
 
-        self.lineEdit_4 = QLineEdit(self.operationsCheckBoxHolder)
-        self.lineEdit_4.setObjectName(u"lineEdit_4")
-        self.lineEdit_4.setReadOnly(True)
+        self.piecesTimeLineEdit = QLineEdit(self.timePapersHolder)
+        self.piecesTimeLineEdit.setObjectName(u"piecesTimeLineEdit")
+        self.piecesTimeLineEdit.setReadOnly(True)
 
-        self.operationsLayout.addWidget(self.lineEdit_4, 3, 3, 1, 1)
+        self.operationsLayout.addWidget(self.piecesTimeLineEdit, 3, 3, 1, 1)
 
-        self.label_30 = QLabel(self.operationsCheckBoxHolder)
+        self.label_30 = QLabel(self.timePapersHolder)
         self.label_30.setObjectName(u"label_30")
 
         self.operationsLayout.addWidget(self.label_30, 2, 0, 1, 1)
 
-        self.label_33 = QLabel(self.operationsCheckBoxHolder)
+        self.label_33 = QLabel(self.timePapersHolder)
         self.label_33.setObjectName(u"label_33")
 
         self.operationsLayout.addWidget(self.label_33, 3, 2, 1, 1)
 
-        self.widget_14 = QWidget(self.operationsCheckBoxHolder)
+        self.widget_14 = QWidget(self.timePapersHolder)
         self.widget_14.setObjectName(u"widget_14")
         self.horizontalLayout_14 = QHBoxLayout(self.widget_14)
         self.horizontalLayout_14.setSpacing(5)
@@ -676,33 +677,55 @@ class Ui_customTimePapersWidget(object):
 
         self.operationsLayout.addWidget(self.widget_14, 0, 0, 1, 1, Qt.AlignLeft)
 
-        self.label_31 = QLabel(self.operationsCheckBoxHolder)
-        self.label_31.setObjectName(u"label_31")
+        self.isDefaultTimeCheckBox = QCheckBox(self.timePapersHolder)
+        self.isDefaultTimeCheckBox.setObjectName(u"isDefaultTimeCheckBox")
+        self.isDefaultTimeCheckBox.setFocusPolicy(Qt.NoFocus)
+        self.isDefaultTimeCheckBox.setChecked(True)
 
-        self.operationsLayout.addWidget(self.label_31, 2, 2, 1, 1)
+        self.operationsLayout.addWidget(self.isDefaultTimeCheckBox, 2, 5, 1, 1)
 
-        self.checkBox = QCheckBox(self.operationsCheckBoxHolder)
-        self.checkBox.setObjectName(u"checkBox")
-        self.checkBox.setChecked(True)
-
-        self.operationsLayout.addWidget(self.checkBox, 2, 5, 1, 1)
-
-        self.label_35 = QLabel(self.operationsCheckBoxHolder)
+        self.label_35 = QLabel(self.timePapersHolder)
         self.label_35.setObjectName(u"label_35")
 
         self.operationsLayout.addWidget(self.label_35, 3, 4, 1, 1)
 
-        self.lineEdit = QLineEdit(self.operationsCheckBoxHolder)
-        self.lineEdit.setObjectName(u"lineEdit")
-        self.lineEdit.setMaximumSize(QSize(55, 16777215))
+        self.timeForPieceLineEdit = QLineEdit(self.timePapersHolder)
+        self.timeForPieceLineEdit.setObjectName(u"timeForPieceLineEdit")
+        self.timeForPieceLineEdit.setMaximumSize(QSize(55, 16777215))
+        self.timeForPieceLineEdit.setFocusPolicy(Qt.NoFocus)
+        self.timeForPieceLineEdit.setReadOnly(True)
 
-        self.operationsLayout.addWidget(self.lineEdit, 3, 5, 1, 1)
+        self.operationsLayout.addWidget(self.timeForPieceLineEdit, 3, 5, 1, 1)
+
+        self.label_31 = QLabel(self.timePapersHolder)
+        self.label_31.setObjectName(u"label_31")
+
+        self.operationsLayout.addWidget(self.label_31, 3, 0, 1, 1)
+
+        self.label_32 = QLabel(self.timePapersHolder)
+        self.label_32.setObjectName(u"label_32")
+
+        self.operationsLayout.addWidget(self.label_32, 2, 2, 1, 1)
 
 
         self.verticalLayout_3.addLayout(self.operationsLayout)
 
 
-        self.verticalLayout_2.addWidget(self.operationsCheckBoxHolder)
+        self.verticalLayout_13.addWidget(self.timePapersHolder)
+
+        self.optionsHolder_2 = QFrame(self.modelAndOperationHolder)
+        self.optionsHolder_2.setObjectName(u"optionsHolder_2")
+        self.optionsHolder_2.setFrameShape(QFrame.StyledPanel)
+        self.optionsHolder_2.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_16 = QHBoxLayout(self.optionsHolder_2)
+        self.horizontalLayout_16.setSpacing(10)
+        self.horizontalLayout_16.setObjectName(u"horizontalLayout_16")
+        self.horizontalLayout_16.setContentsMargins(0, 0, 0, 10)
+
+        self.verticalLayout_13.addWidget(self.optionsHolder_2)
+
+
+        self.verticalLayout_2.addWidget(self.modelAndOperationHolder)
 
 
         self.verticalLayout_4.addWidget(self.operationsHolder)
@@ -715,7 +738,7 @@ class Ui_customTimePapersWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1012, 544))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1084, 515))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -748,6 +771,8 @@ class Ui_customTimePapersWidget(object):
 "	selection-color: #fefefe;\n"
 "}\n"
 "")
+        self.timePapersForDayTableView.setEditTriggers(QAbstractItemView.AnyKeyPressed)
+        self.timePapersForDayTableView.setTabKeyNavigation(False)
         self.timePapersForDayTableView.setAlternatingRowColors(True)
         self.timePapersForDayTableView.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.timePapersForDayTableView.setSortingEnabled(True)
@@ -813,16 +838,16 @@ class Ui_customTimePapersWidget(object):
         self.label_27.setText(QCoreApplication.translate("customTimePapersWidget", u"\u043c\u0438\u043d.", None))
         self.label_28.setText(QCoreApplication.translate("customTimePapersWidget", u"\u043c\u0438\u043d.", None))
         self.label_29.setText(QCoreApplication.translate("customTimePapersWidget", u"\u043c\u0438\u043d.", None))
-        self.label_32.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0411\u0440\u043e\u0439\u043a\u0438", None))
-        self.pushButton.setText("")
         self.label_25.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0414\u0430\u0442\u0430: ", None))
         self.timePaperDateEdit.setDisplayFormat(QCoreApplication.translate("customTimePapersWidget", u"d.M.yy '\u0433.'", None))
         self.calendarBtn.setText("")
+        self.pushButton.setText("")
         self.label_34.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0412\u0440\u0435\u043c\u0435\u041f\u043e\u041f\u043e\u0434.", None))
         self.label_30.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041c\u043e\u0434\u0435\u043b:", None))
         self.label_33.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0412\u0440\u0435\u043c\u0435", None))
-        self.label_31.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041e\u043f\u0435\u0440\u0430\u0446\u0438\u044f", None))
-        self.checkBox.setText("")
+        self.isDefaultTimeCheckBox.setText("")
         self.label_35.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0412\u0440\u0435\u043c\u0435 \u0437\u0430 \u0431\u0440.", None))
+        self.label_31.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041e\u043f\u0435\u0440\u0430\u0446\u0438\u044f", None))
+        self.label_32.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0411\u0440\u043e\u0439\u043a\u0438", None))
     # retranslateUi
 

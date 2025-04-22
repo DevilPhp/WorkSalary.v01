@@ -21,6 +21,7 @@ class WorkerServices:
             for timePaper in timePapers:
                 for operation in timePaper.timePaperOperations:
                     returnedData.append([
+                        timePaper.id,
                         timePaper.WorkerId,
                         operation.productionModelOperations.ПоръчкаNo,
                         operation.productionModelOperations.ОперацияNo,
