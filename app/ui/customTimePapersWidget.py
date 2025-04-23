@@ -9,7 +9,7 @@ from app.services.workerServices import WorkerServices as WoS
 from app.services.modelServices import ModelService as MoS
 from app.ui.customCalendarWidget import CustomCalendarDialog
 from app.models.tableModel import TableModel
-from app.models.sortingModel import CaseInsensitiveProxyModel
+from app.models.sortingModel import CaseInsensitiveProxyModel, FilterableHeaderView
 from app.ui.messagesManager import MessageManager as MM
 
 class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
@@ -22,6 +22,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.models = MoS.getClientsAndModels()
         self.clientModels = {}
         self.modelOperations = {}
+        self.workingShifts = WoS.getWorkingShifts()
         self.workersInfo = []
         self.existingTimePapers = {}
         self.setupWorkerAndModelsCompleter()
@@ -41,20 +42,22 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.timePapersForDayTableView.horizontalHeader().setMinimumWidth(80)
         # self.timePapersForDayTableView.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.refreshTimePapersForToday()
+        self.workerShiftsHolder.setEnabled(False)
         self.modelAndOperationHolder.setVisible(False)
         validatorInt = QDoubleValidator(0, 999999, 0)
         self.modelPiecesLineEdit.setValidator(validatorInt)
 
         self.isDefaultTimeCheckBox.stateChanged.connect(self.setDefaultTime)
-        self.shiftStart.editingFinished.connect(self.updateDuration)
-        self.shiftEnd.editingFinished.connect(self.updateDuration)
-        self.overtimeStart.editingFinished.connect(self.updateDuration)
-        self.overtimeEnd.editingFinished.connect(self.updateDuration)
-        self.hourlyStart.editingFinished.connect(self.updateDuration)
-        self.hourlyEnd.editingFinished.connect(self.updateDuration)
+        self.shiftStart.timeChanged.connect(self.updateDuration)
+        self.shiftEnd.timeChanged.connect(self.updateDuration)
+        self.overtimeStart.timeChanged.connect(self.updateDuration)
+        self.overtimeEnd.timeChanged.connect(self.updateDuration)
+        self.hourlyStart.timeChanged.connect(self.updateDuration)
+        self.hourlyEnd.timeChanged.connect(self.updateDuration)
 
         self.calendarBtn.clicked.connect(self.showCustomCalendaDialog)
         self.modelPiecesLineEdit.returnPressed.connect(self.addTimePaperOperation)
+        self.addNewTimePaperBtn.clicked.connect(self.addTimePaperOperation)
 
     def setDefaultTime(self):
         if self.clientModelsLineEdit.text() not in self.clientModels.keys():
@@ -96,6 +99,9 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
     def setProxyModel(self, proxyModel, model, table):
         proxyModel.setSourceModel(model)
+        filterableHeaderView = FilterableHeaderView(Qt.Orientation.Horizontal, table)
+        filterableHeaderView.setFilterModel(proxyModel)
+        table.setHorizontalHeader(filterableHeaderView)
         table.setModel(proxyModel)
         table.setSortingEnabled(True)
 
@@ -110,6 +116,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         # print(f'Selected date: {formattedDate}')
         self.timePaperDateEdit.setDate(formattedDate)
         self.refreshTimePapersForToday()
+        self.clearOperationInfo()
 
     def updateDuration(self):
         if self.sender() == self.shiftStart or self.sender() == self.shiftEnd:
@@ -130,6 +137,18 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.overtimeStartWidget.setEnabled(False)
         self.isHourlyWorking.stateChanged.connect(self.toggleHourlyWorking)
         self.isOvertimeWorking.stateChanged.connect(self.toggleOvertimeWorking)
+        for shift in self.workingShifts.keys():
+            self.shiftNameLineEdit.addItem(shift)
+        self.shiftNameLineEdit.setCurrentIndex(0)
+        Utils.setupCompleter(self.workingShifts.keys(), self.shiftNameLineEdit)
+        self.shiftNameLineEdit.currentIndexChanged.connect(self.updateShiftInfo)
+
+    def updateShiftInfo(self):
+        shiftName = self.shiftNameLineEdit.currentText()
+        if shiftName in self.workingShifts:
+            shift = self.workingShifts[shiftName]
+            self.shiftStart.setTime(shift[1])
+            self.shiftEnd.setTime(shift[2])
 
     def toggleHourlyWorking(self):
         if self.isHourlyWorking.isChecked():
@@ -169,7 +188,9 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             modelId = self.clientModels[selectedText]
             operations = MoS.getModelOperations(modelId)
             for operation in operations:
-                self.modelOperations[f'{operation.ОперацияNo} : {operation.Операция}'] = round(operation.TimeForOper, 2)
+                self.modelOperations[f'{operation.ОперацияNo} : {operation.Операция}'] = [
+                    round(operation.TimeForOper, 2), operation.id
+                ]
             Utils.setupCompleter(self.modelOperations.keys(), self.modelOperationLineEdit)
             self.modelOperationLineEdit.setReadOnly(False)
             self.modelOperationLineEdit.editingFinished.connect(self.updateModelOperation)
@@ -188,7 +209,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             return
 
         if self.modelOperationLineEdit.text() in self.modelOperations.keys():
-            self.timeForPieceLineEdit.setText(str(self.modelOperations[self.modelOperationLineEdit.text()]))
+            self.timeForPieceLineEdit.setText(str(self.modelOperations[self.modelOperationLineEdit.text()][0]))
             self.modelPiecesLineEdit.setReadOnly(False)
             self.modelPiecesLineEdit.textChanged.connect(self.updateModelPieces)
             self.timeForPieceLineEdit.textChanged.connect(self.updateModelPieces)
@@ -206,11 +227,39 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
     def addTimePaperOperation(self):
         if int(self.workerNumberLineEdit.text()) not in self.existingTimePapers.keys():
-            print('New Time Paper created')
-
+            overtime = [self.overtimeStart, self.overtimeEnd, float(self.overtimeTotalMins.text())] \
+                if self.isHourlyWorking.isChecked() else None
+            hourlyPay = [self.hourlyStart, self.hourlyEnd, float(self.hourlyTotalMins.text())] \
+                if self.isOvertimeWorking.isChecked() else None
+            date = datetime.strptime(self.timePaperDateEdit.date().toString('yyyy-MM-dd'), '%Y-%m-%d').date()
+            timePaperData = {
+                'Date': date,
+                'ShiftId': self.workingShifts[self.shiftNameLineEdit.currentText()][0],
+                'IsHourlyPaid': hourlyPay,
+                'IsOvertime': overtime,
+                'WorkerId': int(self.workerNumberLineEdit.text()),
+                'user': self.usernameLabel.text(),
+                'OrderId': self.clientModels[self.clientModelsLineEdit.text()],
+                'ModelOperationId': self.modelOperations[self.modelOperationLineEdit.text()][1],
+                'Pieces': int(self.modelPiecesLineEdit.text()),
+                'WorkingTimeMinutes': float(self.piecesTimeLineEdit.text())
+            }
+            timePaper = WoS.addNewTimePaperAndOperation(timePaperData)
         else:
-            print('Time Paper updated')
-            print(self.existingTimePapers[int(self.workerNumberLineEdit.text())])
+            timePaperData = {
+                'TimePaperId': self.existingTimePapers[int(self.workerNumberLineEdit.text())],
+                'OrderId': self.clientModels[self.clientModelsLineEdit.text()],
+                'ModelOperationId': self.modelOperations[self.modelOperationLineEdit.text()][1],
+                'Pieces': int(self.modelPiecesLineEdit.text()),
+                'WorkingTimeMinutes': float(self.piecesTimeLineEdit.text())
+            }
+            timePaper = WoS.updateTimePaperAndOperation(timePaperData)
+
+        if timePaper:
+            MM.showOnWidget(self, 'Успешно добавено временно документ за операции', 'success')
+            self.refreshTimePapersForToday()
+            self.clearOperationInfo(False)
+
 
 
     def updateWorkerInfo(self):
@@ -239,9 +288,36 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 self.workerPositionLineEdit.setText(workerPosition)
 
             else:
-                self.workerPlaceLineEdit.setText('Не е указано')
+                self.workerPositionLineEdit.setText('Не е указано')
         else:
             self.workerShiftsHolder.setEnabled(False)
+            self.clearWorkerInfo()
+            self.clearOperationInfo()
             self.workerLastNameLineEdit.clear()
             self.workerNumberLineEdit.clear()
             self.modelAndOperationHolder.setVisible(False)
+            self.workerPlaceLineEdit.setText('Не е указано')
+            self.workerPositionLineEdit.setText('Не е указано')
+
+    def clearWorkerInfo(self):
+        self.shiftNameLineEdit.clear()
+        self.shiftStart.setTime(QTime(8, 0))
+        self.shiftEnd.setTime(QTime(17, 0))
+        self.isOvertimeWorking.setCheckState(Qt.CheckState.Unchecked)
+        self.isHourlyWorking.setCheckState(Qt.CheckState.Unchecked)
+        self.overtimeStart.setTime(QTime(0, 0))
+        self.overtimeEnd.setTime(QTime(0, 0))
+        self.hourlyStart.setTime(QTime(0, 0))
+        self.hourlyEnd.setTime(QTime(0, 0))
+
+    def clearOperationInfo(self, model=True):
+        if model:
+            self.clientModelsLineEdit.clear()
+        else:
+            self.clientModelsLineEdit.setFocus()
+            self.clientModelsLineEdit.selectAll()
+        self.modelOperationLineEdit.clear()
+        self.modelPiecesLineEdit.clear()
+        self.timeForPieceLineEdit.clear()
+        self.piecesTimeLineEdit.setText('0')
+        self.isDefaultTimeCheckBox.setCheckState(Qt.CheckState.Checked)

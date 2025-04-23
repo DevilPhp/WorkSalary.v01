@@ -32,7 +32,7 @@
    <string notr="true">*{
 	font-family: &quot;Segoe UI&quot;;
 	border-radius: 10px;
-	background-color: #bebebe;
+	background-color: #dfdfdf;
 	padding: 0;
 	margin: 0;
 	color: #324b4c;
@@ -45,7 +45,7 @@ QDialog{
 
 }
 #mainWidget{
-	background-color: #bebebe;
+	background-color: #dfdfdf;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -180,21 +180,22 @@ font: 700 11pt &quot;Segoe UI&quot;;
 padding: 5px;
 }
 QAbstractItemView{
-background-color: #bebebe;
-selection-background-color: #bebebe;
+background-color: #dfdfdf;
+selection-background-color: #dfdfdf;
 selection-color: #2b2b2c;
+focus: none;
 }
 QAbstractItemView:disabled{
-background-color: #bebebe;
+background-color: #dfdfdf;
 color: #495466;
 }
 #qt_calendar_prevmonth {
-    background-color: #bebebe;
+    background-color: #dfdfdf;
     icon-size: 24px;
     qproperty-icon: url(:/icons/app/assets/icons/Alt-Arrow-Left--Streamline-Solar-Broken.svg);
 }
 #qt_calendar_nextmonth {
-    background-color: #bebebe;
+    background-color: #dfdfdf;
     icon-size: 24px;
     qproperty-icon: url(:/icons/app/assets/icons/Alt-Arrow-Right--Streamline-Solar-Broken.svg);
 }
@@ -202,7 +203,11 @@ QMenu{
 min-height:fit-content;
 min-width:fit-content; 
 border: none;
+border-bottom: 1px solid #7f7f7f;
+border-right: 1px solid #7f7f7f;
+border-radius: 0px;
 }
+
 QMenu::item:selected{
 color: #2b2b2c;
 font: 900 10.5pt &quot;Segoe UI&quot;;

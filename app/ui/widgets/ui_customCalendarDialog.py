@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customCalendarDialogjyubFG.ui'
+## Form generated from reading UI file 'customCalendarDialognAeXfH.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -35,7 +35,7 @@ class Ui_CustomCalendarDialog(object):
         CustomCalendarDialog.setStyleSheet(u"*{\n"
 "	font-family: \"Segoe UI\";\n"
 "	border-radius: 10px;\n"
-"	background-color: #bebebe;\n"
+"	background-color: #dfdfdf;\n"
 "	padding: 0;\n"
 "	margin: 0;\n"
 "	color: #324b4c;\n"
@@ -48,7 +48,7 @@ class Ui_CustomCalendarDialog(object):
 "\n"
 "}\n"
 "#mainWidget{\n"
-"	background-color: #bebebe;\n"
+"	background-color: #dfdfdf;\n"
 "}")
         self.verticalLayout_2 = QVBoxLayout(CustomCalendarDialog)
         self.verticalLayout_2.setSpacing(0)
@@ -96,21 +96,22 @@ class Ui_CustomCalendarDialog(object):
 "padding: 5px;\n"
 "}\n"
 "QAbstractItemView{\n"
-"background-color: #bebebe;\n"
-"selection-background-color: #bebebe;\n"
+"background-color: #dfdfdf;\n"
+"selection-background-color: #dfdfdf;\n"
 "selection-color: #2b2b2c;\n"
+"focus: none;\n"
 "}\n"
 "QAbstractItemView:disabled{\n"
-"background-color: #bebebe;\n"
+"background-color: #dfdfdf;\n"
 "color: #495466;\n"
 "}\n"
 "#qt_calendar_prevmonth {\n"
-"    background-color: #bebebe;\n"
+"    background-color: #dfdfdf;\n"
 "    icon-size: 24px;\n"
 "    qproperty-icon: url(:/icons/app/assets/icons/Alt-Arrow-Left--Streamline-Solar-Broken.svg);\n"
 "}\n"
 "#qt_calendar_nextmonth {\n"
-"    background-color: #bebebe;\n"
+"    background-color: #dfdfdf;\n"
 "    icon-size: 24px;\n"
 "    qproperty-icon: url(:/icons/app/assets/icons/Alt-Arrow-Right--Streamline-Solar-Broken.svg);\n"
 "}\n"
@@ -118,19 +119,23 @@ class Ui_CustomCalendarDialog(object):
 "min-height:fit-content;\n"
 "min-width:fit-content; \n"
 "border: none;\n"
+"border-bottom: 1px solid #7f7f7f;\n"
+"border-right: 1px solid #7f7f7f;\n"
+"border-radius: 0px;\n"
 "}\n"
+"\n"
 "QMenu::item:selected{\n"
 "color: #2b2b2c;\n"
 "font: 900 10.5pt \"Segoe UI\";\n"
 "border-radius: 0px\n"
 "}\n"
 "QMenu::item{\n"
-"color: #324b4c;\n"
+"col"
+                        "or: #324b4c;\n"
 "font: 700 10pt \"Segoe UI\";\n"
 "height: 11px;  \n"
 "border: 4px solid transparent;\n"
-"padding: 0px 8px"
-                        " 0px 8px;\n"
+"padding: 0px 8px 0px 8px;\n"
 "}\n"
 "QTableView::item:selected{\n"
 "border:2.5px solid #324b4c;\n"

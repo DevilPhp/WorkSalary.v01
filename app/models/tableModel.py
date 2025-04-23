@@ -45,4 +45,3 @@ class TableModel(QAbstractTableModel):
 
     def flags(self, index):
         return Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsEditable
-
