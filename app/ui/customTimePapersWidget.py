@@ -11,6 +11,7 @@ from app.ui.customCalendarWidget import CustomCalendarDialog
 from app.models.tableModel import TableModel
 from app.models.sortingModel import CaseInsensitiveProxyModel, FilterableHeaderView
 from app.ui.messagesManager import MessageManager as MM
+from app.ui.customSortingMenuWidget import CustomSortingMenuWidget
 
 class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
     def __init__(self, mainWindow, parent=None):
@@ -25,6 +26,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.workingShifts = WoS.getWorkingShifts()
         self.workersInfo = []
         self.existingTimePapers = {}
+        self.checkBoxFiltering = {}
+        self.initialCheckBoxes = {}
         self.setupWorkerAndModelsCompleter()
         self.timePaperDateEdit.setDate(QDate.currentDate())
         self.setupWorkingTimeWidgets()
@@ -73,6 +76,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
     def refreshTimePapersForToday(self):
         self.existingTimePapers.clear()
+        self.initialCheckBoxes.clear()
         searchedDate = self.timePaperDateEdit.date().toString('yyyy-MM-dd')
         formatedDate = datetime.strptime(searchedDate, '%Y-%m-%d').date()
         # print(formatedDate, searchedDate)
@@ -100,10 +104,41 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
     def setProxyModel(self, proxyModel, model, table):
         proxyModel.setSourceModel(model)
         filterableHeaderView = FilterableHeaderView(Qt.Orientation.Horizontal, table)
-        filterableHeaderView.setFilterModel(proxyModel)
         table.setHorizontalHeader(filterableHeaderView)
+        filterableHeaderView.filterRequested.connect(partial(self.updateFilter, proxyModel, filterableHeaderView))
         table.setModel(proxyModel)
         table.setSortingEnabled(True)
+
+    def updateFilter(self, proxyModel, header, column):
+        items = []
+        if column not in self.checkBoxFiltering.keys():
+            self.checkBoxFiltering[column] = []
+        for row in range(proxyModel.rowCount()):
+            index = proxyModel.index(row, column)
+            value = proxyModel.data(index, Qt.ItemDataRole.DisplayRole)
+            if value not in self.initialCheckBoxes.keys():
+                self.initialCheckBoxes[value] = column
+
+            if value not in items:
+                items.append(value)
+        if items:
+            menu = CustomSortingMenuWidget(header)
+            menu.addItems(items)
+            menu.move(self.cursor().pos())
+            menu.checkedCheckbox.connect(partial(self.applyFilter, proxyModel))
+
+    def applyFilter(self, proxyModel, item):
+        if item.text() in self.initialCheckBoxes.keys():
+            col = self.initialCheckBoxes[item.text()]
+            if item.isChecked() and item.text() not in self.checkBoxFiltering[col]:
+                self.checkBoxFiltering[col].append(item.text())
+            elif not item.isChecked() and item.text() in self.checkBoxFiltering[col]:
+                self.checkBoxFiltering[col].remove(item.text())
+            proxyModel.setFilterForColumn(col, self.checkBoxFiltering)
+            proxyModel.invalidateFilter()
+
+
+
 
     def showCustomCalendaDialog(self):
         calendarDialog = CustomCalendarDialog()

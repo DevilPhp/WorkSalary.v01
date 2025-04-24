@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customTimePapersWidgetpGCPOD.ui'
+## Form generated from reading UI file 'customTimePapersWidgetVZoywb.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -33,6 +33,15 @@ class Ui_customTimePapersWidget(object):
 "	font: 600 12pt \"Segoe UI\";\n"
 "	color: #324b4c;\n"
 "}\n"
+"\n"
+"QScrollBar:vertical {\n"
+"        width: 20px;\n"
+"        background: none;\n"
+"    }\n"
+"\n"
+"QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {\n"
+"        background: #dfdfdf;\n"
+"    }\n"
 "\n"
 "QPushButton {\n"
 "	background-color: #c9c9c9;\n"
@@ -70,7 +79,8 @@ class Ui_customTimePapersWidget(object):
 "}\n"
 "\n"
 "#userIcon, #calendarBtn {\n"
-"	background-color: #dfdfdf;\n"
+"	background-color:"
+                        " #dfdfdf;\n"
 "}\n"
 "\n"
 "#usernameLabel {\n"
@@ -84,8 +94,7 @@ class Ui_customTimePapersWidget(object):
 "#widget_3 * {\n"
 "	font-size: 11pt;\n"
 "}\n"
-""
-                        "\n"
+"\n"
 "QComboBox{\n"
 "	background-color: #dfdfdf;\n"
 "	border-bottom: 2px solid #7c9399;\n"
@@ -622,7 +631,7 @@ class Ui_customTimePapersWidget(object):
         self.timePaperDateEdit.setFrame(False)
         self.timePaperDateEdit.setAlignment(Qt.AlignCenter)
         self.timePaperDateEdit.setCorrectionMode(QAbstractSpinBox.CorrectToNearestValue)
-        self.timePaperDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 9, 13), QTime(0, 0, 0)))
+        self.timePaperDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 9, 12), QTime(0, 0, 0)))
 
         self.horizontalLayout_15.addWidget(self.timePaperDateEdit)
 

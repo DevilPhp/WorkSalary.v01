@@ -26,6 +26,15 @@
 	color: #324b4c;
 }
 
+QScrollBar:vertical {
+        width: 20px;
+        background: none;
+    }
+
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+        background: #dfdfdf;
+    }
+
 QPushButton {
 	background-color: #c9c9c9;
 	border: none;
@@ -1043,7 +1052,7 @@ QComboBox::item{
                 <second>0</second>
                 <year>1990</year>
                 <month>9</month>
-                <day>13</day>
+                <day>12</day>
                </datetime>
               </property>
               <property name="displayFormat">

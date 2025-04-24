@@ -1,6 +1,9 @@
-from PySide6.QtCore import QSortFilterProxyModel, Qt, Signal
+from functools import partial
+
+from PySide6.QtCore import QSortFilterProxyModel, Qt, Signal, QPoint
 from PySide6.QtGui import QAction
-from PySide6.QtWidgets import QHeaderView, QMenu, QCheckBox, QWidgetAction
+from PySide6.QtWidgets import QHeaderView, QMenu, QCheckBox, QWidgetAction, QApplication
+
 
 
 class CaseInsensitiveProxyModel(QSortFilterProxyModel):
@@ -19,7 +22,7 @@ class CaseInsensitiveProxyModel(QSortFilterProxyModel):
                 continue
             index = self.sourceModel().index(sourceRow, column, sourceParent)
             data = self.sourceModel().data(index)
-            if data + '   ' not in filterSet:
+            if data not in filterSet:
                 return False
             # for filter in filterSet:
             #     if filter != data + '   ':
@@ -63,7 +66,6 @@ class CheckableMenu(QMenu):
                 border: 1px solid #495466;
             }
         ''')
-        self.setMaximumHeight(300)
 
     def addCheckableItems(self, items):
         for item in sorted(set(items)):
@@ -74,6 +76,37 @@ class CheckableMenu(QMenu):
                 self.checkedItems.add(str(item))
                 checkBox.stateChanged.connect(lambda checked, selectedItem=item: self.onItemToggled(checked, selectedItem))
                 self.addAction(action)
+        # self.adjustSizeForScrolling(len(items))
+
+    # def adjustSizeForScrolling(self, itemCount):
+    #     averageItemHeight = 25  # Approximate height of a menu item
+    #     contentHeight = itemCount * averageItemHeight
+    #
+    #     if contentHeight > self._max_height:
+    #         self.sizeHint().setHeight(self._max_height)
+            # Enable scrolling with styling
+            # self.setStyleSheet("""
+            #             QMenu {
+            #                 max-height: %dpx;
+            #             }
+            #             QMenu::item {
+            #                 padding: 5px 25px 5px 20px;
+            #             }
+            #         """ % self._max_height)
+
+    # def popup(self, pos):
+    #     """Override popup to ensure proper positioning"""
+    #     # Make sure we don't position the menu outside screen bounds
+    #     screen_rect = QApplication.primaryScreen().availableGeometry()
+    #
+    #     # Calculate if menu would go off screen
+    #     menu_height = min(self.sizeHint().height(), self._max_height)
+    #     if pos.y() + menu_height > screen_rect.height():
+    #         # Reposition above the cursor if it would go off screen
+    #         pos.setY(pos.y() - menu_height)
+    #
+    #     # Call the original popup method with adjusted position
+    #     super().popup(pos)
 
     def onItemToggled(self, checked, checkedItem):
         if checked:
@@ -86,39 +119,70 @@ class CheckableMenu(QMenu):
 
 
 class FilterableHeaderView(QHeaderView):
-    # filterRequested = Signal(int)
+    filterRequested = Signal(int)
     def __init__(self, orientation, parent=None):
         super().__init__(orientation, parent)
         self.setSectionsClickable(True)
-        self.filterMenus = {}
         self.filterModel = None
-        self.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
-        self.customContextMenuRequested.connect(self.showFilterMenu)
+        self.filteredNames = []
+        # self.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        # self.customContextMenuRequested.connect(self.showFilterMenu)
+    def mousePressEvent(self, event):
+        logicalIndex = self.logicalIndexAt(event.pos())
+        if event.button() == Qt.RightButton:
+            self.filterRequested.emit(logicalIndex)
+            # menu = CustomSortingMenuWidget(self)
+            # sourceModel = self.filterModel.sourceModel()
+            # for row in range(sourceModel.rowCount()):
+            #     index = sourceModel.index(row, logicalIndex)
+            #     value = sourceModel.data(index, Qt.ItemDataRole.DisplayRole)
+            #     if value not in uniqueValues:
+            #         uniqueValues.append(str(value))
+            # # print(uniqueValues)
+            # if uniqueValues:
+            #     menu.addItems(uniqueValues)
+            #     menu.move(event.globalPos())
+            #     menu.checkedCheckbox.connect(partial(self.checkedCheckbox, logicalIndex))
+            #     # print(menu)
+            #     menu.show()
+        else:
+            super(FilterableHeaderView, self).mousePressEvent(event)
 
-    def setFilterModel(self, filterModel):
-        self.filterModel = filterModel
+    # def checkedCheckbox(self, column, checkedItem):
+    #     if checkedItem.isChecked() and checkedItem.text() not in self.filteredNames:
+    #         self.filteredNames.append(checkedItem.text())
+    #     elif not checkedItem.isChecked() and checkedItem.text() in self.filteredNames:
+    #         self.filteredNames.remove(checkedItem.text())
+    #     print(self.filteredNames)
+    #     self.filterRequested.emit(self.filteredNames)
 
-    def showFilterMenu(self, pos):
-        logicalIndex = self.logicalIndexAt(pos)
-        print(pos)
-        if logicalIndex < 0:
-            return
-
-        uniqueValues = set()
-        sourceModel = self.filterModel.sourceModel()
-        for row in range(sourceModel.rowCount()):
-            index = sourceModel.index(row, logicalIndex)
-            value = sourceModel.data(index, Qt.ItemDataRole.DisplayRole)
-            if value:
-                uniqueValues.add(str(value))
-
-        # Create filter menu
-        menu = CheckableMenu(self)
-        menu.addCheckableItems(uniqueValues)
-
-        # Show the menu - ensure correct position handling
-        headerPos = self.mapToGlobal(pos)
-        menu.popup(headerPos)
+    # def setFilterModel(self, filterModel):
+    #     self.filterModel = filterModel
+    #
+    # def showFilterMenu(self, pos):
+    #     logicalIndex = self.logicalIndexAt(pos)
+    #     # print(pos)
+    #     if logicalIndex < 0:
+    #         return
+    #
+    #     uniqueValues = set()
+    #     sourceModel = self.filterModel.sourceModel()
+    #     for row in range(sourceModel.rowCount()):
+    #         index = sourceModel.index(row, logicalIndex)
+    #         value = sourceModel.data(index, Qt.ItemDataRole.DisplayRole)
+    #         if value:
+    #             uniqueValues.add(str(value))
+    #
+    #     # Create filter menu
+    #     menu = CheckableMenu(self)
+    #     menu.addCheckableItems(uniqueValues)
+    #     print(self.parent().horizontalHeader().pos())
+    #
+    #     # Show the menu - ensure correct position handling
+    #     headerPos = self.mapToGlobal(pos)
+    #     menu.popup(headerPos)
+    #     menu.setMaximumHeight(300)
+    #     print(menu.sizeHint().height())
     # def mousePressEvent(self, event):
     #     section = self.logicalIndexAt(event.pos())
     #     if event.button() == Qt.MouseButton.RightButton:
