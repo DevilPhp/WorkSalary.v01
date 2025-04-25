@@ -101,7 +101,8 @@ class CustomTableViewWithMultiSelection(QTableView):
                 if self.selectionModel().selectedRows(0):
                     print(self.selectionModel().selectedRows(0))
 
-                    self.selectedRows.emit([self.selectionModel().selectedRows(5), self.selectionModel().selectedRows(6)])
+                    self.selectedRows.emit([self.selectionModel().selectedRows(5),
+                                            self.selectionModel().selectedRows(6)])
                 # print(self.selectionModel().selectedIndexes())
             else:
                 self.clearSelection()
