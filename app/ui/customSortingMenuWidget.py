@@ -12,23 +12,32 @@ class CustomSortingMenuWidget(QWidget, Ui_customSortingMenuWidget):
         super().__init__(parent)
         self.setupUi(self)
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.Popup)
+        self.checkBoxes = []
+        self.minHeight = 20
+        self.minWidth = 80
         # self.move(0, 0)
         self.show()
 
     def addItems(self, items):
-        minWidth = 80
-        if len(items) > 10:
-            minHeight = 20 * 10
-        else:
-            minHeight = 20 * len(items)
         for item in items:
-            checkBox = QCheckBox(item, self)
-            checkBox.setMaximumHeight(20)
-            self.menuItemsHolder.addWidget(checkBox)
-            checkBox.stateChanged.connect(partial(self.emitCurrentItem, checkBox))
-            if minWidth < checkBox.sizeHint().width():
-                minWidth = checkBox.sizeHint().width()
-        self.scrollArea.setMinimumSize(QSize(minWidth + 20, minHeight + 20))
+            self.addItem(item)
 
-    def emitCurrentItem(self, checkBox, state):
+    def addItem(self, item, checked=False):
+        checkBox = QCheckBox(item, self)
+        checkBox.setChecked(checked)
+        checkBox.stateChanged.connect(lambda: self.emitCurrentItem(checkBox))
+        self.menuItemsHolder.addWidget(checkBox)
+        self.checkBoxes.append(checkBox)
+        if self.minWidth < checkBox.sizeHint().width():
+            self.minWidth = checkBox.sizeHint().width()
+
+    def setMenuSize(self, count):
+        if count > 10:
+            self.minHeight = 20 * 10
+        else:
+            self.minHeight = 20 * count
+        self.scrollArea.setMinimumSize(QSize(self.minWidth + 20, self.minHeight + 20))
+
+
+    def emitCurrentItem(self, checkBox):
         self.checkedCheckbox.emit(checkBox)

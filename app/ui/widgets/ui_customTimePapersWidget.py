@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customTimePapersWidgetVZoywb.ui'
+## Form generated from reading UI file 'customTimePapersWidgetUnvvDQ.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -15,11 +15,11 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractItemView, QAbstractSpinBox, QApplication, QCheckBox,
-    QComboBox, QDateEdit, QFormLayout, QFrame,
-    QGridLayout, QHBoxLayout, QHeaderView, QLabel,
-    QLineEdit, QPushButton, QScrollArea, QSizePolicy,
-    QTableView, QTimeEdit, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QAbstractSpinBox, QApplication, QCheckBox, QComboBox,
+    QDateEdit, QFormLayout, QFrame, QGridLayout,
+    QHBoxLayout, QLabel, QLineEdit, QPushButton,
+    QScrollArea, QSizePolicy, QTimeEdit, QVBoxLayout,
+    QWidget)
 import resources_rc
 
 class Ui_customTimePapersWidget(object):
@@ -66,6 +66,13 @@ class Ui_customTimePapersWidget(object):
 "	border-bottom: 1px solid #7c9399;\n"
 "}\n"
 "\n"
+"#statusBar {\n"
+"	border: 1px solid #7c9399;\n"
+"}\n"
+"#statusBar *{\n"
+"	font-size: 9pt;\n"
+"}\n"
+"\n"
 "#modelHolder QLabel, #newModelInfoHolder * , #widget_11 *{\n"
 "	font-size: 10pt;\n"
 "}\n"
@@ -74,13 +81,13 @@ class Ui_customTimePapersWidget(object):
 "	border-bottom: 2px dashed #7c9399;\n"
 "}\n"
 "\n"
-"#pageTitle {\n"
+"#page"
+                        "Title {\n"
 "	font: 700 13pt \"Segoe UI\";\n"
 "}\n"
 "\n"
 "#userIcon, #calendarBtn {\n"
-"	background-color:"
-                        " #dfdfdf;\n"
+"	background-color: #dfdfdf;\n"
 "}\n"
 "\n"
 "#usernameLabel {\n"
@@ -123,7 +130,8 @@ class Ui_customTimePapersWidget(object):
 "	font: 700 10pt \"Segoe UI\";\n"
 "	height: 11px;  \n"
 "	border: 4px solid transparent;\n"
-"	padding: 0px 8px 0px 8px;\n"
+"	padding: 0px 8px"
+                        " 0px 8px;\n"
 "}")
         self.verticalLayout = QVBoxLayout(customTimePapersWidget)
         self.verticalLayout.setSpacing(10)
@@ -631,7 +639,7 @@ class Ui_customTimePapersWidget(object):
         self.timePaperDateEdit.setFrame(False)
         self.timePaperDateEdit.setAlignment(Qt.AlignCenter)
         self.timePaperDateEdit.setCorrectionMode(QAbstractSpinBox.CorrectToNearestValue)
-        self.timePaperDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 9, 12), QTime(0, 0, 0)))
+        self.timePaperDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 9, 10), QTime(0, 0, 0)))
 
         self.horizontalLayout_15.addWidget(self.timePaperDateEdit)
 
@@ -792,55 +800,117 @@ class Ui_customTimePapersWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1104, 508))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1104, 472))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
         self.verticalLayout_12.setContentsMargins(0, 0, 0, 0)
-        self.widget_2 = QWidget(self.scrollAreaWidgetContents)
-        self.widget_2.setObjectName(u"widget_2")
-        self.verticalLayout_11 = QVBoxLayout(self.widget_2)
+        self.timePaperTableHolder = QWidget(self.scrollAreaWidgetContents)
+        self.timePaperTableHolder.setObjectName(u"timePaperTableHolder")
+        self.verticalLayout_11 = QVBoxLayout(self.timePaperTableHolder)
         self.verticalLayout_11.setObjectName(u"verticalLayout_11")
-        self.timePapersForDayTableView = QTableView(self.widget_2)
-        self.timePapersForDayTableView.setObjectName(u"timePapersForDayTableView")
-        self.timePapersForDayTableView.setFocusPolicy(Qt.NoFocus)
-        self.timePapersForDayTableView.setStyleSheet(u"QHeaderView:section{\n"
-"font: 700 10.5pt \"Segoe UI\";\n"
-"background-color: #dfdfdf;\n"
-"padding-left: 10px;\n"
-"padding-top:10px;\n"
-"padding-right:10px;\n"
-"selection-background-color: #7f7f7f;\n"
-"}\n"
-"QVerticalView:section{\n"
-"min-height: 30;\n"
-"}\n"
-"QAbstractItemView{\n"
-"font: 10.5pt \"Segoe UI\";\n"
-"selection-background-color: #545454;\n"
-"selection-color: #fefefe;\n"
-"}\n"
-"QAbstractItemView:item{\n"
-"	selection-background-color: #545454;\n"
-"	selection-color: #fefefe;\n"
-"}\n"
-"")
-        self.timePapersForDayTableView.setEditTriggers(QAbstractItemView.AnyKeyPressed)
-        self.timePapersForDayTableView.setTabKeyNavigation(False)
-        self.timePapersForDayTableView.setAlternatingRowColors(True)
-        self.timePapersForDayTableView.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.timePapersForDayTableView.setSortingEnabled(True)
-        self.timePapersForDayTableView.setCornerButtonEnabled(False)
-        self.timePapersForDayTableView.verticalHeader().setVisible(False)
 
-        self.verticalLayout_11.addWidget(self.timePapersForDayTableView)
-
-
-        self.verticalLayout_12.addWidget(self.widget_2)
+        self.verticalLayout_12.addWidget(self.timePaperTableHolder)
 
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
         self.verticalLayout.addWidget(self.scrollArea)
+
+        self.statusBar = QWidget(customTimePapersWidget)
+        self.statusBar.setObjectName(u"statusBar")
+        self.statusBar.setMinimumSize(QSize(0, 0))
+        self.horizontalLayout_18 = QHBoxLayout(self.statusBar)
+        self.horizontalLayout_18.setSpacing(10)
+        self.horizontalLayout_18.setObjectName(u"horizontalLayout_18")
+        self.horizontalLayout_18.setContentsMargins(5, 5, 5, 5)
+        self.widget_2 = QWidget(self.statusBar)
+        self.widget_2.setObjectName(u"widget_2")
+        self.horizontalLayout_21 = QHBoxLayout(self.widget_2)
+        self.horizontalLayout_21.setSpacing(10)
+        self.horizontalLayout_21.setObjectName(u"horizontalLayout_21")
+        self.horizontalLayout_21.setContentsMargins(0, 0, 0, 0)
+
+        self.horizontalLayout_18.addWidget(self.widget_2)
+
+        self.widget_8 = QWidget(self.statusBar)
+        self.widget_8.setObjectName(u"widget_8")
+        self.horizontalLayout_19 = QHBoxLayout(self.widget_8)
+        self.horizontalLayout_19.setSpacing(10)
+        self.horizontalLayout_19.setObjectName(u"horizontalLayout_19")
+        self.horizontalLayout_19.setContentsMargins(0, 0, 0, 0)
+
+        self.horizontalLayout_18.addWidget(self.widget_8, 0, Qt.AlignLeft)
+
+        self.widget_9 = QWidget(self.statusBar)
+        self.widget_9.setObjectName(u"widget_9")
+        self.widget_9.setMinimumSize(QSize(0, 0))
+        self.horizontalLayout_20 = QHBoxLayout(self.widget_9)
+        self.horizontalLayout_20.setSpacing(45)
+        self.horizontalLayout_20.setObjectName(u"horizontalLayout_20")
+        self.horizontalLayout_20.setContentsMargins(0, 0, 20, 0)
+        self.widget_16 = QWidget(self.widget_9)
+        self.widget_16.setObjectName(u"widget_16")
+        self.horizontalLayout_24 = QHBoxLayout(self.widget_16)
+        self.horizontalLayout_24.setSpacing(5)
+        self.horizontalLayout_24.setObjectName(u"horizontalLayout_24")
+        self.horizontalLayout_24.setContentsMargins(0, 0, 0, 0)
+        self.label_36 = QLabel(self.widget_16)
+        self.label_36.setObjectName(u"label_36")
+
+        self.horizontalLayout_24.addWidget(self.label_36)
+
+        self.label_37 = QLabel(self.widget_16)
+        self.label_37.setObjectName(u"label_37")
+
+        self.horizontalLayout_24.addWidget(self.label_37)
+
+
+        self.horizontalLayout_20.addWidget(self.widget_16)
+
+        self.widget_10 = QWidget(self.widget_9)
+        self.widget_10.setObjectName(u"widget_10")
+        self.horizontalLayout_22 = QHBoxLayout(self.widget_10)
+        self.horizontalLayout_22.setSpacing(5)
+        self.horizontalLayout_22.setObjectName(u"horizontalLayout_22")
+        self.horizontalLayout_22.setContentsMargins(0, 0, 0, 0)
+        self.label_38 = QLabel(self.widget_10)
+        self.label_38.setObjectName(u"label_38")
+
+        self.horizontalLayout_22.addWidget(self.label_38)
+
+        self.label_39 = QLabel(self.widget_10)
+        self.label_39.setObjectName(u"label_39")
+
+        self.horizontalLayout_22.addWidget(self.label_39)
+
+
+        self.horizontalLayout_20.addWidget(self.widget_10)
+
+        self.widget_15 = QWidget(self.widget_9)
+        self.widget_15.setObjectName(u"widget_15")
+        self.widget_15.setMinimumSize(QSize(0, 0))
+        self.horizontalLayout_23 = QHBoxLayout(self.widget_15)
+        self.horizontalLayout_23.setSpacing(5)
+        self.horizontalLayout_23.setObjectName(u"horizontalLayout_23")
+        self.horizontalLayout_23.setContentsMargins(0, 0, 0, 0)
+        self.label_41 = QLabel(self.widget_15)
+        self.label_41.setObjectName(u"label_41")
+
+        self.horizontalLayout_23.addWidget(self.label_41)
+
+        self.label_40 = QLabel(self.widget_15)
+        self.label_40.setObjectName(u"label_40")
+
+        self.horizontalLayout_23.addWidget(self.label_40)
+
+
+        self.horizontalLayout_20.addWidget(self.widget_15)
+
+
+        self.horizontalLayout_18.addWidget(self.widget_9, 0, Qt.AlignRight)
+
+
+        self.verticalLayout.addWidget(self.statusBar)
 
 
         self.retranslateUi(customTimePapersWidget)
@@ -904,5 +974,11 @@ class Ui_customTimePapersWidget(object):
         self.label_35.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0412\u0440\u0435\u043c\u0435 \u0437\u0430 \u0431\u0440.", None))
         self.label_31.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041e\u043f\u0435\u0440\u0430\u0446\u0438\u044f", None))
         self.label_32.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0411\u0440\u043e\u0439\u043a\u0438", None))
+        self.label_36.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0420\u0435\u0434\u043e\u0432\u0435", None))
+        self.label_37.setText(QCoreApplication.translate("customTimePapersWidget", u"0", None))
+        self.label_38.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0412\u0440\u0435\u043c\u0435", None))
+        self.label_39.setText(QCoreApplication.translate("customTimePapersWidget", u"0", None))
+        self.label_41.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0412\u0440\u0435\u043c\u0435", None))
+        self.label_40.setText(QCoreApplication.translate("customTimePapersWidget", u"0", None))
     # retranslateUi
 

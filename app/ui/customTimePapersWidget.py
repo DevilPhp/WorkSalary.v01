@@ -10,6 +10,7 @@ from app.services.modelServices import ModelService as MoS
 from app.ui.customCalendarWidget import CustomCalendarDialog
 from app.models.tableModel import TableModel
 from app.models.sortingModel import CaseInsensitiveProxyModel, FilterableHeaderView
+from app.models.tableModel import CustomTableViewWithMultiSelection
 from app.ui.messagesManager import MessageManager as MM
 from app.ui.customSortingMenuWidget import CustomSortingMenuWidget
 
@@ -31,6 +32,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.setupWorkerAndModelsCompleter()
         self.timePaperDateEdit.setDate(QDate.currentDate())
         self.setupWorkingTimeWidgets()
+        self.timePapersForDayTableView = CustomTableViewWithMultiSelection(self)
+        self.timePaperTableHolder.layout().addWidget(self.timePapersForDayTableView)
         self.tableTimePapersModel = QStandardItemModel()
         self.tableTimePapersHeadersNames = ['ID', 'Номер', 'ПоръчкаNo', 'ОперацияNo', 'Операция', 'Бройки', 'Време']
         for i, tableHeaderName in enumerate(self.tableTimePapersHeadersNames):
@@ -45,6 +48,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.timePapersForDayTableView.horizontalHeader().setMinimumWidth(80)
         # self.timePapersForDayTableView.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.refreshTimePapersForToday()
+        # self.timePapersForDayTableView.clicked.connect(self.showTimePaperDetails)
+        self.timePapersForDayTableView.selectedRows.connect(self.showTimePaperDetails)
         self.workerShiftsHolder.setEnabled(False)
         self.modelAndOperationHolder.setVisible(False)
         validatorInt = QDoubleValidator(0, 999999, 0)
@@ -61,6 +66,28 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.calendarBtn.clicked.connect(self.showCustomCalendaDialog)
         self.modelPiecesLineEdit.returnPressed.connect(self.addTimePaperOperation)
         self.addNewTimePaperBtn.clicked.connect(self.addTimePaperOperation)
+
+    def showTimePaperDetails(self, selectedRows):
+        # pass
+        for row in selectedRows:
+            print(row[0].data())
+        # selectedRows = self.timePapersForDayTableView.selectionModel()
+        # print(selectedRows)
+        # if len(selectedRows) < 0:
+        #     return
+        # for row in selectedRows:
+            # print(row)
+            # rowData = self.proxyModelWorkers.mapToSource(self.proxyModelWorkers.index(row, 0)).data()
+            # print(rowData)
+        # timePaperId = rowData[0]
+        # self.currentTimePaperId = timePaperId
+        # self.timePaperNoLineEdit.setText(rowData[1])
+        # self.clientModelsLineEdit.setText(rowData[2])
+        # self.operationNoLineEdit.setText(rowData[3])
+        # self.operationLineEdit.setText(rowData[4])
+        # self.modelPiecesLineEdit.setText(str(rowData[5]))
+        # self.timeForPieceLineEdit.setText(str(rowData[6]))
+        # self.isDefaultTimeCheckBox.setCheckState(Qt.CheckState.Unchecked if rowData[7] == 0 else Qt.CheckState.Checked)
 
     def setDefaultTime(self):
         if self.clientModelsLineEdit.text() not in self.clientModels.keys():
@@ -110,34 +137,51 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         table.setSortingEnabled(True)
 
     def updateFilter(self, proxyModel, header, column):
-        items = []
-        if column not in self.checkBoxFiltering.keys():
-            self.checkBoxFiltering[column] = []
-        for row in range(proxyModel.rowCount()):
-            index = proxyModel.index(row, column)
-            value = proxyModel.data(index, Qt.ItemDataRole.DisplayRole)
-            if value not in self.initialCheckBoxes.keys():
-                self.initialCheckBoxes[value] = column
+        if column < 5:
+            # Create dictionaries to store column values and checked states if they don't exist
+            if not hasattr(self, 'columnValues'):
+                self.columnValues = {}
+            if not hasattr(self, 'checkedStates'):
+                self.checkedStates = {}
+            if column not in self.checkBoxFiltering:
+                self.checkBoxFiltering[column] = []
 
-            if value not in items:
+            items = []
+            self.columnValues[column] = []
+
+            for row in range(proxyModel.rowCount()):
+                index = proxyModel.index(row, column)
+                value = proxyModel.data(index, Qt.ItemDataRole.DisplayRole)
+                if value not in self.columnValues[column]:
+                    self.columnValues[column].append(value)
+                    if value not in self.initialCheckBoxes:
+                        self.initialCheckBoxes[value] = column
+
+            for value in self.columnValues[column]:
                 items.append(value)
-        if items:
-            menu = CustomSortingMenuWidget(header)
-            menu.addItems(items)
-            menu.move(self.cursor().pos())
-            menu.checkedCheckbox.connect(partial(self.applyFilter, proxyModel))
+
+            if items:
+                menu = CustomSortingMenuWidget(header)
+                for item in items:
+                    checked = item in self.checkBoxFiltering[column]
+                    menu.addItem(item, checked)
+                menu.setMenuSize(len(items))
+                menu.move(self.cursor().pos())
+                menu.checkedCheckbox.connect(partial(self.applyFilter, proxyModel))
 
     def applyFilter(self, proxyModel, item):
-        if item.text() in self.initialCheckBoxes.keys():
-            col = self.initialCheckBoxes[item.text()]
-            if item.isChecked() and item.text() not in self.checkBoxFiltering[col]:
-                self.checkBoxFiltering[col].append(item.text())
-            elif not item.isChecked() and item.text() in self.checkBoxFiltering[col]:
-                self.checkBoxFiltering[col].remove(item.text())
+        col = self.initialCheckBoxes[item.text()]
+        if item.isChecked() and item.text() not in self.checkBoxFiltering[col]:
+            self.checkBoxFiltering[col].append(item.text())
+        elif not item.isChecked() and item.text() in self.checkBoxFiltering[col]:
+            self.checkBoxFiltering[col].remove(item.text())
+
+        if not self.checkBoxFiltering[col]:
+            if col in proxyModel.columnFilters:
+                del proxyModel.columnFilters[col]
+        else:
             proxyModel.setFilterForColumn(col, self.checkBoxFiltering)
-            proxyModel.invalidateFilter()
-
-
+        proxyModel.invalidateFilter()
 
 
     def showCustomCalendaDialog(self):

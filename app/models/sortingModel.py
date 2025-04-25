@@ -17,6 +17,10 @@ class CaseInsensitiveProxyModel(QSortFilterProxyModel):
         self.invalidateFilter()
 
     def filterAcceptsRow(self, sourceRow, sourceParent):
+        # If no filters are active, accept all rows
+        if not self.columnFilters:
+            return True
+
         for column, filterSet in self.columnFilters.items():
             if not filterSet:
                 continue
@@ -41,81 +45,17 @@ class CaseInsensitiveProxyModel(QSortFilterProxyModel):
             rightData = self.sourceModel().data(right)
             return str(leftData).lower() > str(rightData).lower()
 
-class CheckableMenu(QMenu):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.checkedItems = set()
-        self._max_height = 300
-        self.setStyleSheet('''
-            *{
-                border-radius: 5px;
-                font-size: 12px;
-            }
-            QMenu {
-                padding: 2px;
-                border-radius: 4px;
-                menu-scrollable: true;
-            }
-            QMenu QCheckBox {
-                padding: 3px 5px 3px 5px;
-            }
-            QMenu QCheckBox:unchecked {
-                color: #495466;
-            }
-            QCheckBox::indicator:unchecked{
-                border: 1px solid #495466;
-            }
-        ''')
+    def clearFilters(self):
+        """Clear all active filters"""
+        self.columnFilters.clear()
+        self.invalidateFilter()
 
-    def addCheckableItems(self, items):
-        for item in sorted(set(items)):
-            if item:  # Skip empty values
-                checkBox = QCheckBox(str(item) + '   ', self)
-                action = QWidgetAction(self)
-                action.setDefaultWidget(checkBox)
-                self.checkedItems.add(str(item))
-                checkBox.stateChanged.connect(lambda checked, selectedItem=item: self.onItemToggled(checked, selectedItem))
-                self.addAction(action)
-        # self.adjustSizeForScrolling(len(items))
+    def clearFilterForColumn(self, column):
+        """Clear filter for a specific column"""
+        if column in self.columnFilters:
+            del self.columnFilters[column]
+            self.invalidateFilter()
 
-    # def adjustSizeForScrolling(self, itemCount):
-    #     averageItemHeight = 25  # Approximate height of a menu item
-    #     contentHeight = itemCount * averageItemHeight
-    #
-    #     if contentHeight > self._max_height:
-    #         self.sizeHint().setHeight(self._max_height)
-            # Enable scrolling with styling
-            # self.setStyleSheet("""
-            #             QMenu {
-            #                 max-height: %dpx;
-            #             }
-            #             QMenu::item {
-            #                 padding: 5px 25px 5px 20px;
-            #             }
-            #         """ % self._max_height)
-
-    # def popup(self, pos):
-    #     """Override popup to ensure proper positioning"""
-    #     # Make sure we don't position the menu outside screen bounds
-    #     screen_rect = QApplication.primaryScreen().availableGeometry()
-    #
-    #     # Calculate if menu would go off screen
-    #     menu_height = min(self.sizeHint().height(), self._max_height)
-    #     if pos.y() + menu_height > screen_rect.height():
-    #         # Reposition above the cursor if it would go off screen
-    #         pos.setY(pos.y() - menu_height)
-    #
-    #     # Call the original popup method with adjusted position
-    #     super().popup(pos)
-
-    def onItemToggled(self, checked, checkedItem):
-        if checked:
-            self.checkedItems.add(str(checkedItem))
-        else:
-            self.checkedItems.discard(str(checkedItem))
-
-    def getCheckedItems(self):
-        return self.checkedItems
 
 
 class FilterableHeaderView(QHeaderView):

@@ -1,6 +1,9 @@
-from PySide6.QtCore import QAbstractTableModel, Qt
+from PySide6.QtCore import QAbstractTableModel, Qt, Signal
 import pandas as pd
 import numpy as np
+from PySide6.QtWidgets import QTableView, QAbstractItemView
+from app.models.customSelectionModel import SingleMultiSelectionModel
+
 
 class TableModel(QAbstractTableModel):
     def __init__(self, data):
@@ -45,3 +48,76 @@ class TableModel(QAbstractTableModel):
 
     def flags(self, index):
         return Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsEditable
+
+
+class CustomTableViewWithMultiSelection(QTableView):
+    selectedRows = Signal(list)
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setSelectionBehavior(QTableView.SelectionBehavior.SelectRows)
+        self.setSelectionMode(QTableView.SelectionMode.ExtendedSelection)
+
+        self.setDragEnabled(False)
+        self.setDragDropMode(QAbstractItemView.DragDropMode.NoDragDrop)
+
+        self.verticalHeader().hide()
+        self.setCornerButtonEnabled(False)
+
+        self.isDragging = False
+        self.previousSelection = set()
+
+        # self.selectionModel().selectionChanged
+
+        # self.setSelectionModel(SingleMultiSelectionModel(self.model()))
+        # self.setSelectionModel(SingleMultiSelectionModel(self))
+        self.setStyleSheet('''
+            QHeaderView:section{
+                font: 700 10.5pt "Segoe UI";
+                background-color: #dfdfdf;
+                padding-left: 10px;
+                padding-top:10px;
+                padding-right:10px;
+                selection-background-color: #7f7f7f;
+            }
+            QVerticalView:section{
+                min-height: 30;
+            }
+            QAbstractItemView{
+                font: 10.5pt "Segoe UI";
+                selection-background-color: #545454;
+                selection-color: #fefefe;
+            }
+            QAbstractItemView:item{
+                selection-background-color: #545454;
+                selection-color: #fefefe;
+            }
+
+        ''')
+
+    def mouseReleaseEvent(self, event):
+        if event.button() == Qt.MouseButton.LeftButton:
+            index = self.indexAt(event.pos())
+            if index.isValid():
+                if self.selectionModel().selectedRows(0):
+                    print(self.selectionModel().selectedRows(0))
+
+                    self.selectedRows.emit([self.selectionModel().selectedRows(5), self.selectionModel().selectedRows(6)])
+                # print(self.selectionModel().selectedIndexes())
+            else:
+                self.clearSelection()
+            self.clearFocus()
+        super().mouseReleaseEvent(event)
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.MouseButton.LeftButton:
+            index = self.indexAt(event.pos())
+            if index.isValid():
+                # If clicking on a new row without Ctrl or Shift, clear previous selection
+                modifiers = event.modifiers()
+                if not (modifiers & Qt.KeyboardModifier.ControlModifier or
+                        modifiers & Qt.KeyboardModifier.ShiftModifier) or self.selectionModel().selectedRows():
+                    self.clearSelection()
+                    self.clearFocus()
+
+        super().mousePressEvent(event)
+
