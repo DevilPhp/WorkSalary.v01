@@ -65,6 +65,10 @@ QLineEdit, QDateEdit{
 	font-size: 9pt;
 }
 
+#avrTimePerPiece, #totalSelectedPieces, #totalSelectedTime, #totalSelectedRows, #totalViewRows, #totalProducedPieces {
+	font-weight: 700;
+}
+
 #modelHolder QLabel, #newModelInfoHolder * , #widget_11 *{
 	font-size: 10pt;
 }
@@ -1376,7 +1380,23 @@ QComboBox::item{
        </property>
        <item>
         <widget class="QWidget" name="timePaperTableHolder" native="true">
-         <layout class="QVBoxLayout" name="verticalLayout_11"/>
+         <layout class="QVBoxLayout" name="verticalLayout_11">
+          <property name="spacing">
+           <number>5</number>
+          </property>
+          <property name="leftMargin">
+           <number>5</number>
+          </property>
+          <property name="topMargin">
+           <number>5</number>
+          </property>
+          <property name="rightMargin">
+           <number>5</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+         </layout>
         </widget>
        </item>
       </layout>
@@ -1411,10 +1431,10 @@ QComboBox::item{
        <widget class="QWidget" name="widget_2" native="true">
         <layout class="QHBoxLayout" name="horizontalLayout_21">
          <property name="spacing">
-          <number>10</number>
+          <number>20</number>
          </property>
          <property name="leftMargin">
-          <number>0</number>
+          <number>20</number>
          </property>
          <property name="topMargin">
           <number>0</number>
@@ -1425,14 +1445,49 @@ QComboBox::item{
          <property name="bottomMargin">
           <number>0</number>
          </property>
+         <item alignment="Qt::AlignLeft">
+          <widget class="QWidget" name="widget_17" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_25">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="label_42">
+              <property name="text">
+               <string>Общо редове:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="totalViewRows">
+              <property name="text">
+               <string>0</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
         </layout>
        </widget>
       </item>
-      <item alignment="Qt::AlignLeft">
+      <item alignment="Qt::AlignHCenter">
        <widget class="QWidget" name="widget_8" native="true">
         <layout class="QHBoxLayout" name="horizontalLayout_19">
          <property name="spacing">
-          <number>10</number>
+          <number>5</number>
          </property>
          <property name="leftMargin">
           <number>0</number>
@@ -1446,6 +1501,41 @@ QComboBox::item{
          <property name="bottomMargin">
           <number>0</number>
          </property>
+         <item>
+          <widget class="QWidget" name="widget_19" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_27">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="label_43">
+              <property name="text">
+               <string>Завършени бр за деня:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="totalProducedPieces">
+              <property name="text">
+               <string>0</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
         </layout>
        </widget>
       </item>
@@ -1459,7 +1549,7 @@ QComboBox::item{
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_20">
          <property name="spacing">
-          <number>45</number>
+          <number>15</number>
          </property>
          <property name="leftMargin">
           <number>0</number>
@@ -1468,7 +1558,7 @@ QComboBox::item{
           <number>0</number>
          </property>
          <property name="rightMargin">
-          <number>20</number>
+          <number>0</number>
          </property>
          <property name="bottomMargin">
           <number>0</number>
@@ -1494,12 +1584,12 @@ QComboBox::item{
             <item>
              <widget class="QLabel" name="label_36">
               <property name="text">
-               <string>Редове</string>
+               <string>Редове:</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="label_37">
+             <widget class="QLabel" name="totalSelectedRows">
               <property name="text">
                <string>0</string>
               </property>
@@ -1529,12 +1619,12 @@ QComboBox::item{
             <item>
              <widget class="QLabel" name="label_38">
               <property name="text">
-               <string>Време</string>
+               <string>Бройки:</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="label_39">
+             <widget class="QLabel" name="totalSelectedPieces">
               <property name="text">
                <string>0</string>
               </property>
@@ -1568,16 +1658,57 @@ QComboBox::item{
              <number>0</number>
             </property>
             <item>
-             <widget class="QLabel" name="label_41">
+             <widget class="QLabel" name="label_37">
               <property name="text">
-               <string>Време</string>
+               <string>Време:</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="label_40">
+             <widget class="QLabel" name="totalSelectedTime">
               <property name="text">
-               <string>0</string>
+               <string>0.0</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="widget_18" native="true">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_26">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="label_39">
+              <property name="text">
+               <string>Ср. Време за бр.:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="avrTimePerPiece">
+              <property name="text">
+               <string>0.0</string>
               </property>
              </widget>
             </item>

@@ -15,8 +15,23 @@ class CustomSortingMenuWidget(QWidget, Ui_customSortingMenuWidget):
         self.checkBoxes = []
         self.minHeight = 20
         self.minWidth = 80
+        self.searchLineEdit.setFocus()
+        self.searchLineEdit.textChanged.connect(self.updateMenuItems)
+        self.searchLineEdit.returnPressed.connect(self.setCheckedItem)
         # self.move(0, 0)
         self.show()
+
+    def setCheckedItem(self):
+        for checkBox in self.checkBoxes:
+            if checkBox.isVisible():
+                checkBox.setChecked(True)
+                self.close()
+                break
+
+    def updateMenuItems(self):
+        text = self.searchLineEdit.text()
+        for checkBox in self.checkBoxes:
+            checkBox.setVisible(text.lower() in checkBox.text().lower())
 
     def addItems(self, items):
         for item in items:
@@ -36,8 +51,7 @@ class CustomSortingMenuWidget(QWidget, Ui_customSortingMenuWidget):
             self.minHeight = 20 * 10
         else:
             self.minHeight = 20 * count
-        self.scrollArea.setMinimumSize(QSize(self.minWidth + 20, self.minHeight + 20))
-
+        self.scrollArea.setMinimumSize(QSize(self.minWidth + 20, self.minHeight + 35))
 
     def emitCurrentItem(self, checkBox):
         self.checkedCheckbox.emit(checkBox)

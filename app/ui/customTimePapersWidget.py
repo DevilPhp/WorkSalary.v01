@@ -50,6 +50,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.refreshTimePapersForToday()
         # self.timePapersForDayTableView.clicked.connect(self.showTimePaperDetails)
         self.timePapersForDayTableView.selectedRows.connect(self.showTimePaperDetails)
+        self.timePapersForDayTableView.clearCurrentSelection.connect(self.resetSelectedInfo)
         self.workerShiftsHolder.setEnabled(False)
         self.modelAndOperationHolder.setVisible(False)
         validatorInt = QDoubleValidator(0, 999999, 0)
@@ -68,26 +69,28 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.addNewTimePaperBtn.clicked.connect(self.addTimePaperOperation)
 
     def showTimePaperDetails(self, selectedRows):
+        numberSelectedRows = len(selectedRows['pieces'])
+        totalSelectedPieces = 0
+        totalSelectedTime = 0
         # pass
-        for row in selectedRows:
-            print(row[0].data())
-        # selectedRows = self.timePapersForDayTableView.selectionModel()
-        # print(selectedRows)
-        # if len(selectedRows) < 0:
-        #     return
-        # for row in selectedRows:
-            # print(row)
-            # rowData = self.proxyModelWorkers.mapToSource(self.proxyModelWorkers.index(row, 0)).data()
-            # print(rowData)
-        # timePaperId = rowData[0]
-        # self.currentTimePaperId = timePaperId
-        # self.timePaperNoLineEdit.setText(rowData[1])
-        # self.clientModelsLineEdit.setText(rowData[2])
-        # self.operationNoLineEdit.setText(rowData[3])
-        # self.operationLineEdit.setText(rowData[4])
-        # self.modelPiecesLineEdit.setText(str(rowData[5]))
-        # self.timeForPieceLineEdit.setText(str(rowData[6]))
-        # self.isDefaultTimeCheckBox.setCheckState(Qt.CheckState.Unchecked if rowData[7] == 0 else Qt.CheckState.Checked)
+        for key, row in selectedRows.items():
+            if key == 'pieces':
+                for item in row:
+                    totalSelectedPieces += int(item.data())
+            else:
+                for item in row:
+                    totalSelectedTime += float(item.data())
+        avrTimePerPiece = round(totalSelectedTime / totalSelectedPieces, 2) if totalSelectedPieces > 0 else 0
+        self.avrTimePerPiece.setText(str(avrTimePerPiece))
+        self.totalSelectedRows.setText(str(numberSelectedRows))
+        self.totalSelectedPieces.setText(str(totalSelectedPieces))
+        self.totalSelectedTime.setText(str(round(totalSelectedTime, 2)))
+
+    def resetSelectedInfo(self):
+        self.totalSelectedRows.setText("0")
+        self.totalSelectedPieces.setText("0")
+        self.totalSelectedTime.setText("0.0")
+        self.avrTimePerPiece.setText("0.0")
 
     def setDefaultTime(self):
         if self.clientModelsLineEdit.text() not in self.clientModels.keys():
@@ -102,6 +105,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.timeForPieceLineEdit.setFocus()
 
     def refreshTimePapersForToday(self):
+        producedPiecesForTheDay = 0
         self.existingTimePapers.clear()
         self.initialCheckBoxes.clear()
         searchedDate = self.timePaperDateEdit.date().toString('yyyy-MM-dd')
@@ -110,7 +114,11 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         data = WoS.getTimePapersForDate(formatedDate)
         self.tableTimePapersModel.setRowCount(0)
         # print(data)
+        self.totalViewRows.setText(str(len(data)))
+        self.resetSelectedInfo()
         for item in data:
+            if item[3] == 49:
+                producedPiecesForTheDay += item[5]
             row = [
                 QStandardItem(str(item[0])),
                 QStandardItem(str(item[1])),
@@ -122,6 +130,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             ]
             self.tableTimePapersModel.appendRow(row)
             self.existingTimePapers[item[1]] = item[0]
+
+        self.totalProducedPieces.setText(str(producedPiecesForTheDay))
         # model = TableModel(data)
         # self.timePapersForDayTableView.setModel(model)
         #
@@ -182,6 +192,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         else:
             proxyModel.setFilterForColumn(col, self.checkBoxFiltering)
         proxyModel.invalidateFilter()
+        self.totalViewRows.setText(str(proxyModel.rowCount()))
 
 
     def showCustomCalendaDialog(self):

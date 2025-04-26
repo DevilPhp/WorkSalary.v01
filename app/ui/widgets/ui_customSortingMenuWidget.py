@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customSortingMenuWidgetpLNOWP.ui'
+## Form generated from reading UI file 'customSortingMenuWidgetYMZxwa.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -23,7 +23,7 @@ class Ui_customSortingMenuWidget(object):
     def setupUi(self, customSortingMenuWidget):
         if not customSortingMenuWidget.objectName():
             customSortingMenuWidget.setObjectName(u"customSortingMenuWidget")
-        customSortingMenuWidget.resize(134, 43)
+        customSortingMenuWidget.resize(133, 43)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -73,10 +73,10 @@ class Ui_customSortingMenuWidget(object):
         self.verticalLayout_3.setSpacing(0)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.verticalLayout_3.setContentsMargins(0, 5, 0, 0)
-        self.lineEdit = QLineEdit(self.widget)
-        self.lineEdit.setObjectName(u"lineEdit")
+        self.searchLineEdit = QLineEdit(self.widget)
+        self.searchLineEdit.setObjectName(u"searchLineEdit")
 
-        self.verticalLayout_3.addWidget(self.lineEdit)
+        self.verticalLayout_3.addWidget(self.searchLineEdit)
 
 
         self.verticalLayout_5.addWidget(self.widget)
@@ -85,6 +85,7 @@ class Ui_customSortingMenuWidget(object):
         self.widget_2.setObjectName(u"widget_2")
         sizePolicy.setHeightForWidth(self.widget_2.sizePolicy().hasHeightForWidth())
         self.widget_2.setSizePolicy(sizePolicy)
+        self.widget_2.setMinimumSize(QSize(0, 0))
         self.verticalLayout_4 = QVBoxLayout(self.widget_2)
         self.verticalLayout_4.setSpacing(0)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
@@ -96,28 +97,40 @@ class Ui_customSortingMenuWidget(object):
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.scrollArea.sizePolicy().hasHeightForWidth())
         self.scrollArea.setSizePolicy(sizePolicy1)
+        self.scrollArea.setMinimumSize(QSize(0, 0))
         self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.scrollArea.setSizeAdjustPolicy(QAbstractScrollArea.AdjustIgnored)
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 102, 16))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 101, 16))
         sizePolicy.setHeightForWidth(self.scrollAreaWidgetContents.sizePolicy().hasHeightForWidth())
         self.scrollAreaWidgetContents.setSizePolicy(sizePolicy)
         self.verticalLayout_2 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.widget_4 = QWidget(self.scrollAreaWidgetContents)
+        self.widget_4.setObjectName(u"widget_4")
+        sizePolicy.setHeightForWidth(self.widget_4.sizePolicy().hasHeightForWidth())
+        self.widget_4.setSizePolicy(sizePolicy)
+        self.verticalLayout_6 = QVBoxLayout(self.widget_4)
+        self.verticalLayout_6.setSpacing(0)
+        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
+        self.verticalLayout_6.setContentsMargins(5, 3, 5, 2)
         self.menuItemsHolder = QVBoxLayout()
         self.menuItemsHolder.setSpacing(5)
         self.menuItemsHolder.setObjectName(u"menuItemsHolder")
 
-        self.verticalLayout_2.addLayout(self.menuItemsHolder)
+        self.verticalLayout_6.addLayout(self.menuItemsHolder)
+
+
+        self.verticalLayout_2.addWidget(self.widget_4, 0, Qt.AlignTop)
 
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
-        self.verticalLayout_4.addWidget(self.scrollArea)
+        self.verticalLayout_4.addWidget(self.scrollArea, 0, Qt.AlignTop)
 
 
         self.verticalLayout_5.addWidget(self.widget_2, 0, Qt.AlignTop)
@@ -133,6 +146,6 @@ class Ui_customSortingMenuWidget(object):
 
     def retranslateUi(self, customSortingMenuWidget):
         customSortingMenuWidget.setWindowTitle(QCoreApplication.translate("customSortingMenuWidget", u"Form", None))
-        self.lineEdit.setPlaceholderText(QCoreApplication.translate("customSortingMenuWidget", u"\u0422\u044a\u0440\u0441\u0435\u043d\u0435...", None))
+        self.searchLineEdit.setPlaceholderText(QCoreApplication.translate("customSortingMenuWidget", u"\u0422\u044a\u0440\u0441\u0435\u043d\u0435...", None))
     # retranslateUi
 

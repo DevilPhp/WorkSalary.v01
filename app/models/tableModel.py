@@ -51,7 +51,8 @@ class TableModel(QAbstractTableModel):
 
 
 class CustomTableViewWithMultiSelection(QTableView):
-    selectedRows = Signal(list)
+    selectedRows = Signal(dict)
+    clearCurrentSelection = Signal(bool)
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setSelectionBehavior(QTableView.SelectionBehavior.SelectRows)
@@ -59,12 +60,13 @@ class CustomTableViewWithMultiSelection(QTableView):
 
         self.setDragEnabled(False)
         self.setDragDropMode(QAbstractItemView.DragDropMode.NoDragDrop)
+        self.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
 
         self.verticalHeader().hide()
         self.setCornerButtonEnabled(False)
 
-        self.isDragging = False
-        self.previousSelection = set()
+        # self.isDragging = False
+        # self.previousSelection = set()
 
         # self.selectionModel().selectionChanged
 
@@ -96,17 +98,27 @@ class CustomTableViewWithMultiSelection(QTableView):
 
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
+            selectedItems = {}
             index = self.indexAt(event.pos())
             if index.isValid():
-                if self.selectionModel().selectedRows(0):
-                    print(self.selectionModel().selectedRows(0))
+                modifiers = event.modifiers()
+                # selectedItems['pieces'] = []
+                # selectedItems['piecesTime'] = []
+                if not (modifiers & Qt.KeyboardModifier.ControlModifier or
+                        modifiers & Qt.KeyboardModifier.ShiftModifier) or self.selectionModel().selectedRows(0):
+                    selectedItems['pieces'] = self.selectionModel().selectedRows(5)
+                    selectedItems['piecesTime'] = self.selectionModel().selectedRows(6)
+                    self.selectedRows.emit(selectedItems)
 
-                    self.selectedRows.emit([self.selectionModel().selectedRows(5),
-                                            self.selectionModel().selectedRows(6)])
-                # print(self.selectionModel().selectedIndexes())
+                # else:
+                #     selectedItems['pieces'].append(self.selectionModel().selectedRows(5))
+                #     selectedItems['piecesTime'] = self.selectionModel().selectedRows(6)
+                #     self.selectedRows.emit(selectedItems)
             else:
+                self.clearCurrentSelection.emit(True)
                 self.clearSelection()
             self.clearFocus()
+
         super().mouseReleaseEvent(event)
 
     def mousePressEvent(self, event):
@@ -116,7 +128,8 @@ class CustomTableViewWithMultiSelection(QTableView):
                 # If clicking on a new row without Ctrl or Shift, clear previous selection
                 modifiers = event.modifiers()
                 if not (modifiers & Qt.KeyboardModifier.ControlModifier or
-                        modifiers & Qt.KeyboardModifier.ShiftModifier) or self.selectionModel().selectedRows():
+                        modifiers & Qt.KeyboardModifier.ShiftModifier):
+                    # self.clearCurrentSelection.emit(True)
                     self.clearSelection()
                     self.clearFocus()
 

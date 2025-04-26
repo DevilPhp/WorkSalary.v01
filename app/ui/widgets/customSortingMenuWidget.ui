@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>134</width>
+    <width>133</width>
     <height>43</height>
    </rect>
   </property>
@@ -111,7 +111,7 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
           <number>0</number>
          </property>
          <item>
-          <widget class="QLineEdit" name="lineEdit">
+          <widget class="QLineEdit" name="searchLineEdit">
            <property name="placeholderText">
             <string>Търсене...</string>
            </property>
@@ -127,6 +127,12 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <property name="spacing">
@@ -144,13 +150,19 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
          <property name="bottomMargin">
           <number>0</number>
          </property>
-         <item>
+         <item alignment="Qt::AlignTop">
           <widget class="QScrollArea" name="scrollArea">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
            </property>
            <property name="horizontalScrollBarPolicy">
             <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -169,7 +181,7 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>102</width>
+              <width>101</width>
               <height>16</height>
              </rect>
             </property>
@@ -195,12 +207,39 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
              <property name="bottomMargin">
               <number>0</number>
              </property>
-             <item>
-              <layout class="QVBoxLayout" name="menuItemsHolder">
-               <property name="spacing">
-                <number>5</number>
+             <item alignment="Qt::AlignTop">
+              <widget class="QWidget" name="widget_4" native="true">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
                </property>
-              </layout>
+               <layout class="QVBoxLayout" name="verticalLayout_6">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <property name="leftMargin">
+                 <number>5</number>
+                </property>
+                <property name="topMargin">
+                 <number>3</number>
+                </property>
+                <property name="rightMargin">
+                 <number>5</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>2</number>
+                </property>
+                <item>
+                 <layout class="QVBoxLayout" name="menuItemsHolder">
+                  <property name="spacing">
+                   <number>5</number>
+                  </property>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
              </item>
             </layout>
            </widget>
