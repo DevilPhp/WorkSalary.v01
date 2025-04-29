@@ -69,7 +69,7 @@ class Utils:
         widget.setCompleter(completer)
 
     @staticmethod
-    def calculateMinutes(startTime, endTime):
+    def calculateMinutes(startTime, endTime, breakTime=0):
         '''Calculate the time difference between two time strings in minutes.
         Start and end times are in 24-hour format.
         Returns the difference in minutes.'''
@@ -79,8 +79,12 @@ class Utils:
         duration = start.msecsTo(end) // 60000
         if start.hour() > end.hour():
             duration += 24 * 60
-        if duration > 300:
+
+        if duration > 300 and breakTime == 0:
             duration -= 60
+        else:
+            duration -= breakTime
+
         return duration
 
 

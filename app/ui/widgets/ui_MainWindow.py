@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'MainWindowHkBmJe.ui'
+## Form generated from reading UI file 'MainWindowrkAdmH.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -329,10 +329,10 @@ class Ui_MainWindow(object):
 
         self.mainMenuLayout.addWidget(self.label_6, 0, 2, 1, 1)
 
-        self.pushButton_2 = QPushButton(self.mainMenuWidget)
-        self.pushButton_2.setObjectName(u"pushButton_2")
+        self.workingShiftsPageBtn = QPushButton(self.mainMenuWidget)
+        self.workingShiftsPageBtn.setObjectName(u"workingShiftsPageBtn")
 
-        self.mainMenuLayout.addWidget(self.pushButton_2, 1, 1, 1, 1)
+        self.mainMenuLayout.addWidget(self.workingShiftsPageBtn, 1, 1, 1, 1)
 
         self.label_3 = QLabel(self.mainMenuWidget)
         self.label_3.setObjectName(u"label_3")
@@ -471,7 +471,7 @@ class Ui_MainWindow(object):
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438", None))
         self.pushButton_6.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"\u041c\u043e\u0434\u0435\u043b\u0438", None))
-        self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
+        self.workingShiftsPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u0420\u0430\u0431\u043e\u0442\u043d\u0438 \u0421\u043c\u0435\u043d\u0438", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"\u041f\u0435\u0440\u0441\u043e\u043d\u0430\u043b", None))
         self.timePapersBtn.setText(QCoreApplication.translate("MainWindow", u"\u041f\u0440\u0435\u0433\u043b\u0435\u0434", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"\u041b\u0438\u0441\u0442\u043e\u0432\u0435 \u0437\u0430 \u0432\u0440\u0435\u043c\u0435", None))

@@ -1,9 +1,38 @@
 from app.logger import logger
 from app.database import getDatabase, setDatabase
 from app.database.workers import Worker, TimePaper, TimePaperOperation, WorkingShift
-import pandas as pd
+from datetime import datetime
 
 class WorkerServices:
+
+    @staticmethod
+    def updateWorkingShift(shiftId, data):
+        with setDatabase() as session:
+            shift = session.query(WorkingShift).get(shiftId)
+            shift.ShiftName = data[0],
+            shift.ShiftStart = data[1],
+            shift.ShiftEnd = data[2],
+            shift.BreakTime = data[3],
+            shift.Efficency = data[4],
+            session.commit()
+            logger.info(f"Working shift updated: {shift.id}")
+            return True
+
+    @staticmethod
+    def addWorkingShift(newShiftData):
+        with setDatabase() as session:
+            newShift = WorkingShift(
+                ShiftName=newShiftData[0],
+                StartTime=newShiftData[1],
+                EndTime=newShiftData[2],
+                BreakTime=newShiftData[3],
+                Efficiency=newShiftData[4],
+                UserUpdated=newShiftData[5]
+            )
+            session.add(newShift)
+            session.commit()
+            logger.info(f"New working shift added: {newShift.id}")
+            return True
 
     @staticmethod
     def addNewTimePaperAndOperation(timePaperData):
@@ -29,7 +58,7 @@ class WorkerServices:
             session.add(newTimePaperOperation)
             session.commit()
             logger.info(f"New time paper and operation added: {timePaperData}")
-            return True
+            return newTimePaperOperation.id
 
     @staticmethod
     def updateTimePaperAndOperation(timePaperData):
@@ -44,7 +73,7 @@ class WorkerServices:
             session.add(newTimePaperOperation)
             session.commit()
             logger.info(f"Time paper updated: {timePaperData}")
-            return True
+            return newTimePaperOperation.TimePaperId
 
     @staticmethod
     def getWorkers():
@@ -73,6 +102,11 @@ class WorkerServices:
                         operation.WorkingTimeMinutes
                     ])
             return returnedData
+
+    @staticmethod
+    def getWorkingShiftsForEdit():
+        with getDatabase() as session:
+            return session.query(WorkingShift).order_by(WorkingShift.id).all()
 
     @staticmethod
     def getWorkingShifts():

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customShiftsEditWidgetyPVmlQ.ui'
+## Form generated from reading UI file 'customShiftsEditWidgetXilrKi.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -15,19 +15,19 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
-    QHBoxLayout, QLabel, QLineEdit, QPushButton,
-    QScrollArea, QSizePolicy, QTimeEdit, QVBoxLayout,
-    QWidget)
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QFrame, QGridLayout,
+    QHBoxLayout, QHeaderView, QLabel, QLineEdit,
+    QPushButton, QScrollArea, QSizePolicy, QTableView,
+    QTimeEdit, QVBoxLayout, QWidget)
 import resources_rc
 
-class Ui_customTimePapersWidget(object):
-    def setupUi(self, customTimePapersWidget):
-        if not customTimePapersWidget.objectName():
-            customTimePapersWidget.setObjectName(u"customTimePapersWidget")
-        customTimePapersWidget.resize(967, 800)
-        customTimePapersWidget.setMinimumSize(QSize(900, 800))
-        customTimePapersWidget.setStyleSheet(u"*{\n"
+class Ui_customWorkingShiftsWidget(object):
+    def setupUi(self, customWorkingShiftsWidget):
+        if not customWorkingShiftsWidget.objectName():
+            customWorkingShiftsWidget.setObjectName(u"customWorkingShiftsWidget")
+        customWorkingShiftsWidget.resize(900, 800)
+        customWorkingShiftsWidget.setMinimumSize(QSize(900, 800))
+        customWorkingShiftsWidget.setStyleSheet(u"*{\n"
 "	background-color: #dfdfdf;\n"
 "	font: 600 12pt \"Segoe UI\";\n"
 "	color: #324b4c;\n"
@@ -136,11 +136,11 @@ class Ui_customTimePapersWidget(object):
 "	border: 4px solid transparent;\n"
 "	padding: 0px 8px 0px 8px;\n"
 "}")
-        self.verticalLayout = QVBoxLayout(customTimePapersWidget)
+        self.verticalLayout = QVBoxLayout(customWorkingShiftsWidget)
         self.verticalLayout.setSpacing(10)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(5, 5, 5, 5)
-        self.widget = QWidget(customTimePapersWidget)
+        self.widget = QWidget(customWorkingShiftsWidget)
         self.widget.setObjectName(u"widget")
         self.verticalLayout_4 = QVBoxLayout(self.widget)
         self.verticalLayout_4.setSpacing(10)
@@ -319,14 +319,6 @@ class Ui_customTimePapersWidget(object):
 
         self.newModelLayout.addWidget(self.label_7, 0, 2, 1, 1)
 
-        self.shiftNameLineEdit = QComboBox(self.widget_6)
-        self.shiftNameLineEdit.setObjectName(u"shiftNameLineEdit")
-        self.shiftNameLineEdit.setEditable(True)
-        self.shiftNameLineEdit.setSizeAdjustPolicy(QComboBox.AdjustToContents)
-        self.shiftNameLineEdit.setIconSize(QSize(12, 12))
-
-        self.newModelLayout.addWidget(self.shiftNameLineEdit, 0, 1, 1, 1)
-
         self.label = QLabel(self.widget_6)
         self.label.setObjectName(u"label")
 
@@ -352,22 +344,27 @@ class Ui_customTimePapersWidget(object):
 
         self.newModelLayout.addWidget(self.widget_3, 1, 1, 1, 1, Qt.AlignLeft)
 
+        self.workingShiftsNameLineEdit = QLineEdit(self.widget_6)
+        self.workingShiftsNameLineEdit.setObjectName(u"workingShiftsNameLineEdit")
+
+        self.newModelLayout.addWidget(self.workingShiftsNameLineEdit, 0, 1, 1, 1)
+
 
         self.verticalLayout_3.addLayout(self.newModelLayout)
 
-        self.acceptWorkingShifts = QPushButton(self.widget_6)
-        self.acceptWorkingShifts.setObjectName(u"acceptWorkingShifts")
-        self.acceptWorkingShifts.setFocusPolicy(Qt.NoFocus)
-        self.acceptWorkingShifts.setStyleSheet(u"*{\n"
+        self.acceptWorkingShiftsBtn = QPushButton(self.widget_6)
+        self.acceptWorkingShiftsBtn.setObjectName(u"acceptWorkingShiftsBtn")
+        self.acceptWorkingShiftsBtn.setFocusPolicy(Qt.NoFocus)
+        self.acceptWorkingShiftsBtn.setStyleSheet(u"*{\n"
 "	padding: 0px;\n"
 "	background-color: #dfdfdf;\n"
 "}")
         icon1 = QIcon()
         icon1.addFile(u":/icons/app/assets/icons/Check-Square--Streamline-Solar-Broken-#008b69.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.acceptWorkingShifts.setIcon(icon1)
-        self.acceptWorkingShifts.setIconSize(QSize(24, 24))
+        self.acceptWorkingShiftsBtn.setIcon(icon1)
+        self.acceptWorkingShiftsBtn.setIconSize(QSize(24, 24))
 
-        self.verticalLayout_3.addWidget(self.acceptWorkingShifts)
+        self.verticalLayout_3.addWidget(self.acceptWorkingShiftsBtn, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
 
         self.verticalLayout_8.addWidget(self.widget_6)
@@ -404,22 +401,52 @@ class Ui_customTimePapersWidget(object):
 
         self.verticalLayout.addWidget(self.widget, 0, Qt.AlignTop)
 
-        self.scrollArea = QScrollArea(customTimePapersWidget)
+        self.scrollArea = QScrollArea(customWorkingShiftsWidget)
         self.scrollArea.setObjectName(u"scrollArea")
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 955, 526))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 888, 563))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
         self.verticalLayout_12.setContentsMargins(0, 0, 0, 0)
         self.workingShiftsTable = QWidget(self.scrollAreaWidgetContents)
         self.workingShiftsTable.setObjectName(u"workingShiftsTable")
+        self.workingShiftsTable.setStyleSheet(u"")
         self.verticalLayout_11 = QVBoxLayout(self.workingShiftsTable)
         self.verticalLayout_11.setSpacing(5)
         self.verticalLayout_11.setObjectName(u"verticalLayout_11")
         self.verticalLayout_11.setContentsMargins(5, 5, 5, 0)
+        self.workingShiftsTableView = QTableView(self.workingShiftsTable)
+        self.workingShiftsTableView.setObjectName(u"workingShiftsTableView")
+        self.workingShiftsTableView.setStyleSheet(u"QHeaderView:section{\n"
+"	font: 700 10.5pt \"Segoe UI\";\n"
+"	background-color: #dfdfdf;\n"
+"	padding-left: 10px;\n"
+"	padding-top:10px;\n"
+"	padding-right:10px;\n"
+"	selection-background-color: #7f7f7f;\n"
+"}\n"
+"QVerticalView:section{\n"
+"	min-height: 30;\n"
+"}\n"
+"QAbstractItemView{\n"
+"	font: 10.5pt \"Segoe UI\";\n"
+"	selection-background-color: #545454;\n"
+"	selection-color: #fefefe;\n"
+"}\n"
+"QAbstractItemView:item{\n"
+"	selection-background-color: #545454;\n"
+"	selection-color: #fefefe;\n"
+"}")
+        self.workingShiftsTableView.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.workingShiftsTableView.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.workingShiftsTableView.setCornerButtonEnabled(False)
+        self.workingShiftsTableView.verticalHeader().setVisible(False)
+
+        self.verticalLayout_11.addWidget(self.workingShiftsTableView)
+
 
         self.verticalLayout_12.addWidget(self.workingShiftsTable)
 
@@ -427,195 +454,28 @@ class Ui_customTimePapersWidget(object):
 
         self.verticalLayout.addWidget(self.scrollArea)
 
-        self.statusBar = QWidget(customTimePapersWidget)
-        self.statusBar.setObjectName(u"statusBar")
-        self.statusBar.setMinimumSize(QSize(0, 0))
-        self.horizontalLayout_18 = QHBoxLayout(self.statusBar)
-        self.horizontalLayout_18.setSpacing(10)
-        self.horizontalLayout_18.setObjectName(u"horizontalLayout_18")
-        self.horizontalLayout_18.setContentsMargins(5, 5, 5, 5)
-        self.widget_2 = QWidget(self.statusBar)
-        self.widget_2.setObjectName(u"widget_2")
-        self.horizontalLayout_21 = QHBoxLayout(self.widget_2)
-        self.horizontalLayout_21.setSpacing(20)
-        self.horizontalLayout_21.setObjectName(u"horizontalLayout_21")
-        self.horizontalLayout_21.setContentsMargins(20, 0, 0, 0)
-        self.widget_17 = QWidget(self.widget_2)
-        self.widget_17.setObjectName(u"widget_17")
-        self.horizontalLayout_25 = QHBoxLayout(self.widget_17)
-        self.horizontalLayout_25.setSpacing(5)
-        self.horizontalLayout_25.setObjectName(u"horizontalLayout_25")
-        self.horizontalLayout_25.setContentsMargins(0, 0, 0, 0)
-        self.label_42 = QLabel(self.widget_17)
-        self.label_42.setObjectName(u"label_42")
 
-        self.horizontalLayout_25.addWidget(self.label_42)
+        self.retranslateUi(customWorkingShiftsWidget)
 
-        self.totalViewRows = QLabel(self.widget_17)
-        self.totalViewRows.setObjectName(u"totalViewRows")
-
-        self.horizontalLayout_25.addWidget(self.totalViewRows)
-
-
-        self.horizontalLayout_21.addWidget(self.widget_17, 0, Qt.AlignLeft)
-
-
-        self.horizontalLayout_18.addWidget(self.widget_2)
-
-        self.widget_8 = QWidget(self.statusBar)
-        self.widget_8.setObjectName(u"widget_8")
-        self.horizontalLayout_19 = QHBoxLayout(self.widget_8)
-        self.horizontalLayout_19.setSpacing(5)
-        self.horizontalLayout_19.setObjectName(u"horizontalLayout_19")
-        self.horizontalLayout_19.setContentsMargins(0, 0, 0, 0)
-        self.widget_19 = QWidget(self.widget_8)
-        self.widget_19.setObjectName(u"widget_19")
-        self.horizontalLayout_27 = QHBoxLayout(self.widget_19)
-        self.horizontalLayout_27.setSpacing(5)
-        self.horizontalLayout_27.setObjectName(u"horizontalLayout_27")
-        self.horizontalLayout_27.setContentsMargins(0, 0, 0, 0)
-        self.label_43 = QLabel(self.widget_19)
-        self.label_43.setObjectName(u"label_43")
-
-        self.horizontalLayout_27.addWidget(self.label_43)
-
-        self.totalProducedPieces = QLabel(self.widget_19)
-        self.totalProducedPieces.setObjectName(u"totalProducedPieces")
-
-        self.horizontalLayout_27.addWidget(self.totalProducedPieces)
-
-
-        self.horizontalLayout_19.addWidget(self.widget_19)
-
-
-        self.horizontalLayout_18.addWidget(self.widget_8, 0, Qt.AlignHCenter)
-
-        self.widget_9 = QWidget(self.statusBar)
-        self.widget_9.setObjectName(u"widget_9")
-        self.widget_9.setMinimumSize(QSize(0, 0))
-        self.horizontalLayout_20 = QHBoxLayout(self.widget_9)
-        self.horizontalLayout_20.setSpacing(15)
-        self.horizontalLayout_20.setObjectName(u"horizontalLayout_20")
-        self.horizontalLayout_20.setContentsMargins(0, 0, 0, 0)
-        self.widget_16 = QWidget(self.widget_9)
-        self.widget_16.setObjectName(u"widget_16")
-        self.horizontalLayout_24 = QHBoxLayout(self.widget_16)
-        self.horizontalLayout_24.setSpacing(5)
-        self.horizontalLayout_24.setObjectName(u"horizontalLayout_24")
-        self.horizontalLayout_24.setContentsMargins(0, 0, 0, 0)
-        self.label_36 = QLabel(self.widget_16)
-        self.label_36.setObjectName(u"label_36")
-
-        self.horizontalLayout_24.addWidget(self.label_36)
-
-        self.totalSelectedRows = QLabel(self.widget_16)
-        self.totalSelectedRows.setObjectName(u"totalSelectedRows")
-
-        self.horizontalLayout_24.addWidget(self.totalSelectedRows)
-
-
-        self.horizontalLayout_20.addWidget(self.widget_16)
-
-        self.widget_10 = QWidget(self.widget_9)
-        self.widget_10.setObjectName(u"widget_10")
-        self.horizontalLayout_22 = QHBoxLayout(self.widget_10)
-        self.horizontalLayout_22.setSpacing(5)
-        self.horizontalLayout_22.setObjectName(u"horizontalLayout_22")
-        self.horizontalLayout_22.setContentsMargins(0, 0, 0, 0)
-        self.label_38 = QLabel(self.widget_10)
-        self.label_38.setObjectName(u"label_38")
-
-        self.horizontalLayout_22.addWidget(self.label_38)
-
-        self.totalSelectedPieces = QLabel(self.widget_10)
-        self.totalSelectedPieces.setObjectName(u"totalSelectedPieces")
-
-        self.horizontalLayout_22.addWidget(self.totalSelectedPieces)
-
-
-        self.horizontalLayout_20.addWidget(self.widget_10)
-
-        self.widget_15 = QWidget(self.widget_9)
-        self.widget_15.setObjectName(u"widget_15")
-        self.widget_15.setMinimumSize(QSize(0, 0))
-        self.horizontalLayout_23 = QHBoxLayout(self.widget_15)
-        self.horizontalLayout_23.setSpacing(5)
-        self.horizontalLayout_23.setObjectName(u"horizontalLayout_23")
-        self.horizontalLayout_23.setContentsMargins(0, 0, 0, 0)
-        self.label_37 = QLabel(self.widget_15)
-        self.label_37.setObjectName(u"label_37")
-
-        self.horizontalLayout_23.addWidget(self.label_37)
-
-        self.totalSelectedTime = QLabel(self.widget_15)
-        self.totalSelectedTime.setObjectName(u"totalSelectedTime")
-
-        self.horizontalLayout_23.addWidget(self.totalSelectedTime)
-
-
-        self.horizontalLayout_20.addWidget(self.widget_15)
-
-        self.widget_18 = QWidget(self.widget_9)
-        self.widget_18.setObjectName(u"widget_18")
-        self.widget_18.setMinimumSize(QSize(0, 0))
-        self.horizontalLayout_26 = QHBoxLayout(self.widget_18)
-        self.horizontalLayout_26.setSpacing(5)
-        self.horizontalLayout_26.setObjectName(u"horizontalLayout_26")
-        self.horizontalLayout_26.setContentsMargins(0, 0, 0, 0)
-        self.label_39 = QLabel(self.widget_18)
-        self.label_39.setObjectName(u"label_39")
-
-        self.horizontalLayout_26.addWidget(self.label_39)
-
-        self.avrTimePerPiece = QLabel(self.widget_18)
-        self.avrTimePerPiece.setObjectName(u"avrTimePerPiece")
-
-        self.horizontalLayout_26.addWidget(self.avrTimePerPiece)
-
-
-        self.horizontalLayout_20.addWidget(self.widget_18)
-
-
-        self.horizontalLayout_18.addWidget(self.widget_9, 0, Qt.AlignRight)
-
-
-        self.verticalLayout.addWidget(self.statusBar)
-
-
-        self.retranslateUi(customTimePapersWidget)
-
-        QMetaObject.connectSlotsByName(customTimePapersWidget)
+        QMetaObject.connectSlotsByName(customWorkingShiftsWidget)
     # setupUi
 
-    def retranslateUi(self, customTimePapersWidget):
-        customTimePapersWidget.setWindowTitle(QCoreApplication.translate("customTimePapersWidget", u"Form", None))
-        self.pageTitle.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0420\u0410\u0411\u041e\u0422\u041d\u0418 \u0421\u041c\u0415\u041d\u0418", None))
+    def retranslateUi(self, customWorkingShiftsWidget):
+        customWorkingShiftsWidget.setWindowTitle(QCoreApplication.translate("customWorkingShiftsWidget", u"Form", None))
+        self.pageTitle.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"\u0420\u0410\u0411\u041e\u0422\u041d\u0418 \u0421\u041c\u0415\u041d\u0418", None))
         self.userIcon.setText("")
-        self.usernameLabel.setText(QCoreApplication.translate("customTimePapersWidget", u"admin", None))
-        self.label_21.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041e\u0431\u0449\u043e:", None))
-        self.label_15.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0447.", None))
-        self.label_10.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041a\u0440\u0430\u0439:", None))
-        self.label_14.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0447.", None))
-        self.label_5.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0421\u043c\u044f\u043d\u0430:", None))
-        self.shiftTotalMins.setText(QCoreApplication.translate("customTimePapersWidget", u"480", None))
-        self.label_27.setText(QCoreApplication.translate("customTimePapersWidget", u"\u043c\u0438\u043d.", None))
-        self.label_7.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041d\u0430\u0447\u0430\u043b\u043e:", None))
-        self.shiftNameLineEdit.setPlaceholderText(QCoreApplication.translate("customTimePapersWidget", u"\u0420\u0435\u0434\u043e\u0432\u043d\u0430", None))
-        self.label.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041f\u043e\u043a\u0438\u0447\u043a\u0430:", None))
-        self.shiftBreakLineEdit.setPlaceholderText(QCoreApplication.translate("customTimePapersWidget", u"60", None))
-        self.label_2.setText(QCoreApplication.translate("customTimePapersWidget", u"\u043c\u0438\u043d.", None))
-        self.acceptWorkingShifts.setText("")
-        self.label_42.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041e\u0431\u0449\u043e \u0440\u0435\u0434\u043e\u0432\u0435:", None))
-        self.totalViewRows.setText(QCoreApplication.translate("customTimePapersWidget", u"0", None))
-        self.label_43.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0417\u0430\u0432\u044a\u0440\u0448\u0435\u043d\u0438 \u0431\u0440 \u0437\u0430 \u0434\u0435\u043d\u044f:", None))
-        self.totalProducedPieces.setText(QCoreApplication.translate("customTimePapersWidget", u"0", None))
-        self.label_36.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0420\u0435\u0434\u043e\u0432\u0435:", None))
-        self.totalSelectedRows.setText(QCoreApplication.translate("customTimePapersWidget", u"0", None))
-        self.label_38.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0411\u0440\u043e\u0439\u043a\u0438:", None))
-        self.totalSelectedPieces.setText(QCoreApplication.translate("customTimePapersWidget", u"0", None))
-        self.label_37.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0412\u0440\u0435\u043c\u0435:", None))
-        self.totalSelectedTime.setText(QCoreApplication.translate("customTimePapersWidget", u"0.0", None))
-        self.label_39.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0421\u0440. \u0412\u0440\u0435\u043c\u0435 \u0437\u0430 \u0431\u0440.:", None))
-        self.avrTimePerPiece.setText(QCoreApplication.translate("customTimePapersWidget", u"0.0", None))
+        self.usernameLabel.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"admin", None))
+        self.label_21.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"\u041e\u0431\u0449\u043e:", None))
+        self.label_15.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"\u0447.", None))
+        self.label_10.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"\u041a\u0440\u0430\u0439:", None))
+        self.label_14.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"\u0447.", None))
+        self.label_5.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"\u0421\u043c\u044f\u043d\u0430:", None))
+        self.shiftTotalMins.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"480", None))
+        self.label_27.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"\u043c\u0438\u043d.", None))
+        self.label_7.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"\u041d\u0430\u0447\u0430\u043b\u043e:", None))
+        self.label.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"\u041f\u043e\u043a\u0438\u0432\u043a\u0430:", None))
+        self.shiftBreakLineEdit.setPlaceholderText(QCoreApplication.translate("customWorkingShiftsWidget", u"60", None))
+        self.label_2.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"\u043c\u0438\u043d.", None))
+        self.acceptWorkingShiftsBtn.setText("")
     # retranslateUi
 

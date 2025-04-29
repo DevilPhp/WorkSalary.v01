@@ -12,6 +12,7 @@ from app.ui.workersPage import WorkersPageCustomWidget
 from app.ui.customWidgetForDefaultOper import DefaultOperToModelTypeCustomWidget
 from app.ui.customModelsOperWidget import CustomWidgetForModelOper
 from app.ui.customTimePapersWidget import CustomTimePapersWidget
+from app.ui.customWorkingShiftsWidget import CustomShiftsEditWidget
 from app.ui.messagesManager import MessageManager
 
 
@@ -31,6 +32,7 @@ class MainWindow(QMainWindow):
         self.defaultModelOperPage = None
         self.modelOperPage = None
         self.timePapersPage = None
+        self.workingShiftsPage = None
         # self.setAttribute(Qt.WA_TranslucentBackground)
         LoginPage(self)
         MainMenuPage(self)
@@ -41,10 +43,14 @@ class MainWindow(QMainWindow):
         self.ui.setDefaultOperBtn.clicked.connect(self.setDefaultOperPage)
         self.ui.setModelsOperBtn.clicked.connect(self.setModelOperPage)
         self.ui.timePapersBtn.clicked.connect(self.setTimePapersPage)
+        self.ui.workingShiftsPageBtn.clicked.connect(self.setWorkingShiftsPage)
         # MessageManager.success('DefaultOperToModelTypeCustomWidget initialized', timeout=3000)
 
         # user = UsersFuncs.createUser('test', '000')
         # print(user)
+
+    def resetWorkingShiftsPage(self):
+        self.workingShiftsPage = None
 
     def resetDefaultOperPage(self):
         self.defaultModelOperPage = None
@@ -62,6 +68,18 @@ class MainWindow(QMainWindow):
             subWindow.setWidget(newWindow)
             self.ui.mainWindowsArea.addSubWindow(subWindow)
             subWindow.show()
+
+    def setWorkingShiftsPage(self, initialData=None):
+        if self.workingShiftsPage is None:
+            self.workingShiftsPage = CustomShiftsEditWidget(self)
+            if initialData:
+                self.workingShiftsPage.workingShiftsNameLineEdit.setText(initialData[0])
+                self.workingShiftsPage.shiftStart.setTime(initialData[1])
+                self.workingShiftsPage.shiftEnd.setTime(initialData[2])
+            self.workingShiftsPage.show()
+            self.workingShiftsPage.destroyed.connect(self.resetWorkingShiftsPage)
+        else:
+            self.workingShiftsPage.activateWindow()
 
     def setTimePapersPage(self):
         if self.timePapersPage is None:

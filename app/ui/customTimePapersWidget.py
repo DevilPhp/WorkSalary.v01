@@ -2,7 +2,6 @@ from datetime import datetime
 from functools import partial
 
 from PySide6.QtGui import QStandardItemModel, QStandardItem, QDoubleValidator
-
 from app.ui.widgets.ui_customTimePapersWidget import *
 from app.utils.utils import Utils
 from app.services.workerServices import WorkerServices as WoS
@@ -59,6 +58,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.isDefaultTimeCheckBox.stateChanged.connect(self.setDefaultTime)
         self.shiftStart.timeChanged.connect(self.updateDuration)
         self.shiftEnd.timeChanged.connect(self.updateDuration)
+        self.shiftStart.editingFinished.connect(self.checkForExistingShift)
+        self.shiftEnd.editingFinished.connect(self.checkForExistingShift)
         self.overtimeStart.timeChanged.connect(self.updateDuration)
         self.overtimeEnd.timeChanged.connect(self.updateDuration)
         self.hourlyStart.timeChanged.connect(self.updateDuration)
@@ -67,6 +68,21 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.calendarBtn.clicked.connect(self.showCustomCalendaDialog)
         self.modelPiecesLineEdit.returnPressed.connect(self.addTimePaperOperation)
         self.addNewTimePaperBtn.clicked.connect(self.addTimePaperOperation)
+        self.addNewShiftBtn.clicked.connect(self.setShiftsWindow)
+        self.refreshShiftsBtn.clicked.connect(self.refreshShifts)
+
+    def checkForExistingShift(self):
+        for key, value in self.workingShifts.items():
+            if value[1] == self.shiftStart.time() and value[2] == self.shiftEnd.time():
+                self.shiftNameLineEdit.setCurrentText(key)
+
+    def setShiftsWindow(self):
+        data = [
+            self.shiftNameLineEdit.currentText(),
+            self.shiftStart.time(),
+            self.shiftEnd.time()
+        ]
+        self.mainWindow.setWorkingShiftsPage(data)
 
     def showTimePaperDetails(self, selectedRows):
         numberSelectedRows = len(selectedRows['pieces'])
@@ -240,6 +256,13 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.shiftStart.setTime(shift[1])
             self.shiftEnd.setTime(shift[2])
 
+    def refreshShifts(self):
+        self.workingShifts = WoS.getWorkingShifts()
+        self.shiftNameLineEdit.clear()
+        for shift in self.workingShifts.keys():
+            self.shiftNameLineEdit.addItem(shift)
+        Utils.setupCompleter(self.workingShifts.keys(), self.shiftNameLineEdit)
+
     def toggleHourlyWorking(self):
         if self.isHourlyWorking.isChecked():
             self.hourlyStartWidget.setEnabled(True)
@@ -346,7 +369,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             timePaper = WoS.updateTimePaperAndOperation(timePaperData)
 
         if timePaper:
-            MM.showOnWidget(self, 'Успешно добавено временно документ за операции', 'success')
+            MM.showOnWidget(self, 'Успешно добавен лист за време', 'success')
             self.refreshTimePapersForToday()
             self.clearOperationInfo(False)
 
@@ -390,7 +413,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.workerPositionLineEdit.setText('Не е указано')
 
     def clearWorkerInfo(self):
-        self.shiftNameLineEdit.clear()
+        self.shiftNameLineEdit.setCurrentIndex(0)
         self.shiftStart.setTime(QTime(8, 0))
         self.shiftEnd.setTime(QTime(17, 0))
         self.isOvertimeWorking.setCheckState(Qt.CheckState.Unchecked)

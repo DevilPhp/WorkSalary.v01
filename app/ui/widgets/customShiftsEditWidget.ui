@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>customTimePapersWidget</class>
- <widget class="QWidget" name="customTimePapersWidget">
+ <class>customWorkingShiftsWidget</class>
+ <widget class="QWidget" name="customWorkingShiftsWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>967</width>
+    <width>900</width>
     <height>800</height>
    </rect>
   </property>
@@ -507,29 +507,10 @@ QComboBox::item{
                       </property>
                      </widget>
                     </item>
-                    <item row="0" column="1">
-                     <widget class="QComboBox" name="shiftNameLineEdit">
-                      <property name="editable">
-                       <bool>true</bool>
-                      </property>
-                      <property name="sizeAdjustPolicy">
-                       <enum>QComboBox::AdjustToContents</enum>
-                      </property>
-                      <property name="iconSize">
-                       <size>
-                        <width>12</width>
-                        <height>12</height>
-                       </size>
-                      </property>
-                      <property name="placeholderText">
-                       <string>Редовна</string>
-                      </property>
-                     </widget>
-                    </item>
                     <item row="1" column="0">
                      <widget class="QLabel" name="label">
                       <property name="text">
-                       <string>Покичка:</string>
+                       <string>Покивка:</string>
                       </property>
                      </widget>
                     </item>
@@ -574,10 +555,13 @@ QComboBox::item{
                       </layout>
                      </widget>
                     </item>
+                    <item row="0" column="1">
+                     <widget class="QLineEdit" name="workingShiftsNameLineEdit"/>
+                    </item>
                    </layout>
                   </item>
-                  <item>
-                   <widget class="QPushButton" name="acceptWorkingShifts">
+                  <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+                   <widget class="QPushButton" name="acceptWorkingShiftsBtn">
                     <property name="focusPolicy">
                      <enum>Qt::NoFocus</enum>
                     </property>
@@ -666,8 +650,8 @@ QComboBox::item{
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>955</width>
-        <height>526</height>
+        <width>888</width>
+        <height>563</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -688,6 +672,9 @@ QComboBox::item{
        </property>
        <item>
         <widget class="QWidget" name="workingShiftsTable" native="true">
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
          <layout class="QVBoxLayout" name="verticalLayout_11">
           <property name="spacing">
            <number>5</number>
@@ -704,329 +691,49 @@ QComboBox::item{
           <property name="bottomMargin">
            <number>0</number>
           </property>
+          <item>
+           <widget class="QTableView" name="workingShiftsTableView">
+            <property name="styleSheet">
+             <string notr="true">QHeaderView:section{
+	font: 700 10.5pt &quot;Segoe UI&quot;;
+	background-color: #dfdfdf;
+	padding-left: 10px;
+	padding-top:10px;
+	padding-right:10px;
+	selection-background-color: #7f7f7f;
+}
+QVerticalView:section{
+	min-height: 30;
+}
+QAbstractItemView{
+	font: 10.5pt &quot;Segoe UI&quot;;
+	selection-background-color: #545454;
+	selection-color: #fefefe;
+}
+QAbstractItemView:item{
+	selection-background-color: #545454;
+	selection-color: #fefefe;
+}</string>
+            </property>
+            <property name="editTriggers">
+             <set>QAbstractItemView::NoEditTriggers</set>
+            </property>
+            <property name="selectionBehavior">
+             <enum>QAbstractItemView::SelectRows</enum>
+            </property>
+            <property name="cornerButtonEnabled">
+             <bool>false</bool>
+            </property>
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
       </layout>
      </widget>
-    </widget>
-   </item>
-   <item>
-    <widget class="QWidget" name="statusBar" native="true">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_18">
-      <property name="spacing">
-       <number>10</number>
-      </property>
-      <property name="leftMargin">
-       <number>5</number>
-      </property>
-      <property name="topMargin">
-       <number>5</number>
-      </property>
-      <property name="rightMargin">
-       <number>5</number>
-      </property>
-      <property name="bottomMargin">
-       <number>5</number>
-      </property>
-      <item>
-       <widget class="QWidget" name="widget_2" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout_21">
-         <property name="spacing">
-          <number>20</number>
-         </property>
-         <property name="leftMargin">
-          <number>20</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item alignment="Qt::AlignLeft">
-          <widget class="QWidget" name="widget_17" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_25">
-            <property name="spacing">
-             <number>5</number>
-            </property>
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="label_42">
-              <property name="text">
-               <string>Общо редове:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="totalViewRows">
-              <property name="text">
-               <string>0</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item alignment="Qt::AlignHCenter">
-       <widget class="QWidget" name="widget_8" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout_19">
-         <property name="spacing">
-          <number>5</number>
-         </property>
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QWidget" name="widget_19" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_27">
-            <property name="spacing">
-             <number>5</number>
-            </property>
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="label_43">
-              <property name="text">
-               <string>Завършени бр за деня:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="totalProducedPieces">
-              <property name="text">
-               <string>0</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item alignment="Qt::AlignRight">
-       <widget class="QWidget" name="widget_9" native="true">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_20">
-         <property name="spacing">
-          <number>15</number>
-         </property>
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QWidget" name="widget_16" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_24">
-            <property name="spacing">
-             <number>5</number>
-            </property>
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="label_36">
-              <property name="text">
-               <string>Редове:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="totalSelectedRows">
-              <property name="text">
-               <string>0</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QWidget" name="widget_10" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_22">
-            <property name="spacing">
-             <number>5</number>
-            </property>
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="label_38">
-              <property name="text">
-               <string>Бройки:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="totalSelectedPieces">
-              <property name="text">
-               <string>0</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QWidget" name="widget_15" native="true">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>0</height>
-            </size>
-           </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_23">
-            <property name="spacing">
-             <number>5</number>
-            </property>
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="label_37">
-              <property name="text">
-               <string>Време:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="totalSelectedTime">
-              <property name="text">
-               <string>0.0</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QWidget" name="widget_18" native="true">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>0</height>
-            </size>
-           </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_26">
-            <property name="spacing">
-             <number>5</number>
-            </property>
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="label_39">
-              <property name="text">
-               <string>Ср. Време за бр.:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="avrTimePerPiece">
-              <property name="text">
-               <string>0.0</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-     </layout>
     </widget>
    </item>
   </layout>
