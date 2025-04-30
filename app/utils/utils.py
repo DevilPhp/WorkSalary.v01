@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from PySide6.QtGui import QStandardItemModel, QStandardItem, QCursor
 from PySide6.QtWidgets import QCompleter, QLineEdit, QApplication, QTableView
 from PySide6.QtCore import Qt, QStringListModel
@@ -67,6 +69,16 @@ class Utils:
         completer.setFilterMode(Qt.MatchFlag.MatchContains)
         completer.setCompletionColumn(0)
         widget.setCompleter(completer)
+
+    @staticmethod
+    def convertQtimeToTime(timeQTime):
+        stringTime = timeQTime.toString("hh:mm")
+        return datetime.strptime(stringTime, "%H:%M").time()
+
+    @staticmethod
+    def convertQDateToDate(dateQDate):
+        stringDate = dateQDate.toString("yyyy-MM-dd")
+        return datetime.strptime(stringDate, "%Y-%m-%d").date()
 
     @staticmethod
     def calculateMinutes(startTime, endTime, breakTime=0):

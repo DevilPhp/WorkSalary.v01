@@ -295,11 +295,15 @@ def insert_data_to_postgres_multi(df1, df2):
         isShiftFound = False
         # print(index, row1, row2)
         for shift in shifts:
+            # print(row['Начало на работа'].time(), shift.StartTime)
+            # return
             # print(count, len(shifts))
             if row['Начало на работа'].time() == shift.StartTime and row['Край на работа'].time() == shift.EndTime:
                 timePaperData[row['WorkDayID']]['ShiftId'] = shift.id
                 isShiftFound = True
+                print('Shift found')
                 break
+
         if not isShiftFound:
             timePaperData[row['WorkDayID']]['ShiftId'] = None
         # timePaperData[row['WorkDayID']]['ShiftId'] = workingShifts

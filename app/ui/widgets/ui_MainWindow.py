@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'MainWindowrkAdmH.ui'
+## Form generated from reading UI file 'MainWindowOdezpx.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -358,11 +358,6 @@ class Ui_MainWindow(object):
 
         self.mainMenuLayout.addWidget(self.pushButton, 1, 0, 1, 1)
 
-        self.pushButton_7 = QPushButton(self.mainMenuWidget)
-        self.pushButton_7.setObjectName(u"pushButton_7")
-
-        self.mainMenuLayout.addWidget(self.pushButton_7, 4, 0, 1, 1)
-
         self.pushButton_3 = QPushButton(self.mainMenuWidget)
         self.pushButton_3.setObjectName(u"pushButton_3")
 
@@ -379,6 +374,11 @@ class Ui_MainWindow(object):
         self.setModelsOperBtn.setFocusPolicy(Qt.NoFocus)
 
         self.mainMenuLayout.addWidget(self.setModelsOperBtn, 1, 2, 1, 1)
+
+        self.paymentsPageBtn = QPushButton(self.mainMenuWidget)
+        self.paymentsPageBtn.setObjectName(u"paymentsPageBtn")
+
+        self.mainMenuLayout.addWidget(self.paymentsPageBtn, 2, 1, 1, 1)
 
 
         self.verticalLayout_10.addLayout(self.mainMenuLayout)
@@ -476,10 +476,10 @@ class Ui_MainWindow(object):
         self.timePapersBtn.setText(QCoreApplication.translate("MainWindow", u"\u041f\u0440\u0435\u0433\u043b\u0435\u0434", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"\u041b\u0438\u0441\u0442\u043e\u0432\u0435 \u0437\u0430 \u0432\u0440\u0435\u043c\u0435", None))
         self.pushButton.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
-        self.pushButton_7.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
         self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
         self.setDefaultOperBtn.setText(QCoreApplication.translate("MainWindow", u"\u041e\u043f\u0435\u0440\u0430\u0446\u0438\u0439 \u043f\u043e \u043f\u043e\u0434\u0440\u0430\u0437\u0431\u0438\u0440\u0430\u043d\u0435", None))
         self.setModelsOperBtn.setText(QCoreApplication.translate("MainWindow", u"\u041c\u043e\u0434\u0435\u043b\u0438 \u0438 \u041e\u043f\u0435\u0440\u0430\u0446\u0438\u0438", None))
+        self.paymentsPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0447\u0438\u0441\u043b\u0435\u043d\u0438\u044f", None))
         self.infoLabel_2.setText(QCoreApplication.translate("MainWindow", u"Dev v0.1.010", None))
         self.pageBtn.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
     # retranslateUi

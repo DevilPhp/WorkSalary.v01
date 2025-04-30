@@ -140,7 +140,7 @@ class OvertimePay(Base):
     Start = Column(Time, nullable=False)
     End = Column(Time, nullable=False)
     Efficiency = Column(Float, nullable=False)
-    OvertimeRate = Column(Float, nullable=False)
+    OvertimeRate = Column(Float, nullable=False, default=0)
     # TimePaperId = Column(Integer, ForeignKey('timePapers.id'), nullable=True)
     DateUpdated = Column(Date, nullable=False, default=datetime.today())
     UserUpdated = Column(String, nullable=False)

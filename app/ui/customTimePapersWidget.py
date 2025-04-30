@@ -75,6 +75,9 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         for key, value in self.workingShifts.items():
             if value[1] == self.shiftStart.time() and value[2] == self.shiftEnd.time():
                 self.shiftNameLineEdit.setCurrentText(key)
+                break
+            else:
+                self.shiftNameLineEdit.setCurrentIndex(-1)
 
     def setShiftsWindow(self):
         data = [
@@ -340,10 +343,12 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
     def addTimePaperOperation(self):
         if int(self.workerNumberLineEdit.text()) not in self.existingTimePapers.keys():
-            overtime = [self.overtimeStart, self.overtimeEnd, float(self.overtimeTotalMins.text())] \
-                if self.isHourlyWorking.isChecked() else None
-            hourlyPay = [self.hourlyStart, self.hourlyEnd, float(self.hourlyTotalMins.text())] \
-                if self.isOvertimeWorking.isChecked() else None
+            overtime = [Utils.convertQtimeToTime(self.overtimeStart.time()),
+                        Utils.convertQtimeToTime(self.overtimeEnd.time()),
+                        float(self.overtimeTotalMins.text())] if self.isHourlyWorking.isChecked() else None
+            hourlyPay = [Utils.convertQtimeToTime(self.hourlyStart.time()),
+                         Utils.convertQtimeToTime(self.hourlyEnd.time()),
+                         float(self.hourlyTotalMins.text())] if self.isOvertimeWorking.isChecked() else None
             date = datetime.strptime(self.timePaperDateEdit.date().toString('yyyy-MM-dd'), '%Y-%m-%d').date()
             timePaperData = {
                 'Date': date,

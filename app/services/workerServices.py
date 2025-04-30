@@ -1,9 +1,33 @@
 from app.logger import logger
 from app.database import getDatabase, setDatabase
-from app.database.workers import Worker, TimePaper, TimePaperOperation, WorkingShift
+from app.database.workers import Worker, TimePaper, TimePaperOperation, WorkingShift, HourlyPay, OvertimePay
 from datetime import datetime
 
 class WorkerServices:
+
+    @staticmethod
+    def getInfoForPayments(workerId, startDate, endDate):
+        returnedData = {}
+        with getDatabase() as session:
+            if workerId != '':
+                timePapers = session.query(TimePaper).filter(TimePaper.WorkerId == int(workerId),
+                                                             TimePaper.Date >= startDate,
+                                                             TimePaper.Date <= endDate).all()
+
+            else:
+                timePapers = session.query(TimePaper).filter(TimePaper.Date >= startDate,
+                                                             TimePaper.Date <= endDate).all()
+
+            for timePaper in timePapers:
+                if timePaper.WorkerId not in returnedData.keys() and timePaper.WorkerId is not None:
+                    returnedData[timePaper.WorkerId] = {timePaper.id: {
+                            'date': timePaper.Date.strftime('%d.%m.%Y'),
+                            'shift': timePaper.workingShifts.ShiftName,
+                            'overtime': timePaper.overtimePays,
+                            'hourly': timePaper.hourlyPays
+                    }}
+
+
 
     @staticmethod
     def updateWorkingShift(shiftId, data):
@@ -35,8 +59,40 @@ class WorkerServices:
             return True
 
     @staticmethod
+    def deleteWorkingShift(shiftId):
+        with setDatabase() as session:
+            shift = session.query(WorkingShift).get(shiftId)
+            session.delete(shift)
+            session.commit()
+            logger.info(f"Working shift deleted: {shift.id}")
+            return True
+
+    @staticmethod
     def addNewTimePaperAndOperation(timePaperData):
         with setDatabase() as session:
+            if timePaperData['IsHourlyPaid']:
+                newHourlyPay = HourlyPay(
+                    Start=timePaperData['IsHourlyPaid'][0],
+                    End=timePaperData['IsHourlyPaid'][1],
+                    Efficiency=timePaperData['IsHourlyPaid'][2],
+                    UserUpdated=timePaperData['user']
+                )
+                session.add(newHourlyPay)
+                session.flush()
+                timePaperData['IsHourlyPaid'] = newHourlyPay.id
+
+            if timePaperData['IsOvertime']:
+                newOvertimePay = OvertimePay(
+                    Start=timePaperData['IsOvertime'][0],
+                    End=timePaperData['IsOvertime'][1],
+                    Efficiency=timePaperData['IsOvertime'][2],
+                    OvertimeRate=0,
+                    UserUpdated=timePaperData['user']
+                )
+                session.add(newOvertimePay)
+                session.flush()
+                timePaperData['IsOvertime'] = newOvertimePay.id
+
             newTimePaper = TimePaper(
                 Date=timePaperData['Date'],
                 ShiftId=timePaperData['ShiftId'],

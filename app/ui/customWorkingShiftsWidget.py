@@ -1,9 +1,11 @@
 from PySide6.QtGui import QStandardItemModel, QStandardItem, QDoubleValidator
+from PySide6.QtWidgets import QMenu, QDialog
 
 from app.ui.widgets.ui_customShiftsEditWidget import *
 from app.services.workerServices import WorkerServices as WoS
 from app.utils.utils import Utils
 from app.models.sortingModel import CaseInsensitiveProxyModel
+from app.ui.customYesNoMessage import CustomYesNowDialog
 from app.ui.messagesManager import MessageManager as MM
 from datetime import datetime
 
@@ -32,16 +34,49 @@ class CustomShiftsEditWidget(QWidget, Ui_customWorkingShiftsWidget):
         # self.timePapersForDayTableView.setModel(self.tableTimePapersModel)
         self.workingShiftsTableView.horizontalHeader().setStretchLastSection(True)
         self.workingShiftsTableView.horizontalHeader().setMinimumWidth(80)
-
+        self.workingShiftsTableView.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.refreshWorkingShiftsTable()
 
         self.workingShiftsTableView.selectionModel().selectionChanged.connect(self.selectionChanged)
+        self.workingShiftsTableView.customContextMenuRequested.connect(self.showCustomContextMenu)
         self.shiftStart.timeChanged.connect(self.updateShiftDuration)
         self.shiftEnd.timeChanged.connect(self.updateShiftDuration)
         self.shiftBreakLineEdit.textChanged.connect(self.updateShiftDuration)
         self.acceptWorkingShiftsBtn.clicked.connect(self.acceptWorkingShifts)
 
         self.workingShiftsNameLineEdit.setFocus()
+
+    def showCustomContextMenu(self, position):
+        menu = QMenu(self)
+        deleteAction = menu.addAction('Изтриване')
+        action = menu.exec_(self.workingShiftsTableView.viewport().mapToGlobal(position))
+
+        if action == deleteAction:
+            self.deleteWorkingShift()
+
+    def deleteWorkingShift(self):
+        index = self.workingShiftsTableView.currentIndex()
+        if not index.isValid():
+            MM.showOnWidget(self, 'Не е избрана смяна за изтриване', 'warning')
+            return
+        shiftId = index.siblingAtColumn(0)
+        shiftName = index.siblingAtColumn(1).data()
+        yesNoDialog = CustomYesNowDialog()
+        message = 'Искате ли да премахнете:'
+        yesNoDialog.setMessage(name=shiftName, message=message, mode='deleting')
+        result = yesNoDialog.exec()
+        if result == QDialog.Accepted:
+            success = WoS.deleteWorkingShift(shiftId.data())
+            if success:
+                MM.showOnWidget(self, f'Успешно премахната смяна: {shiftName}',
+                                    'success')
+                self.refreshWorkingShiftsTable()
+                self.resetShiftInfo()
+                return
+        elif result == QDialog.Rejected:
+            return
+        MM.showOnWidget(self, 'Промяната не беше успешна', 'warning')
+        return
 
     def acceptWorkingShifts(self):
         shiftName = self.workingShiftsNameLineEdit.text()

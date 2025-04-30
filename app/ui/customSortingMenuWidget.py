@@ -1,7 +1,7 @@
 from functools import partial
 
 from PySide6.QtCore import Signal
-from PySide6.QtWidgets import QCheckBox
+from PySide6.QtWidgets import QCheckBox, QMenu, QGraphicsDropShadowEffect
 
 from app.ui.widgets.ui_customSortingMenuWidget import *
 
