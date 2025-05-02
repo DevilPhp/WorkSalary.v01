@@ -767,6 +767,13 @@ QComboBox::item{
               </layout>
              </widget>
             </item>
+            <item>
+             <widget class="QPushButton" name="searchBtn">
+              <property name="text">
+               <string>Търсене</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </widget>
          </item>
@@ -862,7 +869,7 @@ QComboBox::item{
         <x>0</x>
         <y>0</y>
         <width>1161</width>
-        <height>591</height>
+        <height>583</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_12">

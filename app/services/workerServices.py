@@ -1,13 +1,22 @@
 from app.logger import logger
 from app.database import getDatabase, setDatabase
 from app.database.workers import Worker, TimePaper, TimePaperOperation, WorkingShift, HourlyPay, OvertimePay
+from app.database.payment import PaymentPerMinute
 from datetime import datetime
 
 class WorkerServices:
 
     @staticmethod
+    def getPaymentForMin():
+        with getDatabase() as session:
+            return session.query(PaymentPerMinute).order_by(PaymentPerMinute.id.desc()).first()
+
+
+    @staticmethod
     def getInfoForPayments(workerId, startDate, endDate):
         returnedData = {}
+        startDate = datetime.strptime('2025-01-10', '%Y-%m-%d').date()
+        endDate = datetime.strptime('2025-02-10', '%Y-%m-%d').date()
         with getDatabase() as session:
             if workerId != '':
                 timePapers = session.query(TimePaper).filter(TimePaper.WorkerId == int(workerId),
@@ -19,13 +28,31 @@ class WorkerServices:
                                                              TimePaper.Date <= endDate).all()
 
             for timePaper in timePapers:
-                if timePaper.WorkerId not in returnedData.keys() and timePaper.WorkerId is not None:
-                    returnedData[timePaper.WorkerId] = {timePaper.id: {
-                            'date': timePaper.Date.strftime('%d.%m.%Y'),
-                            'shift': timePaper.workingShifts.ShiftName,
-                            'overtime': timePaper.overtimePays,
-                            'hourly': timePaper.hourlyPays
-                    }}
+                if timePaper.WorkerId is not None:
+                    key = f'{timePaper.WorkerId} : {timePaper.workers.Име} {timePaper.workers.Фамилия}'
+                    data = {
+                                'date': timePaper.Date.strftime('%d.%m.%Y'),
+                                'shift': [timePaper.workingShifts.ShiftName,
+                                          timePaper.workingShifts.id,
+                                          timePaper.workingShifts.Efficiency]
+                                if timePaper.workingShifts is not None else None,
+                                'overtime': [timePaper.overtimePays.id,
+                                             timePaper.overtimePays.Efficiency]
+                                if timePaper.overtimePays is not None else None,
+                                'hourly': [timePaper.hourlyPays.id,
+                                           timePaper.hourlyPays.Efficiency]
+                                if timePaper.hourlyPays is not None else None,
+                                'totalPieces': timePaper.TotalPieces,
+                                'totalTime': round(timePaper.TotalHours, 2),
+                        }
+                    if key not in returnedData.keys():
+                        returnedData[key] = {timePaper.id: data}
+                    else:
+                        returnedData[key][timePaper.id] = data
+            # for key in returnedData.keys():
+            #     print(key)
+            #     print(returnedData[key])
+            return returnedData
 
 
 
@@ -112,6 +139,8 @@ class WorkerServices:
                 WorkingTimeMinutes=timePaperData['WorkingTimeMinutes']
             )
             session.add(newTimePaperOperation)
+            newTimePaper.TotalPieces += timePaperData['Pieces']
+            newTimePaper.TotalHours = round(newTimePaper.TotalHours + timePaperData['WorkingTimeMinutes'], 2)
             session.commit()
             logger.info(f"New time paper and operation added: {timePaperData}")
             return newTimePaperOperation.id
@@ -119,14 +148,17 @@ class WorkerServices:
     @staticmethod
     def updateTimePaperAndOperation(timePaperData):
         with setDatabase() as session:
+            timePaper = session.query(TimePaper).get(timePaperData['TimePaperId'])
             newTimePaperOperation = TimePaperOperation(
-                TimePaperId=timePaperData['TimePaperId'],
+                TimePaperId=timePaper.id,
                 OrderId=timePaperData['OrderId'],
                 ModelOperationId=timePaperData['ModelOperationId'],
                 Pieces=timePaperData['Pieces'],
                 WorkingTimeMinutes=timePaperData['WorkingTimeMinutes']
             )
             session.add(newTimePaperOperation)
+            timePaper.TotalPieces += timePaperData['Pieces']
+            timePaper.TotalHours = round(timePaper.TotalHours + timePaperData['WorkingTimeMinutes'], 2)
             session.commit()
             logger.info(f"Time paper updated: {timePaperData}")
             return newTimePaperOperation.TimePaperId

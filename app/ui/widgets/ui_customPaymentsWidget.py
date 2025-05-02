@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customPaymentsWidgetqqBnuD.ui'
+## Form generated from reading UI file 'customPaymentsWidgetFXfsFf.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -452,6 +452,11 @@ class Ui_customPaymentsWidget(object):
 
         self.horizontalLayout_8.addWidget(self.widget_11)
 
+        self.searchBtn = QPushButton(self.widget_5)
+        self.searchBtn.setObjectName(u"searchBtn")
+
+        self.horizontalLayout_8.addWidget(self.searchBtn)
+
 
         self.verticalLayout_2.addWidget(self.widget_5, 0, Qt.AlignLeft)
 
@@ -496,7 +501,7 @@ class Ui_customPaymentsWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1161, 591))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1161, 583))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -698,6 +703,7 @@ class Ui_customPaymentsWidget(object):
         self.label_26.setText(QCoreApplication.translate("customPaymentsWidget", u"\u0414\u043e \u0414\u0430\u0442\u0430: ", None))
         self.toDateEdit.setDisplayFormat(QCoreApplication.translate("customPaymentsWidget", u"d.M.yy '\u0433.'", None))
         self.toCalendarBtn.setText("")
+        self.searchBtn.setText(QCoreApplication.translate("customPaymentsWidget", u"\u0422\u044a\u0440\u0441\u0435\u043d\u0435", None))
         self.label_42.setText(QCoreApplication.translate("customPaymentsWidget", u"\u041e\u0431\u0449\u043e \u0440\u0435\u0434\u043e\u0432\u0435:", None))
         self.totalViewRows.setText(QCoreApplication.translate("customPaymentsWidget", u"0", None))
         self.label_43.setText(QCoreApplication.translate("customPaymentsWidget", u"\u0417\u0430\u0432\u044a\u0440\u0448\u0435\u043d\u0438 \u0431\u0440 \u0437\u0430 \u0434\u0435\u043d\u044f:", None))

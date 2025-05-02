@@ -81,6 +81,8 @@ class TimePaper(Base):
     IsHourlyPaid = Column(Integer, ForeignKey('hourlyPays.id'), nullable=True)
     IsOvertime = Column(Integer, ForeignKey('overtimePays.id'), nullable=True, default=None)
     WorkerId = Column(Integer, ForeignKey('workers.Номер'), nullable=False)
+    TotalPieces = Column(Integer, nullable=False, default=0)
+    TotalHours = Column(Float, nullable=False, default=0)
     userCreated = Column(String, nullable=False)
 
     # modelOperationsId = Column(Integer, ForeignKey('timePaperOperations.id'), nullable=True)

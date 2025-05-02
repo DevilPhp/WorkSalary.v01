@@ -361,8 +361,8 @@ def addTimePaper(timePaperData):
                             operation = session.query(ProductionModelOperations).filter_by(
                                 OrderId=orderId.id, ОперацияNo=value).first()
                             if not operation:
-                                time = timePaperData[workDayId][f'{operations} :TP'][index][1]
-                                pieces = timePaperData[workDayId][f'{operations} :TP'][index][0]
+                                time = timePaperData[workDayId][f'{operations} :TP'][index][0]
+                                pieces = timePaperData[workDayId][f'{operations} :TP'][index][1]
                                 defaultOperation = session.query(Operation).filter_by(ОперацияNo=value).first()
                                 if not time or time == 0 or not pieces or pieces == 0:
                                     timeForOper = 0
@@ -384,8 +384,8 @@ def addTimePaper(timePaperData):
                                 operation = newOperation
                                 # print(f"Operation with OrderId {orderId.id} and OperationNo {value} not found")
                             # print(operation.id, operation.Операция, operation.TimeForOper)
-                            operTime = timePaperData[workDayId][f'{operations} :TP'][index][1]
-                            operPieces = timePaperData[workDayId][f'{operations} :TP'][index][0]
+                            operTime = timePaperData[workDayId][f'{operations} :TP'][index][0]
+                            operPieces = timePaperData[workDayId][f'{operations} :TP'][index][1]
                             newTimePaperOperation = TimePaperOperation(
                                 TimePaperId=newTimePaper.id,
                                 OrderId=orderId.id,
@@ -394,6 +394,8 @@ def addTimePaper(timePaperData):
                                 WorkingTimeMinutes=operTime
                             )
                             session.add(newTimePaperOperation)
+                            newTimePaper.TotalPieces += int(operPieces)
+                            newTimePaper.TotalHours = round(newTimePaper.TotalHours + operTime, 2)
                             session.flush()
         session.commit()
         existOpers = len(timePaperData.keys()) - zeroCount
@@ -406,19 +408,19 @@ def addTimePaper(timePaperData):
         session.close()
 
 
-def addOperationToTimePaper(timePaperId, orderId, operation):
-    session = SessionLocal()
-    try:
-
-        session.add(newTimePaperOperation)
-        session.commit()
-        return newTimePaperOperation.id
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        session.rollback()
-        return None
-    finally:
-        session.close()
+# def addOperationToTimePaper(timePaperId, orderId, operation):
+#     session = SessionLocal()
+#     try:
+#
+#         session.add(newTimePaperOperation)
+#         session.commit()
+#         return newTimePaperOperation.id
+#     except Exception as e:
+#         print(f"An error occurred: {e}")
+#         session.rollback()
+#         return None
+#     finally:
+#         session.close()
 
 
 def createHourlyPaid(start, end):
