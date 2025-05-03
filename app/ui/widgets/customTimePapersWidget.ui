@@ -1115,11 +1115,11 @@ QComboBox::item{
                 <second>0</second>
                 <year>1990</year>
                 <month>9</month>
-                <day>9</day>
+                <day>8</day>
                </datetime>
               </property>
               <property name="displayFormat">
-               <string>d.M.yy 'г.'</string>
+               <string>dd.MM.yy 'г.'</string>
               </property>
              </widget>
             </item>

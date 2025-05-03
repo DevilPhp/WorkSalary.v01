@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customPaymentsWidgetFXfsFf.ui'
+## Form generated from reading UI file 'customPaymentsWidgetEPwKfp.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -397,7 +397,7 @@ class Ui_customPaymentsWidget(object):
         self.fromDateEdit.setFrame(False)
         self.fromDateEdit.setAlignment(Qt.AlignCenter)
         self.fromDateEdit.setCorrectionMode(QAbstractSpinBox.CorrectToNearestValue)
-        self.fromDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 9, 7), QTime(0, 0, 0)))
+        self.fromDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 9, 6), QTime(0, 0, 0)))
 
         self.horizontalLayout_7.addWidget(self.fromDateEdit)
 
@@ -434,7 +434,7 @@ class Ui_customPaymentsWidget(object):
         self.toDateEdit.setFrame(False)
         self.toDateEdit.setAlignment(Qt.AlignCenter)
         self.toDateEdit.setCorrectionMode(QAbstractSpinBox.CorrectToNearestValue)
-        self.toDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 9, 8), QTime(0, 0, 0)))
+        self.toDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 9, 7), QTime(0, 0, 0)))
 
         self.horizontalLayout_6.addWidget(self.toDateEdit)
 
@@ -698,10 +698,10 @@ class Ui_customPaymentsWidget(object):
         self.label_8.setText(QCoreApplication.translate("customPaymentsWidget", u"TextLabel", None))
         self.label_9.setText(QCoreApplication.translate("customPaymentsWidget", u"TextLabel", None))
         self.label_25.setText(QCoreApplication.translate("customPaymentsWidget", u"\u041e\u0442 \u0414\u0430\u0442\u0430: ", None))
-        self.fromDateEdit.setDisplayFormat(QCoreApplication.translate("customPaymentsWidget", u"d.M.yy '\u0433.'", None))
+        self.fromDateEdit.setDisplayFormat(QCoreApplication.translate("customPaymentsWidget", u"dd.MM.yy '\u0433.'", None))
         self.fromCalendarBtn.setText("")
         self.label_26.setText(QCoreApplication.translate("customPaymentsWidget", u"\u0414\u043e \u0414\u0430\u0442\u0430: ", None))
-        self.toDateEdit.setDisplayFormat(QCoreApplication.translate("customPaymentsWidget", u"d.M.yy '\u0433.'", None))
+        self.toDateEdit.setDisplayFormat(QCoreApplication.translate("customPaymentsWidget", u"dd.MM.yy '\u0433.'", None))
         self.toCalendarBtn.setText("")
         self.searchBtn.setText(QCoreApplication.translate("customPaymentsWidget", u"\u0422\u044a\u0440\u0441\u0435\u043d\u0435", None))
         self.label_42.setText(QCoreApplication.translate("customPaymentsWidget", u"\u041e\u0431\u0449\u043e \u0440\u0435\u0434\u043e\u0432\u0435:", None))

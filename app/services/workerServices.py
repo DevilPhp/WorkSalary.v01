@@ -7,6 +7,58 @@ from datetime import datetime
 class WorkerServices:
 
     @staticmethod
+    def getWorkerDataForPayments(workerId):
+        with getDatabase() as session:
+            worker = session.query(Worker).filter(Worker.Номер == workerId).first()
+            if worker is not None:
+                return {
+                    'id': worker.Номер,
+                    'firstName': worker.Име,
+                    'lastName': worker.Фамилия,
+                    'place': worker.cehove.Група,
+                    'position': worker.workerPosition.Длъжност,
+                }
+
+    @staticmethod
+    def getPaymentsDetailsForWorker(workerId, startDate, endDate):
+        startDate = datetime.strptime('2025-01-10', '%Y-%m-%d').date()
+        endDate = datetime.strptime('2025-02-10', '%Y-%m-%d').date()
+        returnedData = {}
+        with getDatabase() as session:
+            timePapers = session.query(TimePaper).filter(TimePaper.WorkerId == workerId,
+                                                            TimePaper.Date >= startDate,
+                                                            TimePaper.Date <= endDate).all()
+            for timePaper in timePapers:
+                operationsData = {}
+                orderCount = []
+                operationsCount = []
+                if timePaper.timePaperOperations:
+                    for timePaperOperation in timePaper.timePaperOperations:
+                        operationsData[timePaperOperation.id] = {
+                            'order': timePaperOperation.productionModelOperations.ПоръчкаNo,
+                            'operation': timePaperOperation.productionModelOperations.ОперацияNo,
+                            'time': timePaperOperation.WorkingTimeMinutes,
+                            'pieces': timePaperOperation.Pieces,
+                        }
+                        if timePaperOperation.productionModelOperations.ПоръчкаNo not in orderCount:
+                            orderCount.append(timePaperOperation.productionModelOperations.ПоръчкаNo)
+
+                        if timePaperOperation.productionModelOperations.ОперацияNo not in operationsCount:
+                            operationsCount.append(timePaperOperation.productionModelOperations.ОперацияNo)
+
+                returnedData[timePaper.id] = {
+                    'date': timePaper.Date.strftime('%d.%m.%Y'),
+                    'shift': timePaper.workingShifts.ShiftName,
+                    'operations': operationsData,
+                    'isHourly': timePaper.hourlyPays.Efficiency if timePaper.hourlyPays is not None else 0,
+                    'totalTime': timePaper.TotalHours,
+                    'totalPieces': timePaper.TotalPieces,
+                    'ordersCount': len(orderCount),
+                    'operationsCount': len(operationsCount),
+                }
+            return returnedData
+
+    @staticmethod
     def getPaymentForMin():
         with getDatabase() as session:
             return session.query(PaymentPerMinute).order_by(PaymentPerMinute.id.desc()).first()

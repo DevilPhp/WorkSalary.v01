@@ -60,7 +60,7 @@ class CustomTableViewWithMultiSelection(QTableView):
 
         self.setDragEnabled(False)
         self.setDragDropMode(QAbstractItemView.DragDropMode.NoDragDrop)
-        self.setEditTriggers(QAbstractItemView.EditTrigger.DoubleClicked)
+        self.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
 
         self.verticalHeader().hide()
         self.setCornerButtonEnabled(False)
