@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customTimePapersWidgethKVVKk.ui'
+## Form generated from reading UI file 'customTimePapersWidgetAWHfji.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -668,7 +668,7 @@ class Ui_customTimePapersWidget(object):
         self.timePaperDateEdit.setFrame(False)
         self.timePaperDateEdit.setAlignment(Qt.AlignCenter)
         self.timePaperDateEdit.setCorrectionMode(QAbstractSpinBox.CorrectToNearestValue)
-        self.timePaperDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 9, 9), QTime(0, 0, 0)))
+        self.timePaperDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 9, 8), QTime(0, 0, 0)))
 
         self.horizontalLayout_15.addWidget(self.timePaperDateEdit)
 
@@ -1053,7 +1053,7 @@ class Ui_customTimePapersWidget(object):
         self.label_5.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0421\u043c\u044f\u043d\u0430:", None))
         self.refreshShiftsBtn.setText("")
         self.label_25.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0414\u0430\u0442\u0430: ", None))
-        self.timePaperDateEdit.setDisplayFormat(QCoreApplication.translate("customTimePapersWidget", u"d.M.yy '\u0433.'", None))
+        self.timePaperDateEdit.setDisplayFormat(QCoreApplication.translate("customTimePapersWidget", u"dd.MM.yy '\u0433.'", None))
         self.calendarBtn.setText("")
         self.addNewTimePaperBtn.setText("")
         self.label_34.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0412\u0440\u0435\u043c\u0435\u041f\u043e\u041f\u043e\u0434.", None))

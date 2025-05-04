@@ -13,7 +13,7 @@ from app.database.operations import modelOperationsType, ProductionModelOperatio
 from app.database.models import ProductionModel
 import time as t
 
-ACCESS_DB_PATH = r"E:\fedbase\ts4rep_new.accdb"
+ACCESS_DB_PATH = r"D:\fedbase\ts4rep_new.accdb"
 
 # Create connection string (for Access 2016 or later, use "Microsoft.ACE.OLEDB.12.0")
 conn_str = (
@@ -607,10 +607,10 @@ def extract_and_transform_data():
     # insert_data_to_postgres("paymentPerMinutes", paymentsData)
     # shiftsData = fetch_access_data_special("Дневник за часове")
     # insert_data_to_postgres_special('workingShifts', shiftsData)
-
-    timePapersData = fetch_access_data("Обща")
-    workingHoursData = fetch_access_data("Дневник за часове")
-    insert_data_to_postgres_multi(timePapersData, workingHoursData)
+    #
+    # timePapersData = fetch_access_data("Обща")
+    # workingHoursData = fetch_access_data("Дневник за часове")
+    # insert_data_to_postgres_multi(timePapersData, workingHoursData)
 
     # print(data)
     # insert_data_to_postgres_with_fkey("modelOperationsTypes", data)

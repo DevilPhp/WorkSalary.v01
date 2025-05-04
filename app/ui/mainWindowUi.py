@@ -14,6 +14,7 @@ from app.ui.customModelsOperWidget import CustomWidgetForModelOper
 from app.ui.customTimePapersWidget import CustomTimePapersWidget
 from app.ui.customWorkingShiftsWidget import CustomShiftsEditWidget
 from app.ui.customPaymentsWidget import CustomPaymentsWidget
+from app.ui.customPaymentsDetailsWidget import CustomPaymentsDetailsWidget
 from app.ui.messagesManager import MessageManager
 
 
@@ -35,6 +36,7 @@ class MainWindow(QMainWindow):
         self.timePapersPage = None
         self.workingShiftsPage = None
         self.paymentsPage = None
+        self.workerPaymentsDetails = {}
         # self.setAttribute(Qt.WA_TranslucentBackground)
         LoginPage(self)
         MainMenuPage(self)
@@ -52,6 +54,9 @@ class MainWindow(QMainWindow):
         # user = UsersFuncs.createUser('test', '000')
         # print(user)
 
+    def closeEvent(self, event):
+        QApplication.quit()
+
     def resetPaymentsPage(self):
         self.paymentsPage = None
 
@@ -67,6 +72,14 @@ class MainWindow(QMainWindow):
     def resetTimePapersPage(self):
         self.timePapersPage = None
 
+    def removeWorkerPaymentsDetails(self, workerId):
+        if workerId in self.workerPaymentsDetails:
+            del self.workerPaymentsDetails[workerId]
+
+    def closeAllPaymentsDetails(self):
+        for workerId, window in self.workerPaymentsDetails.items():
+            window.close()
+
     def changePage(self, windows):
         for window in windows:
             subWindow = QMdiSubWindow()
@@ -74,6 +87,14 @@ class MainWindow(QMainWindow):
             subWindow.setWidget(newWindow)
             self.ui.mainWindowsArea.addSubWindow(subWindow)
             subWindow.show()
+
+    def setPaymentsDetailsPage(self, workerId, start, end):
+        if workerId not in self.workerPaymentsDetails:
+            self.workerPaymentsDetails[workerId] = CustomPaymentsDetailsWidget(self, workerId, start, end)
+            self.workerPaymentsDetails[workerId].show()
+            self.workerPaymentsDetails[workerId].destroyed.connect(lambda: self.removeWorkerPaymentsDetails(workerId))
+        else:
+            self.workerPaymentsDetails[workerId].activateWindow()
 
     def setPaymentsPage(self):
         if self.paymentsPage is None:
@@ -118,8 +139,6 @@ class MainWindow(QMainWindow):
             self.modelOperPage.destroyed.connect(self.resetModelOperPage)
         else:
             self.modelOperPage.activateWindow()
-
-
 
 
 def startUi():

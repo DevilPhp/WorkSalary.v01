@@ -3,6 +3,7 @@ from functools import partial
 from PySide6.QtGui import QStandardItemModel, QStandardItem
 
 from app.ui.widgets.ui_customPaymentsWidget import *
+from app.ui.customPaymentsDetailsWidget import CustomPaymentsDetailsWidget
 from app.models.tableModel import CustomTableViewWithMultiSelection
 from app.models.sortingModel import CaseInsensitiveProxyModel, FilterableHeaderView
 from app.services.workerServices import WorkerServices as WoS
@@ -95,9 +96,14 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
             ]
             self.tablePaymentsModel.appendRow(row)
 
-    def openPaymentDetails(self):
-        print('hello')
-        pass
+    def closeEvent(self, event):
+        self.mainWindow.closeAllPaymentsDetails()
+
+    def openPaymentDetails(self, index):
+        workerId = self.proxyModelPaymentsTable.mapToSource(index).siblingAtColumn(1).data(Qt.ItemDataRole.DisplayRole)
+        startDate = Utils.convertQDateToDate(self.fromDateEdit.date())
+        endDate = Utils.convertQDateToDate(self.toDateEdit.date())
+        self.mainWindow.setPaymentsDetailsPage(workerId, startDate, endDate)
 
     def setProxyModel(self, proxyModel, model, table):
         proxyModel.setSourceModel(model)
