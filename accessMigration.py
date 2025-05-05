@@ -607,10 +607,10 @@ def extract_and_transform_data():
     # insert_data_to_postgres("paymentPerMinutes", paymentsData)
     # shiftsData = fetch_access_data_special("Дневник за часове")
     # insert_data_to_postgres_special('workingShifts', shiftsData)
-
-    timePapersData = fetch_access_data("Обща")
-    workingHoursData = fetch_access_data("Дневник за часове")
-    insert_data_to_postgres_multi(timePapersData, workingHoursData)
+    #
+    # timePapersData = fetch_access_data("Обща")
+    # workingHoursData = fetch_access_data("Дневник за часове")
+    # insert_data_to_postgres_multi(timePapersData, workingHoursData)
 
     # print(data)
     # insert_data_to_postgres_with_fkey("modelOperationsTypes", data)

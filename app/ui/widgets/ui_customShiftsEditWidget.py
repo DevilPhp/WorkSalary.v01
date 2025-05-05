@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customShiftsEditWidgetuJqWxq.ui'
+## Form generated from reading UI file 'customShiftsEditWidgetwrkYjI.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -392,21 +392,25 @@ class Ui_customWorkingShiftsWidget(object):
 "	padding-left: 10px;\n"
 "	padding-top:10px;\n"
 "	padding-right:10px;\n"
-"	selection-background-color: #7f7f7f;\n"
 "}\n"
 "QVerticalView:section{\n"
 "	min-height: 30;\n"
 "}\n"
 "QAbstractItemView{\n"
+"	alternate-background-color: #d3d3d3;\n"
 "	font: 10.5pt \"Segoe UI\";\n"
-"	selection-background-color: #545454;\n"
-"	selection-color: #fefefe;\n"
+"	selection-background-color: rgba(198, 228, 254, 45);\n"
+"	selection-color: #324b4c;\n"
 "}\n"
 "QAbstractItemView:item{\n"
-"	selection-background-color: #545454;\n"
-"	selection-color: #fefefe;\n"
+"	selection-background-color: rgba(198, 228, 254, 45);\n"
+"	selection-color: #324b4c;\n"
+"}\n"
+"QAbstractItemView::item:selected{\n"
+"	background-color: rgba(198, 228, 254, 45);\n"
 "}")
         self.workingShiftsTableView.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.workingShiftsTableView.setAlternatingRowColors(True)
         self.workingShiftsTableView.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.workingShiftsTableView.setCornerButtonEnabled(False)
         self.workingShiftsTableView.verticalHeader().setVisible(False)

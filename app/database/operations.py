@@ -10,13 +10,25 @@ modelOperationsType = Table(
     Column('OpTypeID', Integer, ForeignKey('operationTypes.OperTypeID'), nullable=True)
 )
 
+operationsGroupsOperations = Table(
+    'operationsGroupsOperations', Base.metadata,
+    Column('groupId', Integer, primary_key=True, autoincrement=True),
+    Column('id', Integer, ForeignKey('operationsGroups.id'), primary_key=True),
+    Column('ОперацияNo', Integer, ForeignKey('operations.ОперацияNo'), primary_key=True)
+)
+
 
 class Operation(Base):
     __tablename__ = 'operations'
     ОперацияNo = Column(Integer, primary_key=True)
     Операция = Column(String, nullable=True)
 
-    operationTypes = relationship('OperationType', secondary='modelOperationsTypes', back_populates='operations')
+    operationTypes = relationship('OperationType',
+                                  secondary='modelOperationsTypes',
+                                  back_populates='operations')
+    operationsGroup = relationship('OperationsGroup',
+                                    secondary='operationsGroupsOperations',
+                                    back_populates='operations')
     defaultOperForVidOblekla = relationship('DefaultOperForVidObleklo', back_populates='operations')
     productionModelOperations = relationship('ProductionModelOperations', back_populates='operations')
 
@@ -47,3 +59,14 @@ class ProductionModelOperations(Base):
     productionModel = relationship("ProductionModel", back_populates="productionModelOperations")
     operations = relationship("Operation", back_populates="productionModelOperations")
     timePaperOperations = relationship("TimePaperOperation", back_populates="productionModelOperations")
+
+
+class OperationsGroup(Base):
+    __tablename__ = "operationsGroups"
+    id = Column(Integer, primary_key=True)
+    Name = Column(String, nullable=False)
+    Description = Column(String, nullable=True)
+
+    operations = relationship("Operation",
+                                    secondary="operationsGroupsOperations",
+                                    back_populates="operationsGroup")

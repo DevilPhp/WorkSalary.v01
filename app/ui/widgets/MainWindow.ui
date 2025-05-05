@@ -100,7 +100,7 @@ QPushButton:hover {
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="loginPage">
        <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -625,13 +625,6 @@ QPushButton:hover {
                   </property>
                  </widget>
                 </item>
-                <item row="2" column="0">
-                 <widget class="QPushButton" name="timePapersBtn">
-                  <property name="text">
-                   <string>Преглед</string>
-                  </property>
-                 </widget>
-                </item>
                 <item row="0" column="0">
                  <widget class="QLabel" name="label_2">
                   <property name="text">
@@ -639,19 +632,6 @@ QPushButton:hover {
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="0">
-                 <widget class="QPushButton" name="pushButton">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="text">
-                   <string>PushButton</string>
                   </property>
                  </widget>
                 </item>
@@ -686,6 +666,26 @@ QPushButton:hover {
                  <widget class="QPushButton" name="paymentsPageBtn">
                   <property name="text">
                    <string>Начисления</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QPushButton" name="pushButton">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>PushButton</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QPushButton" name="timePapersBtn">
+                  <property name="text">
+                   <string>Листове за време</string>
                   </property>
                  </widget>
                 </item>

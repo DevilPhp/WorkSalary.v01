@@ -1,4 +1,4 @@
-from PySide6.QtCore import QAbstractTableModel, Qt, Signal
+from PySide6.QtCore import QAbstractTableModel, Qt, Signal, QItemSelection, QItemSelectionModel
 import pandas as pd
 import numpy as np
 from PySide6.QtWidgets import QTableView, QAbstractItemView
@@ -53,6 +53,7 @@ class TableModel(QAbstractTableModel):
 class CustomTableViewWithMultiSelection(QTableView):
     selectedRows = Signal(dict)
     clearCurrentSelection = Signal(bool)
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setSelectionBehavior(QTableView.SelectionBehavior.SelectRows)
@@ -61,6 +62,8 @@ class CustomTableViewWithMultiSelection(QTableView):
         self.setDragEnabled(False)
         self.setDragDropMode(QAbstractItemView.DragDropMode.NoDragDrop)
         self.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.setAlternatingRowColors(True)
+        # self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
         self.verticalHeader().hide()
         self.setCornerButtonEnabled(False)
@@ -85,16 +88,38 @@ class CustomTableViewWithMultiSelection(QTableView):
                 min-height: 30;
             }
             QAbstractItemView{
+                alternate-background-color: #d3d3d3;
                 font: 10.5pt "Segoe UI";
-                selection-background-color: #545454;
-                selection-color: #fefefe;
+                selection-background-color: rgba(198, 228, 254, 45);
+                selection-color: #324b4c;
             }
             QAbstractItemView:item{
-                selection-background-color: #545454;
-                selection-color: #fefefe;
+                selection-background-color: rgba(198, 228, 254, 45);
+                selection-color: #324b4c;
+            }
+            
+            QAbstractItemView::item:selected{
+                background-color: rgba(198, 228, 254, 45);
             }
 
         ''')
+
+    def keyPressEvent(self, event):
+        if event.key() in (Qt.Key.Key_Up, Qt.Key.Key_Down):
+            selectedItems = {}
+            index = self.currentIndex()
+
+            if event.key() == Qt.Key.Key_Up and index.row() > 0:
+                self.selectRow(index.row() - 1)
+                selectedItems['pieces'] = self.selectionModel().selectedRows(5)
+                selectedItems['piecesTime'] = self.selectionModel().selectedRows(6)
+                self.selectedRows.emit(selectedItems)
+
+            elif event.key() == Qt.Key.Key_Down and index.row() < self.model().rowCount() - 1:
+                self.selectRow(index.row() + 1)
+                selectedItems['pieces'] = self.selectionModel().selectedRows(5)
+                selectedItems['piecesTime'] = self.selectionModel().selectedRows(6)
+                self.selectedRows.emit(selectedItems)
 
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
@@ -102,22 +127,15 @@ class CustomTableViewWithMultiSelection(QTableView):
             index = self.indexAt(event.pos())
             if index.isValid():
                 modifiers = event.modifiers()
-                # selectedItems['pieces'] = []
-                # selectedItems['piecesTime'] = []
                 if not (modifiers & Qt.KeyboardModifier.ControlModifier or
                         modifiers & Qt.KeyboardModifier.ShiftModifier) or self.selectionModel().selectedRows(0):
                     selectedItems['pieces'] = self.selectionModel().selectedRows(5)
                     selectedItems['piecesTime'] = self.selectionModel().selectedRows(6)
                     self.selectedRows.emit(selectedItems)
 
-                # else:
-                #     selectedItems['pieces'].append(self.selectionModel().selectedRows(5))
-                #     selectedItems['piecesTime'] = self.selectionModel().selectedRows(6)
-                #     self.selectedRows.emit(selectedItems)
             else:
                 self.clearCurrentSelection.emit(True)
                 self.clearSelection()
-            self.clearFocus()
 
         super().mouseReleaseEvent(event)
 
@@ -131,7 +149,6 @@ class CustomTableViewWithMultiSelection(QTableView):
                         modifiers & Qt.KeyboardModifier.ShiftModifier):
                     # self.clearCurrentSelection.emit(True)
                     self.clearSelection()
-                    self.clearFocus()
+                    # self.clearFocus()
 
         super().mousePressEvent(event)
-
