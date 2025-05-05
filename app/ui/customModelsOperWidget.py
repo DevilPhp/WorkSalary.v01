@@ -18,6 +18,9 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.setupUi(self)
         self.mainWindow = mainWindow
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
+        self.setWindowTitle('Операции за модели')
+        self.operationsGroupsHolder.setVisible(False)
+        self.operationsGroupsReturnBtn.setVisible(False)
         validatorInt = QDoubleValidator(0, 999999, 0)
         validatorFloat = QDoubleValidator(0.1, float('inf'), 1)
         validatorInt.setNotation(QDoubleValidator.Notation.StandardNotation)
@@ -38,6 +41,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.comboBoxItems = {}
         self.modelExistingOperations = []
         self.newModelOperations = []
+        self.groupOperations = OpS.getOperationsGroups()
         self.addOperationsForNewModel = {}
         self.newModel = {}
         # print(self.geometry())
@@ -51,10 +55,31 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.saveNewModel.clicked.connect(self.checkAcceptAddingNewModel)
         self.piecesLineEdit.textChanged.connect(self.updatePiecesLineEdit)
         self.machineComboBox.currentIndexChanged.connect(self.updateMachineComboBox)
-
+        self.operationsGroupViewBtn.clicked.connect(self.showOperationsGroupView)
+        self.operationsGroupsReturnBtn.clicked.connect(self.returnToModelOpersView)
+        self.saveOpertaionsGroupsBtn.clicked.connect(self.saveOperationsGroups)
         # logger.info('Models and Operations Page initialized successfully!')
         # MessageManager.showOnWidget(self, 'Models and Operations Page initialized successfully!',
         #                             'info')
+
+    def saveOperationsGroups(self):
+        name = self.ope
+
+    def showOperationsGroupView(self):
+        self.modelInfoHolder.setVisible(False)
+        self.operationsGroupsHolder.setVisible(True)
+        self.resetAllOperations(True)
+        self.operationsGroupViewBtn.setVisible(False)
+        self.saveBtn.setVisible(False)
+        self.operationsGroupsReturnBtn.setVisible(True)
+
+    def returnToModelOpersView(self):
+        self.operationsGroupsHolder.setVisible(False)
+        self.modelInfoHolder.setVisible(True)
+        self.resetAllOperations(True)
+        self.operationsGroupViewBtn.setVisible(True)
+        self.saveBtn.setVisible(True)
+        self.operationsGroupsReturnBtn.setVisible(False)
 
     def checkAcceptAddingNewModel(self):
         if self.newModelLineEdit.text() == '':

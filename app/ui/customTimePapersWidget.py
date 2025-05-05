@@ -6,6 +6,7 @@ from app.ui.widgets.ui_customTimePapersWidget import *
 from app.utils.utils import Utils
 from app.services.workerServices import WorkerServices as WoS
 from app.services.modelServices import ModelService as MoS
+from app.services.operationServices import OperationsServices as OpS
 from app.ui.customCalendarWidget import CustomCalendarDialog
 from app.models.tableModel import TableModel
 from app.models.sortingModel import CaseInsensitiveProxyModel, FilterableHeaderView
@@ -19,6 +20,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.setupUi(self)
         self.mainWindow = mainWindow
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
+        self.setWindowTitle("Листове за време")
         self.workers = WoS.getWorkers()
         self.models = MoS.getClientsAndModels()
         self.clientModels = {}
@@ -28,6 +30,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.existingTimePapers = {}
         self.checkBoxFiltering = {}
         self.initialCheckBoxes = {}
+        self.operationsGroups = OpS.getOperationsGroups()
+        self.operationsGroupsHolder.setEnabled(False)
         self.setupWorkerAndModelsCompleter()
         self.timePaperDateEdit.setDate(QDate.currentDate())
         self.setupWorkingTimeWidgets()
@@ -42,18 +46,19 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.proxyModelWorkers = CaseInsensitiveProxyModel(numericColumns=[0, 1, 3, 5, 6],
                                                            parent=self)
         self.setProxyModel(self.proxyModelWorkers, self.tableTimePapersModel, self.timePapersForDayTableView)
-        # self.timePapersForDayTableView.setModel(self.tableTimePapersModel)
         self.timePapersForDayTableView.horizontalHeader().setStretchLastSection(True)
         self.timePapersForDayTableView.horizontalHeader().setMinimumWidth(80)
-        # self.timePapersForDayTableView.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.refreshTimePapersForToday()
-        # self.timePapersForDayTableView.clicked.connect(self.showTimePaperDetails)
         self.timePapersForDayTableView.selectedRows.connect(self.showTimePaperDetails)
         self.timePapersForDayTableView.clearCurrentSelection.connect(self.resetSelectedInfo)
         self.workerShiftsHolder.setEnabled(False)
         self.modelAndOperationHolder.setVisible(False)
         validatorInt = QDoubleValidator(0, 999999, 0)
         self.modelPiecesLineEdit.setValidator(validatorInt)
+
+        self.operationsGroupComboBox.setEnabled(False)
+        self.operationsGroupsBtn.setEnabled(False)
+        self.operationsGroupsCheckBox.stateChanged.connect(self.showOperationsGroups)
 
         self.isDefaultTimeCheckBox.stateChanged.connect(self.setDefaultTime)
         self.shiftStart.timeChanged.connect(self.updateDuration)
@@ -70,6 +75,10 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.addNewTimePaperBtn.clicked.connect(self.addTimePaperOperation)
         self.addNewShiftBtn.clicked.connect(self.setShiftsWindow)
         self.refreshShiftsBtn.clicked.connect(self.refreshShifts)
+
+    def showOperationsGroups(self):
+        self.operationsGroupComboBox.setEnabled(self.operationsGroupsCheckBox.isChecked())
+        self.operationsGroupsBtn.setEnabled(self.operationsGroupsCheckBox.isChecked())
 
     def checkForExistingShift(self):
         for key, value in self.workingShifts.items():
@@ -300,6 +309,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         selectedText = self.clientModelsLineEdit.text()
 
         if selectedText in self.clientModels.keys():
+            self.operationsGroupsHolder.setEnabled(True)
             self.modelOperations.clear()
             modelId = self.clientModels[selectedText]
             operations = MoS.getModelOperations(modelId)
@@ -310,7 +320,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             Utils.setupCompleter(self.modelOperations.keys(), self.modelOperationLineEdit)
             self.modelOperationLineEdit.setReadOnly(False)
             self.modelOperationLineEdit.editingFinished.connect(self.updateModelOperation)
-        # else:
+        else:
+            self.operationsGroupsHolder.setEnabled(False)
             # self.modelShiftsHolder.setEnabled(False)
             # self.modelNumberLineEdit.clear()
             # self.modelNameLineEdit.clear()

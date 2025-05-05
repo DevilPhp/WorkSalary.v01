@@ -22,7 +22,7 @@
   <property name="styleSheet">
    <string notr="true">*{
 	background-color: #dfdfdf;
-	font: 600 12pt &quot;Segoe UI&quot;;
+	font: 600 11pt &quot;Segoe UI&quot;;
 	color: #324b4c;
 }
 
@@ -54,7 +54,7 @@ QDateEdit::up-button, QDateEdit::down-button{
 
 QLineEdit, QDateEdit{
 	border: none;
-	font-size: 11pt;
+	font-size: 10pt;
 	border-bottom: 1px solid #7c9399;
 }
 
@@ -99,7 +99,7 @@ QLineEdit, QDateEdit{
 }
 
 #widget_3 * {
-	font-size: 11pt;
+	font-size: 10pt;
 }
 
 QComboBox{
@@ -945,7 +945,17 @@ QComboBox::item{
                     <item row="0" column="9">
                      <widget class="QPushButton" name="addNewShiftBtn">
                       <property name="text">
-                       <string>Нова Смяна</string>
+                       <string/>
+                      </property>
+                      <property name="icon">
+                       <iconset resource="../../../resources.qrc">
+                        <normaloff>:/icons/app/assets/icons/List-Down-Minimalistic--Streamline-Solar-Broken.svg</normaloff>:/icons/app/assets/icons/List-Down-Minimalistic--Streamline-Solar-Broken.svg</iconset>
+                      </property>
+                      <property name="iconSize">
+                       <size>
+                        <width>18</width>
+                        <height>18</height>
+                       </size>
                       </property>
                      </widget>
                     </item>
@@ -1074,7 +1084,10 @@ QComboBox::item{
          </item>
          <item alignment="Qt::AlignLeft">
           <widget class="QWidget" name="widget_5" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_15">
+           <layout class="QHBoxLayout" name="horizontalLayout_29">
+            <property name="spacing">
+             <number>50</number>
+            </property>
             <property name="leftMargin">
              <number>0</number>
             </property>
@@ -1087,65 +1100,156 @@ QComboBox::item{
             <property name="bottomMargin">
              <number>0</number>
             </property>
-            <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
-             <widget class="QLabel" name="label_25">
-              <property name="text">
-               <string>Дата: </string>
-              </property>
+            <item>
+             <widget class="QWidget" name="widget_21" native="true">
+              <layout class="QHBoxLayout" name="horizontalLayout_15">
+               <property name="spacing">
+                <number>8</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="label_25">
+                 <property name="text">
+                  <string>Дата: </string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QDateEdit" name="timePaperDateEdit">
+                 <property name="focusPolicy">
+                  <enum>Qt::WheelFocus</enum>
+                 </property>
+                 <property name="frame">
+                  <bool>false</bool>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                 <property name="correctionMode">
+                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                 </property>
+                 <property name="minimumDateTime">
+                  <datetime>
+                   <hour>0</hour>
+                   <minute>0</minute>
+                   <second>0</second>
+                   <year>1990</year>
+                   <month>9</month>
+                   <day>6</day>
+                  </datetime>
+                 </property>
+                 <property name="displayFormat">
+                  <string>dd.MM.yy 'г.'</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="calendarBtn">
+                 <property name="focusPolicy">
+                  <enum>Qt::NoFocus</enum>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">*{
+	padding: 0px;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../../../resources.qrc">
+                   <normaloff>:/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg</normaloff>:/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>24</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </widget>
             </item>
             <item>
-             <widget class="QDateEdit" name="timePaperDateEdit">
-              <property name="focusPolicy">
-               <enum>Qt::WheelFocus</enum>
-              </property>
-              <property name="frame">
-               <bool>false</bool>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-              <property name="correctionMode">
-               <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
-              </property>
-              <property name="minimumDateTime">
-               <datetime>
-                <hour>0</hour>
-                <minute>0</minute>
-                <second>0</second>
-                <year>1990</year>
-                <month>9</month>
-                <day>8</day>
-               </datetime>
-              </property>
-              <property name="displayFormat">
-               <string>dd.MM.yy 'г.'</string>
-              </property>
-             </widget>
-            </item>
-            <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
-             <widget class="QPushButton" name="calendarBtn">
-              <property name="focusPolicy">
-               <enum>Qt::NoFocus</enum>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">*{
-	padding: 0px;
-}</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset resource="../../../resources.qrc">
-                <normaloff>:/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg</normaloff>:/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg</iconset>
-              </property>
-              <property name="iconSize">
+             <widget class="QWidget" name="operationsGroupsHolder" native="true">
+              <property name="minimumSize">
                <size>
-                <width>24</width>
-                <height>24</height>
+                <width>0</width>
+                <height>0</height>
                </size>
               </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_30">
+               <property name="spacing">
+                <number>8</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QCheckBox" name="operationsGroupsCheckBox">
+                 <property name="focusPolicy">
+                  <enum>Qt::NoFocus</enum>
+                 </property>
+                 <property name="text">
+                  <string>Лист Операции</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="operationsGroupComboBox">
+                 <property name="minimumSize">
+                  <size>
+                   <width>350</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="focusPolicy">
+                  <enum>Qt::ClickFocus</enum>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="operationsGroupsBtn">
+                 <property name="focusPolicy">
+                  <enum>Qt::NoFocus</enum>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../../../resources.qrc">
+                   <normaloff>:/icons/app/assets/icons/List-Down-Minimalistic--Streamline-Solar-Broken.svg</normaloff>:/icons/app/assets/icons/List-Down-Minimalistic--Streamline-Solar-Broken.svg</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>18</width>
+                   <height>18</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </widget>
             </item>
            </layout>
@@ -1411,7 +1515,7 @@ QComboBox::item{
         <x>0</x>
         <y>0</y>
         <width>1161</width>
-        <height>472</height>
+        <height>476</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_12">

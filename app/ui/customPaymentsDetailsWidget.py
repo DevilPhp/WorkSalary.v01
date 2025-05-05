@@ -11,6 +11,7 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
         super().__init__(parent)
         self.setupUi(self)
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
+        self.setWindowTitle(f'Детайли за работник с ID: {workerId}')
         self.mainWindow = mainWindow
         self.workerId = workerId
         self.startDate = startDate

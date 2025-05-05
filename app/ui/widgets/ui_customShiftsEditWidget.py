@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customShiftsEditWidgetwrkYjI.ui'
+## Form generated from reading UI file 'customShiftsEditWidgetfROjwR.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -29,7 +29,7 @@ class Ui_customWorkingShiftsWidget(object):
         customWorkingShiftsWidget.setMinimumSize(QSize(900, 800))
         customWorkingShiftsWidget.setStyleSheet(u"*{\n"
 "	background-color: #dfdfdf;\n"
-"	font: 600 12pt \"Segoe UI\";\n"
+"	font: 600 11pt \"Segoe UI\";\n"
 "	color: #324b4c;\n"
 "}\n"
 "\n"
@@ -61,7 +61,7 @@ class Ui_customWorkingShiftsWidget(object):
 "	border: none;\n"
 "	border-radius: 10px;\n"
 "	padding: 5px;\n"
-"	font-size: 12pt;\n"
+"	font-size: 11pt;\n"
 "}\n"
 "\n"
 "QPushButton:hover{\n"
@@ -70,7 +70,7 @@ class Ui_customWorkingShiftsWidget(object):
 "\n"
 "QLineEdit {\n"
 "	border: none;\n"
-"	font-size: 11pt;\n"
+"	font-size: 10pt;\n"
 "	border-bottom: 1px solid #7c9399;\n"
 "}\n"
 "\n"
@@ -100,7 +100,7 @@ class Ui_customWorkingShiftsWidget(object):
 "}\n"
 "\n"
 "#widget_3 * {\n"
-"	font-size: 11pt;\n"
+"	font-size: 10pt;\n"
 "}")
         self.verticalLayout = QVBoxLayout(customWorkingShiftsWidget)
         self.verticalLayout.setSpacing(10)
@@ -372,7 +372,7 @@ class Ui_customWorkingShiftsWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 888, 563))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 888, 566))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")

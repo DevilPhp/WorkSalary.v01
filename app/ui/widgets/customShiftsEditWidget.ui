@@ -22,7 +22,7 @@
   <property name="styleSheet">
    <string notr="true">*{
 	background-color: #dfdfdf;
-	font: 600 12pt &quot;Segoe UI&quot;;
+	font: 600 11pt &quot;Segoe UI&quot;;
 	color: #324b4c;
 }
 
@@ -54,7 +54,7 @@ QPushButton {
 	border: none;
 	border-radius: 10px;
 	padding: 5px;
-	font-size: 12pt;
+	font-size: 11pt;
 }
 
 QPushButton:hover{
@@ -63,7 +63,7 @@ QPushButton:hover{
 
 QLineEdit {
 	border: none;
-	font-size: 11pt;
+	font-size: 10pt;
 	border-bottom: 1px solid #7c9399;
 }
 
@@ -92,7 +92,7 @@ QLineEdit {
 }
 
 #widget_3 * {
-	font-size: 11pt;
+	font-size: 10pt;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -618,7 +618,7 @@ QLineEdit {
         <x>0</x>
         <y>0</y>
         <width>888</width>
-        <height>563</height>
+        <height>566</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_12">

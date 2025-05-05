@@ -1,7 +1,24 @@
 from app.database import getDatabase, setDatabase
-from app.database.operations import DefaultOperForVidObleklo, Operation, ProductionModelOperations
+from app.database.operations import Operation, ProductionModelOperations, OperationsGroup
 
 class OperationsServices:
+
+    @staticmethod
+    def getOperationsGroups():
+        operationsGroups = {}
+        operations = []
+        with getDatabase() as session:
+            groups = session.query(OperationsGroup).order_by(OperationsGroup.id).all()
+            for group in groups:
+                if group.operations:
+                    operations = [operation.ОперацияNo for operation in group.operations]
+                operationsGroups[group.id] = {
+                    'name': group.Name,
+                    'operations': operations
+                }
+            return operationsGroups
+
+
     @staticmethod
     def getAllOperations():
         with getDatabase() as session:
