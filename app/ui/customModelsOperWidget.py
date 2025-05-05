@@ -63,7 +63,11 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         #                             'info')
 
     def saveOperationsGroups(self):
-        name = self.ope
+        name = self.operationGroupLineEdit.text()
+        if name == '':
+            MessageManager.showOnWidget(self, 'Моля въведете име за група операции!', 'error')
+            self.operationGroupLineEdit.setFocus()
+            return
 
     def showOperationsGroupView(self):
         self.modelInfoHolder.setVisible(False)
