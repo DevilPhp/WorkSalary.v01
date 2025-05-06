@@ -8,7 +8,6 @@ from app.services.workerServices import WorkerServices as WoS
 from app.services.modelServices import ModelService as MoS
 from app.services.operationServices import OperationsServices as OpS
 from app.ui.customCalendarWidget import CustomCalendarDialog
-from app.models.tableModel import TableModel
 from app.models.sortingModel import CaseInsensitiveProxyModel, FilterableHeaderView
 from app.models.tableModel import CustomTableViewWithMultiSelection
 from app.ui.messagesManager import MessageManager as MM
@@ -32,6 +31,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.initialCheckBoxes = {}
         self.operationsGroups = OpS.getOperationsGroups()
         self.operationsGroupsHolder.setEnabled(False)
+        self.lastSelectedModel = None
         self.setupWorkerAndModelsCompleter()
         self.timePaperDateEdit.setDate(QDate.currentDate())
         self.setupWorkingTimeWidgets()
@@ -299,7 +299,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         for worker in self.workers:
             self.workersInfo.append(f"{worker[0].Име} {worker[0].Фамилия} - {worker[0].Номер}")
         Utils.setupCompleter(self.workersInfo, self.workerNameLineEdit)
-        self.workerNameLineEdit.editingFinished.connect(self.updateWorkerInfo)
+        self.workerNameLineEdit.returnPressed.connect(self.updateWorkerInfo)
+        # self.workerNameLineEdit.editingFinished.connect(self.updateWorkerInfo)
         for client in self.models:
             self.clientModels[f'{client[1].ПоръчкаNo} : {client[0].Клиент}'] = client[1].id
         Utils.setupCompleter(self.clientModels.keys(), self.clientModelsLineEdit)
@@ -312,16 +313,20 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.operationsGroupsHolder.setEnabled(True)
             self.modelOperations.clear()
             modelId = self.clientModels[selectedText]
-            operations = MoS.getModelOperations(modelId)
+            modelData = MoS.getModelOperations(modelId)
+            self.modelTotalPiecesLineEdit.setText(str(modelData[1]) if modelData[1] else '0')
+            operations = modelData[0]
             for operation in operations:
                 self.modelOperations[f'{operation.ОперацияNo} : {operation.Операция}'] = [
-                    round(operation.TimeForOper, 2), operation.id
+                    round(operation.TimeForOper, 2), operation.id, operation.ProducedPieces
                 ]
             Utils.setupCompleter(self.modelOperations.keys(), self.modelOperationLineEdit)
             self.modelOperationLineEdit.setReadOnly(False)
             self.modelOperationLineEdit.editingFinished.connect(self.updateModelOperation)
+            self.modelOperationLineEdit.setFocus()
         else:
             self.operationsGroupsHolder.setEnabled(False)
+            self.modelTotalPiecesLineEdit.clear()
             # self.modelShiftsHolder.setEnabled(False)
             # self.modelNumberLineEdit.clear()
             # self.modelNameLineEdit.clear()
@@ -336,10 +341,19 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             return
 
         if self.modelOperationLineEdit.text() in self.modelOperations.keys():
+            self.piecesForProdLineEdit.setText(str(
+                int(self.modelTotalPiecesLineEdit.text()) - self.modelOperations[self.modelOperationLineEdit.text()][2]
+            ))
+            if int(self.piecesForProdLineEdit.text()) < 0:
+                self.piecesForProdLineEdit.setStyleSheet('color: #c75f59;')
+            else:
+                self.piecesForProdLineEdit.setStyleSheet('color: #324b4c;')
+            self.piecesProducedLineEdit.setText(str(self.modelOperations[self.modelOperationLineEdit.text()][2]))
             self.timeForPieceLineEdit.setText(str(self.modelOperations[self.modelOperationLineEdit.text()][0]))
             self.modelPiecesLineEdit.setReadOnly(False)
             self.modelPiecesLineEdit.textChanged.connect(self.updateModelPieces)
             self.timeForPieceLineEdit.textChanged.connect(self.updateModelPieces)
+            self.modelPiecesLineEdit.setFocus()
 
     def updateModelPieces(self):
         if self.sender() == self.modelPiecesLineEdit:
@@ -389,8 +403,6 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.refreshTimePapersForToday()
             self.clearOperationInfo(False)
 
-
-
     def updateWorkerInfo(self):
         selectedText = self.workerNameLineEdit.text()
         if selectedText in self.workersInfo:
@@ -418,6 +430,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
             else:
                 self.workerPositionLineEdit.setText('Не е указано')
+            self.clientModelsLineEdit.setFocus()
         else:
             self.workerShiftsHolder.setEnabled(False)
             self.clearWorkerInfo()
@@ -450,3 +463,5 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.timeForPieceLineEdit.clear()
         self.piecesTimeLineEdit.setText('0')
         self.isDefaultTimeCheckBox.setCheckState(Qt.CheckState.Checked)
+        self.piecesForProdLineEdit.clear()
+        self.piecesProducedLineEdit.clear()

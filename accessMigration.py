@@ -105,6 +105,7 @@ def insert_data_for_operations_to_postgres(table_name, df1, df2):
     count = 0
     zeroCount = 0
     orderIdRows = []
+    producedPiecesRows = []
     for index, row in df1.iterrows():
         if row['ПоръчкаNo'] in models.keys():
             # df['orderId'] = models[row['ПоръчкаNo']]
@@ -115,7 +116,9 @@ def insert_data_for_operations_to_postgres(table_name, df1, df2):
         else:
             orderIdRows.append(None)
             zeroCount += 1
+        producedPiecesRows.append(0)
     df1['OrderId'] = orderIdRows
+    df1['ProducedPieces'] = producedPiecesRows
 
     # listOperations = [9, 17, 24, 27, 28, 57, 58, 59]
 
@@ -174,9 +177,8 @@ def checkForColumns(table_name, df):
 
     elif table_name == 'paymentPerMinutes':
         df.drop(columns=['MinuteRabID'], inplace=True)
-        euroRate = 1.95584
+        euroRate = 1.95583
         paymentInEuro = []
-        levToEuro = []
         columns = {
             'MinuteRabVal': 'PaymentValue',
             'DateValid': 'DateActive',
@@ -186,11 +188,24 @@ def checkForColumns(table_name, df):
         }
         df.rename(columns=columns, inplace=True)
         for index, row in enumerate(df['PaymentValue']):
-            df.at[index, 'PaymentValue'] = round(row, 4)
-            paymentInEuro.append(round(row / euroRate, 4))
-            levToEuro.append(euroRate)
+            df.at[index, 'PaymentValue'] = round(row, 6)
+            paymentInEuro.append(round(row / euroRate, 6))
         df['PaymentInEuro'] = paymentInEuro
-        df['LevToEuro'] = levToEuro
+
+    elif table_name == 'nightPaymentPerMinutes':
+        euroRate = 1.95583
+        paymentInEuro = []
+        columns = {
+            'МинРабЧасСтаф': 'NightPaymentValue',
+            'ДатаВал': 'DateActive',
+            'LastModified': 'LastUpdated',
+            'ModifiedBy': 'UpdatedBy'
+        }
+        df.rename(columns=columns, inplace=True)
+        for index, row in enumerate(df['NightPaymentValue']):
+            df.at[index, 'NightPaymentValue'] = round(row, 6)
+            paymentInEuro.append(round(row / euroRate, 6))
+        df['NightPaymentInEuro'] = paymentInEuro
 
     return df
 
@@ -207,23 +222,6 @@ def getProductionModels():
 
 def insert_data_to_postgres(table_name, df):
     checkForColumns(table_name, df)
-    # for index, row in df.iterrows():
-    #     if row['orderId'] == 0 or row['orderId'] is None:
-    #         print(row['orderId'])
-    # return
-    # return
-    # print(df.columns)
-    # return
-
-    # columnsNames = {
-    #     "Група": "group",
-    #     "ГрупаName": "groupName",
-    #     "Вид": "type",
-    #     "SupervisorNo": "supervisorNo"
-    # }
-    # df = df.rename(columns=columnsNames)
-    # df = df[list(columnsNames.values())]
-
     """ Inserts data into a PostgreSQL table """
     engine = create_engine(DATABASE_URL)
     with engine.connect() as conn:
@@ -301,7 +299,7 @@ def insert_data_to_postgres_multi(df1, df2):
             if row['Начало на работа'].time() == shift.StartTime and row['Край на работа'].time() == shift.EndTime:
                 timePaperData[row['WorkDayID']]['ShiftId'] = shift.id
                 isShiftFound = True
-                print('Shift found')
+                # print('Shift found')
                 break
 
         if not isShiftFound:
@@ -394,9 +392,11 @@ def addTimePaper(timePaperData):
                                 WorkingTimeMinutes=operTime
                             )
                             session.add(newTimePaperOperation)
+                            session.flush()
                             newTimePaper.TotalPieces += int(operPieces)
                             newTimePaper.TotalHours = round(newTimePaper.TotalHours + operTime, 2)
-                            session.flush()
+
+                            newTimePaperOperation.productionModelOperations.ProducedPieces += int(operPieces)
         session.commit()
         existOpers = len(timePaperData.keys()) - zeroCount
         print(f"{existOpers} records successful and {zeroCount} records created")
@@ -605,12 +605,14 @@ def extract_and_transform_data():
                                            dataForNoneOperations)  # Specify Date for shorter time
     paymentsData = fetch_access_data("MinutaStafka")
     insert_data_to_postgres("paymentPerMinutes", paymentsData)
+    nightPaymentData = fetch_access_data("MinRabChasStaf")
+    insert_data_to_postgres("nightPaymentPerMinutes", nightPaymentData)
     shiftsData = fetch_access_data_special("Дневник за часове")
     insert_data_to_postgres_special('workingShifts', shiftsData)
-
     timePapersData = fetch_access_data("Обща")
     workingHoursData = fetch_access_data("Дневник за часове")
     insert_data_to_postgres_multi(timePapersData, workingHoursData)
+
 
     # print(data)
     # insert_data_to_postgres_with_fkey("modelOperationsTypes", data)

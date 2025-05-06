@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1173</width>
+    <width>1128</width>
     <height>915</height>
    </rect>
   </property>
@@ -47,6 +47,10 @@ QPushButton:hover{
 	background-color: #aeaeae;
 }
 
+#addNewTimePaperBtn {
+	font-size: 11pt;
+}
+
 QDateEdit::up-button, QDateEdit::down-button{
 	width: 0px;
 }
@@ -65,7 +69,8 @@ QLineEdit, QDateEdit{
 	font-size: 9pt;
 }
 
-#avrTimePerPiece, #totalSelectedPieces, #totalSelectedTime, #totalSelectedRows, #totalViewRows, #totalProducedPieces {
+#avrTimePerPiece, #totalSelectedPieces, #totalSelectedTime, #totalSelectedRows, #totalViewRows, #totalProducedPieces,
+#piecesForProdLineEdit, #piecesProducedLineEdit {
 	font-weight: 700;
 }
 
@@ -1128,7 +1133,7 @@ QComboBox::item{
                <item>
                 <widget class="QDateEdit" name="timePaperDateEdit">
                  <property name="focusPolicy">
-                  <enum>Qt::WheelFocus</enum>
+                  <enum>Qt::ClickFocus</enum>
                  </property>
                  <property name="frame">
                   <bool>false</bool>
@@ -1273,7 +1278,7 @@ QComboBox::item{
             <property name="bottomMargin">
              <number>0</number>
             </property>
-            <item>
+            <item alignment="Qt::AlignLeft">
              <widget class="QWidget" name="timePapersHolder" native="true">
               <property name="minimumSize">
                <size>
@@ -1305,7 +1310,95 @@ QComboBox::item{
                  <property name="verticalSpacing">
                   <number>8</number>
                  </property>
-                 <item row="4" column="2" alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+                 <item row="1" column="5">
+                  <widget class="QCheckBox" name="isDefaultTimeCheckBox">
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="3">
+                  <widget class="QLineEdit" name="modelPiecesLineEdit">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>80</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="readOnly">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QLineEdit" name="clientModelsLineEdit">
+                   <property name="minimumSize">
+                    <size>
+                     <width>260</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="QLineEdit" name="modelOperationLineEdit">
+                   <property name="maximumSize">
+                    <size>
+                     <width>180</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="readOnly">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="2">
+                  <widget class="QLabel" name="label_33">
+                   <property name="text">
+                    <string>Време</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="3">
+                  <widget class="QLineEdit" name="piecesTimeLineEdit">
+                   <property name="maximumSize">
+                    <size>
+                     <width>80</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                   </property>
+                   <property name="text">
+                    <string>0</string>
+                   </property>
+                   <property name="readOnly">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="2">
+                  <widget class="QLabel" name="label_45">
+                   <property name="text">
+                    <string>Бр. Модел</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="5" alignment="Qt::AlignLeft">
                   <widget class="QPushButton" name="addNewTimePaperBtn">
                    <property name="focusPolicy">
                     <enum>Qt::NoFocus</enum>
@@ -1317,7 +1410,7 @@ QComboBox::item{
 }</string>
                    </property>
                    <property name="text">
-                    <string/>
+                    <string>Запис</string>
                    </property>
                    <property name="icon">
                     <iconset resource="../../../resources.qrc">
@@ -1331,72 +1424,39 @@ QComboBox::item{
                    </property>
                   </widget>
                  </item>
-                 <item row="2" column="1">
-                  <widget class="QLineEdit" name="clientModelsLineEdit">
-                   <property name="minimumSize">
-                    <size>
-                     <width>260</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="3" column="1">
-                  <widget class="QLineEdit" name="modelOperationLineEdit">
-                   <property name="readOnly">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
                  <item row="2" column="4">
-                  <widget class="QLabel" name="label_34">
+                  <widget class="QLabel" name="label_35">
                    <property name="text">
-                    <string>ВремеПоПод.</string>
+                    <string>Време за бр.</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="2" column="3">
-                  <widget class="QLineEdit" name="modelPiecesLineEdit">
-                   <property name="minimumSize">
-                    <size>
-                     <width>200</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                   <property name="readOnly">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="3" column="3">
-                  <widget class="QLineEdit" name="piecesTimeLineEdit">
-                   <property name="text">
-                    <string>0</string>
-                   </property>
-                   <property name="readOnly">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="0">
+                 <item row="1" column="0">
                   <widget class="QLabel" name="label_30">
                    <property name="text">
                     <string>Модел:</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="3" column="2">
-                  <widget class="QLabel" name="label_33">
+                 <item row="1" column="4">
+                  <widget class="QLabel" name="label_34">
                    <property name="text">
-                    <string>Време</string>
+                    <string>ВремеПоПод.</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="0" column="0" alignment="Qt::AlignLeft">
-                  <widget class="QWidget" name="widget_14" native="true">
-                   <layout class="QHBoxLayout" name="horizontalLayout_14">
+                 <item row="1" column="2">
+                  <widget class="QLabel" name="label_32">
+                   <property name="text">
+                    <string>Бройки</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="1" alignment="Qt::AlignLeft">
+                  <widget class="QWidget" name="widget_22" native="true">
+                   <layout class="QHBoxLayout" name="horizontalLayout_31">
                     <property name="spacing">
-                     <number>5</number>
+                     <number>15</number>
                     </property>
                     <property name="leftMargin">
                      <number>0</number>
@@ -1410,30 +1470,107 @@ QComboBox::item{
                     <property name="bottomMargin">
                      <number>0</number>
                     </property>
+                    <item>
+                     <widget class="QWidget" name="widget_23" native="true">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <layout class="QHBoxLayout" name="horizontalLayout_32">
+                       <property name="spacing">
+                        <number>2</number>
+                       </property>
+                       <property name="leftMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>0</number>
+                       </property>
+                       <item>
+                        <widget class="QLabel" name="label_41">
+                         <property name="text">
+                          <string>за пр.:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLineEdit" name="piecesForProdLineEdit">
+                         <property name="maximumSize">
+                          <size>
+                           <width>50</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="focusPolicy">
+                          <enum>Qt::NoFocus</enum>
+                         </property>
+                         <property name="text">
+                          <string/>
+                         </property>
+                         <property name="readOnly">
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QWidget" name="widget_24" native="true">
+                      <layout class="QHBoxLayout" name="horizontalLayout_33">
+                       <property name="spacing">
+                        <number>2</number>
+                       </property>
+                       <property name="leftMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>0</number>
+                       </property>
+                       <item>
+                        <widget class="QLabel" name="label_44">
+                         <property name="text">
+                          <string>произв.:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLineEdit" name="piecesProducedLineEdit">
+                         <property name="maximumSize">
+                          <size>
+                           <width>50</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="focusPolicy">
+                          <enum>Qt::NoFocus</enum>
+                         </property>
+                         <property name="readOnly">
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
                    </layout>
                   </widget>
                  </item>
                  <item row="2" column="5">
-                  <widget class="QCheckBox" name="isDefaultTimeCheckBox">
-                   <property name="focusPolicy">
-                    <enum>Qt::NoFocus</enum>
-                   </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                   <property name="checked">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="3" column="4">
-                  <widget class="QLabel" name="label_35">
-                   <property name="text">
-                    <string>Време за бр.</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="3" column="5">
                   <widget class="QLineEdit" name="timeForPieceLineEdit">
                    <property name="maximumSize">
                     <size>
@@ -1450,16 +1587,32 @@ QComboBox::item{
                   </widget>
                  </item>
                  <item row="3" column="0">
-                  <widget class="QLabel" name="label_31">
+                  <widget class="QLabel" name="label_40">
                    <property name="text">
-                    <string>Операция</string>
+                    <string>Бройки Оп.</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="2" column="2">
-                  <widget class="QLabel" name="label_32">
+                 <item row="3" column="3">
+                  <widget class="QLineEdit" name="modelTotalPiecesLineEdit">
+                   <property name="maximumSize">
+                    <size>
+                     <width>80</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                   </property>
+                   <property name="readOnly">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0">
+                  <widget class="QLabel" name="label_31">
                    <property name="text">
-                    <string>Бройки</string>
+                    <string>Операция</string>
                    </property>
                   </widget>
                  </item>
@@ -1514,8 +1667,8 @@ QComboBox::item{
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>1161</width>
-        <height>476</height>
+        <width>1116</width>
+        <height>484</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_12">

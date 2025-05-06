@@ -66,7 +66,8 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
                     QStandardItem(str(details['totalTime'])),
                     QStandardItem(str(details['isHourly'])),
                     QStandardItem(str(details['totalPieces'])),
-                    QStandardItem(str(round(details['totalTime'] / details['totalPieces'], 2))),
+                    QStandardItem(str(round(details['totalTime'] / details['totalPieces'], 2))
+                                  if details['totalPieces'] > 0 else '0'),
                     QStandardItem(str(round((details['totalTime'] * paymentInLv) + (details['isHourly']*paymentInLv), 2))),
                     QStandardItem(str(round((details['totalTime'] * paymentInEuro) + (details['isHourly']*paymentInEuro), 2)))
                 ]

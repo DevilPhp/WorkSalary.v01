@@ -9,7 +9,7 @@ class ModelService:
     def getModelOperations(modelId):
         with getDatabase() as session:
             model = session.query(ProductionModel).filter_by(id=modelId).first()
-            return model.productionModelOperations
+            return model.productionModelOperations, model.Броя
 
     @staticmethod
     def getClientsAndModels():
@@ -52,17 +52,17 @@ class ModelService:
             session.add(newModelToAdd)
             session.flush()
 
-            if newModelToAdd.Броя:
-
-                modelPieces = ProducedPiecesForModel(
-                    orderNo=newModelToAdd.id,
-                    ПоръчкаNo=newModelToAdd.ПоръчкаNo,
-                    OrderPieces=newModelToAdd.Броя,
-                    Produced=0,
-                    Rest=newModelToAdd.Броя
-                )
-                session.add(modelPieces)
-                session.flush()
+            # if newModelToAdd.Броя:
+            #
+            #     modelPieces = ProducedPiecesForModel(
+            #         orderNo=newModelToAdd.id,
+            #         ПоръчкаNo=newModelToAdd.ПоръчкаNo,
+            #         OrderPieces=newModelToAdd.Броя,
+            #         Produced=0,
+            #         Rest=newModelToAdd.Броя
+            #     )
+            #     session.add(modelPieces)
+            #     session.flush()
 
             for operation, values in operations.items():
                 session.add(ProductionModelOperations(
@@ -71,6 +71,7 @@ class ModelService:
                     ОперацияNo=operation,
                     Операция=values[0],
                     TimeForOper=values[1],
+                    ProducedPieces=0,
                     Razcenka=0,  # Here will be added price for operation,
                     LastUpdated=newModel['dateCreated'],
                     UpdatedBy=newModel['userCreated']

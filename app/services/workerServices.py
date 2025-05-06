@@ -183,6 +183,8 @@ class WorkerServices:
             session.add(newTimePaper)
             session.flush()
 
+
+
             newTimePaperOperation = TimePaperOperation(
                 TimePaperId=newTimePaper.id,
                 OrderId=timePaperData['OrderId'],
@@ -191,8 +193,12 @@ class WorkerServices:
                 WorkingTimeMinutes=timePaperData['WorkingTimeMinutes']
             )
             session.add(newTimePaperOperation)
+            session.flush()
             newTimePaper.TotalPieces += timePaperData['Pieces']
             newTimePaper.TotalHours = round(newTimePaper.TotalHours + timePaperData['WorkingTimeMinutes'], 2)
+
+            newTimePaperOperation.productionModelOperations.ProducedPieces += newTimePaperOperation.Pieces
+
             session.commit()
             logger.info(f"New time paper and operation added: {timePaperData}")
             return newTimePaperOperation.id
@@ -209,8 +215,10 @@ class WorkerServices:
                 WorkingTimeMinutes=timePaperData['WorkingTimeMinutes']
             )
             session.add(newTimePaperOperation)
+            session.flush()
             timePaper.TotalPieces += timePaperData['Pieces']
             timePaper.TotalHours = round(timePaper.TotalHours + timePaperData['WorkingTimeMinutes'], 2)
+            newTimePaperOperation.productionModelOperations.ProducedPieces += newTimePaperOperation.Pieces
             session.commit()
             logger.info(f"Time paper updated: {timePaperData}")
             return newTimePaperOperation.TimePaperId

@@ -52,6 +52,7 @@ class ProductionModelOperations(Base):
     ОперацияNo = Column(Integer, ForeignKey("operations.ОперацияNo"), nullable=True)
     Операция = Column(String, nullable=True)
     TimeForOper = Column(Float, default=0)
+    ProducedPieces = Column(Integer, default=0)
     Razcenka = Column(Float, default=0)
     LastUpdated = Column(DateTime, default=datetime.now, onupdate=datetime.now)
     UpdatedBy = Column(String, default="System")

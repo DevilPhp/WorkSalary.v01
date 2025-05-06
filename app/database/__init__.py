@@ -64,6 +64,7 @@ def createTable():
 
     Base.metadata.create_all(bind=engine)
     createDefaultPaymentTypes()
+    createDefaultCurrency()
 
 
 def createDefaultPaymentTypes():
@@ -84,6 +85,31 @@ def createDefaultPaymentTypes():
         return
     except Exception as e:
         print(f"Error creating default payment types: {e}")
+        db.rollback()
+    finally:
+        db.close()
+
+
+def createDefaultCurrency():
+    from app.database.payment import PaymentCurrency
+    db = SessionLocal()
+    try:
+        existingCurrency = db.query(PaymentCurrency).first()
+        if existingCurrency:
+            return
+        newCurrency = PaymentCurrency(
+            CurrencyName='Euro',
+            CurrencySymbol='EUR',
+            ConversionRateFromLev=1.95583,
+            ConversionRateFromEuro=1,
+            UpdatedBy='system'
+        )
+        db.add(newCurrency)
+        db.commit()
+        print("Default currency created successfully.")
+        return
+    except Exception as e:
+        print(f"Error creating default currency: {e}")
         db.rollback()
     finally:
         db.close()
