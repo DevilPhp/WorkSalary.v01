@@ -22,6 +22,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.setWindowTitle("Листове за време")
         self.workers = WoS.getWorkers()
         self.models = MoS.getClientsAndModels()
+        self.overtimeWarning.setVisible(False)
         self.clientModels = {}
         self.modelOperations = {}
         self.workingShifts = WoS.getWorkingShifts()
@@ -69,6 +70,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.overtimeEnd.timeChanged.connect(self.updateDuration)
         self.hourlyStart.timeChanged.connect(self.updateDuration)
         self.hourlyEnd.timeChanged.connect(self.updateDuration)
+        self.hourlyStart.editingFinished.connect(self.checkIfTimeIsValid)
+        self.hourlyEnd.editingFinished.connect(self.checkIfTimeIsValid)
 
         self.calendarBtn.clicked.connect(self.showCustomCalendaDialog)
         self.modelPiecesLineEdit.returnPressed.connect(self.addTimePaperOperation)
@@ -132,21 +135,21 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.timeForPieceLineEdit.setReadOnly(False)
             self.timeForPieceLineEdit.setFocus()
 
-    def refreshTimePapersForToday(self):
-        producedPiecesForTheDay = 0
+    def refreshTimePapersForToday(self, workerId=None):
+        totalWorkingMins = 0
         self.existingTimePapers.clear()
         self.initialCheckBoxes.clear()
         searchedDate = self.timePaperDateEdit.date().toString('yyyy-MM-dd')
         formatedDate = datetime.strptime(searchedDate, '%Y-%m-%d').date()
         # print(formatedDate, searchedDate)
-        data = WoS.getTimePapersForDate(formatedDate)
+        data = WoS.getTimePapersForDate(formatedDate, workerId)
         self.tableTimePapersModel.setRowCount(0)
         # print(data)
         self.totalViewRows.setText(str(len(data)))
         self.resetSelectedInfo()
         for item in data:
-            if item[3] == 49:
-                producedPiecesForTheDay += item[5]
+            # if item[5]:
+            totalWorkingMins += item[6]
             row = [
                 QStandardItem(str(item[0])),
                 QStandardItem(str(item[1])),
@@ -159,12 +162,28 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.tableTimePapersModel.appendRow(row)
             self.existingTimePapers[item[1]] = item[0]
 
-        self.totalProducedPieces.setText(str(producedPiecesForTheDay))
+        self.totalWorkingMins.setText(str(totalWorkingMins))
+        self.setTotalMinsColor()
+        # shiftWorkingTime = int(self.shiftTotalMins.text()) + int(self.overtimeTotalMins.text())
+        # if totalWorkingMins > shiftWorkingTime:
+        #     self.totalWorkingMins.setStyleSheet("color: #c75f59;")
+        # else:
+        #     self.totalWorkingMins.setStyleSheet("color: #324b4c;")
         # model = TableModel(data)
         # self.timePapersForDayTableView.setModel(model)
         #
         # self.timePapersForDayTableView.resizeColumnsToContents()
         # self.timePapersForDayTableView.sortByColumn(0, Qt.SortOrder.AscendingOrder)
+
+    def setTotalMinsColor(self):
+        totalWorkingMins = int(self.totalWorkingMins.text())
+        shiftWorkingTime = int(self.shiftTotalMins.text()) + int(self.overtimeTotalMins.text())
+        if totalWorkingMins > shiftWorkingTime:
+            self.totalWorkingMins.setStyleSheet("color: #c75f59;")
+            self.overtimeWarning.setVisible(True)
+        else:
+            self.totalWorkingMins.setStyleSheet("color: #324b4c;")
+            self.overtimeWarning.setVisible(False)
 
     def setProxyModel(self, proxyModel, model, table):
         proxyModel.setSourceModel(model)
@@ -233,19 +252,39 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
     def updateDateLabel(self, formattedDate):
         # print(f'Selected date: {formattedDate}')
         self.timePaperDateEdit.setDate(formattedDate)
-        self.refreshTimePapersForToday()
+        if self.workerNumberLineEdit.text() != '':
+            self.refreshTimePapersForToday(int(self.workerNumberLineEdit.text()))
+        else:
+            self.refreshTimePapersForToday()
         self.clearOperationInfo()
 
     def updateDuration(self):
         if self.sender() == self.shiftStart or self.sender() == self.shiftEnd:
             duration = Utils.calculateMinutes(self.shiftStart, self.shiftEnd)
             self.shiftTotalMins.setText(str(duration))
+            self.setTotalMinsColor()
+
         if self.sender() == self.hourlyStart or self.sender() == self.hourlyEnd:
             duration = Utils.calculateMinutes(self.hourlyStart, self.hourlyEnd)
             self.hourlyTotalMins.setText(str(duration))
+
         if self.sender() == self.overtimeStart or self.sender() == self.overtimeEnd:
             duration = Utils.calculateMinutes(self.overtimeStart, self.overtimeEnd)
             self.overtimeTotalMins.setText(str(duration))
+            self.setTotalMinsColor()
+
+    def checkIfTimeIsValid(self):
+        if self.sender() == self.hourlyStart or self.sender() == self.hourlyEnd:
+            if not (self.shiftStart.time() <= self.hourlyStart.time() <= self.shiftEnd.time()) or \
+                    not (self.shiftEnd.time() >= self.hourlyEnd.time() >= self.shiftStart.time()):
+                self.hourlyStart.setTime(self.shiftStart.time())
+                self.hourlyEnd.setTime(self.shiftEnd.time())
+                MM.showOnWidget(self, 'Почасовото време не е валидно за работна смяна!', 'warning')
+                return
+        elif self.sender() == self.overtimeStart or self.sender() == self.overtimeEnd:
+            if self.overtimeStart.time() < self.shiftStart.time() and self.overtimeEnd.time() > self.shiftEnd.time():
+                MM.showOnWidget(self, 'Почасовото време за прекратяване на допълнителни работни часове не е валидно!', 'warning')
+                return
 
 
     def setupWorkingTimeWidgets(self):
@@ -400,7 +439,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
         if timePaper:
             MM.showOnWidget(self, 'Успешно добавен лист за време', 'success')
-            self.refreshTimePapersForToday()
+            self.refreshTimePapersForToday(int(self.workerNumberLineEdit.text()))
             self.clearOperationInfo(False)
 
     def updateWorkerInfo(self):
@@ -431,6 +470,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             else:
                 self.workerPositionLineEdit.setText('Не е указано')
             self.clientModelsLineEdit.setFocus()
+            self.clientModelsLineEdit.selectAll()
+            self.refreshTimePapersForToday(int(workerId))
         else:
             self.workerShiftsHolder.setEnabled(False)
             self.clearWorkerInfo()
@@ -440,6 +481,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.modelAndOperationHolder.setVisible(False)
             self.workerPlaceLineEdit.setText('Не е указано')
             self.workerPositionLineEdit.setText('Не е указано')
+            self.refreshTimePapersForToday()
 
     def clearWorkerInfo(self):
         self.shiftNameLineEdit.setCurrentIndex(0)

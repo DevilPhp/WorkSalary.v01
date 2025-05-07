@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customTimePapersWidgetvowUBW.ui'
+## Form generated from reading UI file 'customTimePapersWidgetopXrvS.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -77,14 +77,19 @@ class Ui_customTimePapersWidget(object):
 "	font-size: 9pt;\n"
 "}\n"
 "\n"
-"#avrTimePerPiece, #totalSelectedPieces, #totalSelectedTime, #totalSelectedRows, #totalViewRows, #totalProducedPieces,\n"
-"#piecesFor"
-                        "ProdLineEdit, #piecesProducedLineEdit {\n"
+"#avrTimePerPiece, #totalSelectedPieces, #totalSelectedTime, #totalSelectedRows, #totalViewRows, #totalWorkingMins,\n"
+"#piecesForPro"
+                        "dLineEdit, #piecesProducedLineEdit {\n"
 "	font-weight: 700;\n"
 "}\n"
 "\n"
 "#modelHolder QLabel, #newModelInfoHolder * , #widget_11 *{\n"
 "	font-size: 10pt;\n"
+"}\n"
+"\n"
+"#overtimeWarning {\n"
+"	background-color: #dfdfdf;\n"
+"	padding: 0px;\n"
 "}\n"
 "\n"
 "#optionsHolder, #optionsHolder_2 {\n"
@@ -125,13 +130,13 @@ class Ui_customTimePapersWidget(object):
 "QComboBox::drop-down{\n"
 "	image: url(':/icons/app/assets/icons/Alt-Arrow-Down--Streamline-Solar-Broken.svg');\n"
 "	width: 18px;\n"
-"	height: 18px;\n"
+"	height: 18p"
+                        "x;\n"
 "}\n"
 "\n"
 "QComboBox:hover{\n"
 "	color: #2b2b2c;\n"
-"	font: 720 10.5pt \"Se"
-                        "goe UI\";\n"
+"	font: 720 10.5pt \"Segoe UI\";\n"
 "	border-radius: 0px;\n"
 "	alternate-background-color: #2c313c;\n"
 "}\n"
@@ -684,7 +689,7 @@ class Ui_customTimePapersWidget(object):
         self.timePaperDateEdit.setFrame(False)
         self.timePaperDateEdit.setAlignment(Qt.AlignCenter)
         self.timePaperDateEdit.setCorrectionMode(QAbstractSpinBox.CorrectToNearestValue)
-        self.timePaperDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 9, 6), QTime(0, 0, 0)))
+        self.timePaperDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 9, 5), QTime(0, 0, 0)))
 
         self.horizontalLayout_15.addWidget(self.timePaperDateEdit)
 
@@ -946,7 +951,7 @@ class Ui_customTimePapersWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1116, 484))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1116, 478))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -1001,10 +1006,10 @@ class Ui_customTimePapersWidget(object):
 
         self.widget_8 = QWidget(self.statusBar)
         self.widget_8.setObjectName(u"widget_8")
-        self.horizontalLayout_19 = QHBoxLayout(self.widget_8)
-        self.horizontalLayout_19.setSpacing(5)
-        self.horizontalLayout_19.setObjectName(u"horizontalLayout_19")
-        self.horizontalLayout_19.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_14 = QHBoxLayout(self.widget_8)
+        self.horizontalLayout_14.setSpacing(10)
+        self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
+        self.horizontalLayout_14.setContentsMargins(0, 0, 0, 0)
         self.widget_19 = QWidget(self.widget_8)
         self.widget_19.setObjectName(u"widget_19")
         self.horizontalLayout_27 = QHBoxLayout(self.widget_19)
@@ -1016,16 +1021,25 @@ class Ui_customTimePapersWidget(object):
 
         self.horizontalLayout_27.addWidget(self.label_43)
 
-        self.totalProducedPieces = QLabel(self.widget_19)
-        self.totalProducedPieces.setObjectName(u"totalProducedPieces")
+        self.totalWorkingMins = QLabel(self.widget_19)
+        self.totalWorkingMins.setObjectName(u"totalWorkingMins")
 
-        self.horizontalLayout_27.addWidget(self.totalProducedPieces)
+        self.horizontalLayout_27.addWidget(self.totalWorkingMins)
+
+        self.overtimeWarning = QPushButton(self.widget_19)
+        self.overtimeWarning.setObjectName(u"overtimeWarning")
+        icon5 = QIcon()
+        icon5.addFile(u":/icons/app/assets/icons/Danger-Triangle--Streamline-Solar-Broken-#C75f59.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.overtimeWarning.setIcon(icon5)
+        self.overtimeWarning.setIconSize(QSize(22, 22))
+
+        self.horizontalLayout_27.addWidget(self.overtimeWarning, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
 
-        self.horizontalLayout_19.addWidget(self.widget_19)
+        self.horizontalLayout_14.addWidget(self.widget_19, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
 
-        self.horizontalLayout_18.addWidget(self.widget_8, 0, Qt.AlignHCenter)
+        self.horizontalLayout_18.addWidget(self.widget_8)
 
         self.widget_9 = QWidget(self.statusBar)
         self.widget_9.setObjectName(u"widget_9")
@@ -1190,8 +1204,9 @@ class Ui_customTimePapersWidget(object):
         self.label_31.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041e\u043f\u0435\u0440\u0430\u0446\u0438\u044f", None))
         self.label_42.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041e\u0431\u0449\u043e \u0440\u0435\u0434\u043e\u0432\u0435:", None))
         self.totalViewRows.setText(QCoreApplication.translate("customTimePapersWidget", u"0", None))
-        self.label_43.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0417\u0430\u0432\u044a\u0440\u0448\u0435\u043d\u0438 \u0431\u0440 \u0437\u0430 \u0434\u0435\u043d\u044f:", None))
-        self.totalProducedPieces.setText(QCoreApplication.translate("customTimePapersWidget", u"0", None))
+        self.label_43.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041e\u0431\u0449\u043e \u043c\u0438\u043d\u0443\u0442\u0438 \u0437\u0430 \u0434\u0435\u043d\u044f", None))
+        self.totalWorkingMins.setText(QCoreApplication.translate("customTimePapersWidget", u"0", None))
+        self.overtimeWarning.setText("")
         self.label_36.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0420\u0435\u0434\u043e\u0432\u0435:", None))
         self.totalSelectedRows.setText(QCoreApplication.translate("customTimePapersWidget", u"0", None))
         self.label_38.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0411\u0440\u043e\u0439\u043a\u0438:", None))

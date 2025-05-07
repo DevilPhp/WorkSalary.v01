@@ -234,10 +234,12 @@ class WorkerServices:
             return data
 
     @staticmethod
-    def getTimePapersForDate(date):
+    def getTimePapersForDate(date, workerId):
         returnedData = []
         with getDatabase() as session:
-            timePapers = session.query(TimePaper).filter_by(Date=date).all()
+            # timePapers = session.query(TimePaper).filter_by(Date=date).all()
+            # if workerId:
+            timePapers = session.query(TimePaper).filter_by(Date=date, WorkerId=workerId).all()
             for timePaper in timePapers:
                 for operation in timePaper.timePaperOperations:
                     returnedData.append([

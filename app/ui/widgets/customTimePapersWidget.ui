@@ -69,13 +69,18 @@ QLineEdit, QDateEdit{
 	font-size: 9pt;
 }
 
-#avrTimePerPiece, #totalSelectedPieces, #totalSelectedTime, #totalSelectedRows, #totalViewRows, #totalProducedPieces,
+#avrTimePerPiece, #totalSelectedPieces, #totalSelectedTime, #totalSelectedRows, #totalViewRows, #totalWorkingMins,
 #piecesForProdLineEdit, #piecesProducedLineEdit {
 	font-weight: 700;
 }
 
 #modelHolder QLabel, #newModelInfoHolder * , #widget_11 *{
 	font-size: 10pt;
+}
+
+#overtimeWarning {
+	background-color: #dfdfdf;
+	padding: 0px;
 }
 
 #optionsHolder, #optionsHolder_2 {
@@ -1151,7 +1156,7 @@ QComboBox::item{
                    <second>0</second>
                    <year>1990</year>
                    <month>9</month>
-                   <day>6</day>
+                   <day>5</day>
                   </datetime>
                  </property>
                  <property name="displayFormat">
@@ -1668,7 +1673,7 @@ QComboBox::item{
         <x>0</x>
         <y>0</y>
         <width>1116</width>
-        <height>484</height>
+        <height>478</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -1792,11 +1797,11 @@ QComboBox::item{
         </layout>
        </widget>
       </item>
-      <item alignment="Qt::AlignHCenter">
+      <item>
        <widget class="QWidget" name="widget_8" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout_19">
+        <layout class="QHBoxLayout" name="horizontalLayout_14">
          <property name="spacing">
-          <number>5</number>
+          <number>10</number>
          </property>
          <property name="leftMargin">
           <number>0</number>
@@ -1810,7 +1815,7 @@ QComboBox::item{
          <property name="bottomMargin">
           <number>0</number>
          </property>
-         <item>
+         <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
           <widget class="QWidget" name="widget_19" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_27">
             <property name="spacing">
@@ -1831,14 +1836,31 @@ QComboBox::item{
             <item>
              <widget class="QLabel" name="label_43">
               <property name="text">
-               <string>Завършени бр за деня:</string>
+               <string>Общо минути за деня</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="totalProducedPieces">
+             <widget class="QLabel" name="totalWorkingMins">
               <property name="text">
                <string>0</string>
+              </property>
+             </widget>
+            </item>
+            <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+             <widget class="QPushButton" name="overtimeWarning">
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="../../../resources.qrc">
+                <normaloff>:/icons/app/assets/icons/Danger-Triangle--Streamline-Solar-Broken-#C75f59.svg</normaloff>:/icons/app/assets/icons/Danger-Triangle--Streamline-Solar-Broken-#C75f59.svg</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>22</width>
+                <height>22</height>
+               </size>
               </property>
              </widget>
             </item>

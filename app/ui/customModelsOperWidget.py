@@ -42,6 +42,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.modelExistingOperations = []
         self.newModelOperations = []
         self.groupOperations = OpS.getOperationsGroups()
+        self.selectedOperForGroup = []
         self.addOperationsForNewModel = {}
         self.newModel = {}
         # print(self.geometry())
@@ -58,9 +59,24 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.operationsGroupViewBtn.clicked.connect(self.showOperationsGroupView)
         self.operationsGroupsReturnBtn.clicked.connect(self.returnToModelOpersView)
         self.saveOpertaionsGroupsBtn.clicked.connect(self.saveOperationsGroups)
+        Utils.setupCompleter(self.groupOperations.keys(), self.operationGroupLineEdit)
+        self.operationGroupLineEdit.editingFinished.connect(self.updateGroupOperations)
+
         # logger.info('Models and Operations Page initialized successfully!')
         # MessageManager.showOnWidget(self, 'Models and Operations Page initialized successfully!',
         #                             'info')
+
+    def updateGroupOperations(self):
+        name = self.operationGroupLineEdit.text()
+        if name in self.groupOperations.keys():
+            self.selectedOperForGroup.clear()
+            self.resetAllOperations(True)
+            for operation in self.groupOperations[name]['operations']:
+                if operation in self.comboBoxItems.keys():
+                    self.comboBoxItems[operation][0].setCheckState(Qt.CheckState.Checked)
+                    self.selectedOperForGroup.append(operation)
+        if name == '':
+            self.resetAllOperations(True)
 
     def saveOperationsGroups(self):
         name = self.operationGroupLineEdit.text()
@@ -68,6 +84,20 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             MessageManager.showOnWidget(self, 'Моля въведете име за група операции!', 'error')
             self.operationGroupLineEdit.setFocus()
             return
+        # print(self.selectedOperForGroup)
+        # return
+        if name in self.groupOperations.keys():
+            result = OpS.addOperationToGroup(self.selectedOperForGroup, groupId=(self.groupOperations[name]['id']))
+        else:
+            result = OpS.addOperationToGroup(self.selectedOperForGroup, name=name)
+
+        if result:
+            MessageManager.showOnWidget(self, f'Група {name} е запазена успешно!', 'success')
+            self.operationGroupLineEdit.clear()
+            self.groupOperations = OpS.getOperationsGroups()
+            Utils.setupCompleter(self.groupOperations.keys(), self.operationGroupLineEdit)
+            self.resetAllOperations(True)
+
 
     def showOperationsGroupView(self):
         self.modelInfoHolder.setVisible(False)
@@ -84,6 +114,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.operationsGroupViewBtn.setVisible(True)
         self.saveBtn.setVisible(True)
         self.operationsGroupsReturnBtn.setVisible(False)
+        self.selectedOperForGroup.clear()
 
     def checkAcceptAddingNewModel(self):
         if self.newModelLineEdit.text() == '':
@@ -351,15 +382,30 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
     def updateNewModelOperations(self):
         if isinstance(self.sender(), QCheckBox):
             if (self.sender().checkState() == Qt.CheckState.Checked and
-                    int(self.sender().objectName()) not in self.newModelOperations):
+                    int(self.sender().objectName()) not in self.newModelOperations and
+                    not self.operationsGroupsHolder.isVisible()):
                 self.newModelOperations.append(int(self.sender().objectName()))
             elif (self.sender().checkState() == Qt.CheckState.Unchecked and
-                  int(self.sender().objectName()) in self.newModelOperations):
+                  int(self.sender().objectName()) in self.newModelOperations and
+                  not self.operationsGroupsHolder.isVisible()):
                 self.newModelOperations.remove(int(self.sender().objectName()))
+            if (self.sender().checkState() == Qt.CheckState.Checked and
+                    self.operationsGroupsHolder.isVisible()):
+                self.selectedOperForGroup.append(int(self.sender().objectName()))
+            elif (self.sender().checkState() == Qt.CheckState.Unchecked and
+                    self.operationsGroupsHolder.isVisible()):
+                self.selectedOperForGroup.remove(int(self.sender().objectName()))
+        print(self.selectedOperForGroup)
+        print(self.newModelOperations)
+        # print(self.selectedOperForGroup)
         # print(self.newModelOperations)
 
     def selectAllOperations(self):
         # self.selectAllCheckbox.blockSignals(True)
+        if self.operationsGroupsHolder.isVisible():
+            self.selectedOperForGroup.clear()
+        else:
+            self.newModelOperations.clear()
         for index in self.comboBoxItems.keys():
             widget = self.comboBoxItems[index][0]
             lineEdit = self.comboBoxItems[index][1]
@@ -370,6 +416,10 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
                 if widget.checkState() == Qt.CheckState.Checked:
                     lineEdit.setEnabled(True)
                     label.setStyleSheet("QLabel { color: #008b69; }")
+                    if self.operationsGroupsHolder.isVisible():
+                        self.selectedOperForGroup.append(int(widget.objectName()))
+                    else:
+                        self.newModelOperations.append(int(widget.objectName()))
                 else:
                     if int(widget.objectName()) in self.modelExistingOperations:
                         # print(widget.text().split(':  ')[0])
@@ -380,8 +430,14 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
                         lineEdit.setEnabled(False)
                         label.setStyleSheet("")
 
+                    if self.operationsGroupsHolder.isVisible():
+                        self.selectedOperForGroup.clear()
+                    else:
+                        self.newModelOperations.clear()
+
                     self.newModelOperations.clear()
                 widget.blockSignals(False)
+        print(self.selectedOperForGroup)
 
         # self.selectAllCheckbox.blockSignals(False)
 

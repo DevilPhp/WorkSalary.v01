@@ -4,6 +4,26 @@ from app.database.operations import Operation, ProductionModelOperations, Operat
 class OperationsServices:
 
     @staticmethod
+    def addOperationToGroup(operations, groupId=None, name=None):
+        with setDatabase() as session:
+            dbOperations = session.query(Operation).filter(Operation.ОперацияNo.in_(operations)).all()
+            if groupId:
+                group = session.query(OperationsGroup).filter_by(id=groupId).first()
+                if group:
+                    group.operations = []
+                    session.flush()
+                    for operation in dbOperations:
+                        group.operations.append(operation)
+                session.commit()
+            else:
+                new_group = OperationsGroup(Name=name)
+                for operation in dbOperations:
+                    new_group.operations.append(operation)
+                session.add(new_group)
+                session.commit()
+            return True
+
+    @staticmethod
     def getOperationsGroups():
         operationsGroups = {}
         operations = []
@@ -12,8 +32,8 @@ class OperationsServices:
             for group in groups:
                 if group.operations:
                     operations = [operation.ОперацияNo for operation in group.operations]
-                operationsGroups[group.id] = {
-                    'name': group.Name,
+                operationsGroups[group.Name] = {
+                    'id': group.id,
                     'operations': operations
                 }
             return operationsGroups
