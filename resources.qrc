@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons">
+    <file>app/assets/icons/List-Down-Minimalistic--Streamline-Solar-Broken.svg</file>
     <file>app/assets/icons/Restart--Streamline-Solar-Broken.svg</file>
     <file>app/assets/icons/Alt-Arrow-Down--Streamline-Solar-Broken.svg</file>
     <file>app/assets/icons/Calendar--Streamline-Solar-Broken.svg</file>

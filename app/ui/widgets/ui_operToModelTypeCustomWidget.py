@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'operToModelTypeCustomWidgetSJqrSY.ui'
+## Form generated from reading UI file 'operToModelTypeCustomWidgetbgQdeg.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -25,11 +25,11 @@ class Ui_customWidgetForModelOper(object):
     def setupUi(self, customWidgetForModelOper):
         if not customWidgetForModelOper.objectName():
             customWidgetForModelOper.setObjectName(u"customWidgetForModelOper")
-        customWidgetForModelOper.resize(1263, 995)
+        customWidgetForModelOper.resize(1493, 995)
         customWidgetForModelOper.setMinimumSize(QSize(900, 800))
         customWidgetForModelOper.setStyleSheet(u"*{\n"
 "	background-color: #dfdfdf;\n"
-"	font: 600 12pt \"Segoe UI\";\n"
+"	font: 600 11pt \"Segoe UI\";\n"
 "	color: #324b4c;\n"
 "}\n"
 "\n"
@@ -38,7 +38,7 @@ class Ui_customWidgetForModelOper(object):
 "	border: none;\n"
 "	border-radius: 10px;\n"
 "	padding: 5px;\n"
-"	font-size: 12pt;\n"
+"	font-size: 11pt;\n"
 "}\n"
 "\n"
 "QPushButton:hover{\n"
@@ -51,12 +51,17 @@ class Ui_customWidgetForModelOper(object):
 "\n"
 "QLineEdit {\n"
 "	border: none;\n"
-"	font-size: 11pt;\n"
+"	font-size: 10pt;\n"
 "	border-bottom: 1px solid #7c9399;\n"
 "}\n"
 "\n"
-"#modelHolder QLabel, #newModelInfoHolder * {\n"
+"#modelHolder QLabel, #newModelInfoHolder *, #operationsGroupsHolder *, #widget_3 * {\n"
 "	font-size: 10pt;\n"
+"}\n"
+"\n"
+"#widget_4 *, #saveOpertaionsGroupsBtn, #saveNewModel {\n"
+"	font-size: 10pt;\n"
+"	font-weight: 700;\n"
 "}\n"
 "\n"
 "#optionsHolder {\n"
@@ -72,10 +77,6 @@ class Ui_customWidgetForModelOper(object):
 "}\n"
 "\n"
 "#usernameLabel {\n"
-"	font-size: 11pt;\n"
-"}\n"
-"\n"
-"#widget_3 * {\n"
 "	font-size: 11pt;\n"
 "}")
         self.verticalLayout = QVBoxLayout(customWidgetForModelOper)
@@ -97,14 +98,26 @@ class Ui_customWidgetForModelOper(object):
         self.widget_4 = QWidget(self.headerHolder)
         self.widget_4.setObjectName(u"widget_4")
         self.horizontalLayout_2 = QHBoxLayout(self.widget_4)
-        self.horizontalLayout_2.setSpacing(10)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.saveBtn = QPushButton(self.widget_4)
         self.saveBtn.setObjectName(u"saveBtn")
         self.saveBtn.setFocusPolicy(Qt.NoFocus)
 
         self.horizontalLayout_2.addWidget(self.saveBtn)
+
+        self.operationsGroupViewBtn = QPushButton(self.widget_4)
+        self.operationsGroupViewBtn.setObjectName(u"operationsGroupViewBtn")
+
+        self.horizontalLayout_2.addWidget(self.operationsGroupViewBtn)
+
+        self.operationsGroupsReturnBtn = QPushButton(self.widget_4)
+        self.operationsGroupsReturnBtn.setObjectName(u"operationsGroupsReturnBtn")
+        icon = QIcon()
+        icon.addFile(u":/icons/app/assets/icons/Alt-Arrow-Left--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.operationsGroupsReturnBtn.setIcon(icon)
+        self.operationsGroupsReturnBtn.setIconSize(QSize(18, 18))
+
+        self.horizontalLayout_2.addWidget(self.operationsGroupsReturnBtn)
 
 
         self.horizontalLayout.addWidget(self.widget_4, 0, Qt.AlignLeft)
@@ -123,9 +136,9 @@ class Ui_customWidgetForModelOper(object):
         self.userIcon = QPushButton(self.userHolder)
         self.userIcon.setObjectName(u"userIcon")
         self.userIcon.setFocusPolicy(Qt.NoFocus)
-        icon = QIcon()
-        icon.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.userIcon.setIcon(icon)
+        icon1 = QIcon()
+        icon1.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.userIcon.setIcon(icon1)
         self.userIcon.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_3.addWidget(self.userIcon)
@@ -141,7 +154,13 @@ class Ui_customWidgetForModelOper(object):
 
         self.verticalLayout_4.addWidget(self.headerHolder)
 
-        self.modelInfoHolder = QWidget(self.widget)
+        self.widget_2 = QWidget(self.widget)
+        self.widget_2.setObjectName(u"widget_2")
+        self.horizontalLayout_7 = QHBoxLayout(self.widget_2)
+        self.horizontalLayout_7.setSpacing(0)
+        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
+        self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
+        self.modelInfoHolder = QWidget(self.widget_2)
         self.modelInfoHolder.setObjectName(u"modelInfoHolder")
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -175,7 +194,7 @@ class Ui_customWidgetForModelOper(object):
         self.modeLayout = QFormLayout()
         self.modeLayout.setObjectName(u"modeLayout")
         self.modeLayout.setHorizontalSpacing(10)
-        self.modeLayout.setVerticalSpacing(10)
+        self.modeLayout.setVerticalSpacing(5)
         self.label_2 = QLabel(self.widget_7)
         self.label_2.setObjectName(u"label_2")
 
@@ -261,8 +280,9 @@ class Ui_customWidgetForModelOper(object):
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
         self.verticalLayout_8.setContentsMargins(0, 0, 0, 0)
         self.newModelLayout = QGridLayout()
-        self.newModelLayout.setSpacing(10)
         self.newModelLayout.setObjectName(u"newModelLayout")
+        self.newModelLayout.setHorizontalSpacing(10)
+        self.newModelLayout.setVerticalSpacing(5)
         self.label_5 = QLabel(self.newModelInfoHolder)
         self.label_5.setObjectName(u"label_5")
 
@@ -365,10 +385,45 @@ class Ui_customWidgetForModelOper(object):
         self.verticalLayout_6.addWidget(self.newModelInfoHolder)
 
 
-        self.horizontalLayout_5.addWidget(self.newModelHolder)
+        self.horizontalLayout_5.addWidget(self.newModelHolder, 0, Qt.AlignTop)
 
 
-        self.verticalLayout_4.addWidget(self.modelInfoHolder, 0, Qt.AlignLeft)
+        self.horizontalLayout_7.addWidget(self.modelInfoHolder, 0, Qt.AlignTop)
+
+        self.operationsGroupsHolder = QWidget(self.widget_2)
+        self.operationsGroupsHolder.setObjectName(u"operationsGroupsHolder")
+        self.operationsGroupsHolder.setMinimumSize(QSize(0, 0))
+        self.verticalLayout_9 = QVBoxLayout(self.operationsGroupsHolder)
+        self.verticalLayout_9.setSpacing(5)
+        self.verticalLayout_9.setObjectName(u"verticalLayout_9")
+        self.verticalLayout_9.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout = QGridLayout()
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.gridLayout.setContentsMargins(-1, 10, -1, 10)
+        self.label_12 = QLabel(self.operationsGroupsHolder)
+        self.label_12.setObjectName(u"label_12")
+
+        self.gridLayout.addWidget(self.label_12, 0, 0, 1, 1)
+
+        self.operationGroupLineEdit = QLineEdit(self.operationsGroupsHolder)
+        self.operationGroupLineEdit.setObjectName(u"operationGroupLineEdit")
+        self.operationGroupLineEdit.setMinimumSize(QSize(250, 0))
+
+        self.gridLayout.addWidget(self.operationGroupLineEdit, 0, 1, 1, 1)
+
+
+        self.verticalLayout_9.addLayout(self.gridLayout)
+
+        self.saveOpertaionsGroupsBtn = QPushButton(self.operationsGroupsHolder)
+        self.saveOpertaionsGroupsBtn.setObjectName(u"saveOpertaionsGroupsBtn")
+
+        self.verticalLayout_9.addWidget(self.saveOpertaionsGroupsBtn, 0, Qt.AlignLeft)
+
+
+        self.horizontalLayout_7.addWidget(self.operationsGroupsHolder, 0, Qt.AlignTop)
+
+
+        self.verticalLayout_4.addWidget(self.widget_2, 0, Qt.AlignLeft)
 
         self.operationsHolder = QWidget(self.widget)
         self.operationsHolder.setObjectName(u"operationsHolder")
@@ -426,6 +481,8 @@ class Ui_customWidgetForModelOper(object):
     def retranslateUi(self, customWidgetForModelOper):
         customWidgetForModelOper.setWindowTitle(QCoreApplication.translate("customWidgetForModelOper", u"Form", None))
         self.saveBtn.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0417\u0430\u043f\u0430\u0437\u0432\u0430\u043d\u0435", None))
+        self.operationsGroupViewBtn.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0413\u0440\u0443\u043f\u0438\u0440\u0430\u043d\u0435", None))
+        self.operationsGroupsReturnBtn.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041d\u0430\u0437\u0430\u0434", None))
         self.pageTitle.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041e\u041f\u0415\u0420\u0410\u0426\u0418\u0418 \u0417\u0410 \u041c\u041e\u0414\u0415\u041b\u0418", None))
         self.userIcon.setText("")
         self.usernameLabel.setText(QCoreApplication.translate("customWidgetForModelOper", u"admin", None))
@@ -449,6 +506,8 @@ class Ui_customWidgetForModelOper(object):
         self.actualCheckBox.setText("")
         self.label_11.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0410\u043a\u0442\u0443\u0430\u043b\u0435\u043d", None))
         self.saveNewModel.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0414\u043e\u0431\u0430\u0432\u044f\u043d\u0435", None))
+        self.label_12.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0418\u043c\u0435:", None))
+        self.saveOpertaionsGroupsBtn.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0417\u0430\u043f\u0430\u0437\u0432\u0430\u043d\u0435", None))
         self.selectAllCheckbox.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0412\u0441\u0438\u0447\u043a\u0438", None))
     # retranslateUi
 
