@@ -1,12 +1,15 @@
+from PySide6 import QtWidgets
+from PySide6.QtCore import Signal
 from PySide6.QtGui import QDoubleValidator
 
 from app.logger import logger
 from app.ui.messagesManager import MessageManager
 from app.ui.widgets.ui_defaultOperToModelTypeCustomWidget import *
 from app.ui.widgets.ui_customCheckBoxWidget import Ui_customCheckBoxWidget
+from app.ui.customYesNoMessage import CustomYesNowDialog
 from app.services.operationServices import OperationsServices as OpS
 from app.services.modelServices import ModelService as Ms
-from PySide6.QtWidgets import QCheckBox
+from PySide6.QtWidgets import QCheckBox, QMenu, QDialog
 
 
 class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper):
@@ -75,19 +78,44 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
 
     def setCheckBox(self):
         for index, operation in enumerate(self.operations):
+            operName = self.operations[operation]['name']
+            operType = self.operations[operation]['operationType']
             newCustomComboBoxItem = CustomCheckboxWidget()
-            name = f'{operation.ОперацияNo}:  {operation.Операция}'
+            name = f'{operation}:  {operName}'
 
             newCustomComboBoxItem.checkBox.setText(name)
 
-            newCustomComboBoxItem.checkBox.setObjectName(str(operation.ОперацияNo))
+            newCustomComboBoxItem.checkBox.setObjectName(str(operation))
             row = index % 20
             col = index // 20
             self.operationsLayout.addWidget(newCustomComboBoxItem, row, col)
-            self.comboBoxItems[operation.ОперацияNo] = [newCustomComboBoxItem.checkBox,
-                                                        newCustomComboBoxItem.lineEdit,
-                                                        newCustomComboBoxItem.label]
+            self.comboBoxItems[operation] = [newCustomComboBoxItem.checkBox,
+                                             newCustomComboBoxItem.lineEdit,
+                                             newCustomComboBoxItem.label]
             newCustomComboBoxItem.checkBox.stateChanged.connect(self.updateSelectAllBtn)
+            newCustomComboBoxItem.newOperName.connect(self.updateDBOperation)
+
+    def updateDBOperation(self, text):
+        if text:
+            operId = int(text.split(':  ')[0])
+            operName = text.split(':  ')[1]
+            yesNoDialog = CustomYesNowDialog()
+            message = 'Искате ли да промените операция:'
+            yesNoDialog.setMessage(name=str(operId), message=message, mode='accept')
+            result = yesNoDialog.exec()
+            if result == QDialog.Accepted:
+                success = OpS.updateOperationName(operId, operName)
+                if success:
+                    self.sender().checkBox.setText(text)
+                    MessageManager.showOnWidget(self,
+                                                f'Успешно променихте операцията {operId}', 'success'
+                                                )
+                else:
+                    MessageManager.showOnWidget(self,
+                                                f'Грешка при промяна на операцията {operId}', 'error'
+                                                )
+            else:
+                return
 
     def selectAllOperations(self):
         # self.selectAllCheckbox.blockSignals(True)
@@ -145,6 +173,7 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
 
 
 class CustomCheckboxWidget(QWidget, Ui_customCheckBoxWidget):
+    newOperName = Signal(str)
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
@@ -155,6 +184,27 @@ class CustomCheckboxWidget(QWidget, Ui_customCheckBoxWidget):
         validator.setLocale(QLocale.English)
         self.lineEdit.setValidator(validator)
         self.lineEdit.textChanged.connect(self.updateLabel)
+        self.checkBox.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.checkBox.customContextMenuRequested.connect(self.showContextMenu)
+
+    def showContextMenu(self, pos):
+        menu = QMenu(self)
+        editAction = menu.addAction("Редактиране")
+        action = menu.exec_(self.checkBox.mapToGlobal(pos))
+
+        if action == editAction:
+            self.editCheckBoxName()
+
+    def editCheckBoxName(self):
+        procedureId = self.checkBox.text().split(':  ')[0]
+        newText, ok = QtWidgets.QInputDialog.getText(self,
+                                                     "Редактиране", "Въведете име:",
+                                                     text=self.checkBox.text().split(':  ')[1])
+        newText = f'{procedureId}:  {newText}'
+        if ok and self.window().objectName() == 'customWidgetForModelOper':
+            self.checkBox.setText(newText)
+        elif ok and self.window().objectName() == 'customWidgetForDefaultOper':
+            self.newOperName.emit(newText)
 
     def updateLabel(self):
         text = self.lineEdit.text()

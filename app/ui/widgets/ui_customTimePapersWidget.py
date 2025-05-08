@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customTimePapersWidgetopXrvS.ui'
+## Form generated from reading UI file 'customTimePapersWidgetDLfCYh.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -726,6 +726,8 @@ class Ui_customTimePapersWidget(object):
         self.operationsGroupComboBox.setObjectName(u"operationsGroupComboBox")
         self.operationsGroupComboBox.setMinimumSize(QSize(350, 0))
         self.operationsGroupComboBox.setFocusPolicy(Qt.ClickFocus)
+        self.operationsGroupComboBox.setEditable(True)
+        self.operationsGroupComboBox.setSizeAdjustPolicy(QComboBox.AdjustToContents)
 
         self.horizontalLayout_30.addWidget(self.operationsGroupComboBox)
 

@@ -32,6 +32,20 @@
 	color: #324b4c;
 }
 
+QMenu {
+	background-color: #d5d5d5;
+	border-radius: 5px;
+}
+QMenu::item {
+	background-color: transparent;
+	font: 600 10pt &quot;Segoe UI&quot;;
+	color: #324b4c;
+	padding: 5px;
+}
+QMenu::item:selected {
+	background-color: #c1c4c9;
+}
+
 QPushButton:hover {
 	background-color: #aeaeae;
 }

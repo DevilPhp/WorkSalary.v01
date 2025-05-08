@@ -1237,6 +1237,12 @@ QComboBox::item{
                  <property name="focusPolicy">
                   <enum>Qt::ClickFocus</enum>
                  </property>
+                 <property name="editable">
+                  <bool>true</bool>
+                 </property>
+                 <property name="sizeAdjustPolicy">
+                  <enum>QComboBox::AdjustToContents</enum>
+                 </property>
                 </widget>
                </item>
                <item>
