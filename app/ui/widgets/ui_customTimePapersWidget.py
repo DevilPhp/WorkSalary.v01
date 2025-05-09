@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customTimePapersWidgetDLfCYh.ui'
+## Form generated from reading UI file 'customTimePapersWidgetexpqec.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -104,7 +104,7 @@ class Ui_customTimePapersWidget(object):
 "	background-color: #dfdfdf;\n"
 "}\n"
 "\n"
-"#refreshShiftsBtn {\n"
+"#refreshShiftsBtn, #refreshOpersGroupBtn {\n"
 "	padding: 0px;\n"
 "	background-color: #dfdfdf;\n"
 "}\n"
@@ -129,9 +129,9 @@ class Ui_customTimePapersWidget(object):
 "\n"
 "QComboBox::drop-down{\n"
 "	image: url(':/icons/app/assets/icons/Alt-Arrow-Down--Streamline-Solar-Broken.svg');\n"
-"	width: 18px;\n"
-"	height: 18p"
-                        "x;\n"
+"	width:"
+                        " 18px;\n"
+"	height: 18px;\n"
 "}\n"
 "\n"
 "QComboBox:hover{\n"
@@ -713,7 +713,7 @@ class Ui_customTimePapersWidget(object):
         self.operationsGroupsHolder.setObjectName(u"operationsGroupsHolder")
         self.operationsGroupsHolder.setMinimumSize(QSize(0, 0))
         self.horizontalLayout_30 = QHBoxLayout(self.operationsGroupsHolder)
-        self.horizontalLayout_30.setSpacing(8)
+        self.horizontalLayout_30.setSpacing(10)
         self.horizontalLayout_30.setObjectName(u"horizontalLayout_30")
         self.horizontalLayout_30.setContentsMargins(0, 0, 0, 0)
         self.operationsGroupsCheckBox = QCheckBox(self.operationsGroupsHolder)
@@ -721,6 +721,14 @@ class Ui_customTimePapersWidget(object):
         self.operationsGroupsCheckBox.setFocusPolicy(Qt.NoFocus)
 
         self.horizontalLayout_30.addWidget(self.operationsGroupsCheckBox)
+
+        self.refreshOpersGroupBtn = QPushButton(self.operationsGroupsHolder)
+        self.refreshOpersGroupBtn.setObjectName(u"refreshOpersGroupBtn")
+        self.refreshOpersGroupBtn.setToolTipDuration(-1)
+        self.refreshOpersGroupBtn.setIcon(icon2)
+        self.refreshOpersGroupBtn.setIconSize(QSize(20, 20))
+
+        self.horizontalLayout_30.addWidget(self.refreshOpersGroupBtn)
 
         self.operationsGroupComboBox = QComboBox(self.operationsGroupsHolder)
         self.operationsGroupComboBox.setObjectName(u"operationsGroupComboBox")
@@ -960,6 +968,7 @@ class Ui_customTimePapersWidget(object):
         self.verticalLayout_12.setContentsMargins(0, 0, 0, 0)
         self.timePaperTableHolder = QWidget(self.scrollAreaWidgetContents)
         self.timePaperTableHolder.setObjectName(u"timePaperTableHolder")
+        self.timePaperTableHolder.setToolTipDuration(-1)
         self.verticalLayout_11 = QVBoxLayout(self.timePaperTableHolder)
         self.verticalLayout_11.setSpacing(5)
         self.verticalLayout_11.setObjectName(u"verticalLayout_11")
@@ -1189,6 +1198,10 @@ class Ui_customTimePapersWidget(object):
         self.timePaperDateEdit.setDisplayFormat(QCoreApplication.translate("customTimePapersWidget", u"dd.MM.yy '\u0433.'", None))
         self.calendarBtn.setText("")
         self.operationsGroupsCheckBox.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041b\u0438\u0441\u0442 \u041e\u043f\u0435\u0440\u0430\u0446\u0438\u0438", None))
+#if QT_CONFIG(tooltip)
+        self.refreshOpersGroupBtn.setToolTip("")
+#endif // QT_CONFIG(tooltip)
+        self.refreshOpersGroupBtn.setText("")
         self.operationsGroupsBtn.setText("")
         self.isDefaultTimeCheckBox.setText("")
         self.label_33.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0412\u0440\u0435\u043c\u0435", None))

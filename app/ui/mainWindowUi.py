@@ -132,11 +132,13 @@ class MainWindow(QMainWindow):
         else:
             self.defaultModelOperPage.activateWindow()
 
-    def setModelOperPage(self):
+    def setModelOperPage(self, isCallingFromOtherWindow=False):
         if self.modelOperPage is None:
             self.modelOperPage = CustomWidgetForModelOper(self)
             self.modelOperPage.show()
             self.modelOperPage.destroyed.connect(self.resetModelOperPage)
+            if isCallingFromOtherWindow:
+                self.modelOperPage.setWindowsForTimePapersCall()
         else:
             self.modelOperPage.activateWindow()
 

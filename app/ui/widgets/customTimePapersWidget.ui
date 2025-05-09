@@ -95,7 +95,7 @@ QLineEdit, QDateEdit{
 	background-color: #dfdfdf;
 }
 
-#refreshShiftsBtn {
+#refreshShiftsBtn, #refreshOpersGroupBtn {
 	padding: 0px;
 	background-color: #dfdfdf;
 }
@@ -1202,7 +1202,7 @@ QComboBox::item{
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout_30">
                <property name="spacing">
-                <number>8</number>
+                <number>10</number>
                </property>
                <property name="leftMargin">
                 <number>0</number>
@@ -1223,6 +1223,29 @@ QComboBox::item{
                  </property>
                  <property name="text">
                   <string>Лист Операции</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="refreshOpersGroupBtn">
+                 <property name="toolTip">
+                  <string/>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>-1</number>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../../../resources.qrc">
+                   <normaloff>:/icons/app/assets/icons/Restart--Streamline-Solar-Broken.svg</normaloff>:/icons/app/assets/icons/Restart--Streamline-Solar-Broken.svg</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>20</width>
+                   <height>20</height>
+                  </size>
                  </property>
                 </widget>
                </item>
@@ -1700,6 +1723,9 @@ QComboBox::item{
        </property>
        <item>
         <widget class="QWidget" name="timePaperTableHolder" native="true">
+         <property name="toolTipDuration">
+          <number>-1</number>
+         </property>
          <layout class="QVBoxLayout" name="verticalLayout_11">
           <property name="spacing">
            <number>5</number>

@@ -13,7 +13,7 @@ from app.database.operations import modelOperationsType, ProductionModelOperatio
 from app.database.models import ProductionModel
 import time as t
 
-ACCESS_DB_PATH = r"D:\fedbase\ts4rep_new.accdb"
+ACCESS_DB_PATH = r"E:\fedbase\ts4rep_new.accdb"
 
 # Create connection string (for Access 2016 or later, use "Microsoft.ACE.OLEDB.12.0")
 conn_str = (

@@ -201,7 +201,7 @@ class WorkerServices:
 
             session.commit()
             logger.info(f"New time paper and operation added: {timePaperData}")
-            return newTimePaperOperation.id
+            return newTimePaper.id
 
     @staticmethod
     def updateTimePaperAndOperation(timePaperData):

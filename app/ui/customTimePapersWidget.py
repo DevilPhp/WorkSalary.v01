@@ -63,6 +63,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.operationsGroupsBtn.setEnabled(False)
         self.operationsGroupsCheckBox.stateChanged.connect(self.showOperationsGroups)
         self.operationsGroupComboBox.currentIndexChanged.connect(self.setOperationsGroupForDB)
+        self.operationsGroupsBtn.clicked.connect(self.openOperationsGroupsWindow)
+        self.refreshOpersGroupBtn.clicked.connect(self.refreshOpersGroup)
 
         self.isDefaultTimeCheckBox.stateChanged.connect(self.setDefaultTime)
         self.shiftStart.timeChanged.connect(self.updateDuration)
@@ -81,6 +83,13 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.addNewTimePaperBtn.clicked.connect(self.addTimePaperOperation)
         self.addNewShiftBtn.clicked.connect(self.setShiftsWindow)
         self.refreshShiftsBtn.clicked.connect(self.refreshShifts)
+
+    def refreshOpersGroup(self):
+        self.operationsGroups = OpS.getOperationsGroups()
+        self.setOperationsGroups()
+
+    def openOperationsGroupsWindow(self):
+        self.mainWindow.setModelOperPage(True)
 
     def setOperationsGroupForDB(self):
         self.clearOperationInfo(False)
@@ -209,7 +218,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         # self.timePapersForDayTableView.sortByColumn(0, Qt.SortOrder.AscendingOrder)
 
     def setTotalMinsColor(self):
-        totalWorkingMins = int(self.totalWorkingMins.text())
+        totalWorkingMins = float(self.totalWorkingMins.text())
         shiftWorkingTime = int(self.shiftTotalMins.text()) + int(self.overtimeTotalMins.text())
         if totalWorkingMins > shiftWorkingTime:
             self.totalWorkingMins.setStyleSheet("color: #c75f59;")
@@ -440,13 +449,30 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
     def addTimePaperOperation(self):
         count = 1
+        operationsGroupForAdd = {}
+        timePaper = None
         if (self.modelOperationLineEdit.text() == 'Група операции' and
                 self.operationsGroupsCheckBox.isChecked() and
                 self.operationsGroupComboBox.currentIndex() > -1):
-            count = len(self.operationsGroups[self.operationsGroupComboBox.currentText().split(': ')[1]]['operations'])
+            operations = self.operationsGroups[self.operationsGroupComboBox.currentText().split(': ')[1]]['operations']
+            for operation in operations:
+                for key in self.modelOperations.keys():
+                    if operation == int(key.split(': ')[0]):
+                        operationsGroupForAdd[self.modelOperations[key][1]] = self.modelOperations[key][0]
+                        break
+            count = len(operationsGroupForAdd.keys())
+
+        print(operationsGroupForAdd[list(operationsGroupForAdd.keys())[0]])
 
         for i in range(count):
-            # if self.operationsGroupsCheckBox.isChecked() and self.operationsGroupComboBox.currentIndex() > -1:
+            if operationsGroupForAdd:
+                modelOperationId = list(operationsGroupForAdd.keys())[i]
+                modelOperationTime = round(
+                    operationsGroupForAdd[modelOperationId] * int(self.modelPiecesLineEdit.text()), 2
+                )
+            else:
+                modelOperationId = self.modelOperations[self.modelOperationLineEdit.text()][1]
+                modelOperationTime = float(self.piecesTimeLineEdit.text())
 
             if int(self.workerNumberLineEdit.text()) not in self.existingTimePapers.keys():
                 overtime = [Utils.convertQtimeToTime(self.overtimeStart.time()),
@@ -464,40 +490,46 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                     'WorkerId': int(self.workerNumberLineEdit.text()),
                     'user': self.usernameLabel.text(),
                     'OrderId': self.clientModels[self.clientModelsLineEdit.text()],
-                    'ModelOperationId': self.modelOperations[self.modelOperationLineEdit.text()][1],
+                    'ModelOperationId': modelOperationId,
                     'Pieces': int(self.modelPiecesLineEdit.text()),
-                    'WorkingTimeMinutes': float(self.piecesTimeLineEdit.text())
+                    'WorkingTimeMinutes': modelOperationTime
                 }
                 timePaper = WoS.addNewTimePaperAndOperation(timePaperData)
-                if count > 1:
+                if operationsGroupForAdd:
                     self.existingTimePapers[int(self.workerNumberLineEdit.text())] = timePaper
+                print(self.existingTimePapers)
             else:
-                print(modelOperationId)
-                checkForGroupOpers = OpS.checkIfOperExistInModel(modelOperationId)
-                if count > 1:
-                    checkForGroupOpers = OpS.checkIfOperExistInModel(modelOperationId)
-                    if checkForGroupOpers:
-                        modelOperationId = self.operationsGroups[self.operationsGroupComboBox.currentText().split(': ')[0]]
-                else:
-                    modelOperationId = self.modelOperations[self.modelOperationLineEdit.text()][1]
-
-                checkForGroupOpers = OpS.checkIfOperExistInModel(modelOperationId)
-                if not checkForGroupOpers:
-                    print('here')
-
+                # print(modelOperationId)
+                # checkForGroupOpers = OpS.checkIfOperExistInModel(modelOperationId)
+                # if count > 1:
+                #     checkForGroupOpers = OpS.checkIfOperExistInModel(modelOperationId)
+                #     if checkForGroupOpers:
+                #         modelOperationId = self.operationsGroups[self.operationsGroupComboBox.currentText().split(': ')[0]]
+                # else:
+                #     modelOperationId = self.modelOperations[self.modelOperationLineEdit.text()][1]
+                #
+                # checkForGroupOpers = OpS.checkIfOperExistInModel(modelOperationId)
+                # if not checkForGroupOpers:
+                #     print('here')
+                print(self.existingTimePapers[int(self.workerNumberLineEdit.text())])
                 timePaperData = {
                     'TimePaperId': self.existingTimePapers[int(self.workerNumberLineEdit.text())],
                     'OrderId': self.clientModels[self.clientModelsLineEdit.text()],
                     'ModelOperationId': modelOperationId,
                     'Pieces': int(self.modelPiecesLineEdit.text()),
-                    'WorkingTimeMinutes': float(self.piecesTimeLineEdit.text())
+                    'WorkingTimeMinutes': modelOperationTime
                 }
                 timePaper = WoS.updateTimePaperAndOperation(timePaperData)
 
         if timePaper:
-            MM.showOnWidget(self, 'Успешно добавен лист за време', 'success')
+            if operationsGroupForAdd:
+                message = f'Успешно добавен лист за време за група операций {self.operationsGroupComboBox.currentText()}'
+            else:
+                message = 'Успешно добавен лист за време'
+            MM.showOnWidget(self, message, 'success')
             self.refreshTimePapersForToday(int(self.workerNumberLineEdit.text()))
             self.clearOperationInfo(False)
+            self.operationsGroupsCheckBox.setCheckState(Qt.CheckState.Unchecked)
 
     def updateWorkerInfo(self):
         selectedText = self.workerNameLineEdit.text()

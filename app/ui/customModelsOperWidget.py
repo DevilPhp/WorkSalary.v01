@@ -68,6 +68,10 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         # MessageManager.showOnWidget(self, 'Models and Operations Page initialized successfully!',
         #                             'info')
 
+    def setWindowsForTimePapersCall(self):
+        self.showOperationsGroupView()
+        self.operationsGroupsReturnBtn.setVisible(False)
+
     def updateGroupOperations(self):
         name = self.operationGroupLineEdit.text()
         if name in self.groupOperations.keys():
@@ -124,6 +128,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.operationsGroupViewBtn.setVisible(False)
         self.saveBtn.setVisible(False)
         self.operationsGroupsReturnBtn.setVisible(True)
+        self.operationGroupLineEdit.setFocus()
 
     def returnToModelOpersView(self):
         self.operationsGroupsHolder.setVisible(False)
