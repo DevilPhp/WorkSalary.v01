@@ -77,6 +77,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.hourlyEnd.timeChanged.connect(self.updateDuration)
         self.hourlyStart.editingFinished.connect(self.checkIfTimeIsValid)
         self.hourlyEnd.editingFinished.connect(self.checkIfTimeIsValid)
+        self.overtimeStart.editingFinished.connect(self.checkIfTimeIsValid)
+        self.overtimeEnd.editingFinished.connect(self.checkIfTimeIsValid)
 
         self.calendarBtn.clicked.connect(self.showCustomCalendaDialog)
         self.modelPiecesLineEdit.returnPressed.connect(self.addTimePaperOperation)
@@ -323,7 +325,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 MM.showOnWidget(self, 'Почасовото време не е валидно за работна смяна!', 'warning')
                 return
         elif self.sender() == self.overtimeStart or self.sender() == self.overtimeEnd:
-            if self.overtimeStart.time() < self.shiftStart.time() and self.overtimeEnd.time() > self.shiftEnd.time():
+            if (self.shiftStart.time() < self.overtimeStart.time() < self.shiftEnd.time()) or \
+                    (self.shiftEnd.time() > self.overtimeEnd.time() > self.shiftStart.time()):
                 MM.showOnWidget(self, 'Почасовото време за прекратяване на допълнителни работни часове не е валидно!',
                                 'warning')
                 return
@@ -359,6 +362,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         if self.isHourlyWorking.isChecked():
             self.hourlyStartWidget.setEnabled(True)
             self.hourlyEndWidget.setEnabled(True)
+            self.hourlyStart.setTime(self.shiftStart.time())
+            self.hourlyEnd.setTime(self.shiftEnd.time())
         else:
             self.hourlyStartWidget.setEnabled(False)
             self.hourlyEndWidget.setEnabled(False)
