@@ -284,13 +284,13 @@ QComboBox::item{
         </property>
         <property name="minimumSize">
          <size>
-          <width>0</width>
-          <height>0</height>
+          <width>400</width>
+          <height>200</height>
          </size>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <layout class="QVBoxLayout" name="verticalLayout_2">
          <property name="spacing">
-          <number>35</number>
+          <number>10</number>
          </property>
          <property name="leftMargin">
           <number>0</number>
@@ -302,13 +302,13 @@ QComboBox::item{
           <number>0</number>
          </property>
          <property name="bottomMargin">
-          <number>5</number>
+          <number>0</number>
          </property>
-         <item alignment="Qt::AlignTop">
-          <widget class="QWidget" name="workerShiftsHolder" native="true">
-           <layout class="QVBoxLayout" name="verticalLayout_6">
+         <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+          <widget class="QWidget" name="widget_2" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
             <property name="spacing">
-             <number>5</number>
+             <number>0</number>
             </property>
             <property name="leftMargin">
              <number>0</number>
@@ -323,94 +323,126 @@ QComboBox::item{
              <number>0</number>
             </property>
             <item>
-             <widget class="QWidget" name="widget_3" native="true">
-              <layout class="QVBoxLayout" name="verticalLayout_9">
-               <property name="spacing">
-                <number>0</number>
-               </property>
-               <property name="leftMargin">
-                <number>0</number>
-               </property>
-               <property name="topMargin">
-                <number>0</number>
-               </property>
-               <property name="rightMargin">
-                <number>0</number>
-               </property>
-               <property name="bottomMargin">
-                <number>0</number>
-               </property>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QWidget" name="widget_11" native="true">
-              <layout class="QVBoxLayout" name="verticalLayout_10">
-               <property name="spacing">
-                <number>0</number>
-               </property>
-               <property name="leftMargin">
-                <number>0</number>
-               </property>
-               <property name="topMargin">
-                <number>0</number>
-               </property>
-               <property name="rightMargin">
-                <number>0</number>
-               </property>
-               <property name="bottomMargin">
-                <number>5</number>
-               </property>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QWidget" name="newModelInfoHolder" native="true">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>0</height>
-               </size>
+             <widget class="QLabel" name="label">
+              <property name="text">
+               <string>Нов Работник</string>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_8">
-               <property name="spacing">
-                <number>0</number>
-               </property>
-               <property name="leftMargin">
-                <number>0</number>
-               </property>
-               <property name="topMargin">
-                <number>0</number>
-               </property>
-               <property name="rightMargin">
-                <number>0</number>
-               </property>
-               <property name="bottomMargin">
-                <number>0</number>
-               </property>
-               <item>
-                <widget class="QWidget" name="widget_6" native="true">
-                 <layout class="QHBoxLayout" name="horizontalLayout_17">
-                  <property name="spacing">
-                   <number>0</number>
-                  </property>
-                  <property name="leftMargin">
-                   <number>0</number>
-                  </property>
-                  <property name="topMargin">
-                   <number>0</number>
-                  </property>
-                  <property name="rightMargin">
-                   <number>0</number>
-                  </property>
-                  <property name="bottomMargin">
-                   <number>0</number>
-                  </property>
-                 </layout>
-                </widget>
-               </item>
-              </layout>
              </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="widget_3" native="true">
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <layout class="QGridLayout" name="gridLayout">
+              <item row="3" column="0">
+               <widget class="QLabel" name="label_5">
+                <property name="text">
+                 <string>Номер</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="3">
+               <widget class="QComboBox" name="comboBox"/>
+              </item>
+              <item row="0" column="4">
+               <widget class="QLabel" name="label_10">
+                <property name="text">
+                 <string>Дата Назначение</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="3">
+               <widget class="QLineEdit" name="lineEdit_7"/>
+              </item>
+              <item row="3" column="1">
+               <widget class="QLineEdit" name="lineEdit_4"/>
+              </item>
+              <item row="1" column="3">
+               <widget class="QComboBox" name="comboBox_2"/>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_3">
+                <property name="text">
+                 <string>Презиме</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="4">
+               <widget class="QLabel" name="label_9">
+                <property name="text">
+                 <string>Дата Напускане</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QLabel" name="label_6">
+                <property name="text">
+                 <string>Група</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QLineEdit" name="lineEdit_3"/>
+              </item>
+              <item row="0" column="1">
+               <widget class="QLineEdit" name="lineEdit"/>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_2">
+                <property name="text">
+                 <string>Име</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="label_4">
+                <property name="text">
+                 <string>Фамилия</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="2">
+               <widget class="QLabel" name="label_8">
+                <property name="text">
+                 <string>ЕГН</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QLabel" name="label_7">
+                <property name="text">
+                 <string>Длъжност</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLineEdit" name="lineEdit_2"/>
+              </item>
+              <item row="0" column="5">
+               <widget class="QDateEdit" name="dateEdit"/>
+              </item>
+              <item row="1" column="5">
+               <widget class="QDateEdit" name="dateEdit_2"/>
+              </item>
+             </layout>
             </item>
            </layout>
           </widget>
@@ -432,7 +464,7 @@ QComboBox::item{
         <x>0</x>
         <y>0</y>
         <width>888</width>
-        <height>714</height>
+        <height>534</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_12">

@@ -391,7 +391,18 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         Utils.setupCompleter(self.clientModels.keys(), self.clientModelsLineEdit)
         self.clientModelsLineEdit.editingFinished.connect(self.updateModelInfo)
 
+    def setReturnBtnForCompleter(self, completer):
+        currentIndex = completer.popup().currentIndex()
+        if currentIndex.isValid():
+            selectedText = currentIndex.data()
+        else:
+            selectedText = completer.completionModel().index(0, 0).data()
+        return selectedText
+
     def updateModelInfo(self):
+        if self.clientModelsLineEdit.text() != '':
+            completer = self.clientModelsLineEdit.completer()
+            self.clientModelsLineEdit.setText(self.setReturnBtnForCompleter(completer))
         selectedText = self.clientModelsLineEdit.text()
 
         if selectedText in self.clientModels.keys():
@@ -537,6 +548,9 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.operationsGroupsCheckBox.setCheckState(Qt.CheckState.Unchecked)
 
     def updateWorkerInfo(self):
+        if self.workerNameLineEdit.text() != '':
+            completer = self.workerNameLineEdit.completer()
+            self.workerNameLineEdit.setText(self.setReturnBtnForCompleter(completer))
         selectedText = self.workerNameLineEdit.text()
         if selectedText in self.workersInfo:
             workerId = selectedText.split(" - ")[1]

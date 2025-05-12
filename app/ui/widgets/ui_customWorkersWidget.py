@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customWorkersWidgetfDYnAQ.ui'
+## Form generated from reading UI file 'customWorkersWidgetNjcbJp.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -15,7 +15,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QPushButton,
+from PySide6.QtWidgets import (QApplication, QComboBox, QDateEdit, QGridLayout,
+    QHBoxLayout, QLabel, QLineEdit, QPushButton,
     QScrollArea, QSizePolicy, QVBoxLayout, QWidget)
 import resources_rc
 
@@ -213,56 +214,128 @@ class Ui_customWorkersEditWidget(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.workerInfoHolder.sizePolicy().hasHeightForWidth())
         self.workerInfoHolder.setSizePolicy(sizePolicy)
-        self.workerInfoHolder.setMinimumSize(QSize(0, 0))
-        self.horizontalLayout_5 = QHBoxLayout(self.workerInfoHolder)
-        self.horizontalLayout_5.setSpacing(35)
-        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
-        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 5)
-        self.workerShiftsHolder = QWidget(self.workerInfoHolder)
-        self.workerShiftsHolder.setObjectName(u"workerShiftsHolder")
-        self.verticalLayout_6 = QVBoxLayout(self.workerShiftsHolder)
-        self.verticalLayout_6.setSpacing(5)
-        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
-        self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
-        self.widget_3 = QWidget(self.workerShiftsHolder)
+        self.workerInfoHolder.setMinimumSize(QSize(400, 200))
+        self.verticalLayout_2 = QVBoxLayout(self.workerInfoHolder)
+        self.verticalLayout_2.setSpacing(10)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.widget_2 = QWidget(self.workerInfoHolder)
+        self.widget_2.setObjectName(u"widget_2")
+        self.horizontalLayout_4 = QHBoxLayout(self.widget_2)
+        self.horizontalLayout_4.setSpacing(0)
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.label = QLabel(self.widget_2)
+        self.label.setObjectName(u"label")
+
+        self.horizontalLayout_4.addWidget(self.label)
+
+
+        self.verticalLayout_2.addWidget(self.widget_2, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+
+        self.widget_3 = QWidget(self.workerInfoHolder)
         self.widget_3.setObjectName(u"widget_3")
-        self.verticalLayout_9 = QVBoxLayout(self.widget_3)
-        self.verticalLayout_9.setSpacing(0)
-        self.verticalLayout_9.setObjectName(u"verticalLayout_9")
-        self.verticalLayout_9.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_3 = QVBoxLayout(self.widget_3)
+        self.verticalLayout_3.setSpacing(0)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout = QGridLayout()
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.label_5 = QLabel(self.widget_3)
+        self.label_5.setObjectName(u"label_5")
 
-        self.verticalLayout_6.addWidget(self.widget_3)
+        self.gridLayout.addWidget(self.label_5, 3, 0, 1, 1)
 
-        self.widget_11 = QWidget(self.workerShiftsHolder)
-        self.widget_11.setObjectName(u"widget_11")
-        self.verticalLayout_10 = QVBoxLayout(self.widget_11)
-        self.verticalLayout_10.setSpacing(0)
-        self.verticalLayout_10.setObjectName(u"verticalLayout_10")
-        self.verticalLayout_10.setContentsMargins(0, 0, 0, 5)
+        self.comboBox = QComboBox(self.widget_3)
+        self.comboBox.setObjectName(u"comboBox")
 
-        self.verticalLayout_6.addWidget(self.widget_11)
+        self.gridLayout.addWidget(self.comboBox, 0, 3, 1, 1)
 
-        self.newModelInfoHolder = QWidget(self.workerShiftsHolder)
-        self.newModelInfoHolder.setObjectName(u"newModelInfoHolder")
-        self.newModelInfoHolder.setMinimumSize(QSize(0, 0))
-        self.verticalLayout_8 = QVBoxLayout(self.newModelInfoHolder)
-        self.verticalLayout_8.setSpacing(0)
-        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
-        self.verticalLayout_8.setContentsMargins(0, 0, 0, 0)
-        self.widget_6 = QWidget(self.newModelInfoHolder)
-        self.widget_6.setObjectName(u"widget_6")
-        self.horizontalLayout_17 = QHBoxLayout(self.widget_6)
-        self.horizontalLayout_17.setSpacing(0)
-        self.horizontalLayout_17.setObjectName(u"horizontalLayout_17")
-        self.horizontalLayout_17.setContentsMargins(0, 0, 0, 0)
+        self.label_10 = QLabel(self.widget_3)
+        self.label_10.setObjectName(u"label_10")
 
-        self.verticalLayout_8.addWidget(self.widget_6)
+        self.gridLayout.addWidget(self.label_10, 0, 4, 1, 1)
+
+        self.lineEdit_7 = QLineEdit(self.widget_3)
+        self.lineEdit_7.setObjectName(u"lineEdit_7")
+
+        self.gridLayout.addWidget(self.lineEdit_7, 2, 3, 1, 1)
+
+        self.lineEdit_4 = QLineEdit(self.widget_3)
+        self.lineEdit_4.setObjectName(u"lineEdit_4")
+
+        self.gridLayout.addWidget(self.lineEdit_4, 3, 1, 1, 1)
+
+        self.comboBox_2 = QComboBox(self.widget_3)
+        self.comboBox_2.setObjectName(u"comboBox_2")
+
+        self.gridLayout.addWidget(self.comboBox_2, 1, 3, 1, 1)
+
+        self.label_3 = QLabel(self.widget_3)
+        self.label_3.setObjectName(u"label_3")
+
+        self.gridLayout.addWidget(self.label_3, 1, 0, 1, 1)
+
+        self.label_9 = QLabel(self.widget_3)
+        self.label_9.setObjectName(u"label_9")
+
+        self.gridLayout.addWidget(self.label_9, 1, 4, 1, 1)
+
+        self.label_6 = QLabel(self.widget_3)
+        self.label_6.setObjectName(u"label_6")
+
+        self.gridLayout.addWidget(self.label_6, 0, 2, 1, 1)
+
+        self.lineEdit_3 = QLineEdit(self.widget_3)
+        self.lineEdit_3.setObjectName(u"lineEdit_3")
+
+        self.gridLayout.addWidget(self.lineEdit_3, 2, 1, 1, 1)
+
+        self.lineEdit = QLineEdit(self.widget_3)
+        self.lineEdit.setObjectName(u"lineEdit")
+
+        self.gridLayout.addWidget(self.lineEdit, 0, 1, 1, 1)
+
+        self.label_2 = QLabel(self.widget_3)
+        self.label_2.setObjectName(u"label_2")
+
+        self.gridLayout.addWidget(self.label_2, 0, 0, 1, 1)
+
+        self.label_4 = QLabel(self.widget_3)
+        self.label_4.setObjectName(u"label_4")
+
+        self.gridLayout.addWidget(self.label_4, 2, 0, 1, 1)
+
+        self.label_8 = QLabel(self.widget_3)
+        self.label_8.setObjectName(u"label_8")
+
+        self.gridLayout.addWidget(self.label_8, 2, 2, 1, 1)
+
+        self.label_7 = QLabel(self.widget_3)
+        self.label_7.setObjectName(u"label_7")
+
+        self.gridLayout.addWidget(self.label_7, 1, 2, 1, 1)
+
+        self.lineEdit_2 = QLineEdit(self.widget_3)
+        self.lineEdit_2.setObjectName(u"lineEdit_2")
+
+        self.gridLayout.addWidget(self.lineEdit_2, 1, 1, 1, 1)
+
+        self.dateEdit = QDateEdit(self.widget_3)
+        self.dateEdit.setObjectName(u"dateEdit")
+
+        self.gridLayout.addWidget(self.dateEdit, 0, 5, 1, 1)
+
+        self.dateEdit_2 = QDateEdit(self.widget_3)
+        self.dateEdit_2.setObjectName(u"dateEdit_2")
+
+        self.gridLayout.addWidget(self.dateEdit_2, 1, 5, 1, 1)
 
 
-        self.verticalLayout_6.addWidget(self.newModelInfoHolder)
+        self.verticalLayout_3.addLayout(self.gridLayout)
 
 
-        self.horizontalLayout_5.addWidget(self.workerShiftsHolder, 0, Qt.AlignTop)
+        self.verticalLayout_2.addWidget(self.widget_3)
 
 
         self.verticalLayout_4.addWidget(self.workerInfoHolder, 0, Qt.AlignLeft)
@@ -275,7 +348,7 @@ class Ui_customWorkersEditWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 888, 714))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 888, 534))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -304,5 +377,15 @@ class Ui_customWorkersEditWidget(object):
         self.pageTitle.setText(QCoreApplication.translate("customWorkersEditWidget", u"\u0420\u0410\u0411\u041e\u0422\u041d\u0418\u0426\u0418", None))
         self.userIcon.setText("")
         self.usernameLabel.setText(QCoreApplication.translate("customWorkersEditWidget", u"admin", None))
+        self.label.setText(QCoreApplication.translate("customWorkersEditWidget", u"\u041d\u043e\u0432 \u0420\u0430\u0431\u043e\u0442\u043d\u0438\u043a", None))
+        self.label_5.setText(QCoreApplication.translate("customWorkersEditWidget", u"\u041d\u043e\u043c\u0435\u0440", None))
+        self.label_10.setText(QCoreApplication.translate("customWorkersEditWidget", u"\u0414\u0430\u0442\u0430 \u041d\u0430\u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435", None))
+        self.label_3.setText(QCoreApplication.translate("customWorkersEditWidget", u"\u041f\u0440\u0435\u0437\u0438\u043c\u0435", None))
+        self.label_9.setText(QCoreApplication.translate("customWorkersEditWidget", u"\u0414\u0430\u0442\u0430 \u041d\u0430\u043f\u0443\u0441\u043a\u0430\u043d\u0435", None))
+        self.label_6.setText(QCoreApplication.translate("customWorkersEditWidget", u"\u0413\u0440\u0443\u043f\u0430", None))
+        self.label_2.setText(QCoreApplication.translate("customWorkersEditWidget", u"\u0418\u043c\u0435", None))
+        self.label_4.setText(QCoreApplication.translate("customWorkersEditWidget", u"\u0424\u0430\u043c\u0438\u043b\u0438\u044f", None))
+        self.label_8.setText(QCoreApplication.translate("customWorkersEditWidget", u"\u0415\u0413\u041d", None))
+        self.label_7.setText(QCoreApplication.translate("customWorkersEditWidget", u"\u0414\u043b\u044a\u0436\u043d\u043e\u0441\u0442", None))
     # retranslateUi
 
