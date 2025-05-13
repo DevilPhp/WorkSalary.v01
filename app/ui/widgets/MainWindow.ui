@@ -591,13 +591,6 @@ QPushButton:hover {
                   </property>
                  </widget>
                 </item>
-                <item row="3" column="0">
-                 <widget class="QPushButton" name="pushButton_6">
-                  <property name="text">
-                   <string>PushButton</string>
-                  </property>
-                 </widget>
-                </item>
                 <item row="0" column="2">
                  <widget class="QLabel" name="label_6">
                   <property name="text">
@@ -605,13 +598,6 @@ QPushButton:hover {
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="1">
-                 <widget class="QPushButton" name="workingShiftsPageBtn">
-                  <property name="text">
-                   <string>Работни Смени</string>
                   </property>
                  </widget>
                 </item>
@@ -686,6 +672,20 @@ QPushButton:hover {
                  <widget class="QPushButton" name="timePapersBtn">
                   <property name="text">
                    <string>Листове за време</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QPushButton" name="workersPageBtn">
+                  <property name="text">
+                   <string>Персонал</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="QPushButton" name="workingShiftsPageBtn">
+                  <property name="text">
+                   <string>Работни Смени</string>
                   </property>
                  </widget>
                 </item>

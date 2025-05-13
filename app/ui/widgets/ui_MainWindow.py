@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'MainWindowHPBsgb.ui'
+## Form generated from reading UI file 'MainWindowMhLjUo.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -318,21 +318,11 @@ class Ui_MainWindow(object):
 
         self.mainMenuLayout.addWidget(self.label_7, 0, 3, 1, 1)
 
-        self.pushButton_6 = QPushButton(self.mainMenuWidget)
-        self.pushButton_6.setObjectName(u"pushButton_6")
-
-        self.mainMenuLayout.addWidget(self.pushButton_6, 3, 0, 1, 1)
-
         self.label_6 = QLabel(self.mainMenuWidget)
         self.label_6.setObjectName(u"label_6")
         self.label_6.setAlignment(Qt.AlignCenter)
 
         self.mainMenuLayout.addWidget(self.label_6, 0, 2, 1, 1)
-
-        self.workingShiftsPageBtn = QPushButton(self.mainMenuWidget)
-        self.workingShiftsPageBtn.setObjectName(u"workingShiftsPageBtn")
-
-        self.mainMenuLayout.addWidget(self.workingShiftsPageBtn, 1, 1, 1, 1)
 
         self.label_3 = QLabel(self.mainMenuWidget)
         self.label_3.setObjectName(u"label_3")
@@ -379,6 +369,16 @@ class Ui_MainWindow(object):
         self.timePapersBtn.setObjectName(u"timePapersBtn")
 
         self.mainMenuLayout.addWidget(self.timePapersBtn, 1, 0, 1, 1)
+
+        self.workersPageBtn = QPushButton(self.mainMenuWidget)
+        self.workersPageBtn.setObjectName(u"workersPageBtn")
+
+        self.mainMenuLayout.addWidget(self.workersPageBtn, 1, 1, 1, 1)
+
+        self.workingShiftsPageBtn = QPushButton(self.mainMenuWidget)
+        self.workingShiftsPageBtn.setObjectName(u"workingShiftsPageBtn")
+
+        self.mainMenuLayout.addWidget(self.workingShiftsPageBtn, 3, 1, 1, 1)
 
 
         self.verticalLayout_10.addLayout(self.mainMenuLayout)
@@ -469,9 +469,7 @@ class Ui_MainWindow(object):
         self.userIcon.setText("")
         self.usernameLabel.setText(QCoreApplication.translate("MainWindow", u"admin", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438", None))
-        self.pushButton_6.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"\u041c\u043e\u0434\u0435\u043b\u0438", None))
-        self.workingShiftsPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u0420\u0430\u0431\u043e\u0442\u043d\u0438 \u0421\u043c\u0435\u043d\u0438", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"\u041f\u0435\u0440\u0441\u043e\u043d\u0430\u043b", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"\u041b\u0438\u0441\u0442\u043e\u0432\u0435 \u0437\u0430 \u0432\u0440\u0435\u043c\u0435", None))
         self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
@@ -480,6 +478,8 @@ class Ui_MainWindow(object):
         self.paymentsPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0447\u0438\u0441\u043b\u0435\u043d\u0438\u044f", None))
         self.pushButton.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
         self.timePapersBtn.setText(QCoreApplication.translate("MainWindow", u"\u041b\u0438\u0441\u0442\u043e\u0432\u0435 \u0437\u0430 \u0432\u0440\u0435\u043c\u0435", None))
+        self.workersPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u041f\u0435\u0440\u0441\u043e\u043d\u0430\u043b", None))
+        self.workingShiftsPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u0420\u0430\u0431\u043e\u0442\u043d\u0438 \u0421\u043c\u0435\u043d\u0438", None))
         self.infoLabel_2.setText(QCoreApplication.translate("MainWindow", u"Dev v0.1.010", None))
         self.pageBtn.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
     # retranslateUi

@@ -78,7 +78,7 @@ QLineEdit, QDateEdit{
 	font-size: 10pt;
 }
 
-#overtimeWarning {
+#calStartBtn, #calLeavingBtn {
 	background-color: #dfdfdf;
 	padding: 0px;
 }
@@ -284,7 +284,7 @@ QComboBox::item{
         </property>
         <property name="minimumSize">
          <size>
-          <width>400</width>
+          <width>750</width>
           <height>200</height>
          </size>
         </property>
@@ -352,6 +352,56 @@ QComboBox::item{
             </property>
             <item>
              <layout class="QGridLayout" name="gridLayout">
+              <property name="horizontalSpacing">
+               <number>10</number>
+              </property>
+              <item row="0" column="2">
+               <widget class="QLabel" name="label_6">
+                <property name="text">
+                 <string>Група</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="3">
+               <widget class="QLineEdit" name="worker_5_EGN"/>
+              </item>
+              <item row="0" column="3">
+               <widget class="QComboBox" name="cehoveComboBox">
+                <property name="focusPolicy">
+                 <enum>Qt::ClickFocus</enum>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="4">
+               <widget class="QLabel" name="label_12">
+                <property name="text">
+                 <string>Телефон</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLineEdit" name="worker_2_sirname"/>
+              </item>
+              <item row="2" column="2">
+               <widget class="QLabel" name="label_8">
+                <property name="text">
+                 <string>ЕГН</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QLineEdit" name="worker_4_number"/>
+              </item>
+              <item row="0" column="1">
+               <widget class="QLineEdit" name="worker_1_name"/>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="label_4">
+                <property name="text">
+                 <string>Фамилия</string>
+                </property>
+               </widget>
+              </item>
               <item row="3" column="0">
                <widget class="QLabel" name="label_5">
                 <property name="text">
@@ -359,29 +409,68 @@ QComboBox::item{
                 </property>
                </widget>
               </item>
-              <item row="0" column="3">
-               <widget class="QComboBox" name="comboBox"/>
-              </item>
-              <item row="0" column="4">
-               <widget class="QLabel" name="label_10">
-                <property name="text">
-                 <string>Дата Назначение</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="3">
-               <widget class="QLineEdit" name="lineEdit_7"/>
-              </item>
-              <item row="3" column="1">
-               <widget class="QLineEdit" name="lineEdit_4"/>
-              </item>
-              <item row="1" column="3">
-               <widget class="QComboBox" name="comboBox_2"/>
-              </item>
               <item row="1" column="0">
                <widget class="QLabel" name="label_3">
                 <property name="text">
                  <string>Презиме</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="5">
+               <widget class="QWidget" name="widget_5" native="true">
+                <layout class="QHBoxLayout" name="horizontalLayout_5">
+                 <property name="spacing">
+                  <number>5</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QDateEdit" name="startDateEdit">
+                   <property name="focusPolicy">
+                    <enum>Qt::ClickFocus</enum>
+                   </property>
+                   <property name="displayFormat">
+                    <string>dd.MM.yy 'г.'</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item alignment="Qt::AlignLeft">
+                  <widget class="QPushButton" name="calStartBtn">
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../../../resources.qrc">
+                     <normaloff>:/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg</normaloff>:/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>20</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_2">
+                <property name="text">
+                 <string>Име</string>
                 </property>
                </widget>
               </item>
@@ -392,38 +481,89 @@ QComboBox::item{
                 </property>
                </widget>
               </item>
-              <item row="0" column="2">
-               <widget class="QLabel" name="label_6">
-                <property name="text">
-                 <string>Група</string>
-                </property>
-               </widget>
-              </item>
               <item row="2" column="1">
-               <widget class="QLineEdit" name="lineEdit_3"/>
+               <widget class="QLineEdit" name="worker_3_lastname"/>
               </item>
-              <item row="0" column="1">
-               <widget class="QLineEdit" name="lineEdit"/>
-              </item>
-              <item row="0" column="0">
-               <widget class="QLabel" name="label_2">
-                <property name="text">
-                 <string>Име</string>
+              <item row="3" column="3">
+               <widget class="QComboBox" name="paymentTypeComboBox">
+                <property name="focusPolicy">
+                 <enum>Qt::ClickFocus</enum>
                 </property>
                </widget>
               </item>
-              <item row="2" column="0">
-               <widget class="QLabel" name="label_4">
+              <item row="0" column="4">
+               <widget class="QLabel" name="label_10">
                 <property name="text">
-                 <string>Фамилия</string>
+                 <string>Дата Назначение</string>
                 </property>
                </widget>
               </item>
-              <item row="2" column="2">
-               <widget class="QLabel" name="label_8">
+              <item row="3" column="2">
+               <widget class="QLabel" name="label_11">
                 <property name="text">
-                 <string>ЕГН</string>
+                 <string>Система заплащане</string>
                 </property>
+               </widget>
+              </item>
+              <item row="2" column="5">
+               <widget class="QLineEdit" name="worker_6_tel"/>
+              </item>
+              <item row="1" column="3">
+               <widget class="QComboBox" name="positionComboBox">
+                <property name="focusPolicy">
+                 <enum>Qt::ClickFocus</enum>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="5">
+               <widget class="QWidget" name="widget_6" native="true">
+                <layout class="QHBoxLayout" name="horizontalLayout_6">
+                 <property name="spacing">
+                  <number>5</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QDateEdit" name="leaveDateEdit">
+                   <property name="focusPolicy">
+                    <enum>Qt::ClickFocus</enum>
+                   </property>
+                   <property name="displayFormat">
+                    <string>dd.MM.yy 'г.'</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item alignment="Qt::AlignLeft">
+                  <widget class="QPushButton" name="calLeavingBtn">
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../../../resources.qrc">
+                     <normaloff>:/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg</normaloff>:/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>20</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
                </widget>
               </item>
               <item row="1" column="2">
@@ -433,14 +573,25 @@ QComboBox::item{
                 </property>
                </widget>
               </item>
-              <item row="1" column="1">
-               <widget class="QLineEdit" name="lineEdit_2"/>
+              <item row="4" column="0">
+               <widget class="QLabel" name="label_13">
+                <property name="text">
+                 <string>Адрес гр.</string>
+                </property>
+               </widget>
               </item>
-              <item row="0" column="5">
-               <widget class="QDateEdit" name="dateEdit"/>
+              <item row="4" column="1">
+               <widget class="QLineEdit" name="worker_7_townAdress"/>
               </item>
-              <item row="1" column="5">
-               <widget class="QDateEdit" name="dateEdit_2"/>
+              <item row="4" column="3">
+               <widget class="QLineEdit" name="worker_8_streetAdress"/>
+              </item>
+              <item row="4" column="2">
+               <widget class="QLabel" name="label_14">
+                <property name="text">
+                 <string>ул.</string>
+                </property>
+               </widget>
               </item>
              </layout>
             </item>
@@ -501,6 +652,44 @@ QComboBox::item{
           <property name="bottomMargin">
            <number>0</number>
           </property>
+          <item>
+           <widget class="QTableView" name="workersTableView">
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QHeaderView:section{
+	font: 700 10.5pt &quot;Segoe UI&quot;;
+	background-color: #dfdfdf;
+	padding-left: 10px;
+	padding-top:10px;
+	padding-right:10px;
+}
+QVerticalView:section{
+	min-height: 30;
+}
+QAbstractItemView{
+	alternate-background-color: #d3d3d3;
+	font: 10.5pt &quot;Segoe UI&quot;;
+	selection-background-color: rgba(198, 228, 254, 45);
+	selection-color: #324b4c;
+}
+QAbstractItemView:item{
+	selection-background-color: rgba(198, 228, 254, 45);
+	selection-color: #324b4c;
+}
+QAbstractItemView::item:selected{
+	background-color: rgba(198, 228, 254, 45);
+}</string>
+            </property>
+            <property name="cornerButtonEnabled">
+             <bool>false</bool>
+            </property>
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>

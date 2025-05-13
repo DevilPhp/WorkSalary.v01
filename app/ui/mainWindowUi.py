@@ -15,6 +15,7 @@ from app.ui.customTimePapersWidget import CustomTimePapersWidget
 from app.ui.customWorkingShiftsWidget import CustomShiftsEditWidget
 from app.ui.customPaymentsWidget import CustomPaymentsWidget
 from app.ui.customPaymentsDetailsWidget import CustomPaymentsDetailsWidget
+from app.ui.customWorkersWidget import CustomWorkersWidget
 from app.ui.messagesManager import MessageManager
 
 
@@ -36,6 +37,7 @@ class MainWindow(QMainWindow):
         self.timePapersPage = None
         self.workingShiftsPage = None
         self.paymentsPage = None
+        self.workersPage = None
         self.workerPaymentsDetails = {}
         # self.setAttribute(Qt.WA_TranslucentBackground)
         LoginPage(self)
@@ -49,6 +51,7 @@ class MainWindow(QMainWindow):
         self.ui.timePapersBtn.clicked.connect(self.setTimePapersPage)
         self.ui.workingShiftsPageBtn.clicked.connect(self.setWorkingShiftsPage)
         self.ui.paymentsPageBtn.clicked.connect(self.setPaymentsPage)
+        self.ui.workersPageBtn.clicked.connect(self.setWorkersPage)
         # MessageManager.success('DefaultOperToModelTypeCustomWidget initialized', timeout=3000)
 
         # user = UsersFuncs.createUser('test', '000')
@@ -56,6 +59,9 @@ class MainWindow(QMainWindow):
 
     def closeEvent(self, event):
         QApplication.quit()
+
+    def resetWorkersPage(self):
+        self.workersPage = None
 
     def resetPaymentsPage(self):
         self.paymentsPage = None
@@ -87,6 +93,14 @@ class MainWindow(QMainWindow):
             subWindow.setWidget(newWindow)
             self.ui.mainWindowsArea.addSubWindow(subWindow)
             subWindow.show()
+
+    def setWorkersPage(self):
+        if self.workersPage is None:
+            self.workersPage = CustomWorkersWidget(self)
+            self.workersPage.show()
+            self.workersPage.destroyed.connect(self.resetWorkersPage)
+        else:
+            self.workersPage.activateWindow()
 
     def setPaymentsDetailsPage(self, workerId, start, end):
         if workerId not in self.workerPaymentsDetails:

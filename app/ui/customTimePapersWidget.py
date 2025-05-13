@@ -478,7 +478,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                         break
             count = len(operationsGroupForAdd.keys())
 
-        print(operationsGroupForAdd[list(operationsGroupForAdd.keys())[0]])
+        # print(operationsGroupForAdd[list(operationsGroupForAdd.keys())[0]])
 
         for i in range(count):
             if operationsGroupForAdd:
