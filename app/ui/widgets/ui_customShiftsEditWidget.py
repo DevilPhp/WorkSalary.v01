@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customShiftsEditWidgetyVAafi.ui'
+## Form generated from reading UI file 'customShiftsEditWidgetAtqVkI.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -33,20 +33,6 @@ class Ui_customWorkingShiftsWidget(object):
 "	color: #324b4c;\n"
 "}\n"
 "\n"
-"QMenu {\n"
-"	background-color: #d5d5d5;\n"
-"	border-radius: 5px;\n"
-"}\n"
-"QMenu::item {\n"
-"	background-color: transparent;\n"
-"	font: 600 10pt \"Segoe UI\";\n"
-"	color: #324b4c;\n"
-"	padding: 5px;\n"
-"}\n"
-"QMenu::item:selected {\n"
-"	background-color: #c1c4c9;\n"
-"}\n"
-"\n"
 "QScrollBar:vertical {\n"
 "	width: 20px;\n"
 "	background: none;\n"
@@ -74,16 +60,30 @@ class Ui_customWorkingShiftsWidget(object):
 "	border-bottom: 1px solid #7c9399;\n"
 "}\n"
 "\n"
+"QMenu {\n"
+"	border: 1px solid #aeaeae;\n"
+"	border-radius: 5px;\n"
+"}\n"
+"\n"
+"QMenu::item {\n"
+"	padding: 5px;\n"
+"}\n"
+"\n"
+"QMenu::item:selected {\n"
+"	background-color: #aeaeae;\n"
+"	padding-left: 7px;\n"
+"}\n"
+"\n"
 "#modelHolder QLabel, #newModelInfoHolder * , #widget_11 *{\n"
 "	font-size: 10pt;\n"
 "}\n"
 "\n"
 "#optionsHolder, #optionsHolder_2 {\n"
-"	bor"
-                        "der-bottom: 2px dashed #7c9399;\n"
+"	border-bottom: 2px dashed #7c9399;\n"
 "}\n"
 "\n"
-"#pageTitle {\n"
+"#pageTitle"
+                        " {\n"
 "	font: 700 13pt \"Segoe UI\";\n"
 "}\n"
 "\n"
@@ -386,6 +386,7 @@ class Ui_customWorkingShiftsWidget(object):
         self.verticalLayout_11.setContentsMargins(5, 5, 5, 0)
         self.workingShiftsTableView = QTableView(self.workingShiftsTable)
         self.workingShiftsTableView.setObjectName(u"workingShiftsTableView")
+        self.workingShiftsTableView.setFocusPolicy(Qt.NoFocus)
         self.workingShiftsTableView.setStyleSheet(u"QHeaderView:section{\n"
 "	font: 700 10.5pt \"Segoe UI\";\n"
 "	background-color: #dfdfdf;\n"

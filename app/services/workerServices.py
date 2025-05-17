@@ -1,10 +1,108 @@
 from app.logger import logger
 from app.database import getDatabase, setDatabase
-from app.database.workers import Worker, TimePaper, TimePaperOperation, WorkingShift, HourlyPay, OvertimePay
+from app.database.workers import Worker, TimePaper, TimePaperOperation, WorkingShift, HourlyPay, OvertimePay, Cehove,\
+    PaymentType, WorkerPosition
 from app.database.payment import PaymentPerMinute
 from datetime import datetime
 
 class WorkerServices:
+
+    @staticmethod
+    def updateWorker(workerData):
+        with setDatabase() as session:
+            worker = session.query(Worker).filter_by(Номер=workerData['id']).first()
+            if worker:
+                worker.Име = workerData['firstName'],
+                worker.Презиме = workerData['middleName'],
+                worker.Фамилия = workerData['lastName'],
+                worker.Група = int(workerData['cehId']),
+                worker.Длъжност = int(workerData['positionId']),
+                worker.ЕГН = workerData['EGN'],
+                worker.ДатаНаПостъпване = workerData['startDate'],
+                worker.ДатаНаНапускане = workerData['endDate'],
+                worker.СистемаЗаплащане = int(workerData['paymentTypeId']),
+                worker.гр_с = workerData['town'],
+                worker.Адрес = workerData['address'],
+                worker.Телефон = workerData['workerPhone']
+                session.commit()
+                logger.info(f'Worker {worker.Име} {worker.Презиме} {worker.Фамилия} updated')
+                return True
+            else:
+                logger.error(f'Worker with ID {workerData["id"]} not found')
+                return False
+
+    # 'id': workerId,
+    # 'firstName': dialog.workerName.text() if dialog.workerName.text() != '' else None,
+    # 'middleName': dialog.workerSirname.text() if dialog.workerSirname.text() != '' else None,
+    # 'lastName': dialog.workerLastname.text() if dialog.workerLastname.text() != '' else None,
+    # 'cehId': dialog.cehoveComboBox.currentIndex() + 1 if dialog.cehoveComboBox.currentIndex() >= 0 else None,
+    # 'positionId': dialog.positionComboBox.currentIndex() + 1
+    # if dialog.positionComboBox.currentIndex() >= 0 else None,
+    # 'EGN': dialog.workerEGN.text() if dialog.workerEGN.text() != '' else None,
+    # 'paymentTypeId': dialog.paymentTypeComboBox.currentIndex(),
+    # 'workerPhone': dialog.workerTel.text() if dialog.workerTel.text() != '' else None,
+    # 'startDate': startDate,
+    # 'endDate': endDate,
+    # 'town': dialog.workerTownAdress.text() if dialog.workerTownAdress.text() != '' else None,
+    # 'address': dialog.workerStreetAdress.text() if dialog.workerStreetAdress.text() != '' else None,
+
+    @staticmethod
+    def getCehove():
+        returnedData = []
+        with getDatabase() as session:
+            cehove = session.query(Cehove).all()
+            for ceh in cehove:
+                returnedData.append(ceh.Група)
+            return returnedData
+
+    @staticmethod
+    def getPositions():
+        returnedData = []
+        with getDatabase() as session:
+            positions = session.query(WorkerPosition).all()
+            for position in positions:
+                returnedData.append(position.Длъжност)
+            return returnedData
+
+    @staticmethod
+    def getPaymentTypes():
+        returnedData = []
+        with getDatabase() as session:
+            paymentTypes = session.query(PaymentType).all()
+            for paymentType in paymentTypes:
+                returnedData.append(paymentType.Name)
+            return returnedData
+
+    @staticmethod
+    def getWorkerInfo(workerId):
+        with getDatabase() as session:
+            return session.query(Worker).filter_by(Номер=workerId).first()
+
+    @staticmethod
+    def getWorkersInfo():
+        returnedData = {}
+        with getDatabase() as session:
+            workers = session.query(Worker).order_by(Worker.Номер).all()
+            for worker in workers:
+                returnedData[worker.Номер] = {
+                    'firstName': worker.Име,
+                    'middleName': worker.Презиме,
+                    'lastName': worker.Фамилия,
+                    'ceh': worker.cehove.Група if worker.cehove else '-',
+                    'position': worker.workerPosition.Длъжност if worker.workerPosition else '-',
+                    'workerEGN': worker.ЕГН,
+                    'startDate': worker.ДатаНаПостъпване.strftime('%d.%m-%Y') if worker.ДатаНаПостъпване else '-',
+                    'endDate': worker.ДатаНаНапускане.strftime('%d.%m-%Y') if worker.ДатаНаНапускане else '-',
+                    'paymentType': worker.paymentType.Name,
+                    'town': worker.гр_с,
+                    'address': worker.Адрес,
+                    'phone': worker.Телефон,
+                    'workerExpYears': worker.ТрудовСтажГодини if worker.ТрудовСтажГодини else 0,
+                    'workerExpMonths': worker.ТрудовСтажМесеци if worker.ТрудовСтажМесеци else 0,
+                    'workerExpDays': worker.ТрудовСтажДни if worker.ТрудовСтажДни else 0,
+                    'workerExpStart': worker.ДатаНачалоТрудСтаж.strftime('%d.%m.%Y') if worker.ДатаНачалоТрудСтаж else '-',
+                }
+            return returnedData
 
     @staticmethod
     def getWorkerDataForPayments(workerId):

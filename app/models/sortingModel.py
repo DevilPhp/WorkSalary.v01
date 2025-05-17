@@ -39,7 +39,7 @@ class CaseInsensitiveProxyModel(QSortFilterProxyModel):
         if left.column() in self.numericColumns:
             leftData = self.sourceModel().data(left, Qt.ItemDataRole.DisplayRole)
             rightData = self.sourceModel().data(right, Qt.ItemDataRole.DisplayRole)
-            return float(leftData) < float(rightData)
+            return float(leftData) > float(rightData)
         else:
             leftData = self.sourceModel().data(left)
             rightData = self.sourceModel().data(right)

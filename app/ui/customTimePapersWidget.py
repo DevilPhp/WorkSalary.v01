@@ -515,18 +515,6 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                     self.existingTimePapers[int(self.workerNumberLineEdit.text())] = timePaper
                 print(self.existingTimePapers)
             else:
-                # print(modelOperationId)
-                # checkForGroupOpers = OpS.checkIfOperExistInModel(modelOperationId)
-                # if count > 1:
-                #     checkForGroupOpers = OpS.checkIfOperExistInModel(modelOperationId)
-                #     if checkForGroupOpers:
-                #         modelOperationId = self.operationsGroups[self.operationsGroupComboBox.currentText().split(': ')[0]]
-                # else:
-                #     modelOperationId = self.modelOperations[self.modelOperationLineEdit.text()][1]
-                #
-                # checkForGroupOpers = OpS.checkIfOperExistInModel(modelOperationId)
-                # if not checkForGroupOpers:
-                #     print('here')
                 print(self.existingTimePapers[int(self.workerNumberLineEdit.text())])
                 timePaperData = {
                     'TimePaperId': self.existingTimePapers[int(self.workerNumberLineEdit.text())],
