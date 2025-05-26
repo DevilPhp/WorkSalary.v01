@@ -7,7 +7,7 @@ from app.database import Base, SessionLocal
 
 class Worker(Base):
     __tablename__ = "workers"
-    Номер = Column(Integer, primary_key=True, index=True)
+    Номер = Column(Integer, primary_key=True, index=True, autoincrement=True)
     Име = Column(String, nullable=True)
     Презиме = Column(String, nullable=True)
     Фамилия = Column(String, nullable=True)

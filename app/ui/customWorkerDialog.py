@@ -1,18 +1,26 @@
+from datetime import datetime
+
+from PySide6.QtCore import Signal
+
 from app.ui.widgets.ui_customWorkerDialog import *
-from PySide6.QtWidgets import QGraphicsDropShadowEffect
+from PySide6.QtWidgets import QGraphicsDropShadowEffect, QCompleter
 from app.ui.customCalendarWidget import CustomCalendarDialog
 from app.services.workerServices import WorkerServices as WoS
+from app.utils.utils import Utils
 
 
 class CustomWorkerDialog(QDialog, Ui_CustomWorkerDialog):
-    def __init__(self, workerId=None, parent=None):
+    workerInfo = Signal(dict)
+    def __init__(self, workerId=None, existingWorkers=None, parent=None):
         super().__init__(parent)
         self.setupUi(self)
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint |
                             Qt.WindowType.WindowStaysOnTopHint |
                             Qt.WindowType.Dialog)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
-        self.workerId = workerId
+        self.workerId = workerId if workerId else None
+        self.existingWorkers = existingWorkers if existingWorkers else None
+
         self.isDialogChanged = False
         shadow = QGraphicsDropShadowEffect(self)
         shadow.setBlurRadius(15)
@@ -45,12 +53,61 @@ class CustomWorkerDialog(QDialog, Ui_CustomWorkerDialog):
         self.calLeavingBtn.clicked.connect(lambda: self.showCustomCalendar(self.leaveDateEdit))
         self.startCheckBox.stateChanged.connect(self.toggleStartDate)
         self.leavingCheckBox.stateChanged.connect(self.toggleLeaveDate)
+        self.workerNumber.editingFinished.connect(self.checkWorkerNumber)
         # self.yesBtn.clicked.connect(self.accept)
 
         if workerId:
             self.loadWorkerData()
 
         self.setChanges()
+
+        self.yesBtn.clicked.connect(self.emitWorkerInfo)
+        Utils.setupCompleter(self.existingWorkers, self.workerNumber)
+
+    def checkWorkerNumber(self):
+        if self.existingWorkers:
+            if int(self.workerNumber.text()) in self.existingWorkers:
+                self.workerNumber.setText('')
+
+    def emitWorkerInfo(self):
+        workerData = {}
+        isNewWorker = False
+        if self.isDialogChanged:
+
+            if not self.workerId and self.workerNumber.text() != '':
+                self.workerId = int(self.workerNumber.text())
+                isNewWorker = True
+            elif not self.workerId and self.workerNumber.text() == '':
+                self.workerId = None
+                isNewWorker = True
+
+            startDate = datetime.strptime(self.startDateEdit.date().toString('yyyy-MM-dd'), '%Y-%m-%d') \
+                if self.startDateEdit.date().isValid() and self.startCheckBox.isChecked() else None
+            endDate = datetime.strptime(self.leaveDateEdit.date().toString('yyyy-MM-dd'), '%Y-%m-%d') \
+                if self.leaveDateEdit.date().isValid() and self.leavingCheckBox.isChecked() else None
+
+            workerData = {
+                'isNew': isNewWorker,
+                'id': self.workerId,
+                'firstName': self.workerName.text() if self.workerName.text() != '' else None,
+                'middleName': self.workerSirname.text() if self.workerSirname.text() != '' else None,
+                'lastName': self.workerLastname.text() if self.workerLastname.text() != '' else None,
+                'cehId': self.cehoveComboBox.currentIndex() + 1 if self.cehoveComboBox.currentIndex() >= 0 else None,
+                'positionId': self.positionComboBox.currentIndex() + 1
+                if self.positionComboBox.currentIndex() >= 0 else None,
+                'EGN': self.workerEGN.text() if self.workerEGN.text() != '' else None,
+                'paymentTypeId': self.paymentTypeComboBox.currentIndex(),
+                'workerPhone': self.workerTel.text() if self.workerTel.text() != '' else None,
+                'startDate': startDate,
+                'endDate': endDate,
+                'town': self.workerTownAdress.text() if self.workerTownAdress.text() != '' else None,
+                'address': self.workerStreetAdress.text() if self.workerStreetAdress.text() != '' else None,
+            }
+
+            # self.workerInfo.emit(workerData)
+        else:
+            self.close()
+        self.workerInfo.emit(workerData)
 
     def setChanges(self):
         for input in self.inputsList:
@@ -100,6 +157,8 @@ class CustomWorkerDialog(QDialog, Ui_CustomWorkerDialog):
 
         self.workerName.setFocus()
         self.workerName.selectAll()
+        if self.workerId:
+            self.workerNumber.setReadOnly(True)
 
     def toggleStartDate(self, state):
         self.startDateEdit.setEnabled(state)

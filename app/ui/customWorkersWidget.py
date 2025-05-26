@@ -18,6 +18,8 @@ class CustomWorkersWidget(QWidget, Ui_customWorkersEditWidget):
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
         self.setWindowTitle("Персонал")
         self.workersInfo = WoS.getWorkersInfo()
+        self.existingWorkersId = [str(key) for key in self.workersInfo.keys()]
+        self.workerDialog = None
 
         self.workersModel = QStandardItemModel()
         self.workersHeaderNames = [
@@ -44,7 +46,7 @@ class CustomWorkersWidget(QWidget, Ui_customWorkersEditWidget):
         self.workersTableView.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.workersTableView.customContextMenuRequested.connect(self.showCustomMenu)
 
-        self.addNewWorkerBtn.clicked.connect(self.openCustomWorkerDialog)
+        self.addNewWorkerBtn.clicked.connect(self.editSelectedWorker)
         self.workerEGNCheckBox.stateChanged.connect(self.toggleEGN)
         self.adressCheckBox.stateChanged.connect(self.toggleAdress)
         self.expCheckBox.stateChanged.connect(self.toggleExp)
@@ -57,55 +59,55 @@ class CustomWorkersWidget(QWidget, Ui_customWorkersEditWidget):
         action = menu.exec_(self.workersTableView.viewport().mapToGlobal(position))
 
         if action == editAction:
-            self.editSelectedWorker(position)
+            index = self.workersTableView.currentIndex()
+            workerId = index.siblingAtColumn(0).data()
+            self.editSelectedWorker(workerId)
 
-    def editSelectedWorker(self, position):
-        index = self.workersTableView.currentIndex()
-        workerId = index.siblingAtColumn(0).data()
+        if action == deleteAction:
+            index = self.workersTableView.currentIndex()
+            workerId = index.siblingAtColumn(0).data()
+            self.deleteSelectedWorker(workerId)
+
+    def deleteSelectedWorker(self, workerId):
         if workerId:
-            dialog = CustomWorkerDialog(workerId, self)
-            dialog.show()
-            dialog.yesBtn.clicked.connect(lambda: self.editWorker(workerId, dialog))
-
-    def editWorker(self, workerId, dialog):
-        if dialog.isDialogChanged:
-            startDate = datetime.strptime(dialog.startDateEdit.date().toString('yyyy-MM-dd'), '%Y-%m-%d') \
-                if dialog.startDateEdit.date().isValid() and dialog.startCheckBox.isChecked() else None
-            endDate = datetime.strptime(dialog.leaveDateEdit.date().toString('yyyy-MM-dd'), '%Y-%m-%d') \
-                if dialog.leaveDateEdit.date().isValid() and dialog.leavingCheckBox.isChecked() else None
-
-            worker = {
-                'id': workerId,
-                'firstName': dialog.workerName.text() if dialog.workerName.text() != '' else None,
-                'middleName': dialog.workerSirname.text() if dialog.workerSirname.text() != '' else None,
-                'lastName': dialog.workerLastname.text() if dialog.workerLastname.text() != '' else None,
-                'cehId': dialog.cehoveComboBox.currentIndex() + 1 if dialog.cehoveComboBox.currentIndex() >= 0 else None,
-                'positionId': dialog.positionComboBox.currentIndex() + 1
-                if dialog.positionComboBox.currentIndex() >= 0 else None,
-                'EGN': dialog.workerEGN.text() if dialog.workerEGN.text() != '' else None,
-                'paymentTypeId': dialog.paymentTypeComboBox.currentIndex(),
-                'workerPhone': dialog.workerTel.text() if dialog.workerTel.text() != '' else None,
-                'startDate': startDate,
-                'endDate': endDate,
-                'town': dialog.workerTownAdress.text() if dialog.workerTownAdress.text() != '' else None,
-                'address': dialog.workerStreetAdress.text() if dialog.workerStreetAdress.text() != '' else None,
-            }
-
             yesNoDialog = CustomYesNowDialog()
-            yesNoDialog.setMessage(f'{worker["firstName"]} {worker["lastName"]}', 'Промяна на работник?',
-                                   'accept')
+            yesNoDialog.setMessage(name=workerId, message='Изтриване на работник?', mode='deleting')
             result = yesNoDialog.exec()
-            if result == QDialog.DialogCode.Accepted:
-                isWorkerUpdated = WoS.updateWorker(worker)
-                if isWorkerUpdated:
-                    MM.showOnWidget(self,
-                                    f'Работникът {worker["firstName"]} {worker["lastName"]} е променен успешно.',
-                                    'success')
-                dialog.close()
+            if result == QDialog.Accepted:
+                if WoS.deleteWorker(workerId):
+                    self.refreshWorkersTable(True)
+                    MM.showOnWidget(self, f'Успешно изтриване на работника с ID: {workerId}', 'success')
+                else:
+                    MM.showOnWidget(self, f'Неуспешно изтриване: {workerId}! Моля проверете листове за време',
+                                    'error')
 
-        else:
-            dialog.close()
-            return
+    def editSelectedWorker(self, workerId=None):
+        self.workerDialog = CustomWorkerDialog(workerId, self.existingWorkersId, self)
+        self.workerDialog.show()
+        self.workerDialog.workerInfo.connect(self.setWorker)
+
+    def setWorker(self, workerData):
+        if workerData:
+            yesNoDialog = CustomYesNowDialog()
+            if workerData['isNew']:
+                message = 'Създаване на нов работник?'
+                name = workerData['firstName'] + ' ' + workerData['lastName']
+                mode = 'adding'
+            else:
+                message = 'Редактиране на работника?'
+                name = workerData['firstName'] + ' ' + workerData['lastName']
+                mode = 'editing'
+            yesNoDialog.setMessage(name=name, message=message, mode=mode)
+            result = yesNoDialog.exec()
+            if result == QDialog.Accepted:
+                worker = WoS.setWorker(workerData)
+                if worker:
+                    self.refreshWorkersTable(True)
+                    MM.showOnWidget(self, f'Успешно добавяне/редактиране на {workerData["id"]}!', 'success')
+                    self.workerDialog.close()
+                    self.workerDialog = None
+            else:
+                return
 
     def setSearchInput(self):
         workers = []
@@ -135,7 +137,9 @@ class CustomWorkersWidget(QWidget, Ui_customWorkersEditWidget):
             selectedText = completer.completionModel().index(0, 0).data()
         return selectedText
 
-    def refreshWorkersTable(self):
+    def refreshWorkersTable(self, fetchData=False):
+        if fetchData:
+            self.workersInfo = WoS.getWorkersInfo()
         self.workersModel.setRowCount(0)
         for worker, value in self.workersInfo.items():
             row = [
@@ -201,6 +205,3 @@ class CustomWorkersWidget(QWidget, Ui_customWorkersEditWidget):
         self.workersTableView.setColumnHidden(12, not state)  # Телефон
         self.checkAllstate()
 
-    def openCustomWorkerDialog(self):
-        dialog = CustomWorkerDialog()
-        result = dialog.exec_()

@@ -73,9 +73,13 @@ class CustomShiftsEditWidget(QWidget, Ui_customWorkingShiftsWidget):
                 self.refreshWorkingShiftsTable()
                 self.resetShiftInfo()
                 return
+            else:
+                MM.showOnWidget(self, f'Изтриване на: {shiftName} неуспешна! \nМоля проверете листове за време',
+                                    'warning')
+                return
         elif result == QDialog.Rejected:
             return
-        MM.showOnWidget(self, 'Промяната не беше успешна', 'warning')
+        MM.showOnWidget(self, 'Промяната не беше успешна', 'еrror')
         return
 
     def acceptWorkingShifts(self):

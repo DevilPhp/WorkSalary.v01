@@ -1,3 +1,5 @@
+from sqlalchemy import func
+
 from app.logger import logger
 from app.database import getDatabase, setDatabase
 from app.database.workers import Worker, TimePaper, TimePaperOperation, WorkingShift, HourlyPay, OvertimePay, Cehove,\
@@ -8,9 +10,35 @@ from datetime import datetime
 class WorkerServices:
 
     @staticmethod
-    def updateWorker(workerData):
+    def deleteWorker(workerId):
+        with setDatabase() as session:
+            worker = session.query(Worker).filter_by(Номер=workerId).first()
+            if worker:
+                if not worker.timePapers:
+                    session.delete(worker)
+                    session.commit()
+                    logger.info(f'Worker {workerId} deleted')
+                    return True
+                else:
+                    logger.error(f'Worker {workerId} has time papers associated, cannot delete')
+                    return False
+            else:
+                logger.error(f'Worker {workerId} not found')
+                return False
+
+    @staticmethod
+    def setWorker(workerData):
         with setDatabase() as session:
             worker = session.query(Worker).filter_by(Номер=workerData['id']).first()
+            if not worker:
+                if not workerData['id']:
+                    max_id = session.query(func.max(Worker.Номер)).scalar() or 0
+                    worker = Worker(Номер=max_id + 1)
+                else:
+                    worker = Worker(Номер=workerData['id'])
+                session.add(worker)
+                session.flush()
+
             if worker:
                 worker.Име = workerData['firstName'],
                 worker.Презиме = workerData['middleName'],
@@ -25,7 +53,7 @@ class WorkerServices:
                 worker.Адрес = workerData['address'],
                 worker.Телефон = workerData['workerPhone']
                 session.commit()
-                logger.info(f'Worker {worker.Име} {worker.Презиме} {worker.Фамилия} updated')
+                logger.info(f'Worker {worker.Номер}: {worker.Име} {worker.Фамилия} set')
                 return True
             else:
                 logger.error(f'Worker with ID {workerData["id"]} not found')
@@ -239,10 +267,14 @@ class WorkerServices:
     def deleteWorkingShift(shiftId):
         with setDatabase() as session:
             shift = session.query(WorkingShift).get(shiftId)
-            session.delete(shift)
-            session.commit()
-            logger.info(f"Working shift deleted: {shift.id}")
-            return True
+            if not shift.timePapers:
+                session.delete(shift)
+                session.commit()
+                logger.info(f"Working shift deleted: {shift.id}")
+                return True
+            else:
+                logger.error(f"Cannot delete working shift with time papers: {shift.id}")
+                return False
 
     @staticmethod
     def addNewTimePaperAndOperation(timePaperData):

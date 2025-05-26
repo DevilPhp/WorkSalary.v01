@@ -1,0 +1,29 @@
+Worker salary
+1. Put all old database in to my app - ✔
+2. Creating all tables and relations - For now
+3. Workers management - adding, editing, deleting (only if there isn't any time papers related to the worker) - ✔
+4. Working shifts management - adding - ✔
+    4.1 Deleting is working but has to check for related time papers - TODO
+5. Default model operations management + changing names of the default operations - ✔
+    5.1 Adding new default models operations - TODO
+6. Default operations management:
+    6.1 Adding, editing, removing(if isn't associates) - TODO
+7. Models and operations management:
+    7.1 Adding, coping - ✔
+    7.2 Editing and removing models (if isn't associates) - TODO
+8. Groups of operations management:
+    8.1 Adding groups - ✔
+    8.2 Editing groups - ✔
+9. Time papers management (working shift NOT EMPTY)
+    9.1 Adding new time paper with selected model, operation and pieces - ✔
+    9.2 Adding group of operations with selected model, operations and pieces (for every oper same pieces) - ✔
+    9.3 Displaying selected model operation total produced pieces,
+        rest to produce and model order pieces (if there is any) - ✔
+    9.4 Removing and editing a selected time paper from the table - TODO
+    9.5 Adding time paper with not selected any model or client or operations
+        (IMP - working hourly should be == to working shift and enabled) - TODO
+10. Payments management:
+    10.1 Calculating payments for each worker based on time paper - ✔
+        10.1.1 - The calculations should be changed to calculate the salary so it takes in count the night working.
+            Should calculate based on nightPayments DB table - TODO
+    10.2 Exporting the app payments table to an exel file. - TODO

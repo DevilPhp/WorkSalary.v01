@@ -6,6 +6,7 @@ class CustomYesNowDialog(QDialog, Ui_CustomYesNoDialog):
     ADDING = 'adding'
     DELETING = 'deleting'
     ACCEPT = 'accept'
+    EDITING = 'editing'
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -27,6 +28,8 @@ class CustomYesNowDialog(QDialog, Ui_CustomYesNoDialog):
         self.nameTextLabel.setText(name)
         if mode == self.ADDING:
             self.mainTextLabel.setText("ДОБАВЯНЕ")
+        elif mode == self.EDITING:
+            self.mainTextLabel.setText("РЕДАКТИРАНЕ")
         elif mode == self.DELETING:
             self.mainTextLabel.setText("ПРЕМАХВАНЕ")
         elif mode == self.ACCEPT:
