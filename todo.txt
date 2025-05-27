@@ -2,12 +2,12 @@ Worker salary
 1. Put all old database in to my app - ✔
 2. Creating all tables and relations - For now
 3. Workers management - adding, editing, deleting (only if there isn't any time papers related to the worker) - ✔
-4. Working shifts management - adding - ✔
+4. Working shifts management - adding - ✔ (Need a new way to edit input and manage !!!) TODO
     4.1 Deleting is working but has to check for related time papers - TODO
 5. Default model operations management + changing names of the default operations - ✔
-    5.1 Adding new default models operations - TODO
+    5.1 Adding new default models operations - ✔
 6. Default operations management:
-    6.1 Adding, editing, removing(if isn't associates) - TODO
+    6.1 Adding, editing, removing(if isn't associates) - ✔
 7. Models and operations management:
     7.1 Adding, coping - ✔
     7.2 Editing and removing models (if isn't associates) - TODO
@@ -27,3 +27,16 @@ Worker salary
         10.1.1 - The calculations should be changed to calculate the salary so it takes in count the night working.
             Should calculate based on nightPayments DB table - TODO
     10.2 Exporting the app payments table to an exel file. - TODO
+
+
+TODO 11. Admin Setting page for management all pages info and db
+    11.1 Adding, editing, removing for all major db tables
+    11.9 Maybe we can add some theme designs later...
+
+TODO 12. Users management page
+    12.1 Adding, editing, deleting
+    12.2 UI set based on user level (admin, manager, user, guest)
+
+TODO 13. Parameters management page
+    13.1 Adding and editing crucial params like Payment per min day/night and others
+    13.2 Some other funcs if necessary

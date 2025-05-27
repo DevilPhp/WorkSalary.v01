@@ -59,21 +59,6 @@ class WorkerServices:
                 logger.error(f'Worker with ID {workerData["id"]} not found')
                 return False
 
-    # 'id': workerId,
-    # 'firstName': dialog.workerName.text() if dialog.workerName.text() != '' else None,
-    # 'middleName': dialog.workerSirname.text() if dialog.workerSirname.text() != '' else None,
-    # 'lastName': dialog.workerLastname.text() if dialog.workerLastname.text() != '' else None,
-    # 'cehId': dialog.cehoveComboBox.currentIndex() + 1 if dialog.cehoveComboBox.currentIndex() >= 0 else None,
-    # 'positionId': dialog.positionComboBox.currentIndex() + 1
-    # if dialog.positionComboBox.currentIndex() >= 0 else None,
-    # 'EGN': dialog.workerEGN.text() if dialog.workerEGN.text() != '' else None,
-    # 'paymentTypeId': dialog.paymentTypeComboBox.currentIndex(),
-    # 'workerPhone': dialog.workerTel.text() if dialog.workerTel.text() != '' else None,
-    # 'startDate': startDate,
-    # 'endDate': endDate,
-    # 'town': dialog.workerTownAdress.text() if dialog.workerTownAdress.text() != '' else None,
-    # 'address': dialog.workerStreetAdress.text() if dialog.workerStreetAdress.text() != '' else None,
-
     @staticmethod
     def getCehove():
         returnedData = []

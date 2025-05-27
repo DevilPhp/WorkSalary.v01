@@ -22,7 +22,7 @@
   <property name="styleSheet">
    <string notr="true">*{
 	background-color: #dfdfdf;
-	font: 600 12pt &quot;Segoe UI&quot;;
+	font: 600 11pt &quot;Segoe UI&quot;;
 	color: #324b4c;
 }
 
@@ -31,7 +31,8 @@ QPushButton {
 	border: none;
 	border-radius: 10px;
 	padding: 5px;
-	font-size: 12pt;
+	font-size: 10.5pt;
+	font-weight: 700;
 }
 
 QPushButton:hover{
@@ -40,17 +41,6 @@ QPushButton:hover{
 
 QCheckBox:checked {
 	color: #008b69;
-}
-
-QTableView {
-	alternate-background-color: #c1c4c9;
-	font-size: 10pt;
-}
-
-QTableView::Item:selected {
-	background-color: rgba(50, 75, 76, 50);
-	border: none;
-	color: #324b4c;
 }
 
 #optionsHolder {
@@ -67,6 +57,10 @@ QTableView::Item:selected {
 
 #usernameLabel {
 	font-size: 11pt;
+}
+
+#delDefModelTypeBtn {
+	padding: 2px;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -149,13 +143,27 @@ QTableView::Item:selected {
               </property>
              </widget>
             </item>
+            <item>
+             <widget class="QPushButton" name="addNewOperation">
+              <property name="text">
+               <string>Нова операция</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="addNeModelType">
+              <property name="text">
+               <string>Нов вид</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </widget>
          </item>
          <item alignment="Qt::AlignHCenter">
           <widget class="QLabel" name="pageTitle">
            <property name="text">
-            <string>ОПЕРАЦИИ ЗА ВИДОВЕ МОДЕЛИ</string>
+            <string>ОПЕРАЦИИ И ВИДОВЕ МОДЕЛИ</string>
            </property>
           </widget>
          </item>
@@ -268,13 +276,30 @@ QTableView::Item:selected {
             <property name="bottomMargin">
              <number>10</number>
             </property>
-            <item>
+            <item alignment="Qt::AlignLeft">
              <widget class="QCheckBox" name="selectAllCheckbox">
               <property name="focusPolicy">
                <enum>Qt::ClickFocus</enum>
               </property>
               <property name="text">
                <string>Всички</string>
+              </property>
+             </widget>
+            </item>
+            <item alignment="Qt::AlignRight">
+             <widget class="QPushButton" name="delDefModelTypeBtn">
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="../../../resources.qrc">
+                <normaloff>:/icons/app/assets/icons/Trash-Bin-Trash--Streamline-Solar-Broken.svg</normaloff>:/icons/app/assets/icons/Trash-Bin-Trash--Streamline-Solar-Broken.svg</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>22</width>
+                <height>22</height>
+               </size>
               </property>
              </widget>
             </item>

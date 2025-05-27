@@ -1,9 +1,38 @@
+from sqlalchemy import func
+
 from app.database import getDatabase, setDatabase
 from app.database.operations import Operation, ProductionModelOperations, OperationsGroup
 from app.logger import logger
 
 
 class OperationsServices:
+
+    @staticmethod
+    def deleteOperation(operationId):
+        with setDatabase() as session:
+            operation = session.query(Operation).filter_by(ОперацияNo=operationId).first()
+            if (operation and not operation.operationTypes and not operation.operationsGroup
+                    and not operation.defaultOperForVidOblekla and not operation.productionModelOperations):
+                session.delete(operation)
+                session.commit()
+                logger.info(f'Operation {operation.ОперацияNo} - {operation.Операция} deleted')
+                return True
+            else:
+                logger.error(f'Operation with id {operationId} not found or has relations')
+                return False
+
+    @staticmethod
+    def addNewDefaultOperations(operationsName):
+        with setDatabase() as session:
+            maxId = session.query(func.max(Operation.ОперацияNo)).scalar() or 0
+            newOperation = Operation(
+                ОперацияNo=maxId + 1,
+                Операция=operationsName
+            )
+            session.add(newOperation)
+            session.commit()
+            logger.info(f'New Operation {newOperation.ОперацияNo} - {newOperation.Операция} added')
+            return [newOperation.ОперацияNo, newOperation.Операция]
 
     @staticmethod
     def checkIfOperExistInModel(operId):

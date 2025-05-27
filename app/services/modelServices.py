@@ -1,9 +1,46 @@
+from sqlalchemy import func
+
+from app.logger import logger
 from app.database import getDatabase, setDatabase
 from app.database.models import VidObleklo, Client, ProductionModel, Machine, Yarn, ProducedPiecesForModel
 from app.database.operations import DefaultOperForVidObleklo, ProductionModelOperations
 
 
 class ModelService:
+
+    @staticmethod
+    def deleteDefaultModelType(modelTypeId):
+        with setDatabase() as session:
+            modelType = session.query(VidObleklo).filter_by(OblekloVid=modelTypeId).first()
+            if modelType and not modelType.productionModel:
+                if modelType.defaultOperForVidOblekla:
+                    for operation in modelType.defaultOperForVidOblekla:
+                        session.delete(operation)
+                        logger.info(f"Default operation {operation.id} deleted successfully.")
+                session.delete(modelType)
+                session.commit()
+                logger.info(f"Default model type {modelTypeId} - {modelType.OblekloName} deleted successfully.")
+                return True
+            else:
+                logger.error(f"Failed to delete default model type {modelTypeId}.")
+                return False
+
+    @staticmethod
+    def addNewDefaultModelType(name):
+        with setDatabase() as session:
+            maxId = session.query(func.max(VidObleklo.OblekloVid)).scalar() or 0
+            newModelType = VidObleklo(
+                OblekloVid=maxId + 1,
+                OblekloName=name
+            )
+            session.add(newModelType)
+            session.commit()
+            if newModelType:
+                logger.info(f"New default model type {newModelType.OblekloVid} - {name} added successfully.")
+                return True
+            else:
+                logger.error(f"Failed to add new default model type '{name}'.")
+                return False
 
     @staticmethod
     def getModelOperations(modelId):
@@ -15,7 +52,6 @@ class ModelService:
     def getClientsAndModels():
         with getDatabase() as session:
             return session.query(Client, ProductionModel).join(ProductionModel).all()
-
 
     @staticmethod
     def getDfaultOperations(vidOblekloId):

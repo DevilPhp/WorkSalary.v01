@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'defaultOperToModelTypeCustomWidgetVdSkGT.ui'
+## Form generated from reading UI file 'defaultOperToModelTypeCustomWidgetgZvRrT.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -28,7 +28,7 @@ class Ui_customWidgetForDefaultOper(object):
         customWidgetForDefaultOper.setMinimumSize(QSize(800, 700))
         customWidgetForDefaultOper.setStyleSheet(u"*{\n"
 "	background-color: #dfdfdf;\n"
-"	font: 600 12pt \"Segoe UI\";\n"
+"	font: 600 11pt \"Segoe UI\";\n"
 "	color: #324b4c;\n"
 "}\n"
 "\n"
@@ -37,7 +37,8 @@ class Ui_customWidgetForDefaultOper(object):
 "	border: none;\n"
 "	border-radius: 10px;\n"
 "	padding: 5px;\n"
-"	font-size: 12pt;\n"
+"	font-size: 10.5pt;\n"
+"	font-weight: 700;\n"
 "}\n"
 "\n"
 "QPushButton:hover{\n"
@@ -46,17 +47,6 @@ class Ui_customWidgetForDefaultOper(object):
 "\n"
 "QCheckBox:checked {\n"
 "	color: #008b69;\n"
-"}\n"
-"\n"
-"QTableView {\n"
-"	alternate-background-color: #c1c4c9;\n"
-"	font-size: 10pt;\n"
-"}\n"
-"\n"
-"QTableView::Item:selected {\n"
-"	background-color: rgba(50, 75, 76, 50);\n"
-"	border: none;\n"
-"	color: #324b4c;\n"
 "}\n"
 "\n"
 "#optionsHolder {\n"
@@ -73,6 +63,10 @@ class Ui_customWidgetForDefaultOper(object):
 "\n"
 "#usernameLabel {\n"
 "	font-size: 11pt;\n"
+"}\n"
+"\n"
+"#delDefModelTypeBtn {\n"
+"	padding: 2px;\n"
 "}")
         self.verticalLayout = QVBoxLayout(customWidgetForDefaultOper)
         self.verticalLayout.setSpacing(10)
@@ -101,6 +95,16 @@ class Ui_customWidgetForDefaultOper(object):
         self.saveBtn.setFocusPolicy(Qt.NoFocus)
 
         self.horizontalLayout_2.addWidget(self.saveBtn)
+
+        self.addNewOperation = QPushButton(self.widget_4)
+        self.addNewOperation.setObjectName(u"addNewOperation")
+
+        self.horizontalLayout_2.addWidget(self.addNewOperation)
+
+        self.addNeModelType = QPushButton(self.widget_4)
+        self.addNeModelType.setObjectName(u"addNeModelType")
+
+        self.horizontalLayout_2.addWidget(self.addNeModelType)
 
 
         self.horizontalLayout.addWidget(self.widget_4, 0, Qt.AlignLeft)
@@ -167,7 +171,16 @@ class Ui_customWidgetForDefaultOper(object):
         self.selectAllCheckbox.setObjectName(u"selectAllCheckbox")
         self.selectAllCheckbox.setFocusPolicy(Qt.ClickFocus)
 
-        self.horizontalLayout_4.addWidget(self.selectAllCheckbox)
+        self.horizontalLayout_4.addWidget(self.selectAllCheckbox, 0, Qt.AlignLeft)
+
+        self.delDefModelTypeBtn = QPushButton(self.optionsHolder)
+        self.delDefModelTypeBtn.setObjectName(u"delDefModelTypeBtn")
+        icon1 = QIcon()
+        icon1.addFile(u":/icons/app/assets/icons/Trash-Bin-Trash--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.delDefModelTypeBtn.setIcon(icon1)
+        self.delDefModelTypeBtn.setIconSize(QSize(22, 22))
+
+        self.horizontalLayout_4.addWidget(self.delDefModelTypeBtn, 0, Qt.AlignRight)
 
 
         self.verticalLayout_2.addWidget(self.optionsHolder)
@@ -203,9 +216,12 @@ class Ui_customWidgetForDefaultOper(object):
     def retranslateUi(self, customWidgetForDefaultOper):
         customWidgetForDefaultOper.setWindowTitle(QCoreApplication.translate("customWidgetForDefaultOper", u"Form", None))
         self.saveBtn.setText(QCoreApplication.translate("customWidgetForDefaultOper", u"\u0417\u0430\u043f\u0430\u0437\u0432\u0430\u043d\u0435", None))
-        self.pageTitle.setText(QCoreApplication.translate("customWidgetForDefaultOper", u"\u041e\u041f\u0415\u0420\u0410\u0426\u0418\u0418 \u0417\u0410 \u0412\u0418\u0414\u041e\u0412\u0415 \u041c\u041e\u0414\u0415\u041b\u0418", None))
+        self.addNewOperation.setText(QCoreApplication.translate("customWidgetForDefaultOper", u"\u041d\u043e\u0432\u0430 \u043e\u043f\u0435\u0440\u0430\u0446\u0438\u044f", None))
+        self.addNeModelType.setText(QCoreApplication.translate("customWidgetForDefaultOper", u"\u041d\u043e\u0432 \u0432\u0438\u0434", None))
+        self.pageTitle.setText(QCoreApplication.translate("customWidgetForDefaultOper", u"\u041e\u041f\u0415\u0420\u0410\u0426\u0418\u0418 \u0418 \u0412\u0418\u0414\u041e\u0412\u0415 \u041c\u041e\u0414\u0415\u041b\u0418", None))
         self.userIcon.setText("")
         self.usernameLabel.setText(QCoreApplication.translate("customWidgetForDefaultOper", u"admin", None))
         self.selectAllCheckbox.setText(QCoreApplication.translate("customWidgetForDefaultOper", u"\u0412\u0441\u0438\u0447\u043a\u0438", None))
+        self.delDefModelTypeBtn.setText("")
     # retranslateUi
 

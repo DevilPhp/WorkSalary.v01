@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customCheckBoxWidgetitFaAD.ui'
+## Form generated from reading UI file 'customCheckBoxWidgethnrUJb.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -37,17 +37,17 @@ class Ui_customCheckBoxWidget(object):
 "}\n"
 "\n"
 "QMenu {\n"
-"	background-color: #d5d5d5;\n"
+"	border: 1px solid #aeaeae;\n"
 "	border-radius: 5px;\n"
 "}\n"
+"\n"
 "QMenu::item {\n"
-"	background-color: transparent;\n"
-"	font: 600 10pt \"Segoe UI\";\n"
-"	color: #324b4c;\n"
 "	padding: 5px;\n"
 "}\n"
+"\n"
 "QMenu::item:selected {\n"
-"	background-color: #c1c4c9;\n"
+"	background-color: #aeaeae;\n"
+"	padding-left: 7px;\n"
 "}\n"
 "\n"
 "QPushButton:hover {\n"

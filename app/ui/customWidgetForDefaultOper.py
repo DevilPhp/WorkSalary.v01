@@ -3,7 +3,7 @@ from PySide6.QtCore import Signal
 from PySide6.QtGui import QDoubleValidator
 
 from app.logger import logger
-from app.ui.messagesManager import MessageManager
+from app.ui.messagesManager import MessageManager as MM
 from app.ui.widgets.ui_defaultOperToModelTypeCustomWidget import *
 from app.ui.widgets.ui_customCheckBoxWidget import Ui_customCheckBoxWidget
 from app.ui.customYesNoMessage import CustomYesNowDialog
@@ -29,6 +29,44 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
         self.setComboBox()
         self.loadOperationsForModelType()
         self.saveBtn.clicked.connect(self.saveOperationsForModelType)
+        self.addNewOperation.clicked.connect(self.addNewOperationDialog)
+        self.addNeModelType.clicked.connect(self.addNewModelTypeDialog)
+        self.delDefModelTypeBtn.clicked.connect(self.deleteDefaultModelType)
+
+    def deleteDefaultModelType(self):
+        defaultModelType = int(self.defaultModelTypeComboBox.currentText().split(':  ')[0])
+        dialog = CustomYesNowDialog()
+        name = self.defaultModelTypeComboBox.currentText().split(':  ')[1]
+        message = f'Изтриване на вид модел?'
+        dialog.setMessage(name, message, 'deleting')
+        if dialog.exec() == QDialog.Accepted:
+            if Ms.deleteDefaultModelType(defaultModelType):
+                self.modelTypes = Ms.getAllModelTypes()
+                self.setComboBox()
+                MM.showOnWidget(self, f'Успешно изтриване на вид модели: {defaultModelType}', 'success')
+            else:
+                MM.showOnWidget(self, 'Не е изтрит вид модели', 'error')
+
+    def addNewModelTypeDialog(self):
+        newText, ok = QtWidgets.QInputDialog.getText(self,"Добавяне", "Въведете име:")
+        if ok and newText:
+            newModelType = Ms.addNewDefaultModelType(newText)
+            if newModelType:
+                self.modelTypes = Ms.getAllModelTypes()
+                self.setComboBox()
+                MM.showOnWidget(self, f'Успешно добавяне на вид модели:\n {newText}', 'success')
+            else:
+                MM.showOnWidget(self, 'Не е добавен вид модели', 'error')
+
+    def addNewOperationDialog(self):
+        newText, ok = QtWidgets.QInputDialog.getText(self,"Добавяне", "Въведете име:")
+        if ok and newText:
+            newOperation = OpS.addNewDefaultOperations(newText)
+            if newOperation:
+                self.operations = OpS.getAllOperations()
+                self.clearOperationsLayout()
+                self.setCheckBox()
+                MM.showOnWidget(self, f'Успешно добавяне на операция: {newText}', 'success')
 
     def saveOperationsForModelType(self):
         modelTypeIndex = self.defaultModelTypeComboBox.currentIndex() + 1
@@ -45,11 +83,11 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
         if selectedOperations:
             Ms.saveOperationsForModelType(modelTypeIndex, selectedOperations)
             name = self.defaultModelTypeComboBox.currentText().split(':  ')[1]
-            MessageManager.showOnWidget(self, f'Успешно запаметяване на операции за вид {name}',
+            MM.showOnWidget(self, f'Успешно запаметяване на операции за вид {name}',
                                         'success')
             logger.info(f"Saved operations for model type {self.modelTypesDict[modelTypeIndex]}")
         else:
-            MessageManager.showOnWidget(self, 'Не сте избрали операция', 'info')
+            MM.showOnWidget(self, 'Не сте избрали операция', 'info')
             return
 
     def loadOperationsForModelType(self):
@@ -69,11 +107,12 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
             checkbox[1].setText('')
 
     def setComboBox(self):
+        self.defaultModelTypeComboBox.clear()
         for modelType in self.modelTypes:
             self.modelTypesDict[modelType.OblekloVid] = modelType.OblekloName
             name = f'{modelType.OblekloVid}:  {modelType.OblekloName}'
             self.defaultModelTypeComboBox.addItem(name)
-        self.defaultModelTypeComboBox.setMinimumWidth(self.defaultModelTypeComboBox.minimumWidth() + 50)
+        self.defaultModelTypeComboBox.setMinimumWidth(self.defaultModelTypeComboBox.minimumSizeHint().width() + 75)
         self.defaultModelTypeComboBox.currentIndexChanged.connect(self.loadOperationsForModelType)
 
     def setCheckBox(self):
@@ -94,6 +133,30 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
                                              newCustomComboBoxItem.label]
             newCustomComboBoxItem.checkBox.stateChanged.connect(self.updateSelectAllBtn)
             newCustomComboBoxItem.newOperName.connect(self.updateDBOperation)
+            newCustomComboBoxItem.deleteWidget.connect(self.deleteSelectedOperation)
+
+    def deleteSelectedOperation(self, widget):
+        widgetName = widget.checkBox.text()
+        operId = int(widgetName.split(':  ')[0])
+        yesNoDialog = CustomYesNowDialog()
+        message = 'Искате ли да изтриете операция:'
+        mode = 'deleting'
+        yesNoDialog.setMessage(name=widgetName, message=message, mode=mode)
+        result = yesNoDialog.exec()
+        if result == QDialog.Accepted:
+            success = OpS.deleteOperation(operId)
+            if success:
+                widget.deleteLater()
+                self.operationsLayout.removeWidget(widget)
+                self.operations = OpS.getAllOperations()
+                self.clearOperationsLayout()
+                self.setCheckBox()
+                MM.showOnWidget(self, f'Успешно изтриване на: {widgetName}', 'success')
+            else:
+                MM.showOnWidget(self,
+                                f'Грешка при изтриване. Моля проверете връзки: {widgetName}',
+                                'error'
+                                )
 
     def updateDBOperation(self, text):
         if text:
@@ -107,11 +170,11 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
                 success = OpS.updateOperationName(operId, operName)
                 if success:
                     self.sender().checkBox.setText(text)
-                    MessageManager.showOnWidget(self,
+                    MM.showOnWidget(self,
                                                 f'Успешно променихте операцията {operId}', 'success'
                                                 )
                 else:
-                    MessageManager.showOnWidget(self,
+                    MM.showOnWidget(self,
                                                 f'Грешка при промяна на операцията {operId}', 'error'
                                                 )
             else:
@@ -134,6 +197,16 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
                     lineEdit.setEnabled(False)
                     label.setStyleSheet("")
                 widget.blockSignals(False)
+
+    def clearOperationsLayout(self):
+        for index in range(self.operationsLayout.count()):
+            row = index % 20
+            col = index // 20
+            widget = self.operationsLayout.itemAtPosition(row, col).widget()
+            if isinstance(widget, CustomCheckboxWidget):
+                self.operationsLayout.removeWidget(widget)
+                widget.deleteLater()
+        self.comboBoxItems = {}
 
         # self.selectAllCheckbox.blockSignals(False)
 
@@ -174,6 +247,7 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
 
 class CustomCheckboxWidget(QWidget, Ui_customCheckBoxWidget):
     newOperName = Signal(str)
+    deleteWidget = Signal(QWidget)
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
@@ -190,10 +264,16 @@ class CustomCheckboxWidget(QWidget, Ui_customCheckBoxWidget):
     def showContextMenu(self, pos):
         menu = QMenu(self)
         editAction = menu.addAction("Редактиране")
+        deleteAction = menu.addAction("Изтриване")
         action = menu.exec_(self.checkBox.mapToGlobal(pos))
 
         if action == editAction:
             self.editCheckBoxName()
+        elif action == deleteAction:
+            self.deleteCheckBox()
+
+    def deleteCheckBox(self):
+        self.deleteWidget.emit(self)
 
     def editCheckBoxName(self):
         procedureId = self.checkBox.text().split(':  ')[0]
