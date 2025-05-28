@@ -44,6 +44,7 @@ QCheckBox:checked {
 }
 
 #optionsHolder {
+	border: none;
 	border-bottom: 2px dashed #7c9399;
 }
 
@@ -252,7 +253,7 @@ QCheckBox:checked {
            </property>
           </widget>
          </item>
-         <item>
+         <item alignment="Qt::AlignVCenter">
           <widget class="QFrame" name="optionsHolder">
            <property name="frameShape">
             <enum>QFrame::StyledPanel</enum>

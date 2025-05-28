@@ -129,7 +129,8 @@ class ModelService:
                 if model.machine else None
             modelYarn = f'{model.YarnType}: {model.yarn.ПреждаТип} :  {model.yarn.Състав}' if model.yarn else None
             modelObleklo = f'{model.WearType}: {model.vidOblekla.OblekloName}'
-            return [modelFine, modelMachine, modelYarn, modelObleklo]
+            modelPieces = model.Броя if model else 0
+            return [modelFine, modelMachine, modelYarn, modelObleklo, modelPieces]
 
     @staticmethod
     def getAllModelTypes():
@@ -175,9 +176,18 @@ class ModelService:
         with setDatabase() as session:
             if session.query(DefaultOperForVidObleklo).filter_by(OblekloVid=modelTypeId).all():
                 session.query(DefaultOperForVidObleklo).filter_by(OblekloVid=modelTypeId).delete()
+                logger.info(f"All operations for model type {modelTypeId} deleted successfully.")
+
+            if not operations:
+                logger.info(f"No operations provided for model type {modelTypeId}.")
+                return True
             for index, operation in enumerate(operations):
                 newOperation = DefaultOperForVidObleklo(OblekloVid=modelTypeId,
                                                         ОперацияNo=operation[0],
                                                         defaultTime=float(operation[2]))
                 session.add(newOperation)
+                logger.info(f"Operation {operation[0]} for model type {modelTypeId} added successfully.")
+            session.commit()
+            logger.info(f"Operations for model type {modelTypeId} saved successfully.")
+
             return True

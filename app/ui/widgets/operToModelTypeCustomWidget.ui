@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1493</width>
+    <width>1448</width>
     <height>995</height>
    </rect>
   </property>
@@ -54,6 +54,10 @@ QLineEdit {
 
 #widget_4 *, #saveOpertaionsGroupsBtn, #saveNewModel {
 	font-size: 10pt;
+	font-weight: 700;
+}
+
+#modelNameLabel {
 	font-weight: 700;
 }
 
@@ -454,6 +458,47 @@ QLineEdit {
                       <height>24</height>
                      </size>
                     </property>
+                   </widget>
+                  </item>
+                  <item alignment="Qt::AlignLeft">
+                   <widget class="QWidget" name="editModelHolder" native="true">
+                    <property name="minimumSize">
+                     <size>
+                      <width>150</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <layout class="QHBoxLayout" name="horizontalLayout_9">
+                     <property name="spacing">
+                      <number>5</number>
+                     </property>
+                     <property name="leftMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="topMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="rightMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="bottomMargin">
+                      <number>0</number>
+                     </property>
+                     <item>
+                      <widget class="QCheckBox" name="editModelCheckBox">
+                       <property name="text">
+                        <string>Редактиране на:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLabel" name="modelNameLabel">
+                       <property name="text">
+                        <string>Модел</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
                    </widget>
                   </item>
                  </layout>

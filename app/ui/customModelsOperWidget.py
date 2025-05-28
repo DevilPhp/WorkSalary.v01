@@ -49,6 +49,8 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.setCheckBox()
         self.setupClientAndModelLineEdit()
         self.setupNewModelInfo()
+        self.editModelHolder.setVisible(False)
+        self.editModelCheckBox.stateChanged.connect(self.updateEditModelInfo)
         self.selectAllCheckbox.stateChanged.connect(lambda: self.selectAllOperations())
         self.actualCheckBox.stateChanged.connect(self.updateActualCheckBox)
         self.newModelCheckBox.stateChanged.connect(self.updateNewModelInfo)
@@ -67,6 +69,27 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         # logger.info('Models and Operations Page initialized successfully!')
         # MessageManager.showOnWidget(self, 'Models and Operations Page initialized successfully!',
         #                             'info')
+
+    def updateEditModelInfo(self):
+        if self.editModelCheckBox.isChecked():
+            self.setModelInfoIfExists()
+            self.newModelInfoHolder.setEnabled(True)
+            self.newModelCheckBox.setEnabled(False)
+            self.newModelLineEdit.setReadOnly(True)
+            self.actualCheckBox.setEnabled(False)
+            self.saveNewModel.setEnabled(False)
+        else:
+            self.resetNewModelInfo()
+            self.newModelCheckBox.setEnabled(True)
+            self.newModelLineEdit.setReadOnly(False)
+            self.actualCheckBox.setEnabled(True)
+            self.newModelInfoHolder.setEnabled(False)
+            self.saveNewModel.setEnabled(True)
+
+    def setEditModelVisible(self, visible):
+        if visible:
+            self.editModelHolder.setVisible(True)
+            self.modelNameLabel.setText(self.modelsLineEdit.text())
 
     def setWindowsForTimePapersCall(self):
         self.showOperationsGroupView()
@@ -299,11 +322,13 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             self.resetAllOperations()
             self.dataUpdatedLabel.setText('')
             self.modelActualCheckBox.setCheckState(Qt.CheckState.Unchecked)
+            self.editModelHolder.setVisible(False)
             return
         if self.modelsLineEdit.text() not in self.modelNames:
             MessageManager.showOnWidget(self, 'Не е намерен модел с такова Поръчка№!', 'warning')
             self.modelsLineEdit.selectAll()
             self.modelsLineEdit.setFocus()
+            self.editModelHolder.setVisible(False)
             return
         operationsForModel = OpS.getOperationsForModel(self.modelNames[self.modelsLineEdit.text()][0])
         actualState = self.modelNames[self.modelsLineEdit.text()][1]
@@ -316,6 +341,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         if self.newModelCheckBox.isChecked():
             self.setModelInfoIfExists()
 
+        self.setEditModelVisible(True)
         for operation in operationsForModel:
             self.modelExistingOperations.append(operation.ОперацияNo)
             if not int(self.comboBoxItems[operation.ОперацияNo][0].objectName()) in self.newModelOperations:
@@ -360,9 +386,11 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             self.saveBtn.setEnabled(False)
             self.newModelInfoHolder.setEnabled(True)
             self.actualCheckBox.setCheckState(Qt.CheckState.Checked)
+            self.editModelHolder.setEnabled(False)
         else:
             self.resetNewModelInfo()
             self.saveBtn.setEnabled(True)
+            self.editModelHolder.setEnabled(True)
             self.newModelInfoHolder.setEnabled(False)
             self.actualCheckBox.setCheckState(Qt.CheckState.Unchecked)
 
@@ -378,6 +406,8 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             self.modelTypeComboBox.blockSignals(False)
         if modelInfo[0]:
             self.machineGaugeLineEdit.setText(modelInfo[0])
+        if self.sender().objectName() == 'editModelCheckBox':
+            self.piecesLineEdit.setText(str(modelInfo[4]))
 
     def resetNewModelInfo(self):
         self.machineComboBox.blockSignals(True)

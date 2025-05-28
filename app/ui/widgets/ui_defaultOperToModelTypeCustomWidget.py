@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'defaultOperToModelTypeCustomWidgetgZvRrT.ui'
+## Form generated from reading UI file 'defaultOperToModelTypeCustomWidgetpqSxUJ.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -50,6 +50,7 @@ class Ui_customWidgetForDefaultOper(object):
 "}\n"
 "\n"
 "#optionsHolder {\n"
+"	border: none;\n"
 "	border-bottom: 2px dashed #7c9399;\n"
 "}\n"
 "\n"
@@ -183,7 +184,7 @@ class Ui_customWidgetForDefaultOper(object):
         self.horizontalLayout_4.addWidget(self.delDefModelTypeBtn, 0, Qt.AlignRight)
 
 
-        self.verticalLayout_2.addWidget(self.optionsHolder)
+        self.verticalLayout_2.addWidget(self.optionsHolder, 0, Qt.AlignVCenter)
 
         self.operationsCheckBoxHolder = QWidget(self.widget_5)
         self.operationsCheckBoxHolder.setObjectName(u"operationsCheckBoxHolder")

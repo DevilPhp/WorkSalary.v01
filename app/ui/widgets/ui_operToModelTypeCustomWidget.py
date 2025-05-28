@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'operToModelTypeCustomWidgetngmNWn.ui'
+## Form generated from reading UI file 'operToModelTypeCustomWidgetiadrHA.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -25,7 +25,7 @@ class Ui_customWidgetForModelOper(object):
     def setupUi(self, customWidgetForModelOper):
         if not customWidgetForModelOper.objectName():
             customWidgetForModelOper.setObjectName(u"customWidgetForModelOper")
-        customWidgetForModelOper.resize(1493, 995)
+        customWidgetForModelOper.resize(1448, 995)
         customWidgetForModelOper.setMinimumSize(QSize(900, 800))
         customWidgetForModelOper.setStyleSheet(u"*{\n"
 "	background-color: #dfdfdf;\n"
@@ -64,6 +64,10 @@ class Ui_customWidgetForModelOper(object):
 "	font-weight: 700;\n"
 "}\n"
 "\n"
+"#modelNameLabel {\n"
+"	font-weight: 700;\n"
+"}\n"
+"\n"
 "#optionsHolder {\n"
 "	border-bottom: 2px dashed #7c9399;\n"
 "}\n"
@@ -76,7 +80,8 @@ class Ui_customWidgetForModelOper(object):
 "	background-color: #dfdfdf;\n"
 "}\n"
 "\n"
-"#usernameLabel {\n"
+"#username"
+                        "Label {\n"
 "	font-size: 11pt;\n"
 "}")
         self.verticalLayout = QVBoxLayout(customWidgetForModelOper)
@@ -268,6 +273,26 @@ class Ui_customWidgetForModelOper(object):
         self.newModelCheckBox.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_6.addWidget(self.newModelCheckBox)
+
+        self.editModelHolder = QWidget(self.widget_3)
+        self.editModelHolder.setObjectName(u"editModelHolder")
+        self.editModelHolder.setMinimumSize(QSize(150, 0))
+        self.horizontalLayout_9 = QHBoxLayout(self.editModelHolder)
+        self.horizontalLayout_9.setSpacing(5)
+        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
+        self.horizontalLayout_9.setContentsMargins(0, 0, 0, 0)
+        self.editModelCheckBox = QCheckBox(self.editModelHolder)
+        self.editModelCheckBox.setObjectName(u"editModelCheckBox")
+
+        self.horizontalLayout_9.addWidget(self.editModelCheckBox)
+
+        self.modelNameLabel = QLabel(self.editModelHolder)
+        self.modelNameLabel.setObjectName(u"modelNameLabel")
+
+        self.horizontalLayout_9.addWidget(self.modelNameLabel)
+
+
+        self.horizontalLayout_6.addWidget(self.editModelHolder, 0, Qt.AlignLeft)
 
 
         self.verticalLayout_6.addWidget(self.widget_3, 0, Qt.AlignHCenter|Qt.AlignTop)
@@ -495,6 +520,8 @@ class Ui_customWidgetForModelOper(object):
         self.modelActualCheckBox.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0410\u043a\u0442\u0438\u0432\u0435\u043d", None))
         self.dataUpdatedLabel.setText("")
         self.newModelCheckBox.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0421\u044a\u0437\u0434\u0430\u0432\u0430\u043d\u0435 \u043d\u0430 \u043d\u043e\u0432 \u043c\u043e\u0434\u0435\u043b", None))
+        self.editModelCheckBox.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0420\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u0430\u043d\u0435 \u043d\u0430:", None))
+        self.modelNameLabel.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041c\u043e\u0434\u0435\u043b", None))
         self.label_5.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0418\u043c\u0435/\u041f\u043e\u0440\u044a\u0447\u043a\u0430\u2116", None))
         self.label_8.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041f\u0440\u0435\u0436\u0434\u0430", None))
         self.label_7.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0412\u0438\u0434 \u041c\u043e\u0434\u0435\u043b", None))

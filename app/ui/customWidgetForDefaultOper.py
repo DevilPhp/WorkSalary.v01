@@ -80,15 +80,14 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
                 ])
                 # logger.info(f"Selected operation: {index}")
                 # print(f"index: {index}, checkbox: {checkbox[0].isChecked()}")
-        if selectedOperations:
-            Ms.saveOperationsForModelType(modelTypeIndex, selectedOperations)
-            name = self.defaultModelTypeComboBox.currentText().split(':  ')[1]
-            MM.showOnWidget(self, f'Успешно запаметяване на операции за вид {name}',
-                                        'success')
-            logger.info(f"Saved operations for model type {self.modelTypesDict[modelTypeIndex]}")
-        else:
-            MM.showOnWidget(self, 'Не сте избрали операция', 'info')
-            return
+        # if selectedOperations:
+        Ms.saveOperationsForModelType(modelTypeIndex, selectedOperations)
+        name = self.defaultModelTypeComboBox.currentText().split(':  ')[1]
+        MM.showOnWidget(self, f'Успешно запаметяване на операции за вид {name}',
+                                    'success')
+        # else:
+        #     MM.showOnWidget(self, 'Не сте избрали операция', 'info')
+        #     return
 
     def loadOperationsForModelType(self):
         self.resetAllOperations()
