@@ -391,18 +391,18 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         Utils.setupCompleter(self.clientModels.keys(), self.clientModelsLineEdit)
         self.clientModelsLineEdit.editingFinished.connect(self.updateModelInfo)
 
-    def setReturnBtnForCompleter(self, completer):
-        currentIndex = completer.popup().currentIndex()
-        if currentIndex.isValid():
-            selectedText = currentIndex.data()
-        else:
-            selectedText = completer.completionModel().index(0, 0).data()
-        return selectedText
+    # def setReturnBtnForCompleter(self, completer):
+    #     currentIndex = completer.popup().currentIndex()
+    #     if currentIndex.isValid():
+    #         selectedText = currentIndex.data()
+    #     else:
+    #         selectedText = completer.completionModel().index(0, 0).data()
+    #     return selectedText
 
     def updateModelInfo(self):
         if self.clientModelsLineEdit.text() != '':
             completer = self.clientModelsLineEdit.completer()
-            self.clientModelsLineEdit.setText(self.setReturnBtnForCompleter(completer))
+            self.clientModelsLineEdit.setText(Utils.setReturnBtnForCompleter(completer))
         selectedText = self.clientModelsLineEdit.text()
 
         if selectedText in self.clientModels.keys():
@@ -538,7 +538,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
     def updateWorkerInfo(self):
         if self.workerNameLineEdit.text() != '':
             completer = self.workerNameLineEdit.completer()
-            self.workerNameLineEdit.setText(self.setReturnBtnForCompleter(completer))
+            self.workerNameLineEdit.setText(Utils.setReturnBtnForCompleter(completer))
         selectedText = self.workerNameLineEdit.text()
         if selectedText in self.workersInfo:
             workerId = selectedText.split(" - ")[1]

@@ -69,7 +69,51 @@ class ModelService:
             return session.query(ProductionModel).all()
 
     @staticmethod
+    def updateModel(model, operations):
+        with setDatabase() as session:
+            print(model['orderNo'])
+            operationsDict = {}
+            modelToUpdate = session.query(ProductionModel).filter_by(id=model['orderNo']).first()
+            if modelToUpdate:
+                modelToUpdate.Descr = model['descr']
+                modelToUpdate.MachineId = model['machineId']
+                modelToUpdate.Fain = model['fain']
+                modelToUpdate.WearType = model['wearType']
+                modelToUpdate.YarnType = model['yarnId']
+                modelToUpdate.Броя = model['pieces']
+
+                existingOperations = session.query(ProductionModelOperations).filter_by(OrderId=model['orderNo']).all()
+                for existingOperation in existingOperations:
+                    operationsDict[existingOperation.ОперацияNo] = existingOperation.ProducedPieces
+                    session.delete(existingOperation)
+
+                for operation, values in operations.items():
+                    if operation in operationsDict.keys():
+                        pieces = operationsDict[operation]
+                    else:
+                        pieces = 0
+                    session.add(ProductionModelOperations(
+                        OrderId=modelToUpdate.id,
+                        ПоръчкаNo=modelToUpdate.ПоръчкаNo,
+                        ОперацияNo=operation,
+                        Операция=values[0],
+                        TimeForOper=values[1],
+                        ProducedPieces=pieces,
+                        Razcenka=0,  # Here will be added price for operation,
+                        LastUpdated=model['dateCreated'],
+                        UpdatedBy=model['userCreated']
+                    ))
+                session.commit()
+                logger.info(f"Model {modelToUpdate.id} updated successfully.")
+                return True
+            else:
+                logger.error(f"Failed to update model {model['orderNo']}.")
+                return False
+
+
+    @staticmethod
     def addNewModel(newModel, operations):
+        print('here')
         with setDatabase() as session:
             newModelToAdd = ProductionModel(
                 ПоръчкаNo=newModel['orderNo'],
@@ -87,18 +131,7 @@ class ModelService:
             )
             session.add(newModelToAdd)
             session.flush()
-
-            # if newModelToAdd.Броя:
-            #
-            #     modelPieces = ProducedPiecesForModel(
-            #         orderNo=newModelToAdd.id,
-            #         ПоръчкаNo=newModelToAdd.ПоръчкаNo,
-            #         OrderPieces=newModelToAdd.Броя,
-            #         Produced=0,
-            #         Rest=newModelToAdd.Броя
-            #     )
-            #     session.add(modelPieces)
-            #     session.flush()
+            logger.info(f"New model {newModelToAdd.ПоръчкаNo} with id {newModelToAdd.id} added successfully.")
 
             for operation, values in operations.items():
                 session.add(ProductionModelOperations(
@@ -113,7 +146,12 @@ class ModelService:
                     UpdatedBy=newModel['userCreated']
                 ))
             session.commit()
-            return newModelToAdd.ПоръчкаNo
+            if newModelToAdd and newModelToAdd.productionModelOperations:
+                logger.info(f"Operations for new model {newModelToAdd.ПоръчкаNo} added successfully.")
+                return newModelToAdd.ПоръчкаNo
+            else:
+                logger.error(f"Failed to add operations for new model {newModelToAdd.ПоръчкаNo}.")
+                return None
 
     @staticmethod
     def getModelsForClient(clientId):

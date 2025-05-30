@@ -9,6 +9,15 @@ from PySide6.QtCore import Qt, QStringListModel
 class Utils:
 
     @staticmethod
+    def setReturnBtnForCompleter(completer):
+        currentIndex = completer.popup().currentIndex()
+        if currentIndex.isValid():
+            selectedText = currentIndex.data()
+        else:
+            selectedText = completer.completionModel().index(0, 0).data()
+        return selectedText
+
+    @staticmethod
     def setFloatToStr(value):
         if isinstance(value, float):
             if int(value) == value:

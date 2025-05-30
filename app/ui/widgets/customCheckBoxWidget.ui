@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>389</width>
-    <height>24</height>
+    <width>351</width>
+    <height>22</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -28,7 +28,7 @@
   <property name="styleSheet">
    <string notr="true">*{
 	background-color: #dfdfdf;
-	font: 600 11pt &quot;Segoe UI&quot;;
+	font: 600 10pt &quot;Segoe UI&quot;;
 	color: #324b4c;
 }
 
@@ -62,7 +62,7 @@ QLineEdit:disabled {
 	color: #87b0a6;
 }
 
-QCheckBoxl::label {
+QCheckBox::label {
 	word-wrap: break-word;
 }</string>
   </property>
@@ -116,13 +116,13 @@ QCheckBoxl::label {
         </property>
         <property name="minimumSize">
          <size>
-          <width>240</width>
+          <width>260</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>16777215</width>
+          <width>260</width>
           <height>16777215</height>
          </size>
         </property>

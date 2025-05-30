@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'operToModelTypeCustomWidgetiadrHA.ui'
+## Form generated from reading UI file 'operToModelTypeCustomWidgetPNodqd.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -104,12 +104,6 @@ class Ui_customWidgetForModelOper(object):
         self.widget_4.setObjectName(u"widget_4")
         self.horizontalLayout_2 = QHBoxLayout(self.widget_4)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.saveBtn = QPushButton(self.widget_4)
-        self.saveBtn.setObjectName(u"saveBtn")
-        self.saveBtn.setFocusPolicy(Qt.NoFocus)
-
-        self.horizontalLayout_2.addWidget(self.saveBtn)
-
         self.operationsGroupViewBtn = QPushButton(self.widget_4)
         self.operationsGroupViewBtn.setObjectName(u"operationsGroupViewBtn")
 
@@ -505,7 +499,6 @@ class Ui_customWidgetForModelOper(object):
 
     def retranslateUi(self, customWidgetForModelOper):
         customWidgetForModelOper.setWindowTitle(QCoreApplication.translate("customWidgetForModelOper", u"Form", None))
-        self.saveBtn.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0417\u0430\u043f\u0430\u0437\u0432\u0430\u043d\u0435", None))
         self.operationsGroupViewBtn.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0413\u0440\u0443\u043f\u0438\u0440\u0430\u043d\u0435", None))
         self.operationsGroupsReturnBtn.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041d\u0430\u0437\u0430\u0434", None))
         self.pageTitle.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041e\u041f\u0415\u0420\u0410\u0426\u0418\u0418 \u0417\u0410 \u041c\u041e\u0414\u0415\u041b\u0418", None))

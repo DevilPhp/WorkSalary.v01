@@ -17,6 +17,8 @@ Worker salary
 9. Time papers management (working shift NOT EMPTY)
     9.1 Adding new time paper with selected model, operation and pieces - ✔
     9.2 Adding group of operations with selected model, operations and pieces (for every oper same pieces) - ✔
+        9.2.1 If the operations from groups doesnt exist in the model has to return message
+            and maybe add only operations which exist - TODO
     9.3 Displaying selected model operation total produced pieces,
         rest to produce and model order pieces (if there is any) - ✔
     9.4 Removing and editing a selected time paper from the table - TODO

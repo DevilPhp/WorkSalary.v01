@@ -133,16 +133,6 @@ QLineEdit {
           <widget class="QWidget" name="widget_4" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
-             <widget class="QPushButton" name="saveBtn">
-              <property name="focusPolicy">
-               <enum>Qt::NoFocus</enum>
-              </property>
-              <property name="text">
-               <string>Запазване</string>
-              </property>
-             </widget>
-            </item>
-            <item>
              <widget class="QPushButton" name="operationsGroupViewBtn">
               <property name="text">
                <string>Групиране</string>

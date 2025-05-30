@@ -45,17 +45,21 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.selectedOperForGroup = []
         self.addOperationsForNewModel = {}
         self.newModel = {}
+        self.isNewModel = False
         # print(self.geometry())
         self.setCheckBox()
         self.setupClientAndModelLineEdit()
         self.setupNewModelInfo()
+
         self.editModelHolder.setVisible(False)
+        self.operationsHolder.setEnabled(False)
+
         self.editModelCheckBox.stateChanged.connect(self.updateEditModelInfo)
         self.selectAllCheckbox.stateChanged.connect(lambda: self.selectAllOperations())
         self.actualCheckBox.stateChanged.connect(self.updateActualCheckBox)
         self.newModelCheckBox.stateChanged.connect(self.updateNewModelInfo)
         self.modelTypeComboBox.currentIndexChanged.connect(self.updateModelTypeCheckBox)
-        self.saveNewModel.clicked.connect(self.checkAcceptAddingNewModel)
+        self.saveNewModel.clicked.connect(self.checkBtnSender)
         self.piecesLineEdit.textChanged.connect(self.updatePiecesLineEdit)
         self.machineComboBox.currentIndexChanged.connect(self.updateMachineComboBox)
         self.operationsGroupViewBtn.clicked.connect(self.showOperationsGroupView)
@@ -77,14 +81,15 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             self.newModelCheckBox.setEnabled(False)
             self.newModelLineEdit.setReadOnly(True)
             self.actualCheckBox.setEnabled(False)
-            self.saveNewModel.setEnabled(False)
+            self.saveNewModel.setText("Запазване")
+            self.operationsHolder.setEnabled(True)
         else:
             self.resetNewModelInfo()
             self.newModelCheckBox.setEnabled(True)
             self.newModelLineEdit.setReadOnly(False)
             self.actualCheckBox.setEnabled(True)
             self.newModelInfoHolder.setEnabled(False)
-            self.saveNewModel.setEnabled(True)
+            self.operationsHolder.setEnabled(False)
 
     def setEditModelVisible(self, visible):
         if visible:
@@ -149,28 +154,44 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.operationsGroupsHolder.setVisible(True)
         self.resetAllOperations(True)
         self.operationsGroupViewBtn.setVisible(False)
-        self.saveBtn.setVisible(False)
         self.operationsGroupsReturnBtn.setVisible(True)
         self.operationGroupLineEdit.setFocus()
+        self.operationsHolder.setEnabled(True)
 
     def returnToModelOpersView(self):
         self.operationsGroupsHolder.setVisible(False)
         self.modelInfoHolder.setVisible(True)
         self.resetAllOperations(True)
         self.operationsGroupViewBtn.setVisible(True)
-        self.saveBtn.setVisible(True)
         self.operationsGroupsReturnBtn.setVisible(False)
         self.selectedOperForGroup.clear()
+        self.operationsHolder.setEnabled(False)
+
+    def checkBtnSender(self):
+        if self.newModelCheckBox.isChecked():
+            self.isNewModel = True
+
+        elif self.editModelCheckBox.isChecked():
+            self.isNewModel = False
+
+        self.checkAcceptAddingNewModel()
+
+
+    def updateSelectedModel(self):
+        print(self.isNewModel)
+        print('Edit model')
 
     def checkAcceptAddingNewModel(self):
-        if self.newModelLineEdit.text() == '':
-            MessageManager.showOnWidget(self, 'Моля въведете Поръчка№!', 'error')
-            self.newModelLineEdit.setFocus()
-            return
-        elif self.newModelLineEdit.text() in self.modelNames.keys():
-            MessageManager.showOnWidget(self, 'Поръчка с такъв номер вече съществъва!', 'error')
-            self.newModelLineEdit.setFocus()
-            return
+        print(self.isNewModel)
+        if self.isNewModel:
+            if self.newModelLineEdit.text() == '':
+                MessageManager.showOnWidget(self, 'Моля въведете Поръчка№!', 'error')
+                self.newModelLineEdit.setFocus()
+                return
+            elif self.newModelLineEdit.text() in self.modelNames.keys():
+                MessageManager.showOnWidget(self, 'Поръчка с такъв номер вече съществъва!', 'error')
+                self.newModelLineEdit.setFocus()
+                return
 
         for checkbox in self.comboBoxItems.values():
             if checkbox[0].isChecked():
@@ -183,8 +204,15 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             return
 
         self.newDialog = CustomYesNowDialog()
-        message = 'Добавяне на нова поръчка?'
-        self.newDialog.setMessage(name=self.newModelLineEdit.text(), message=message, mode='adding')
+        if self.isNewModel:
+            message = 'Добавяне на нова поръчка?'
+            mode = 'adding'
+            name = self.newModelLineEdit.text()
+        else:
+            message = f'Редактиране на поръчка?'
+            mode = 'editing'
+            name = self.modelsLineEdit.text()
+        self.newDialog.setMessage(name=name, message=message, mode=mode)
         result = self.newDialog.exec()
         if result == QDialog.Accepted:
             self.saveModelWithOperations()
@@ -192,7 +220,10 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             return
 
     def saveModelWithOperations(self):
-        orderNo = self.newModelLineEdit.text()
+        if self.isNewModel:
+            orderNo = self.newModelLineEdit.text()
+        else:
+            orderNo = self.modelNames[self.modelsLineEdit.text()][0]
         orderPieces = None
         machineId = None
         vidObleklo = None
@@ -224,6 +255,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
                 fain = self.machines[self.machineComboBox.currentText().split(' :  ')[0]][1]
 
         self.newModel = {
+            'isNew': self.isNewModel,
             'orderNo': orderNo,
             'orderPieces': orderPieces,
             'clientId': self.clientNames[self.clientsLineEdit.text()],
@@ -238,14 +270,21 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             'userCreated': self.usernameLabel.text(),
             'descr': self.descrLineEdit.text()
         }
-
-        newModelAdded = Ms.addNewModel(self.newModel, self.addOperationsForNewModel)
+        if self.isNewModel:
+            newModelAdded = Ms.addNewModel(self.newModel, self.addOperationsForNewModel)
+        else:
+            newModelAdded = Ms.updateModel(self.newModel, self.addOperationsForNewModel)
         if newModelAdded:
-            MessageManager.showOnWidget(self, f'Успешно добавен модел: {newModelAdded}',
+            if self.isNewModel:
+                message = f'Успешно добавен нов модел: {newModelAdded}'
+            else:
+                message = f'Успешно редактиран модел: {self.modelsLineEdit.text()}'
+
+            MessageManager.showOnWidget(self, message,
                                         'success')
-            logger.info(f'Model Added: {newModelAdded}')
             self.resetNewModelInfo()
             self.newModelCheckBox.setCheckState(Qt.CheckState.Unchecked)
+            self.editModelCheckBox.setCheckState(Qt.CheckState.Unchecked)
             self.resetAllOperations(True)
             self.setModelsForClient()
             self.modelsLineEdit.clear()
@@ -289,6 +328,11 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.clientsLineEdit.editingFinished.connect(self.selectClient)
 
     def selectClient(self):
+        if self.clientsLineEdit.text() != '':
+            completer = self.clientsLineEdit.completer()
+            self.clientsLineEdit.setText(Utils.setReturnBtnForCompleter(completer))
+        selectedText = self.clientsLineEdit.text()
+
         if self.newModelCheckBox.isChecked():
             self.newModelCheckBox.setCheckState(Qt.CheckState.Unchecked)
             self.resetNewModelInfo()
@@ -297,9 +341,9 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.dataUpdatedLabel.setText('')
         self.modelActualCheckBox.setCheckState(Qt.CheckState.Unchecked)
         self.resetAllOperations()
-        if self.clientsLineEdit.text() == '':
+        if selectedText == '':
             return
-        if self.clientsLineEdit.text() not in self.clientNames:
+        if selectedText not in self.clientNames:
             MessageManager.showOnWidget(self, 'Не е намерен клиент с такова име!', 'warning')
             self.clientsLineEdit.selectAll()
             self.clientsLineEdit.setFocus()
@@ -318,21 +362,27 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
     def selectModel(self):
         self.resetAllOperations(True)
         self.modelExistingOperations.clear()
-        if self.modelsLineEdit.text() == '':
+
+        if self.modelsLineEdit.text() != '':
+            completer = self.modelsLineEdit.completer()
+            self.modelsLineEdit.setText(Utils.setReturnBtnForCompleter(completer))
+        selectedText = self.modelsLineEdit.text()
+
+        if selectedText == '':
             self.resetAllOperations()
             self.dataUpdatedLabel.setText('')
             self.modelActualCheckBox.setCheckState(Qt.CheckState.Unchecked)
             self.editModelHolder.setVisible(False)
             return
-        if self.modelsLineEdit.text() not in self.modelNames:
+        if selectedText not in self.modelNames:
             MessageManager.showOnWidget(self, 'Не е намерен модел с такова Поръчка№!', 'warning')
             self.modelsLineEdit.selectAll()
             self.modelsLineEdit.setFocus()
             self.editModelHolder.setVisible(False)
             return
-        operationsForModel = OpS.getOperationsForModel(self.modelNames[self.modelsLineEdit.text()][0])
-        actualState = self.modelNames[self.modelsLineEdit.text()][1]
-        self.dataUpdatedLabel.setText(self.modelNames[self.modelsLineEdit.text()][2].strftime('%d.%m.%Y'))
+        operationsForModel = OpS.getOperationsForModel(self.modelNames[selectedText][0])
+        actualState = self.modelNames[selectedText][1]
+        self.dataUpdatedLabel.setText(self.modelNames[selectedText][2].strftime('%d.%m.%Y'))
         if actualState:
             self.modelActualCheckBox.setCheckState(Qt.CheckState.Checked)
         else:
@@ -383,16 +433,17 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             self.setModelInfoIfExists()
 
         if self.newModelCheckBox.isChecked():
-            self.saveBtn.setEnabled(False)
+            self.saveNewModel.setText("Добавяне")
             self.newModelInfoHolder.setEnabled(True)
             self.actualCheckBox.setCheckState(Qt.CheckState.Checked)
             self.editModelHolder.setEnabled(False)
+            self.operationsHolder.setEnabled(True)
         else:
             self.resetNewModelInfo()
-            self.saveBtn.setEnabled(True)
             self.editModelHolder.setEnabled(True)
             self.newModelInfoHolder.setEnabled(False)
             self.actualCheckBox.setCheckState(Qt.CheckState.Unchecked)
+            self.operationsHolder.setEnabled(False)
 
     def setModelInfoIfExists(self):
         modelInfo = Ms.getModelInfo(self.modelNames[self.modelsLineEdit.text()][0])
