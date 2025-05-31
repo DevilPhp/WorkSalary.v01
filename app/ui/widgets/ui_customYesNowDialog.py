@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customYesNowDialogFqBcoZ.ui'
+## Form generated from reading UI file 'customYesNowDialogxuSjvV.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -24,7 +24,7 @@ class Ui_CustomYesNoDialog(object):
     def setupUi(self, CustomYesNoDialog):
         if not CustomYesNoDialog.objectName():
             CustomYesNoDialog.setObjectName(u"CustomYesNoDialog")
-        CustomYesNoDialog.resize(408, 223)
+        CustomYesNoDialog.resize(641, 734)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -39,6 +39,10 @@ class Ui_CustomYesNoDialog(object):
 "	padding: 0;\n"
 "	margin: 0;\n"
 "	color: #324b4c;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"	padding: 0px;\n"
 "}\n"
 "\n"
 "QDialog{\n"
@@ -79,7 +83,7 @@ class Ui_CustomYesNoDialog(object):
         sizePolicy1.setHeightForWidth(self.mainWidget.sizePolicy().hasHeightForWidth())
         self.mainWidget.setSizePolicy(sizePolicy1)
         self.mainWidget.setMinimumSize(QSize(350, 150))
-        self.mainWidget.setMaximumSize(QSize(380, 260))
+        self.mainWidget.setMaximumSize(QSize(380, 16777215))
         self.verticalLayout = QVBoxLayout(self.mainWidget)
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName(u"verticalLayout")
@@ -91,14 +95,23 @@ class Ui_CustomYesNoDialog(object):
         self.horizontalLayout_3.setSpacing(0)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.pushButton = QPushButton(self.widget)
-        self.pushButton.setObjectName(u"pushButton")
+        self.normalIcon = QPushButton(self.widget)
+        self.normalIcon.setObjectName(u"normalIcon")
         icon = QIcon()
         icon.addFile(u":/icons/app/assets/icons/Question-Square--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.pushButton.setIcon(icon)
-        self.pushButton.setIconSize(QSize(38, 38))
+        self.normalIcon.setIcon(icon)
+        self.normalIcon.setIconSize(QSize(38, 38))
 
-        self.horizontalLayout_3.addWidget(self.pushButton, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+        self.horizontalLayout_3.addWidget(self.normalIcon, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+
+        self.warningIcon = QPushButton(self.widget)
+        self.warningIcon.setObjectName(u"warningIcon")
+        icon1 = QIcon()
+        icon1.addFile(u":/icons/app/assets/icons/Danger-Triangle--Streamline-Solar-Broken-#C75f59.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.warningIcon.setIcon(icon1)
+        self.warningIcon.setIconSize(QSize(38, 38))
+
+        self.horizontalLayout_3.addWidget(self.warningIcon)
 
         self.widget_2 = QWidget(self.widget)
         self.widget_2.setObjectName(u"widget_2")
@@ -179,9 +192,9 @@ class Ui_CustomYesNoDialog(object):
         self.yesBtn = QPushButton(self.buttonsWidget)
         self.yesBtn.setObjectName(u"yesBtn")
         self.yesBtn.setFont(font1)
-        icon1 = QIcon()
-        icon1.addFile(u":/icons/app/assets/icons/Check-Square--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.yesBtn.setIcon(icon1)
+        icon2 = QIcon()
+        icon2.addFile(u":/icons/app/assets/icons/Check-Square--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.yesBtn.setIcon(icon2)
         self.yesBtn.setIconSize(QSize(32, 32))
 
         self.horizontalLayout_2.addWidget(self.yesBtn)
@@ -189,9 +202,9 @@ class Ui_CustomYesNoDialog(object):
         self.noBtn = QPushButton(self.buttonsWidget)
         self.noBtn.setObjectName(u"noBtn")
         self.noBtn.setFont(font1)
-        icon2 = QIcon()
-        icon2.addFile(u":/icons/app/assets/icons/Close-Square--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.noBtn.setIcon(icon2)
+        icon3 = QIcon()
+        icon3.addFile(u":/icons/app/assets/icons/Close-Square--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.noBtn.setIcon(icon3)
         self.noBtn.setIconSize(QSize(32, 32))
 
         self.horizontalLayout_2.addWidget(self.noBtn, 0, Qt.AlignTop)
@@ -216,7 +229,8 @@ class Ui_CustomYesNoDialog(object):
 
     def retranslateUi(self, CustomYesNoDialog):
         CustomYesNoDialog.setWindowTitle(QCoreApplication.translate("CustomYesNoDialog", u"CustomYesNoDialog", None))
-        self.pushButton.setText("")
+        self.normalIcon.setText("")
+        self.warningIcon.setText("")
         self.mainTextLabel.setText(QCoreApplication.translate("CustomYesNoDialog", u"\u041f\u0420\u0415\u041c\u0410\u0425\u0412\u0410\u041d\u0415", None))
         self.questionTextLabel.setText(QCoreApplication.translate("CustomYesNoDialog", u"\u0421\u0438\u0433\u0443\u0440\u043d\u0438 \u043b\u0438 \u0441\u0442\u0435, \u0447\u0435 \u0438\u0441\u043a\u0430\u0442\u0435 \u0434\u0430 \u043f\u0440\u0435\u043c\u0430\u0445\u043d\u0435\u0442\u0435: ", None))
         self.nameTextLabel.setText(QCoreApplication.translate("CustomYesNoDialog", u"Name", None))

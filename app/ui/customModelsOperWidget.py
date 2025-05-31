@@ -176,13 +176,8 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
 
         self.checkAcceptAddingNewModel()
 
-
-    def updateSelectedModel(self):
-        print(self.isNewModel)
-        print('Edit model')
-
     def checkAcceptAddingNewModel(self):
-        print(self.isNewModel)
+        # print(self.isNewModel)
         if self.isNewModel:
             if self.newModelLineEdit.text() == '':
                 MessageManager.showOnWidget(self, 'Моля въведете Поръчка№!', 'error')
@@ -273,7 +268,10 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         if self.isNewModel:
             newModelAdded = Ms.addNewModel(self.newModel, self.addOperationsForNewModel)
         else:
-            newModelAdded = Ms.updateModel(self.newModel, self.addOperationsForNewModel)
+            if self.checkOperations():
+                newModelAdded = Ms.updateModel(self.newModel, self.addOperationsForNewModel)
+            else:
+                return
         if newModelAdded:
             if self.isNewModel:
                 message = f'Успешно добавен нов модел: {newModelAdded}'
@@ -294,6 +292,20 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             MessageManager.showOnWidget(self, 'Неуспешно добавен модел!', 'error')
             logger.error(f'Failed to add Model: {self.newModel}')
             return
+
+    def checkOperations(self):
+        operations = Ms.checkIfOperationsCanBeDeleted(self.newModel, self.addOperationsForNewModel)
+        if operations:
+            newDialog = CustomYesNowDialog(isNormalIcon=False)
+            message = 'Не можете да изтриете следните операции:\n' + '\n'.join(operations)
+            newDialog.setMessage(name='', message=message, mode='warning')
+            result = newDialog.exec()
+            if result == QDialog.Accepted:
+                return True
+            else:
+                return False
+        else:
+            return True
 
     def updateMachineComboBox(self):
         machineFine = self.machineComboBox.currentText().split(' :  ')[1].strip('E')

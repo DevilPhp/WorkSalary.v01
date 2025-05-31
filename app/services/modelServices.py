@@ -69,9 +69,18 @@ class ModelService:
             return session.query(ProductionModel).all()
 
     @staticmethod
+    def checkIfOperationsCanBeDeleted(model, operations):
+        updatedOperations = []
+        with getDatabase() as session:
+            dbOperation = session.query(ProductionModelOperations).filter_by(OrderId=model['orderNo']).all()
+            for operation in dbOperation:
+                if operation.ОперацияNo not in operations.keys() and operation.timePaperOperations:
+                    updatedOperations.append(str(operation.ОперацияNo))
+            return updatedOperations
+
+    @staticmethod
     def updateModel(model, operations):
         with setDatabase() as session:
-            print(model['orderNo'])
             operationsDict = {}
             modelToUpdate = session.query(ProductionModel).filter_by(id=model['orderNo']).first()
             if modelToUpdate:
@@ -83,26 +92,31 @@ class ModelService:
                 modelToUpdate.Броя = model['pieces']
 
                 existingOperations = session.query(ProductionModelOperations).filter_by(OrderId=model['orderNo']).all()
+
                 for existingOperation in existingOperations:
-                    operationsDict[existingOperation.ОперацияNo] = existingOperation.ProducedPieces
-                    session.delete(existingOperation)
+                    operationsDict[existingOperation.ОперацияNo] = existingOperation
+                    if existingOperation.ОперацияNo not in operations.keys():
+                        if not existingOperation.timePaperOperations:
+                            session.delete(existingOperation)
+                            logger.info(f"Operation {existingOperation.ОперацияNo} deleted from {model['orderNo']}.")
 
                 for operation, values in operations.items():
                     if operation in operationsDict.keys():
-                        pieces = operationsDict[operation]
+                        operationsDict[operation].Операция = values[0]
+                        operationsDict[operation].TimeForOper = values[1]
                     else:
-                        pieces = 0
-                    session.add(ProductionModelOperations(
-                        OrderId=modelToUpdate.id,
-                        ПоръчкаNo=modelToUpdate.ПоръчкаNo,
-                        ОперацияNo=operation,
-                        Операция=values[0],
-                        TimeForOper=values[1],
-                        ProducedPieces=pieces,
-                        Razcenka=0,  # Here will be added price for operation,
-                        LastUpdated=model['dateCreated'],
-                        UpdatedBy=model['userCreated']
-                    ))
+                        session.add(ProductionModelOperations(
+                            OrderId=modelToUpdate.id,
+                            ПоръчкаNo=modelToUpdate.ПоръчкаNo,
+                            ОперацияNo=operation,
+                            Операция=values[0],
+                            TimeForOper=values[1],
+                            ProducedPieces=0,
+                            Razcenka=0,  # Here will be added price for operation,
+                            LastUpdated=model['dateCreated'],
+                            UpdatedBy=model['userCreated']
+                        ))
+
                 session.commit()
                 logger.info(f"Model {modelToUpdate.id} updated successfully.")
                 return True
