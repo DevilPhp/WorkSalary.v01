@@ -8,6 +8,7 @@ from PySide6.QtCore import Qt, QStringListModel
 
 class Utils:
 
+
     @staticmethod
     def setReturnBtnForCompleter(completer):
         currentIndex = completer.popup().currentIndex()
@@ -108,63 +109,8 @@ class Utils:
 
         return duration
 
-    @staticmethod
-    def calculateTotalWorkingTime(shiftStart, shiftEnd, hourlyStart, hourlyEnd, workingMinutes=0, hourlyMinutes=0):
-        """
-        Calculate the total working time by subtracting hourly paid time from shift time when they overlap.
-
-        Args:
-            shiftStart (datetime.time): Start time of the shift
-            shiftEnd (datetime.time): End time of the shift
-            hourlyStart (datetime.time): Start time of hourly paid work
-            hourlyEnd (datetime.time): End time of hourly paid work
-            shiftMinutes (float): Pre-calculated shift duration in minutes (optional)
-            hourlyMinutes (float): Pre-calculated hourly work duration in minutes (optional)
-
-        Returns:
-            float: Total working time in minutes after subtracting overlapping hourly time
-        """
-        # If no hourly time, return shift minutes
-        if hourlyStart is None or hourlyEnd is None:
-            return workingMinutes
-
-        # Calculate shift minutes if not provided
-        # if shiftMinutes == 0:
-        #     shiftMinutes = calculateMinutes(shiftStart, shiftEnd)
-
-        # Calculate hourly minutes if not provided
-        # if hourlyMinutes == 0:
-        #     hourlyMinutes = calculateMinutes(hourlyStart, hourlyEnd)
-
-        # Check if there's any overlap
-        # Convert times to comparable format (minutes since midnight)
-        def timeToMinutes(t):
-            return t.hour * 60 + t.minute
-
-        shiftStartMins = timeToMinutes(shiftStart)
-        shiftEndMins = timeToMinutes(shiftEnd)
-        hourlyStartMins = timeToMinutes(hourlyStart)
-        hourlyEndMins = timeToMinutes(hourlyEnd)
-
-        # Handle overnight shifts
-        if shiftEndMins <= shiftStartMins:
-            shiftEndMins += 24 * 60  # Add a day in minutes
-
-        # Handle overnight hourly work
-        if hourlyEndMins <= hourlyStartMins:
-            hourlyEndMins += 24 * 60
-
-        # Calculate overlap
-        overlapStart = max(shiftStartMins, hourlyStartMins)
-        overlapEnd = min(shiftEndMins, hourlyEndMins)
-
-        # If there's an overlap
-        if overlapEnd > overlapStart:
-            overlapMinutes = overlapEnd - overlapStart
-            return workingMinutes - overlapMinutes
-        else:
-            # No overlap
-            return workingMinutes
+    # @staticmethod
+    # def checkMinutes
 
 
 class CustomCompleter(QCompleter):

@@ -262,6 +262,30 @@ class WorkerServices:
                 return False
 
     @staticmethod
+    def deleteTimePapers(slectedIds):
+        with setDatabase() as session:
+            timePaperId = None
+            for timePaperOperationId in slectedIds:
+                timePaperOperation = session.query(TimePaperOperation).get(timePaperOperationId)
+                if timePaperOperation is not None:
+                    timePaperId = timePaperOperation.TimePaperId
+                    timePaperOperation.timePaper.TotalPieces -= timePaperOperation.Pieces
+                    timePaperOperation.timePaper.TotalHours -= timePaperOperation.WorkingTimeMinutes
+                    timePaperOperation.timePaper.TotalHours = round(timePaperOperation.timePaper.TotalHours, 2)
+                    timePaperOperation.productionModelOperations.ProducedPieces -= timePaperOperation.Pieces
+                    session.delete(timePaperOperation)
+                    logger.info(f"Time paper deleted: {timePaperOperationId}")
+            session.flush()
+            if timePaperId:
+                timePaper = session.query(TimePaper).get(timePaperId)
+                if not timePaper.timePaperOperations:
+                    session.delete(timePaper)
+                    logger.info(f"Time paper deleted: {timePaper.id}")
+            session.commit()
+            return True
+
+
+    @staticmethod
     def addNewTimePaperAndOperation(timePaperData):
         with setDatabase() as session:
             if timePaperData['IsHourlyPaid']:
@@ -349,13 +373,44 @@ class WorkerServices:
             return data
 
     @staticmethod
-    def getTimePapersForDate(date, workerId):
+    def getTimePapersForDate(date, workerId, showAll=False):
         returnedData = []
+        hourlyTime = 0
+        overtimeTime = 0
+        timePapers = []
         with getDatabase() as session:
-            # timePapers = session.query(TimePaper).filter_by(Date=date).all()
-            # if workerId:
-            timePapers = session.query(TimePaper).filter_by(Date=date, WorkerId=workerId).all()
+            if workerId:
+                timePapers = session.query(TimePaper).filter_by(Date=date, WorkerId=workerId).all()
+            if showAll:
+                timePapers = session.query(TimePaper).filter_by(Date=date).all()
             for timePaper in timePapers:
+
+                if timePaper.hourlyPays:
+                    hourlyTime = timePaper.hourlyPays.Efficiency
+                    orderId = 'Почасова работа'
+                if timePaper.overtimePays:
+                    overtimeTime = timePaper.overtimePays.Efficiency
+                    orderId = 'Извънредна работа'
+
+                if timePaper.hourlyPays or timePaper.overtimePays:
+                    horlyItem = [
+                        timePaper.id,
+                        timePaper.WorkerId,
+                        orderId,
+                        '',
+                        '',
+                        0,
+                        0,
+                        -1,
+                        hourlyTime,
+                        overtimeTime,
+                    ]
+
+                if timePaper.hourlyPays:
+                    returnedData.append(horlyItem)
+                if timePaper.overtimePays:
+                    returnedData.append(horlyItem)
+
                 for operation in timePaper.timePaperOperations:
                     returnedData.append([
                         timePaper.id,
@@ -364,7 +419,8 @@ class WorkerServices:
                         operation.productionModelOperations.ОперацияNo,
                         operation.productionModelOperations.Операция,
                         operation.Pieces,
-                        operation.WorkingTimeMinutes
+                        operation.WorkingTimeMinutes,
+                        operation.id,
                     ])
             return returnedData
 

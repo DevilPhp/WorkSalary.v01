@@ -150,6 +150,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.resetAllOperations(True)
 
     def showOperationsGroupView(self):
+        self.operationsHolder.setEnabled(True)
         self.modelInfoHolder.setVisible(False)
         self.operationsGroupsHolder.setVisible(True)
         self.resetAllOperations(True)
@@ -161,6 +162,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
     def returnToModelOpersView(self):
         self.operationsGroupsHolder.setVisible(False)
         self.modelInfoHolder.setVisible(True)
+        self.operationsHolder.setEnabled(False)
         self.resetAllOperations(True)
         self.operationsGroupViewBtn.setVisible(True)
         self.operationsGroupsReturnBtn.setVisible(False)
@@ -520,10 +522,6 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             elif (self.sender().checkState() == Qt.CheckState.Unchecked and
                   self.operationsGroupsHolder.isVisible()):
                 self.selectedOperForGroup.remove(int(self.sender().objectName()))
-        print(self.selectedOperForGroup)
-        print(self.newModelOperations)
-        # print(self.selectedOperForGroup)
-        # print(self.newModelOperations)
 
     def selectAllOperations(self):
         # self.selectAllCheckbox.blockSignals(True)

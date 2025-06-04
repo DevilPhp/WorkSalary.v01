@@ -51,6 +51,10 @@ QPushButton:hover{
 	font-size: 11pt;
 }
 
+#operationsGroupsCheckBox {
+	padding: 0px;
+}
+
 QDateEdit::up-button, QDateEdit::down-button{
 	width: 0px;
 }
@@ -62,6 +66,27 @@ QLineEdit, QDateEdit{
 	border-bottom: 1px solid #7c9399;
 }
 
+QMenu {
+	border: 1px solid #aeaeae;
+	border-radius: 5px;
+}
+
+QMenu::item {
+	padding: 5px;
+}
+
+QMenu::item:selected {
+	background-color: #aeaeae;
+	padding-left: 7px;
+}
+
+#clearWorkerNameBtn {
+	padding: 0;
+	background-color: #dfdfdf;
+	font-size: 11pt;
+	font-weght: 900;
+}
+
 #statusBar {
 	border: 1px solid #7c9399;
 }
@@ -70,7 +95,7 @@ QLineEdit, QDateEdit{
 }
 
 #avrTimePerPiece, #totalSelectedPieces, #totalSelectedTime, #totalSelectedRows, #totalViewRows, #totalWorkingMins,
-#piecesForProdLineEdit, #piecesProducedLineEdit {
+#piecesForProdLineEdit, #piecesProducedLineEdit, #totalProdPieces {
 	font-weight: 700;
 }
 
@@ -109,6 +134,11 @@ QLineEdit, QDateEdit{
 }
 
 #widget_3 * {
+	font-size: 10pt;
+}
+
+#showAllCheckBox {
+	font-weight: 600;
 	font-size: 10pt;
 }
 
@@ -358,16 +388,6 @@ QComboBox::item{
                    </property>
                   </widget>
                  </item>
-                 <item row="0" column="1">
-                  <widget class="QLineEdit" name="workerNameLineEdit">
-                   <property name="text">
-                    <string/>
-                   </property>
-                   <property name="placeholderText">
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
                  <item row="1" column="0">
                   <widget class="QLabel" name="label_4">
                    <property name="text">
@@ -400,6 +420,47 @@ QComboBox::item{
                    <property name="readOnly">
                     <bool>true</bool>
                    </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QWidget" name="widget_14" native="true">
+                   <layout class="QHBoxLayout" name="horizontalLayout_34">
+                    <property name="spacing">
+                     <number>5</number>
+                    </property>
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item>
+                     <widget class="QLineEdit" name="workerNameLineEdit">
+                      <property name="text">
+                       <string/>
+                      </property>
+                      <property name="placeholderText">
+                       <string/>
+                      </property>
+                      <property name="clearButtonEnabled">
+                       <bool>false</bool>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QPushButton" name="clearWorkerNameBtn">
+                      <property name="text">
+                       <string>x</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
                   </widget>
                  </item>
                 </layout>
@@ -1096,7 +1157,7 @@ QComboBox::item{
           <widget class="QWidget" name="widget_5" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_29">
             <property name="spacing">
-             <number>50</number>
+             <number>30</number>
             </property>
             <property name="leftMargin">
              <number>0</number>
@@ -1117,7 +1178,7 @@ QComboBox::item{
                 <number>8</number>
                </property>
                <property name="leftMargin">
-                <number>0</number>
+                <number>5</number>
                </property>
                <property name="topMargin">
                 <number>0</number>
@@ -1156,7 +1217,7 @@ QComboBox::item{
                    <second>0</second>
                    <year>1990</year>
                    <month>9</month>
-                   <day>5</day>
+                   <day>4</day>
                   </datetime>
                  </property>
                  <property name="displayFormat">
@@ -1185,105 +1246,6 @@ QComboBox::item{
                   <size>
                    <width>24</width>
                    <height>24</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QWidget" name="operationsGroupsHolder" native="true">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>0</height>
-               </size>
-              </property>
-              <layout class="QHBoxLayout" name="horizontalLayout_30">
-               <property name="spacing">
-                <number>10</number>
-               </property>
-               <property name="leftMargin">
-                <number>0</number>
-               </property>
-               <property name="topMargin">
-                <number>0</number>
-               </property>
-               <property name="rightMargin">
-                <number>0</number>
-               </property>
-               <property name="bottomMargin">
-                <number>0</number>
-               </property>
-               <item>
-                <widget class="QCheckBox" name="operationsGroupsCheckBox">
-                 <property name="focusPolicy">
-                  <enum>Qt::NoFocus</enum>
-                 </property>
-                 <property name="text">
-                  <string>Лист Операции</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="refreshOpersGroupBtn">
-                 <property name="toolTip">
-                  <string/>
-                 </property>
-                 <property name="toolTipDuration">
-                  <number>-1</number>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="../../../resources.qrc">
-                   <normaloff>:/icons/app/assets/icons/Restart--Streamline-Solar-Broken.svg</normaloff>:/icons/app/assets/icons/Restart--Streamline-Solar-Broken.svg</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>20</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QComboBox" name="operationsGroupComboBox">
-                 <property name="minimumSize">
-                  <size>
-                   <width>350</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="focusPolicy">
-                  <enum>Qt::ClickFocus</enum>
-                 </property>
-                 <property name="editable">
-                  <bool>true</bool>
-                 </property>
-                 <property name="sizeAdjustPolicy">
-                  <enum>QComboBox::AdjustToContents</enum>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="operationsGroupsBtn">
-                 <property name="focusPolicy">
-                  <enum>Qt::NoFocus</enum>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="../../../resources.qrc">
-                   <normaloff>:/icons/app/assets/icons/List-Down-Minimalistic--Streamline-Solar-Broken.svg</normaloff>:/icons/app/assets/icons/List-Down-Minimalistic--Streamline-Solar-Broken.svg</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>18</width>
-                   <height>18</height>
                   </size>
                  </property>
                 </widget>
@@ -1325,7 +1287,7 @@ QComboBox::item{
                 <number>5</number>
                </property>
                <property name="leftMargin">
-                <number>0</number>
+                <number>2</number>
                </property>
                <property name="topMargin">
                 <number>0</number>
@@ -1336,6 +1298,105 @@ QComboBox::item{
                <property name="bottomMargin">
                 <number>0</number>
                </property>
+               <item alignment="Qt::AlignLeft">
+                <widget class="QWidget" name="operationsGroupsHolder" native="true">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <layout class="QHBoxLayout" name="horizontalLayout_30">
+                  <property name="spacing">
+                   <number>10</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="QCheckBox" name="operationsGroupsCheckBox">
+                    <property name="focusPolicy">
+                     <enum>Qt::NoFocus</enum>
+                    </property>
+                    <property name="text">
+                     <string>Лист Операции</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="refreshOpersGroupBtn">
+                    <property name="toolTip">
+                     <string/>
+                    </property>
+                    <property name="toolTipDuration">
+                     <number>-1</number>
+                    </property>
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="../../../resources.qrc">
+                      <normaloff>:/icons/app/assets/icons/Restart--Streamline-Solar-Broken.svg</normaloff>:/icons/app/assets/icons/Restart--Streamline-Solar-Broken.svg</iconset>
+                    </property>
+                    <property name="iconSize">
+                     <size>
+                      <width>20</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="operationsGroupComboBox">
+                    <property name="minimumSize">
+                     <size>
+                      <width>350</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="focusPolicy">
+                     <enum>Qt::ClickFocus</enum>
+                    </property>
+                    <property name="editable">
+                     <bool>true</bool>
+                    </property>
+                    <property name="sizeAdjustPolicy">
+                     <enum>QComboBox::AdjustToContents</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="operationsGroupsBtn">
+                    <property name="focusPolicy">
+                     <enum>Qt::NoFocus</enum>
+                    </property>
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="../../../resources.qrc">
+                      <normaloff>:/icons/app/assets/icons/List-Down-Minimalistic--Streamline-Solar-Broken.svg</normaloff>:/icons/app/assets/icons/List-Down-Minimalistic--Streamline-Solar-Broken.svg</iconset>
+                    </property>
+                    <property name="iconSize">
+                     <size>
+                      <width>18</width>
+                      <height>18</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
                <item>
                 <layout class="QGridLayout" name="operationsLayout">
                  <property name="horizontalSpacing">
@@ -1390,7 +1451,7 @@ QComboBox::item{
                   <widget class="QLineEdit" name="modelOperationLineEdit">
                    <property name="maximumSize">
                     <size>
-                     <width>180</width>
+                     <width>16777215</width>
                      <height>16777215</height>
                     </size>
                    </property>
@@ -1702,7 +1763,7 @@ QComboBox::item{
         <x>0</x>
         <y>0</y>
         <width>1116</width>
-        <height>478</height>
+        <height>449</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -1723,25 +1784,59 @@ QComboBox::item{
        </property>
        <item>
         <widget class="QWidget" name="timePaperTableHolder" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="toolTipDuration">
           <number>-1</number>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_11">
           <property name="spacing">
-           <number>5</number>
+           <number>0</number>
           </property>
           <property name="leftMargin">
-           <number>5</number>
+           <number>10</number>
           </property>
           <property name="topMargin">
-           <number>5</number>
+           <number>0</number>
           </property>
           <property name="rightMargin">
-           <number>5</number>
+           <number>0</number>
           </property>
           <property name="bottomMargin">
            <number>0</number>
           </property>
+          <item alignment="Qt::AlignTop">
+           <widget class="QWidget" name="widget_19" native="true">
+            <layout class="QHBoxLayout" name="horizontalLayout_35">
+             <property name="spacing">
+              <number>10</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QCheckBox" name="showAllCheckBox">
+               <property name="text">
+                <string>Всички за деня</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
@@ -1848,7 +1943,7 @@ QComboBox::item{
           <number>0</number>
          </property>
          <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
-          <widget class="QWidget" name="widget_19" native="true">
+          <widget class="QWidget" name="totalWorkingMinsHolder" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_27">
             <property name="spacing">
              <number>5</number>
@@ -1893,6 +1988,41 @@ QComboBox::item{
                 <width>22</width>
                 <height>22</height>
                </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item alignment="Qt::AlignHCenter">
+          <widget class="QWidget" name="totalProdPiecesHolder" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_19">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="label_46">
+              <property name="text">
+               <string>Общо бройки за деня</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="totalProdPieces">
+              <property name="text">
+               <string>0</string>
               </property>
              </widget>
             </item>

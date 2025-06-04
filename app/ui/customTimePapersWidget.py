@@ -2,6 +2,8 @@ from datetime import datetime
 from functools import partial
 
 from PySide6.QtGui import QStandardItemModel, QStandardItem, QDoubleValidator
+from PySide6.QtWidgets import QMenu, QDialog
+
 from app.ui.widgets.ui_customTimePapersWidget import *
 from app.utils.utils import Utils
 from app.services.workerServices import WorkerServices as WoS
@@ -12,6 +14,7 @@ from app.models.sortingModel import CaseInsensitiveProxyModel, FilterableHeaderV
 from app.models.tableModel import CustomTableViewWithMultiSelection
 from app.ui.messagesManager import MessageManager as MM
 from app.ui.customSortingMenuWidget import CustomSortingMenuWidget
+from app.ui.customYesNoMessage import CustomYesNowDialog
 
 
 class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
@@ -51,7 +54,10 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.setProxyModel(self.proxyModelWorkers, self.tableTimePapersModel, self.timePapersForDayTableView)
         self.timePapersForDayTableView.horizontalHeader().setStretchLastSection(True)
         self.timePapersForDayTableView.horizontalHeader().setMinimumWidth(80)
+        self.totalWorkingMinsHolder.setVisible(False)
         self.refreshTimePapersForToday()
+        self.timePapersForDayTableView.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.timePapersForDayTableView.customContextMenuRequested.connect(self.showCustomContextMenu)
         self.timePapersForDayTableView.selectedRows.connect(self.showTimePaperDetails)
         self.timePapersForDayTableView.clearCurrentSelection.connect(self.resetSelectedInfo)
         self.workerShiftsHolder.setEnabled(False)
@@ -85,6 +91,62 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.addNewTimePaperBtn.clicked.connect(self.addTimePaperOperation)
         self.addNewShiftBtn.clicked.connect(self.setShiftsWindow)
         self.refreshShiftsBtn.clicked.connect(self.refreshShifts)
+
+        self.clearWorkerNameBtn.setVisible(False)
+        self.workerNameLineEdit.textChanged.connect(self.showClearWorkerNameBtn)
+        self.clearWorkerNameBtn.clicked.connect(self.clearWorkerName)
+        self.showAllCheckBox.stateChanged.connect(self.showAllWorkersForDate)
+
+    def showAllWorkersForDate(self):
+        if self.showAllCheckBox.checkState() == Qt.CheckState.Checked:
+            self.refreshTimePapersForToday(showAll=True)
+        else:
+            if self.workerNameLineEdit.text() != '':
+                self.refreshTimePapersForToday(workerId=int(self.workerNumberLineEdit.text()))
+            else:
+                self.refreshTimePapersForToday()
+
+    def clearWorkerName(self):
+        self.workerNameLineEdit.clear()
+        self.clearWorker()
+        self.clearOperationInfo()
+        self.modelAndOperationHolder.setVisible(False)
+        self.refreshTimePapersForToday()
+        self.workerNameLineEdit.setFocus()
+
+    def showClearWorkerNameBtn(self, text):
+        if text != '':
+            self.clearWorkerNameBtn.setVisible(True)
+        else:
+            self.clearWorkerNameBtn.setVisible(False)
+
+    def showCustomContextMenu(self, pos):
+        menu = QMenu(self)
+        deleteAction = menu.addAction("Изтрий")
+        action = menu.exec_(self.timePapersForDayTableView.viewport().mapToGlobal(pos))
+
+        if action == deleteAction:
+            selectedIds = []
+            selectedOperations = []
+            selectedRow = self.timePapersForDayTableView.selectionModel().selectedRows(0)
+            selectedOper = self.timePapersForDayTableView.selectionModel().selectedRows(4)
+            for selectedRow in selectedRow:
+                selectedIds.append(selectedRow.data(Qt.ItemDataRole.UserRole))
+            for selectedOperation in selectedOper:
+                selectedOperations.append(selectedOperation.data(Qt.ItemDataRole.DisplayRole))
+            dialog = CustomYesNowDialog()
+            message = 'Изтриване на:\n\n' + '\n'.join(selectedOperations)
+            dialog.setMessage(name='', message=message, mode='deleting')
+            result = dialog.exec()
+            if result == QDialog.Accepted:
+                if WoS.deleteTimePapers(selectedIds):
+                    self.refreshTimePapersForToday(int(self.workerNumberLineEdit.text()))
+                    self.clearOperationInfo(False)
+                    MM.showOnWidget(self, 'Успешно изтрити записи', 'success')
+                else:
+                    MM.showOnWidget(self, 'Грешка при изтриване', 'error')
+            else:
+                return
 
     def refreshOpersGroup(self):
         self.operationsGroups = OpS.getOperationsGroups()
@@ -179,23 +241,31 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.timeForPieceLineEdit.setReadOnly(False)
             self.timeForPieceLineEdit.setFocus()
 
-    def refreshTimePapersForToday(self, workerId=None):
+    def refreshTimePapersForToday(self, workerId=None, showAll=False):
         totalWorkingMins = 0
+        totalProdPieces = 0
         self.existingTimePapers.clear()
         self.initialCheckBoxes.clear()
         searchedDate = self.timePaperDateEdit.date().toString('yyyy-MM-dd')
         formatedDate = datetime.strptime(searchedDate, '%Y-%m-%d').date()
-        # print(formatedDate, searchedDate)
-        data = WoS.getTimePapersForDate(formatedDate, workerId)
+        data = WoS.getTimePapersForDate(formatedDate, workerId, showAll)
         self.tableTimePapersModel.setRowCount(0)
-        # print(data)
         self.totalViewRows.setText(str(len(data)))
         self.resetSelectedInfo()
         for item in data:
-            # if item[5]:
-            totalWorkingMins += item[6]
+            timePaperId = QStandardItem(str(item[0]))
+            timePaperId.setData(item[7], Qt.ItemDataRole.UserRole)
+            if not workerId and item[3] == 49:
+                totalProdPieces += item[5]
+            elif workerId:
+                totalWorkingMins += item[6]
+
+            if item[7] == -1:
+                totalWorkingMins += (item[8] + item[9])
+                item[6] = item[8] + item[9]
+
             row = [
-                QStandardItem(str(item[0])),
+                timePaperId,
                 QStandardItem(str(item[1])),
                 QStandardItem(item[2]),
                 QStandardItem(str(item[3])),
@@ -205,19 +275,16 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             ]
             self.tableTimePapersModel.appendRow(row)
             self.existingTimePapers[item[1]] = item[0]
+        if workerId:
+            self.totalProdPiecesHolder.setVisible(False)
+            self.totalWorkingMinsHolder.setVisible(True)
+            self.totalWorkingMins.setText(str(round(totalWorkingMins, 2)))
+        else:
+            self.totalProdPiecesHolder.setVisible(True)
+            self.totalWorkingMinsHolder.setVisible(False)
+            self.totalProdPieces.setText(str(totalProdPieces))
 
-        self.totalWorkingMins.setText(str(totalWorkingMins))
         self.setTotalMinsColor()
-        # shiftWorkingTime = int(self.shiftTotalMins.text()) + int(self.overtimeTotalMins.text())
-        # if totalWorkingMins > shiftWorkingTime:
-        #     self.totalWorkingMins.setStyleSheet("color: #c75f59;")
-        # else:
-        #     self.totalWorkingMins.setStyleSheet("color: #324b4c;")
-        # model = TableModel(data)
-        # self.timePapersForDayTableView.setModel(model)
-        #
-        # self.timePapersForDayTableView.resizeColumnsToContents()
-        # self.timePapersForDayTableView.sortByColumn(0, Qt.SortOrder.AscendingOrder)
 
     def setTotalMinsColor(self):
         totalWorkingMins = float(self.totalWorkingMins.text())
@@ -381,23 +448,16 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.overtimeEnd.setTime(QTime(0, 0))
 
     def setupWorkerAndModelsCompleter(self):
+
         for worker in self.workers:
             self.workersInfo.append(f"{worker[0].Име} {worker[0].Фамилия} - {worker[0].Номер}")
         Utils.setupCompleter(self.workersInfo, self.workerNameLineEdit)
         self.workerNameLineEdit.returnPressed.connect(self.updateWorkerInfo)
-        # self.workerNameLineEdit.editingFinished.connect(self.updateWorkerInfo)
+
         for client in self.models:
             self.clientModels[f'{client[1].ПоръчкаNo} : {client[0].Клиент}'] = client[1].id
         Utils.setupCompleter(self.clientModels.keys(), self.clientModelsLineEdit)
         self.clientModelsLineEdit.editingFinished.connect(self.updateModelInfo)
-
-    # def setReturnBtnForCompleter(self, completer):
-    #     currentIndex = completer.popup().currentIndex()
-    #     if currentIndex.isValid():
-    #         selectedText = currentIndex.data()
-    #     else:
-    #         selectedText = completer.completionModel().index(0, 0).data()
-    #     return selectedText
 
     def updateModelInfo(self):
         if self.clientModelsLineEdit.text() != '':
@@ -423,13 +483,14 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         else:
             self.operationsGroupsHolder.setEnabled(False)
             self.modelTotalPiecesLineEdit.clear()
-            # self.modelShiftsHolder.setEnabled(False)
-            # self.modelNumberLineEdit.clear()
-            # self.modelNameLineEdit.clear()
 
     def updateModelOperation(self):
-        if self.modelOperationLineEdit.text() not in self.modelOperations.keys() or \
-                self.modelOperationLineEdit.text() == '':
+        if self.modelOperationLineEdit.text() != '':
+            completer = self.modelOperationLineEdit.completer()
+            self.modelOperationLineEdit.setText(Utils.setReturnBtnForCompleter(completer))
+        selectedText = self.modelOperationLineEdit.text()
+
+        if selectedText not in self.modelOperations.keys() or selectedText == '':
             self.modelOperationLineEdit.setFocus()
             self.modelOperationLineEdit.selectAll()
             MM.showOnWidget(self, "Не е избрана операция", 'error')
@@ -437,16 +498,16 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.modelPiecesLineEdit.clear()
             return
 
-        if self.modelOperationLineEdit.text() in self.modelOperations.keys():
+        if selectedText in self.modelOperations.keys():
             self.piecesForProdLineEdit.setText(str(
-                int(self.modelTotalPiecesLineEdit.text()) - self.modelOperations[self.modelOperationLineEdit.text()][2]
+                int(self.modelTotalPiecesLineEdit.text()) - self.modelOperations[selectedText][2]
             ))
             if int(self.piecesForProdLineEdit.text()) < 0:
                 self.piecesForProdLineEdit.setStyleSheet('color: #c75f59;')
             else:
                 self.piecesForProdLineEdit.setStyleSheet('color: #324b4c;')
-            self.piecesProducedLineEdit.setText(str(self.modelOperations[self.modelOperationLineEdit.text()][2]))
-            self.timeForPieceLineEdit.setText(str(self.modelOperations[self.modelOperationLineEdit.text()][0]))
+            self.piecesProducedLineEdit.setText(str(self.modelOperations[selectedText][2]))
+            self.timeForPieceLineEdit.setText(str(self.modelOperations[selectedText][0]))
             self.modelPiecesLineEdit.setReadOnly(False)
             self.modelPiecesLineEdit.textChanged.connect(self.updateModelPieces)
             self.timeForPieceLineEdit.textChanged.connect(self.updateModelPieces)
@@ -464,6 +525,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.piecesTimeLineEdit.setText(str(round(pieces * timeForPiece, 2)))
 
     def addTimePaperOperation(self):
+        if self.checkIsHourlyWorking():
+            return
         count = 1
         operationsGroupForAdd = {}
         timePaper = None
@@ -478,7 +541,11 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                         break
             count = len(operationsGroupForAdd.keys())
 
-        # print(operationsGroupForAdd[list(operationsGroupForAdd.keys())[0]])
+        if count < 1:
+            MM.showOnWidget(self,
+                            f"Избраните операции не съществуват за {self.clientModelsLineEdit.text()}",
+                            'error')
+            return
 
         for i in range(count):
             if operationsGroupForAdd:
@@ -513,9 +580,9 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 timePaper = WoS.addNewTimePaperAndOperation(timePaperData)
                 if operationsGroupForAdd:
                     self.existingTimePapers[int(self.workerNumberLineEdit.text())] = timePaper
-                print(self.existingTimePapers)
+                # print(self.existingTimePapers)
             else:
-                print(self.existingTimePapers[int(self.workerNumberLineEdit.text())])
+                # print(self.existingTimePapers[int(self.workerNumberLineEdit.text())])
                 timePaperData = {
                     'TimePaperId': self.existingTimePapers[int(self.workerNumberLineEdit.text())],
                     'OrderId': self.clientModels[self.clientModelsLineEdit.text()],
@@ -535,7 +602,14 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.clearOperationInfo(False)
             self.operationsGroupsCheckBox.setCheckState(Qt.CheckState.Unchecked)
 
+    def checkIsHourlyWorking(self):
+        if self.isHourlyWorking.isChecked():
+            if (self.hourlyStart.date() == self.shiftStart.date() and self.hourlyEnd.date() == self.shiftEnd.date()):
+                return 'FullHourlyWork'
+        return True
+
     def updateWorkerInfo(self):
+        self.clearOperationInfo(False)
         if self.workerNameLineEdit.text() != '':
             completer = self.workerNameLineEdit.completer()
             self.workerNameLineEdit.setText(Utils.setReturnBtnForCompleter(completer))
@@ -567,17 +641,21 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 self.workerPositionLineEdit.setText('Не е указано')
             self.clientModelsLineEdit.setFocus()
             self.clientModelsLineEdit.selectAll()
+            self.showAllCheckBox.blockSignals(True)
+            self.showAllCheckBox.setCheckState(Qt.CheckState.Unchecked)
+            self.showAllCheckBox.blockSignals(False)
             self.refreshTimePapersForToday(int(workerId))
         else:
-            self.workerShiftsHolder.setEnabled(False)
-            self.clearWorkerInfo()
-            self.clearOperationInfo()
-            self.workerLastNameLineEdit.clear()
-            self.workerNumberLineEdit.clear()
-            self.modelAndOperationHolder.setVisible(False)
-            self.workerPlaceLineEdit.setText('Не е указано')
-            self.workerPositionLineEdit.setText('Не е указано')
-            self.refreshTimePapersForToday()
+            self.clearWorker()
+
+    def clearWorker(self):
+        self.workerShiftsHolder.setEnabled(False)
+        self.clearWorkerInfo()
+        self.workerLastNameLineEdit.clear()
+        self.workerNumberLineEdit.clear()
+        self.modelAndOperationHolder.setVisible(False)
+        self.workerPlaceLineEdit.setText('Не е указано')
+        self.workerPositionLineEdit.setText('Не е указано')
 
     def clearWorkerInfo(self):
         self.shiftNameLineEdit.setCurrentIndex(0)

@@ -263,7 +263,9 @@ class CustomCheckboxWidget(QWidget, Ui_customCheckBoxWidget):
     def showContextMenu(self, pos):
         menu = QMenu(self)
         editAction = menu.addAction("Редактиране")
-        deleteAction = menu.addAction("Изтриване")
+        deleteAction = None
+        if self.window().objectName() == 'customWidgetForDefaultOper':
+            deleteAction = menu.addAction("Изтриване")
         action = menu.exec_(self.checkBox.mapToGlobal(pos))
 
         if action == editAction:
