@@ -525,8 +525,10 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.piecesTimeLineEdit.setText(str(round(pieces * timeForPiece, 2)))
 
     def addTimePaperOperation(self):
-        if self.checkIsHourlyWorking():
-            return
+        # if self.checkIsHourlyWorking():
+        #     return
+        # print('addTimePaperOperation')
+        # return
         count = 1
         operationsGroupForAdd = {}
         timePaper = None
@@ -604,9 +606,14 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
     def checkIsHourlyWorking(self):
         if self.isHourlyWorking.isChecked():
-            if (self.hourlyStart.date() == self.shiftStart.date() and self.hourlyEnd.date() == self.shiftEnd.date()):
+            if self.hourlyStart.time() == self.shiftStart.time() and self.hourlyEnd.time() == self.shiftEnd.time():
+                print('FullHourlyWork')
                 return 'FullHourlyWork'
-        return True
+            else:
+                print('HourlyWork')
+                return 'HourlyWork'
+        else:
+            return None
 
     def updateWorkerInfo(self):
         self.clearOperationInfo(False)

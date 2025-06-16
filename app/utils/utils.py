@@ -109,9 +109,6 @@ class Utils:
 
         return duration
 
-    # @staticmethod
-    # def checkMinutes
-
 
 class CustomCompleter(QCompleter):
     def __init__(self, parent=None):

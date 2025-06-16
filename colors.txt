@@ -23,6 +23,13 @@ Text_4Red: #a4868d
 #cccccc - dark gray
 #324b4c - dark green (TEXT Color)
 
+### MESSAGES ###
+#c75f59 - red color
+#008B69 - green col
+#e4bb4e - yellow
+
+
+
 
 pip freeze > requirements.txt
 pip install -r requirements.txt
