@@ -230,10 +230,15 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.avrTimePerPiece.setText("0.0")
 
     def setDefaultTime(self):
-        if self.clientModelsLineEdit.text() not in self.clientModels.keys():
+        if self.modelOperationLineEdit.text() == '':
             self.isDefaultTimeCheckBox.setCheckState(Qt.CheckState.Checked)
-            MM.showOnWidget(self, "Не е избрана поръчка", 'error')
+            MM.showOnWidget(self, "Не е избрана операция", 'error')
             return
+        elif self.modelOperationLineEdit.text() == 'Група операции':
+            self.isDefaultTimeCheckBox.setCheckState(Qt.CheckState.Checked)
+            MM.showOnWidget(self, "Не можете да промените време за група операции", 'warning')
+            return
+
         if self.isDefaultTimeCheckBox.isChecked():
             self.timeForPieceLineEdit.setReadOnly(True)
             self.timeForPieceLineEdit.setText(str(self.modelOperations[self.modelOperationLineEdit.text()]))
@@ -685,6 +690,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.modelPiecesLineEdit.clear()
         self.timeForPieceLineEdit.clear()
         self.piecesTimeLineEdit.setText('0')
+        self.isDefaultTimeCheckBox.blockSignals(True)
         self.isDefaultTimeCheckBox.setCheckState(Qt.CheckState.Checked)
+        self.isDefaultTimeCheckBox.blockSignals(False)
         self.piecesForProdLineEdit.clear()
         self.piecesProducedLineEdit.clear()

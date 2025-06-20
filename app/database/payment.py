@@ -35,3 +35,9 @@ class PaymentCurrency(Base):
     ConversionRateFromEuro = Column(Float, nullable=False)
     LastUpdated = Column(Date, default=datetime.now, onupdate=datetime.now)
     UpdatedBy = Column(String, nullable=True)
+
+
+# class PaymentsRates(Base):
+#     __tablename__ = 'paymentsRates'
+#     id = Column(Integer, primary_key=True, autoincrement=True)
+#     RateType = Column()
