@@ -689,6 +689,13 @@ QPushButton:hover {
                   </property>
                  </widget>
                 </item>
+                <item row="2" column="3">
+                 <widget class="QPushButton" name="holidaysPageBtn">
+                  <property name="text">
+                   <string>Празнични Дни</string>
+                  </property>
+                 </widget>
+                </item>
                </layout>
               </item>
              </layout>

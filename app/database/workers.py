@@ -77,6 +77,7 @@ class TimePaper(Base):
     __tablename__ = "timePapers"
     id = Column(Integer, primary_key=True)
     Date = Column(Date, nullable=False)
+    WeekDay = Column(Integer)
     ShiftId = Column(Integer, ForeignKey('workingShifts.id'), nullable=True)
     IsHourlyPaid = Column(Integer, ForeignKey('hourlyPays.id'), nullable=True)
     IsOvertime = Column(Integer, ForeignKey('overtimePays.id'), nullable=True, default=None)

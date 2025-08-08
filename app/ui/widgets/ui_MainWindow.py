@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'MainWindowMhLjUo.ui'
+## Form generated from reading UI file 'MainWindowgamTrD.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -380,6 +380,11 @@ class Ui_MainWindow(object):
 
         self.mainMenuLayout.addWidget(self.workingShiftsPageBtn, 3, 1, 1, 1)
 
+        self.holidaysPageBtn = QPushButton(self.mainMenuWidget)
+        self.holidaysPageBtn.setObjectName(u"holidaysPageBtn")
+
+        self.mainMenuLayout.addWidget(self.holidaysPageBtn, 2, 3, 1, 1)
+
 
         self.verticalLayout_10.addLayout(self.mainMenuLayout)
 
@@ -480,6 +485,7 @@ class Ui_MainWindow(object):
         self.timePapersBtn.setText(QCoreApplication.translate("MainWindow", u"\u041b\u0438\u0441\u0442\u043e\u0432\u0435 \u0437\u0430 \u0432\u0440\u0435\u043c\u0435", None))
         self.workersPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u041f\u0435\u0440\u0441\u043e\u043d\u0430\u043b", None))
         self.workingShiftsPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u0420\u0430\u0431\u043e\u0442\u043d\u0438 \u0421\u043c\u0435\u043d\u0438", None))
+        self.holidaysPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u041f\u0440\u0430\u0437\u043d\u0438\u0447\u043d\u0438 \u0414\u043d\u0438", None))
         self.infoLabel_2.setText(QCoreApplication.translate("MainWindow", u"Dev v0.1.010", None))
         self.pageBtn.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
     # retranslateUi

@@ -176,23 +176,19 @@ class WorkerServices:
 
 
     @staticmethod
-    def getInfoForPayments(workerId, startDate, endDate):
+    def getInfoForPayments(startDate, endDate):
         returnedData = {}
         startDate = datetime.strptime('2025-01-10', '%Y-%m-%d').date()
         endDate = datetime.strptime('2025-02-10', '%Y-%m-%d').date()
         with getDatabase() as session:
-            if workerId != '':
-                timePapers = session.query(TimePaper).filter(TimePaper.WorkerId == int(workerId),
-                                                             TimePaper.Date >= startDate,
-                                                             TimePaper.Date <= endDate).all()
 
-            else:
-                timePapers = session.query(TimePaper).filter(TimePaper.Date >= startDate,
-                                                             TimePaper.Date <= endDate).all()
+            timePapers = session.query(TimePaper).filter(TimePaper.Date >= startDate,
+                                                         TimePaper.Date <= endDate).all()
 
             for timePaper in timePapers:
                 if timePaper.WorkerId is not None:
                     key = f'{timePaper.WorkerId} : {timePaper.workers.Име} {timePaper.workers.Фамилия}'
+                    paymentRation = WorkerServices.getPaymentRation(timePaper)
                     data = {
                                 'date': timePaper.Date.strftime('%d.%m.%Y'),
                                 'shift': [timePaper.workingShifts.ShiftName,
@@ -207,6 +203,7 @@ class WorkerServices:
                                 if timePaper.hourlyPays is not None else None,
                                 'totalPieces': timePaper.TotalPieces,
                                 'totalTime': round(timePaper.TotalHours, 2),
+                                'paymentRation'
                         }
                     if key not in returnedData.keys():
                         returnedData[key] = {timePaper.id: data}
@@ -217,7 +214,10 @@ class WorkerServices:
             #     print(returnedData[key])
             return returnedData
 
+    @staticmethod
+    def getPaymentRation(timePaper):
 
+        return 1
 
     @staticmethod
     def updateWorkingShift(shiftId, data):
@@ -313,6 +313,7 @@ class WorkerServices:
 
             newTimePaper = TimePaper(
                 Date=timePaperData['Date'],
+                WeekDay=timePaperData['WeekDay'],
                 ShiftId=timePaperData['ShiftId'],
                 IsHourlyPaid=timePaperData['IsHourlyPaid'],
                 IsOvertime=timePaperData['IsOvertime'],

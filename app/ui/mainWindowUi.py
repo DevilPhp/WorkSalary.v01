@@ -17,6 +17,7 @@ from app.ui.customPaymentsWidget import CustomPaymentsWidget
 from app.ui.customPaymentsDetailsWidget import CustomPaymentsDetailsWidget
 from app.ui.customWorkersWidget import CustomWorkersWidget
 from app.ui.messagesManager import MessageManager
+from app.ui.customHolidayWidget import CustomHolidaysWidget
 
 
 
@@ -38,6 +39,7 @@ class MainWindow(QMainWindow):
         self.workingShiftsPage = None
         self.paymentsPage = None
         self.workersPage = None
+        self.holidaysPage = None
         self.workerPaymentsDetails = {}
         # self.setAttribute(Qt.WA_TranslucentBackground)
         LoginPage(self)
@@ -52,6 +54,7 @@ class MainWindow(QMainWindow):
         self.ui.workingShiftsPageBtn.clicked.connect(self.setWorkingShiftsPage)
         self.ui.paymentsPageBtn.clicked.connect(self.setPaymentsPage)
         self.ui.workersPageBtn.clicked.connect(self.setWorkersPage)
+        self.ui.holidaysPageBtn.clicked.connect(self.setHolidaysPage)
         # MessageManager.success('DefaultOperToModelTypeCustomWidget initialized', timeout=3000)
 
         # user = UsersFuncs.createUser('test', '000')
@@ -78,6 +81,9 @@ class MainWindow(QMainWindow):
     def resetTimePapersPage(self):
         self.timePapersPage = None
 
+    def resetHolidaysPage(self):
+        self.holidaysPage = None
+
     def removeWorkerPaymentsDetails(self, workerId):
         if workerId in self.workerPaymentsDetails:
             del self.workerPaymentsDetails[workerId]
@@ -93,6 +99,14 @@ class MainWindow(QMainWindow):
             subWindow.setWidget(newWindow)
             self.ui.mainWindowsArea.addSubWindow(subWindow)
             subWindow.show()
+
+    def setHolidaysPage(self):
+        if self.holidaysPage is None:
+            self.holidaysPage = CustomHolidaysWidget(self)
+            self.holidaysPage.show()
+            self.holidaysPage.destroyed.connect(self.resetHolidaysPage)
+        else:
+            self.holidaysPage.activateWindow()
 
     def setWorkersPage(self):
         if self.workersPage is None:

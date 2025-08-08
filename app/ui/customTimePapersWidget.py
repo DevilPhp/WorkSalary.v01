@@ -241,10 +241,11 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
         if self.isDefaultTimeCheckBox.isChecked():
             self.timeForPieceLineEdit.setReadOnly(True)
-            self.timeForPieceLineEdit.setText(str(self.modelOperations[self.modelOperationLineEdit.text()]))
+            self.timeForPieceLineEdit.setText(str(self.modelOperations[self.modelOperationLineEdit.text()][0]))
         else:
             self.timeForPieceLineEdit.setReadOnly(False)
             self.timeForPieceLineEdit.setFocus()
+            self.timeForPieceLineEdit.selectAll()
 
     def refreshTimePapersForToday(self, workerId=None, showAll=False):
         totalWorkingMins = 0
@@ -574,6 +575,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 date = datetime.strptime(self.timePaperDateEdit.date().toString('yyyy-MM-dd'), '%Y-%m-%d').date()
                 timePaperData = {
                     'Date': date,
+                    'WeekDay': date.isoweekday(),
                     'ShiftId': self.workingShifts[self.shiftNameLineEdit.currentText()][0],
                     'IsHourlyPaid': hourlyPay,
                     'IsOvertime': overtime,

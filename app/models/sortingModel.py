@@ -69,7 +69,7 @@ class FilterableHeaderView(QHeaderView):
         # self.customContextMenuRequested.connect(self.showFilterMenu)
     def mousePressEvent(self, event):
         logicalIndex = self.logicalIndexAt(event.pos())
-        if event.button() == Qt.RightButton:
+        if event.button() == Qt.MouseButton.RightButton:
             self.filterRequested.emit(logicalIndex)
             # menu = CustomSortingMenuWidget(self)
             # sourceModel = self.filterModel.sourceModel()

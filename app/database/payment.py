@@ -37,7 +37,35 @@ class PaymentCurrency(Base):
     UpdatedBy = Column(String, nullable=True)
 
 
-# class PaymentsRates(Base):
-#     __tablename__ = 'paymentsRates'
-#     id = Column(Integer, primary_key=True, autoincrement=True)
-#     RateType = Column()
+class HolidaysPerYear(Base):
+    __tablename__ = 'holidaysPerYears'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    Year = Column(Integer, nullable=False, unique=True)
+    HolidaysCount = Column(Integer, nullable=False)
+    LastUpdated = Column(Date, default=datetime.now, onupdate=datetime.now)
+    UpdatedBy = Column(String, nullable=True)
+
+    holidays = relationship("Holiday", back_populates="holidaysPerYears")
+
+
+class Holiday(Base):
+    __tablename__ = 'holidays'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    HolidayDate = Column(Date, nullable=False)
+    HolidayName = Column(String(255), nullable=False)
+    HolidaysPerYearId = Column(Integer, ForeignKey('holidaysPerYears.id'))
+    LastUpdated = Column(Date, default=datetime.now, onupdate=datetime.now)
+    UpdatedBy = Column(String, nullable=True)
+
+    holidaysPerYears = relationship("HolidaysPerYear", back_populates="holidays")
+
+
+class PaymentsRates(Base):
+    __tablename__ = 'paymentsRates'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    RateType = Column(String(255), nullable=False, unique=True)
+    RateValue = Column(Float, nullable=False)
+    RateValueInEuro = Column(Float, nullable=False)
+    RatePercentage = Column(Float, nullable=False)
+    LastUpdated = Column(Date, default=datetime.now, onupdate=datetime.now)
+    UpdatedBy = Column(String, nullable=True)
