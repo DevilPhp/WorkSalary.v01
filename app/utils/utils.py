@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date, time, timedelta
 
 from PySide6.QtGui import QStandardItemModel, QStandardItem, QCursor
 from PySide6.QtWidgets import QCompleter, QLineEdit, QApplication, QTableView
@@ -79,6 +79,59 @@ class Utils:
         completer.setFilterMode(Qt.MatchFlag.MatchContains)
         completer.setCompletionColumn(0)
         widget.setCompleter(completer)
+
+    @staticmethod
+    def checkNightShiftMins(startTime, endTime):
+        if startTime is None or endTime is None:
+            return 0
+
+        startTime = Utils.convertQtimeToTime(startTime)
+        endTime = Utils.convertQtimeToTime(endTime)
+
+        # Anchor everything to an arbitrary reference date
+        DefaultDay = date(2000, 1, 1)
+
+        # Build datetime objects for the shift start/end.
+        shiftStart = datetime.combine(DefaultDay, startTime)
+        shiftEnd = datetime.combine(DefaultDay, endTime)
+
+        # If end <= start, assume the shift ends the next day (typical for night shifts).
+        if shiftEnd <= shiftStart:
+            shiftEnd += timedelta(days=1)
+
+        # Night window basics: each night is (22:00, 06:00 next day).
+        NightShiftStart = time(22, 0)
+        NightShiftLen = timedelta(hours=8)  # 22:00 -> 06:00
+
+        # Find the *first* night window that could overlap the shift.
+        # If the shift starts between 00:00 and 06:00, the relevant night began the previous day at 22:00.
+        if shiftStart.time() < time(6, 0):
+            firstWindowStart = datetime.combine(shiftStart.date() - timedelta(days=1), NightShiftStart)
+        else:
+            # Otherwise, start from the same day at 22:00
+            firstWindowStart = datetime.combine(shiftStart.date(), NightShiftStart)
+
+        totalMinutes = 0
+        windowStart = firstWindowStart
+        windowEnd = windowStart + NightShiftLen
+
+        # Slide the night window forward one day at a time and sum overlaps.
+        while windowStart < shiftEnd:
+            # Compute overlap between [shiftStart, shiftEnd) and [windowStart, windowEnd)
+            overlapStart = max(shiftStart, windowStart)
+            overlapEnd = min(shiftEnd, windowEnd)
+            if overlapEnd > overlapStart:
+                totalMinutes += int((overlapEnd - overlapStart).total_seconds() // 60)
+
+            # Move to the next night's window
+            windowStart += timedelta(days=1)
+            windowEnd += timedelta(days=1)
+
+            # Optional fast-exit: if the next window starts after shiftEnd, we can break
+            if windowStart >= shiftEnd:
+                break
+
+        return totalMinutes
 
     @staticmethod
     def convertQtimeToTime(timeQTime):

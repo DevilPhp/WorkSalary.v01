@@ -566,12 +566,25 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 modelOperationTime = float(self.piecesTimeLineEdit.text())
 
             if int(self.workerNumberLineEdit.text()) not in self.existingTimePapers.keys():
+                nightMins = 0
                 overtime = [Utils.convertQtimeToTime(self.overtimeStart.time()),
                             Utils.convertQtimeToTime(self.overtimeEnd.time()),
                             float(self.overtimeTotalMins.text())] if self.isHourlyWorking.isChecked() else None
                 hourlyPay = [Utils.convertQtimeToTime(self.hourlyStart.time()),
                              Utils.convertQtimeToTime(self.hourlyEnd.time()),
                              float(self.hourlyTotalMins.text())] if self.isOvertimeWorking.isChecked() else None
+                if overtime:
+                    nightMins += Utils.checkNightShiftMins(self.overtimeStart.time(), self.overtimeEnd.time())
+                elif hourlyPay:
+                    nightMins += Utils.checkNightShiftMins(self.hourlyStart.time(), self.hourlyEnd.time())
+                else:
+                    nightMins += Utils.checkNightShiftMins(self.shiftStart.time(), self.shiftEnd.time())
+
+                if nightMins > 0:
+                    nightMins -= 60
+
+                print(f'nightMins: {nightMins}')
+
                 date = datetime.strptime(self.timePaperDateEdit.date().toString('yyyy-MM-dd'), '%Y-%m-%d').date()
                 timePaperData = {
                     'Date': date,
