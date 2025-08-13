@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'operToModelTypeCustomWidgetPNodqd.ui'
+## Form generated from reading UI file 'operToModelTypeCustomWidgetkGIefo.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -430,6 +430,16 @@ class Ui_customWidgetForModelOper(object):
 
         self.gridLayout.addWidget(self.operationGroupLineEdit, 0, 1, 1, 1)
 
+        self.label_14 = QLabel(self.operationsGroupsHolder)
+        self.label_14.setObjectName(u"label_14")
+
+        self.gridLayout.addWidget(self.label_14, 1, 0, 1, 1)
+
+        self.forModelLineEdit = QLineEdit(self.operationsGroupsHolder)
+        self.forModelLineEdit.setObjectName(u"forModelLineEdit")
+
+        self.gridLayout.addWidget(self.forModelLineEdit, 1, 1, 1, 1)
+
 
         self.verticalLayout_9.addLayout(self.gridLayout)
 
@@ -527,6 +537,7 @@ class Ui_customWidgetForModelOper(object):
         self.label_11.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0410\u043a\u0442\u0443\u0430\u043b\u0435\u043d", None))
         self.saveNewModel.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0414\u043e\u0431\u0430\u0432\u044f\u043d\u0435", None))
         self.label_12.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0418\u043c\u0435:", None))
+        self.label_14.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0417\u0430 \u041c\u043e\u0434\u0435\u043b:", None))
         self.saveOpertaionsGroupsBtn.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0417\u0430\u043f\u0430\u0437\u0432\u0430\u043d\u0435", None))
         self.selectAllCheckbox.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0412\u0441\u0438\u0447\u043a\u0438", None))
     # retranslateUi

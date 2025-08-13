@@ -17,6 +17,12 @@ operationsGroupsOperations = Table(
     Column('ОперацияNo', Integer, ForeignKey('operations.ОперацияNo'), primary_key=True)
 )
 
+operationsGroupsForModelsTable = Table(
+    'operationsGroupsForModelsTable', Base.metadata,
+    Column('groupId', Integer, primary_key=True, autoincrement=True),
+    Column('id', Integer, ForeignKey('operationsGroupForModels.id'), primary_key=True),
+    Column('ModelOperations', Integer, ForeignKey('productionModelOperations.id'), primary_key=True))
+
 
 class Operation(Base):
     __tablename__ = 'operations'
@@ -60,6 +66,9 @@ class ProductionModelOperations(Base):
     productionModel = relationship("ProductionModel", back_populates="productionModelOperations")
     operations = relationship("Operation", back_populates="productionModelOperations")
     timePaperOperations = relationship("TimePaperOperation", back_populates="productionModelOperations")
+    operationsGroups = relationship("OperationsGroupForModel",
+                                    secondary="operationsGroupsForModelsTable",
+                                    back_populates="operations")
 
 
 class OperationsGroup(Base):
@@ -69,5 +78,16 @@ class OperationsGroup(Base):
     Description = Column(String, nullable=True)
 
     operations = relationship("Operation",
-                                    secondary="operationsGroupsOperations",
-                                    back_populates="operationsGroup")
+                              secondary="operationsGroupsOperations",
+                              back_populates="operationsGroup")
+
+
+class OperationsGroupForModel(Base):
+    __tablename__ = "operationsGroupForModels"
+    id = Column(Integer, primary_key=True)
+    Name = Column(String, nullable=False)
+    Description = Column(String, nullable=True)
+
+    operations = relationship("ProductionModelOperations",
+                              secondary="operationsGroupsForModelsTable",
+                              back_populates="operationsGroups")
