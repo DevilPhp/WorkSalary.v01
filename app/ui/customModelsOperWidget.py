@@ -158,6 +158,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.operationsGroupsReturnBtn.setVisible(True)
         self.operationGroupLineEdit.setFocus()
         self.operationsHolder.setEnabled(True)
+        self.setModelsLineEditForGroups()
 
     def returnToModelOpersView(self):
         self.operationsGroupsHolder.setVisible(False)
@@ -168,6 +169,11 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.operationsGroupsReturnBtn.setVisible(False)
         self.selectedOperForGroup.clear()
         self.operationsHolder.setEnabled(False)
+
+    def setModelsLineEditForGroups(self):
+        self.forModelLineEdit.clear()
+        models = Ms.getForModelsGroups()
+        Utils.setupCompleter(models, self.forModelLineEdit)
 
     def checkBtnSender(self):
         if self.newModelCheckBox.isChecked():

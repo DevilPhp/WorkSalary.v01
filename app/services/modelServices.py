@@ -69,6 +69,16 @@ class ModelService:
             return session.query(ProductionModel).all()
 
     @staticmethod
+    def getForModelsGroups():
+        with getDatabase() as session:
+            models = session.query(ProductionModel).all()
+            modelsDict = []
+            for model in models:
+                if model.Actual:
+                    modelsDict.append(f"{model.id} - {model.ПоръчкаNo}")
+            return modelsDict
+
+    @staticmethod
     def checkIfOperationsCanBeDeleted(model, operations):
         updatedOperations = []
         with getDatabase() as session:
