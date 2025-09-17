@@ -65,7 +65,7 @@ class ProductionModel(Base):
     WearType = Column(Integer, ForeignKey("vidOblekla.OblekloVid"), nullable=True)
     YarnType = Column(Integer, ForeignKey("yarns.YarnID"), nullable=True)
     Броя = Column(Integer, default=0)
-    DateCreated = Column(DateTime, default=datetime.now)
+    DateCreated = Column(DateTime, default=datetime.now, onupdate=datetime.now)
     TargetDate = Column(DateTime, nullable=True, default=None)
     Status = Column(String, nullable=True, default=None)
     UserCreated = Column(String, nullable=False)

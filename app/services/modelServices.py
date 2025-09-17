@@ -100,6 +100,7 @@ class ModelService:
                 modelToUpdate.WearType = model['wearType']
                 modelToUpdate.YarnType = model['yarnId']
                 modelToUpdate.Броя = model['pieces']
+                modelToUpdate.Actual = model['actual']
 
                 existingOperations = session.query(ProductionModelOperations).filter_by(OrderId=model['orderNo']).all()
 
@@ -192,7 +193,8 @@ class ModelService:
             modelYarn = f'{model.YarnType}: {model.yarn.ПреждаТип} :  {model.yarn.Състав}' if model.yarn else None
             modelObleklo = f'{model.WearType}: {model.vidOblekla.OblekloName}'
             modelPieces = model.Броя if model else 0
-            return [modelFine, modelMachine, modelYarn, modelObleklo, modelPieces]
+            modelActual = model.Actual if model else False
+            return [modelFine, modelMachine, modelYarn, modelObleklo, modelPieces, modelActual]
 
     @staticmethod
     def getAllModelTypes():

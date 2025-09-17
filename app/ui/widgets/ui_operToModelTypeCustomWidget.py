@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'operToModelTypeCustomWidgetkGIefo.ui'
+## Form generated from reading UI file 'operToModelTypeCustomWidgetbavhTE.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -219,21 +219,6 @@ class Ui_customWidgetForModelOper(object):
 
         self.modeLayout.setWidget(2, QFormLayout.LabelRole, self.label_13)
 
-        self.widget_6 = QWidget(self.widget_7)
-        self.widget_6.setObjectName(u"widget_6")
-        self.horizontalLayout_8 = QHBoxLayout(self.widget_6)
-        self.horizontalLayout_8.setSpacing(0)
-        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
-        self.horizontalLayout_8.setContentsMargins(0, 0, 0, 0)
-        self.modelActualCheckBox = QCheckBox(self.widget_6)
-        self.modelActualCheckBox.setObjectName(u"modelActualCheckBox")
-        self.modelActualCheckBox.setFocusPolicy(Qt.ClickFocus)
-
-        self.horizontalLayout_8.addWidget(self.modelActualCheckBox, 0, Qt.AlignHCenter)
-
-
-        self.modeLayout.setWidget(3, QFormLayout.FieldRole, self.widget_6)
-
         self.dataUpdatedLabel = QLabel(self.widget_7)
         self.dataUpdatedLabel.setObjectName(u"dataUpdatedLabel")
 
@@ -435,10 +420,24 @@ class Ui_customWidgetForModelOper(object):
 
         self.gridLayout.addWidget(self.label_14, 1, 0, 1, 1)
 
-        self.forModelLineEdit = QLineEdit(self.operationsGroupsHolder)
+        self.widget_5 = QWidget(self.operationsGroupsHolder)
+        self.widget_5.setObjectName(u"widget_5")
+        self.horizontalLayout_8 = QHBoxLayout(self.widget_5)
+        self.horizontalLayout_8.setSpacing(3)
+        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
+        self.horizontalLayout_8.setContentsMargins(0, 0, 0, 0)
+        self.forModelLineEdit = QLineEdit(self.widget_5)
         self.forModelLineEdit.setObjectName(u"forModelLineEdit")
 
-        self.gridLayout.addWidget(self.forModelLineEdit, 1, 1, 1, 1)
+        self.horizontalLayout_8.addWidget(self.forModelLineEdit)
+
+        self.forModelCheckBox = QCheckBox(self.widget_5)
+        self.forModelCheckBox.setObjectName(u"forModelCheckBox")
+
+        self.horizontalLayout_8.addWidget(self.forModelCheckBox)
+
+
+        self.gridLayout.addWidget(self.widget_5, 1, 1, 1, 1)
 
 
         self.verticalLayout_9.addLayout(self.gridLayout)
@@ -520,7 +519,6 @@ class Ui_customWidgetForModelOper(object):
         self.clientsLineEdit.setPlaceholderText("")
         self.label_4.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041c\u043e\u0434\u0435\u043b:", None))
         self.label_13.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0414\u0430\u0442\u0430:", None))
-        self.modelActualCheckBox.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0410\u043a\u0442\u0438\u0432\u0435\u043d", None))
         self.dataUpdatedLabel.setText("")
         self.newModelCheckBox.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0421\u044a\u0437\u0434\u0430\u0432\u0430\u043d\u0435 \u043d\u0430 \u043d\u043e\u0432 \u043c\u043e\u0434\u0435\u043b", None))
         self.editModelCheckBox.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0420\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u0430\u043d\u0435 \u043d\u0430:", None))
@@ -531,13 +529,14 @@ class Ui_customWidgetForModelOper(object):
         self.label_6.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041c\u0430\u0448\u0438\u043d\u0430/\u0426\u0435\u0445", None))
         self.label_9.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0411\u0440\u043e\u0439", None))
         self.piecesLineEdit.setPlaceholderText(QCoreApplication.translate("customWidgetForModelOper", u"0", None))
-        self.label_3.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0424\u0430\u0438\u043d", None))
+        self.label_3.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0424\u0430\u0439\u043d", None))
         self.label_10.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435", None))
         self.actualCheckBox.setText("")
         self.label_11.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0410\u043a\u0442\u0443\u0430\u043b\u0435\u043d", None))
         self.saveNewModel.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0414\u043e\u0431\u0430\u0432\u044f\u043d\u0435", None))
         self.label_12.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0418\u043c\u0435:", None))
         self.label_14.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0417\u0430 \u041c\u043e\u0434\u0435\u043b:", None))
+        self.forModelCheckBox.setText("")
         self.saveOpertaionsGroupsBtn.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0417\u0430\u043f\u0430\u0437\u0432\u0430\u043d\u0435", None))
         self.selectAllCheckbox.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0412\u0441\u0438\u0447\u043a\u0438", None))
     # retranslateUi

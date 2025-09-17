@@ -346,37 +346,6 @@ QLineEdit {
                       </property>
                      </widget>
                     </item>
-                    <item row="3" column="1">
-                     <widget class="QWidget" name="widget_6" native="true">
-                      <layout class="QHBoxLayout" name="horizontalLayout_8">
-                       <property name="spacing">
-                        <number>0</number>
-                       </property>
-                       <property name="leftMargin">
-                        <number>0</number>
-                       </property>
-                       <property name="topMargin">
-                        <number>0</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>0</number>
-                       </property>
-                       <property name="bottomMargin">
-                        <number>0</number>
-                       </property>
-                       <item alignment="Qt::AlignHCenter">
-                        <widget class="QCheckBox" name="modelActualCheckBox">
-                         <property name="focusPolicy">
-                          <enum>Qt::ClickFocus</enum>
-                         </property>
-                         <property name="text">
-                          <string>Активен</string>
-                         </property>
-                        </widget>
-                       </item>
-                      </layout>
-                     </widget>
-                    </item>
                     <item row="2" column="1">
                      <widget class="QLabel" name="dataUpdatedLabel">
                       <property name="text">
@@ -610,7 +579,7 @@ QLineEdit {
                     <item row="2" column="2">
                      <widget class="QLabel" name="label_3">
                       <property name="text">
-                       <string>Фаин</string>
+                       <string>Файн</string>
                       </property>
                      </widget>
                     </item>
@@ -725,7 +694,35 @@ QLineEdit {
                </widget>
               </item>
               <item row="1" column="1">
-               <widget class="QLineEdit" name="forModelLineEdit"/>
+               <widget class="QWidget" name="widget_5" native="true">
+                <layout class="QHBoxLayout" name="horizontalLayout_8">
+                 <property name="spacing">
+                  <number>3</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QLineEdit" name="forModelLineEdit"/>
+                 </item>
+                 <item>
+                  <widget class="QCheckBox" name="forModelCheckBox">
+                   <property name="text">
+                    <string/>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
               </item>
              </layout>
             </item>
