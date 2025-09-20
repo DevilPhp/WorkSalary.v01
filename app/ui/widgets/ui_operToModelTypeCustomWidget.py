@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'operToModelTypeCustomWidgetbavhTE.ui'
+## Form generated from reading UI file 'operToModelTypeCustomWidgetbKWKas.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -88,13 +88,13 @@ class Ui_customWidgetForModelOper(object):
         self.verticalLayout.setSpacing(10)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(10, 10, 10, 10)
-        self.widget = QWidget(customWidgetForModelOper)
-        self.widget.setObjectName(u"widget")
-        self.verticalLayout_4 = QVBoxLayout(self.widget)
+        self.mainWidget = QWidget(customWidgetForModelOper)
+        self.mainWidget.setObjectName(u"mainWidget")
+        self.verticalLayout_4 = QVBoxLayout(self.mainWidget)
         self.verticalLayout_4.setSpacing(10)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
-        self.headerHolder = QWidget(self.widget)
+        self.headerHolder = QWidget(self.mainWidget)
         self.headerHolder.setObjectName(u"headerHolder")
         self.horizontalLayout = QHBoxLayout(self.headerHolder)
         self.horizontalLayout.setSpacing(20)
@@ -153,7 +153,7 @@ class Ui_customWidgetForModelOper(object):
 
         self.verticalLayout_4.addWidget(self.headerHolder)
 
-        self.widget_2 = QWidget(self.widget)
+        self.widget_2 = QWidget(self.mainWidget)
         self.widget_2.setObjectName(u"widget_2")
         self.horizontalLayout_7 = QHBoxLayout(self.widget_2)
         self.horizontalLayout_7.setSpacing(0)
@@ -453,7 +453,7 @@ class Ui_customWidgetForModelOper(object):
 
         self.verticalLayout_4.addWidget(self.widget_2, 0, Qt.AlignLeft)
 
-        self.operationsHolder = QWidget(self.widget)
+        self.operationsHolder = QWidget(self.mainWidget)
         self.operationsHolder.setObjectName(u"operationsHolder")
         sizePolicy.setHeightForWidth(self.operationsHolder.sizePolicy().hasHeightForWidth())
         self.operationsHolder.setSizePolicy(sizePolicy)
@@ -498,7 +498,7 @@ class Ui_customWidgetForModelOper(object):
         self.verticalLayout_4.addWidget(self.operationsHolder)
 
 
-        self.verticalLayout.addWidget(self.widget, 0, Qt.AlignTop)
+        self.verticalLayout.addWidget(self.mainWidget, 0, Qt.AlignTop)
 
 
         self.retranslateUi(customWidgetForModelOper)

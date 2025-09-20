@@ -42,3 +42,8 @@ TODO 12. Users management page
 TODO 13. Parameters management page
     13.1 Adding and editing crucial params like Payment per min day/night and others
     13.2 Some other funcs if necessary
+
+TODO 14. Operations Groups for Model
+    14.1 Function for adding operations groups for Model in Groups window
+    14.2 Function for calling the operations for the selected model if there is any
+    14.3 Function for calling default operations if there isnt any model selected

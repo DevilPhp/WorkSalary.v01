@@ -261,17 +261,20 @@ class CustomCheckboxWidget(QWidget, Ui_customCheckBoxWidget):
         self.checkBox.customContextMenuRequested.connect(self.showContextMenu)
 
     def showContextMenu(self, pos):
-        menu = QMenu(self)
-        editAction = menu.addAction("Редактиране")
-        deleteAction = None
-        if self.window().objectName() == 'customWidgetForDefaultOper':
-            deleteAction = menu.addAction("Изтриване")
-        action = menu.exec_(self.checkBox.mapToGlobal(pos))
+        window = self.window()
+        if ((window.objectName() == 'customWidgetForModelOper' and not window.operationsGroupsHolder.isVisible()) or
+                window.objectName() == 'customWidgetForDefaultOper'):
+            menu = QMenu(self)
+            editAction = menu.addAction("Редактиране")
+            deleteAction = None
+            if window.objectName() == 'customWidgetForDefaultOper':
+                deleteAction = menu.addAction("Изтриване")
+            action = menu.exec_(self.checkBox.mapToGlobal(pos))
 
-        if action == editAction:
-            self.editCheckBoxName()
-        elif action == deleteAction:
-            self.deleteCheckBox()
+            if action == editAction:
+                self.editCheckBoxName()
+            elif action == deleteAction:
+                self.deleteCheckBox()
 
     def deleteCheckBox(self):
         self.deleteWidget.emit(self)

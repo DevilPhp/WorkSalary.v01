@@ -94,7 +94,7 @@ QLineEdit {
     <number>10</number>
    </property>
    <item alignment="Qt::AlignTop">
-    <widget class="QWidget" name="widget" native="true">
+    <widget class="QWidget" name="mainWidget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <property name="spacing">
        <number>10</number>
