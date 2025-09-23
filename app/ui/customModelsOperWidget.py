@@ -45,7 +45,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.modelExistingOperations = []
         self.newModelOperations = []
         self.groupOperations = OpS.getOperationsGroups()
-        self.groupOperationsForModel = []
+        self.groupOperationsForModel = {}
         self.selectedOperForGroup = []
         self.addOperationsForNewModel = {}
         self.newModel = {}
@@ -111,21 +111,44 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.operationsGroupsReturnBtn.setVisible(False)
 
     def updateGroupOperations(self):
+        # if self.operationGroupLineEdit.text() != '':
+        #     # self.isOperationsReseted = False
+        #     completer = self.operationGroupLineEdit.completer()
+        #     self.operationGroupLineEdit.setText(Utils.setReturnBtnForCompleter(completer))
         name = self.operationGroupLineEdit.text()
-        if name in self.groupOperations.keys():
-            self.selectedOperForGroup.clear()
-            # self.isOperationsReseted = False
-            self.resetAllOperations(True)
-            for operation in self.groupOperations[name]['operations']:
-                if operation in self.comboBoxItems.keys():
-                    self.comboBoxItems[operation][0].setCheckState(Qt.CheckState.Checked)
-                    self.selectedOperForGroup.append(operation)
-        elif name == '':
-            # if not self.isOperationsReseted:
-            self.resetAllOperations(True)
+        if not self.forModelCheckBox.isChecked():
+            if name in self.groupOperations.keys():
+                self.selectedOperForGroup.clear()
+                # if not self.isOperationsReseted:
+                self.resetAllOperations(True)
+                for operation in self.groupOperations[name]['operations']:
+                    if operation in self.comboBoxItems.keys():
+                        self.comboBoxItems[operation][0].setCheckState(Qt.CheckState.Checked)
+                        self.selectedOperForGroup.append(operation)
+            else:
+                # if not self.isOperationsReseted:
+                self.resetAllOperations(True)
+            self.operationGroupLineEdit.clearFocus()
+        else:
+            if name in self.groupOperationsForModel.keys():
+                self.selectedOperForGroup.clear()
+                # if not self.isOperationsReseted:
+                self.resetAllOperations(resetNames=False)
+                for operation in self.groupOperationsForModel[name]['operations']:
+                    if operation in self.comboBoxItems.keys():
+                        self.comboBoxItems[operation][0].setCheckState(Qt.CheckState.Checked)
+                        self.selectedOperForGroup.append(operation)
+                self.operationGroupLineEdit.clearFocus()
+            else:
+                self.selectedOperForGroup.clear()
+                self.resetAllOperations(resetNames=False)
         self.operationGroupLineEdit.clearFocus()
 
+        # if name in self.groupOperations.keys() or name in self.groupOperationsForModel.keys():
+        #     self.isOperationsReseted = False
+
     def saveOperationsGroups(self):
+        # print(self.selectedOperForGroup)
         name = self.operationGroupLineEdit.text()
         if name == '':
             MessageManager.showOnWidget(self, 'Моля въведете име за група операции!', 'error')
@@ -142,10 +165,10 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             MessageManager.showOnWidget(self, 'Моля изберете операции за група!', 'error')
             return
 
-        if name in self.groupOperations.keys():
-            result = OpS.addOperationToGroup(self.selectedOperForGroup, groupId=(self.groupOperations[name]['id']))
+        if not self.forModelCheckBox.isChecked():
+            result = self.saveDefaultGroups(name)
         else:
-            result = OpS.addOperationToGroup(self.selectedOperForGroup, name=name)
+            result = self.saveForModelGroups(name)
 
         if result:
             MessageManager.showOnWidget(self, f'Група {name} е запазена успешно!', 'success')
@@ -155,11 +178,37 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             self.operationGroupLineEdit.clear()
             self.resetAllOperations(True)
 
+    def saveForModelGroups(self, name):
+        modelId = self.forModelLineEdit.text().split(' - ')[0]
+        modelName = self.forModelLineEdit.text().split(' - ')[1]
+        # print(self.selectedOperForGroup)
+        if name in self.groupOperationsForModel.keys():
+            result = OpS.addOperationsGroupToModel(
+                modelId, modelName, self.selectedOperForGroup, self.groupOperationsForModel[name]['id']
+            )
+        else:
+            result = OpS.addOperationsGroupToModel(modelId, modelName, self.selectedOperForGroup, name=name)
+        return result
+
+    def saveDefaultGroups(self, name):
+        if name in self.groupOperations.keys():
+            result = OpS.addOperationToGroup(self.selectedOperForGroup, groupId=(self.groupOperations[name]['id']))
+        else:
+            result = OpS.addOperationToGroup(self.selectedOperForGroup, name=name)
+        return result
+
     def resetGroupOperInfo(self):
         self.operationGroupLineEdit.clear()
-        self.groupOperations = OpS.getOperationsGroups()
-        Utils.setupCompleter(self.groupOperations.keys(), self.operationGroupLineEdit)
-        self.resetAllOperations(True)
+        if not self.forModelCheckBox.isChecked():
+            self.groupOperations = OpS.getOperationsGroups()
+            Utils.setupCompleter(self.groupOperations.keys(), self.operationGroupLineEdit)
+            self.forModelCheckBox.setChecked(False)
+            self.resetAllOperations(True)
+        else:
+            self.groupOperationsForModel = OpS.getGroupOperationsForModel(self.forModelLineEdit.text().split(' - ')[0])
+            Utils.setupCompleter(self.groupOperationsForModel.keys(), self.operationGroupLineEdit)
+            self.resetAllOperations(resetNames=False)
+        self.operationGroupLineEdit.setFocus()
 
     def showOperationsGroupView(self):
         self.operationsHolder.setEnabled(True)
@@ -177,19 +226,30 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.setCompleterForGroups()
 
     def setCompleterForGroups(self):
-        if self.forModelCheckBox.isChecked():
-            print('here')
+        if self.forModelCheckBox.isChecked() and self.forModelLineEdit.text() != '':
+            modelId = self.forModelLineEdit.text().split(' - ')[0]
+            self.groupOperationsForModel = OpS.getGroupOperationsForModel(modelId)
+            Utils.setupCompleter(self.groupOperationsForModel.keys(), self.operationGroupLineEdit)
         else:
             Utils.setupCompleter(self.groupOperations.keys(), self.operationGroupLineEdit)
 
     def updateForModelLineEdit(self):
-        if not self.isOperationsReseted:
-            self.resetAllOperations()
+        # if not self.isOperationsReseted:
+        #     self.resetAllOperations()
         if self.forModelCheckBox.isChecked():
             self.forModelLineEdit.setReadOnly(False)
+            self.forModelLineEdit.setFocus()
+            if self.operationGroupLineEdit.text() != '':
+                self.operationGroupLineEdit.clear()
+                self.resetAllOperations(True)
         else:
             self.forModelLineEdit.setReadOnly(True)
-            self.forModelLineEdit.clear()
+            if self.forModelLineEdit.text() != '':
+                self.forModelLineEdit.clear()
+                self.resetAllOperations(True)
+            self.operationGroupLineEdit.clear()
+            self.operationGroupLineEdit.setFocus()
+            Utils.setupCompleter(self.groupOperations.keys(), self.operationGroupLineEdit)
 
     def returnToModelOpersView(self):
         self.operationsGroupsHolder.setVisible(False)
@@ -203,10 +263,17 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.operationsHolder.setEnabled(False)
         self.modelsLineEdit.clear()
         self.dataUpdatedLabel.setText('')
+        if self.newModelCheckBox.isChecked():
+            self.newModelCheckBox.setChecked(False)
+        if self.editModelCheckBox.isChecked():
+            self.editModelCheckBox.setChecked(False)
+        self.editModelHolder.setVisible(False)
 
     def setModelsLineEditForGroups(self):
         Utils.setupCompleter(self.modelsForGroup, self.forModelLineEdit)
         if self.modelsLineEdit.text() != '':
+            completer = self.forModelLineEdit.completer()
+            self.forModelLineEdit.setText(Utils.setReturnBtnForCompleter(completer))
             modelName = f'{self.modelNames[self.modelsLineEdit.text()][0]} - {self.modelsLineEdit.text()}'
             if modelName in self.modelsForGroup:
                 self.forModelLineEdit.setText(self.modelsForGroup[self.modelsForGroup.index(modelName)])
@@ -216,20 +283,30 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             self.forModelLineEdit.clear()
 
     def forModelLineEditChange(self):
-        if self.forModelLineEdit.text() in self.modelsForGroup:
-            operationsForModel = OpS.getOperationsForModel(self.forModelLineEdit.text().split(' - ')[0])
+        selectedText = self.forModelLineEdit.text()
+        if selectedText in self.modelsForGroup:
+            operationsForModel = OpS.getOperationsForModel(selectedText.split(' - ')[0])
+            self.groupOperationsForModel = OpS.getGroupOperationsForModel(selectedText.split(' - ')[0])
+            Utils.setupCompleter(self.groupOperationsForModel.keys(), self.operationGroupLineEdit)
 
             for operation in operationsForModel:
                 self.comboBoxItems[operation.ОперацияNo][0].setText(
                     f'{operation.ОперацияNo}:  {operation.Операция}'
                 )
-                self.comboBoxItems[operation.ОперацияNo][1].setText(str(round(operation.TimeForOper, 2)))
-            self.isOperationsReseted = False
+                self.comboBoxItems[operation.ОперацияNo][1].setText('')
+                # self.comboBoxItems[operation.ОперацияNo][1].setText(str(round(operation.TimeForOper, 2)))
+            # self.operationGroupLineEdit.clear()
+            self.operationGroupLineEdit.setFocus()
         else:
+            self.forModelLineEdit.clear()
+            self.operationGroupLineEdit.clear()
+            Utils.setupCompleter(self.groupOperations.keys(), self.operationGroupLineEdit)
             if not self.isOperationsReseted:
                 self.resetAllOperations()
             # Utils.setupCompleter(self.groupOperations.keys(), self.operationGroupLineEdit)
             # self.resetAllOperations()
+        if selectedText in self.modelsForGroup:
+            self.isOperationsReseted = False
 
     def checkBtnSender(self):
         if self.newModelCheckBox.isChecked():
@@ -421,6 +498,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         if selectedText == '':
             if not self.isOperationsReseted:
                 self.resetAllOperations()
+            Utils.setupCompleter([], self.modelsLineEdit)
             return
         if selectedText not in self.clientNames:
             MessageManager.showOnWidget(self, 'Не е намерен клиент с такова име!', 'warning')
@@ -442,8 +520,8 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         Utils.setupCompleter(self.modelNames.keys(), self.modelsLineEdit)
 
     def selectModel(self):
-        if not self.isOperationsReseted:
-            self.resetAllOperations(True)
+        # if not self.isOperationsReseted:
+        # self.resetAllOperations(True)
         self.modelExistingOperations.clear()
 
         if self.modelsLineEdit.text() != '':
@@ -478,18 +556,20 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
                     f'{operation.ОперацияNo}:  {operation.Операция}'
                 )
                 self.comboBoxItems[operation.ОперацияNo][1].setText(str(round(operation.TimeForOper, 2)))
-        self.isOperationsReseted = False
+        if selectedText in self.modelNames:
+            self.isOperationsReseted = False
 
-    def resetAllOperations(self, clearOperations=False):
+    def resetAllOperations(self, clearOperations=False, resetNames=True):
         print('OPERATIONS RESETED')
         for checkbox in self.comboBoxItems.values():
             if int(checkbox[0].objectName()) in self.newModelOperations and not clearOperations:
                 checkbox[0].setCheckState(Qt.CheckState.Checked)
             else:
-                if int(checkbox[0].objectName()) in self.operations.keys():
-                    checkbox[0].setText(
-                        f'{checkbox[0].objectName()}:  {self.operations[int(checkbox[0].objectName())]["name"]}'
-                    )
+                if resetNames:
+                    if int(checkbox[0].objectName()) in self.operations.keys():
+                        checkbox[0].setText(
+                            f'{checkbox[0].objectName()}:  {self.operations[int(checkbox[0].objectName())]["name"]}'
+                        )
                 checkbox[0].setChecked(False)
                 checkbox[1].setText('')
 
@@ -596,6 +676,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             elif (self.sender().checkState() == Qt.CheckState.Unchecked and
                   self.operationsGroupsHolder.isVisible()):
                 self.selectedOperForGroup.remove(int(self.sender().objectName()))
+            print(self.selectedOperForGroup)
 
     def selectAllOperations(self):
         # self.selectAllCheckbox.blockSignals(True)

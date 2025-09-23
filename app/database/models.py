@@ -77,4 +77,5 @@ class ProductionModel(Base):
     productionModelOperations = relationship('ProductionModelOperations', back_populates='productionModel')
     producedPiecesForModels = relationship('ProducedPiecesForModel', back_populates='productionModel')
     timePaperOperations = relationship('TimePaperOperation', back_populates='productionModels')
+    operationsGroupForModel = relationship('OperationsGroupForModel', back_populates='productionModel')
 

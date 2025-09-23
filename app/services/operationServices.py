@@ -1,7 +1,7 @@
 from sqlalchemy import func
 
 from app.database import getDatabase, setDatabase
-from app.database.operations import Operation, ProductionModelOperations, OperationsGroup
+from app.database.operations import Operation, ProductionModelOperations, OperationsGroup, OperationsGroupForModel
 from app.logger import logger
 
 
@@ -38,6 +38,46 @@ class OperationsServices:
     def checkIfOperExistInModel(operId):
         with getDatabase() as session:
             return session.query(Operation).filter_by(ОперацияNo=operId).first() is not None
+
+    @staticmethod
+    def addOperationsGroupToModel(modelId, modelName, operations, groupId=None, name=None):
+        with setDatabase() as session:
+
+            if not operations and groupId:
+                group = session.query(OperationsGroupForModel).filter_by(id=groupId).first()
+                session.delete(group)
+                session.commit()
+                logger.info(f'Operation Group {group.Name} for model {modelId} - {modelName} deleted')
+                return True
+
+            dbOperations = session.query(ProductionModelOperations).filter(
+                ProductionModelOperations.ПоръчкаNo == modelName, ProductionModelOperations.ОперацияNo.in_(operations)
+            ).all()
+            print(groupId)
+            if groupId:
+                group = session.query(OperationsGroupForModel).filter_by(id=groupId).first()
+                if group:
+                    group.operations = []
+                    session.flush()
+                    print(operations)
+                    for operation in dbOperations:
+                        group.operations.append(operation)
+                    session.commit()
+                    logger.info(f'Operation Group {group.Name} for model {modelId} - {modelName} '
+                                f'updated with operations {operations}')
+            else:
+                newModelGroup = OperationsGroupForModel(
+                    Name=name,
+                    ModelId=modelId
+                )
+                for operation in dbOperations:
+                    newModelGroup.operations.append(operation)
+                    print(operation.Операция)
+                session.add(newModelGroup)
+                session.commit()
+                logger.info(f'Operation Group {newModelGroup.Name} for model {modelId} - {modelName} '
+                            f'added with operations {operations}')
+            return True
 
     @staticmethod
     def addOperationToGroup(operations, groupId=None, name=None):
@@ -83,6 +123,22 @@ class OperationsServices:
                     'operations': operations
                 }
             return operationsGroups
+
+    @staticmethod
+    def getGroupOperationsForModel(modelId):
+        modelOperationsGroups = {}
+        operations = []
+        with getDatabase() as session:
+            groups = session.query(OperationsGroupForModel).filter_by(ModelId=modelId)\
+                .order_by(OperationsGroupForModel.id).all()
+            for group in groups:
+                if group.operations:
+                    operations = [operation.ОперацияNo for operation in group.operations]
+                modelOperationsGroups[group.Name] = {
+                    'id': group.id,
+                    'operations': operations
+                }
+            return modelOperationsGroups
 
     @staticmethod
     def getAllOperations():

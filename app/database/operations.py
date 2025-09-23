@@ -85,9 +85,11 @@ class OperationsGroup(Base):
 class OperationsGroupForModel(Base):
     __tablename__ = "operationsGroupForModels"
     id = Column(Integer, primary_key=True)
+    ModelId = Column(Integer, ForeignKey("productionModels.id"), nullable=False)
     Name = Column(String, nullable=False)
     Description = Column(String, nullable=True)
 
+    productionModel = relationship("ProductionModel", back_populates="operationsGroupForModel")
     operations = relationship("ProductionModelOperations",
                               secondary="operationsGroupsForModelsTable",
                               back_populates="operationsGroups")
