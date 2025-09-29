@@ -5,9 +5,7 @@ from PySide6.QtWidgets import QCompleter, QLineEdit, QApplication, QTableView
 from PySide6.QtCore import Qt, QStringListModel
 
 
-
 class Utils:
-
 
     @staticmethod
     def setReturnBtnForCompleter(completer):

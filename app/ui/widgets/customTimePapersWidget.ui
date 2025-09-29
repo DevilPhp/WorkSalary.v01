@@ -171,6 +171,9 @@ QComboBox::item{
 	height: 11px;  
 	border: 4px solid transparent;
 	padding: 0px 8px 0px 8px;
+}
+QComboBox:header{
+	color: black;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -1217,7 +1220,7 @@ QComboBox::item{
                    <second>0</second>
                    <year>1990</year>
                    <month>9</month>
-                   <day>4</day>
+                   <day>3</day>
                   </datetime>
                  </property>
                  <property name="displayFormat">

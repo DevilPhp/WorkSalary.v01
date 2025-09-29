@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customTimePapersWidgetZqgsQC.ui'
+## Form generated from reading UI file 'customTimePapersWidgetmwkcqY.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -181,6 +181,10 @@ class Ui_customTimePapersWidget(object):
 "	height: 11px;  \n"
 "	border: 4px solid transparent;\n"
 "	padding: 0px 8px 0px 8px;\n"
+"}\n"
+"QComboBox:header{\n"
+"	color: blac"
+                        "k;\n"
 "}")
         self.verticalLayout = QVBoxLayout(customTimePapersWidget)
         self.verticalLayout.setSpacing(10)
@@ -734,7 +738,7 @@ class Ui_customTimePapersWidget(object):
         self.timePaperDateEdit.setFrame(False)
         self.timePaperDateEdit.setAlignment(Qt.AlignCenter)
         self.timePaperDateEdit.setCorrectionMode(QAbstractSpinBox.CorrectToNearestValue)
-        self.timePaperDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 9, 4), QTime(0, 0, 0)))
+        self.timePaperDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 9, 3), QTime(0, 0, 0)))
 
         self.horizontalLayout_15.addWidget(self.timePaperDateEdit)
 

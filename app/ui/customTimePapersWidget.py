@@ -1,6 +1,7 @@
 from datetime import datetime
 from functools import partial
 
+from PySide6.QtCore import QTimer
 from PySide6.QtGui import QStandardItemModel, QStandardItem, QDoubleValidator
 from PySide6.QtWidgets import QMenu, QDialog
 
@@ -96,6 +97,17 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.workerNameLineEdit.textChanged.connect(self.showClearWorkerNameBtn)
         self.clearWorkerNameBtn.clicked.connect(self.clearWorkerName)
         self.showAllCheckBox.stateChanged.connect(self.showAllWorkersForDate)
+
+        self.workerNameLineEdit.returnPressed.connect(self.updateWorkerInfo)
+        self.clientModelsLineEdit.editingFinished.connect(self.updateModelInfo)
+
+        completer = self.clientModelsLineEdit.completer()
+        self.clientModelsLineEdit.setText(Utils.setReturnBtnForCompleter(completer))
+        self.clientModelsLineEdit.clear()
+
+        self.modelPiecesLineEdit.textChanged.connect(self.updateModelPieces)
+        self.timeForPieceLineEdit.textChanged.connect(self.updateModelPieces)
+        self.modelOperationLineEdit.editingFinished.connect(self.updateModelOperation)
 
     def showAllWorkersForDate(self):
         if self.showAllCheckBox.checkState() == Qt.CheckState.Checked:
@@ -458,17 +470,16 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         for worker in self.workers:
             self.workersInfo.append(f"{worker[0].Име} {worker[0].Фамилия} - {worker[0].Номер}")
         Utils.setupCompleter(self.workersInfo, self.workerNameLineEdit)
-        self.workerNameLineEdit.returnPressed.connect(self.updateWorkerInfo)
+
 
         for client in self.models:
             self.clientModels[f'{client[1].ПоръчкаNo} : {client[0].Клиент}'] = client[1].id
         Utils.setupCompleter(self.clientModels.keys(), self.clientModelsLineEdit)
-        self.clientModelsLineEdit.editingFinished.connect(self.updateModelInfo)
 
     def updateModelInfo(self):
-        if self.clientModelsLineEdit.text() != '':
-            completer = self.clientModelsLineEdit.completer()
-            self.clientModelsLineEdit.setText(Utils.setReturnBtnForCompleter(completer))
+        # if self.clientModelsLineEdit.text() != '':
+        #     completer = self.clientModelsLineEdit.completer()
+        #     self.clientModelsLineEdit.setText(Utils.setReturnBtnForCompleter(completer))
         selectedText = self.clientModelsLineEdit.text()
 
         if selectedText in self.clientModels.keys():
@@ -484,8 +495,14 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 ]
             Utils.setupCompleter(self.modelOperations.keys(), self.modelOperationLineEdit)
             self.modelOperationLineEdit.setReadOnly(False)
-            self.modelOperationLineEdit.editingFinished.connect(self.updateModelOperation)
             self.modelOperationLineEdit.setFocus()
+            operationsGroupsForModel = OpS.getGroupOperationsForModel(modelId)
+            print(operationsGroupsForModel)
+            self.operationsGroupComboBox.insertSeparator(self.operationsGroupComboBox.count())
+            for group, value in operationsGroupsForModel.items():
+                name = f'{value["id"]}: {group}'
+                self.operationsGroupComboBox.addItem(name)
+                self.operationsGroupComboBox.setCurrentIndex(-1)
         else:
             self.operationsGroupsHolder.setEnabled(False)
             self.modelTotalPiecesLineEdit.clear()
@@ -505,6 +522,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             return
 
         if selectedText in self.modelOperations.keys():
+
             self.piecesForProdLineEdit.setText(str(
                 int(self.modelTotalPiecesLineEdit.text()) - self.modelOperations[selectedText][2]
             ))
@@ -515,8 +533,6 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.piecesProducedLineEdit.setText(str(self.modelOperations[selectedText][2]))
             self.timeForPieceLineEdit.setText(str(self.modelOperations[selectedText][0]))
             self.modelPiecesLineEdit.setReadOnly(False)
-            self.modelPiecesLineEdit.textChanged.connect(self.updateModelPieces)
-            self.timeForPieceLineEdit.textChanged.connect(self.updateModelPieces)
             self.modelPiecesLineEdit.setFocus()
 
     def updateModelPieces(self):

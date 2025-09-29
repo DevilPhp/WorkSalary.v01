@@ -51,7 +51,7 @@ class ModelService:
     @staticmethod
     def getClientsAndModels():
         with getDatabase() as session:
-            return session.query(Client, ProductionModel).join(ProductionModel).all()
+            return session.query(Client, ProductionModel).join(ProductionModel).filter(ProductionModel.Actual == 'true').all()
 
     @staticmethod
     def getDfaultOperations(vidOblekloId):
