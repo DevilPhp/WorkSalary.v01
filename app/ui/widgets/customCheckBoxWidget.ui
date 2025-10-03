@@ -54,6 +54,10 @@ QCheckBox:checked {
 	color: #008b69;
 }
 
+QCheckBox:disable {
+	color: black;
+}
+
 QLineEdit {
 	border-bottom: 1px solid #7c9399;
 }

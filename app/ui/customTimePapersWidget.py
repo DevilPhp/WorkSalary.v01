@@ -37,6 +37,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.initialCheckBoxes = {}
         self.operationsGroups = OpS.getOperationsGroups()
         self.operationsGroupsHolder.setEnabled(False)
+        self.operationsGroupsForModel = None
         self.setOperationsGroups()
         self.lastSelectedModel = None
         self.setupWorkerAndModelsCompleter()
@@ -99,11 +100,14 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.showAllCheckBox.stateChanged.connect(self.showAllWorkersForDate)
 
         self.workerNameLineEdit.returnPressed.connect(self.updateWorkerInfo)
-        self.clientModelsLineEdit.editingFinished.connect(self.updateModelInfo)
+        self.clientModelsLineEdit.returnPressed.connect(self.updateModelInfo)
 
-        completer = self.clientModelsLineEdit.completer()
-        self.clientModelsLineEdit.setText(Utils.setReturnBtnForCompleter(completer))
-        self.clientModelsLineEdit.clear()
+        # self.workerNameLineEdit.editingFinished.connect(self.checkWorker)
+        # self.clientModelsLineEdit.editingFinished.connect(self.checkModel)
+
+        # completer = self.clientModelsLineEdit.completer()
+        # self.clientModelsLineEdit.setText(Utils.setReturnBtnForCompleter(completer))
+        # self.clientModelsLineEdit.setText('')
 
         self.modelPiecesLineEdit.textChanged.connect(self.updateModelPieces)
         self.timeForPieceLineEdit.textChanged.connect(self.updateModelPieces)
@@ -186,12 +190,20 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.modelPiecesLineEdit.clear()
             return
 
-    def setOperationsGroups(self):
+    def setOperationsGroups(self, modelId=None):
         self.operationsGroupComboBox.clear()
         for group, value in self.operationsGroups.items():
             name = f'{value["id"]}: {group}'
             self.operationsGroupComboBox.addItem(name)
             self.operationsGroupComboBox.setCurrentIndex(-1)
+        if modelId:
+            self.operationsGroupsForModel = OpS.getGroupOperationsForModel(modelId)
+            # print(operationsGroupsForModel)
+            self.operationsGroupComboBox.insertSeparator(self.operationsGroupComboBox.count())
+            for group, value in self.operationsGroupsForModel.items():
+                name = f'{value["id"]}: {group}'
+                self.operationsGroupComboBox.addItem(name)
+                self.operationsGroupComboBox.setCurrentIndex(-1)
 
     def showOperationsGroups(self):
         self.operationsGroupComboBox.setEnabled(self.operationsGroupsCheckBox.isChecked())
@@ -471,21 +483,28 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.workersInfo.append(f"{worker[0].Име} {worker[0].Фамилия} - {worker[0].Номер}")
         Utils.setupCompleter(self.workersInfo, self.workerNameLineEdit)
 
-
         for client in self.models:
             self.clientModels[f'{client[1].ПоръчкаNo} : {client[0].Клиент}'] = client[1].id
         Utils.setupCompleter(self.clientModels.keys(), self.clientModelsLineEdit)
 
+    def checkModel(self):
+        if not self.clientModelsLineEdit.text() in self.clientModels.keys():
+            self.clientModelsLineEdit.clear()
+            self.clientModelsLineEdit.setFocus()
+            MM.showOnWidget(self, "Избран е несъществуващ модел", 'error')
+            return
+
     def updateModelInfo(self):
-        # if self.clientModelsLineEdit.text() != '':
-        #     completer = self.clientModelsLineEdit.completer()
-        #     self.clientModelsLineEdit.setText(Utils.setReturnBtnForCompleter(completer))
+        if self.clientModelsLineEdit.text() != '':
+            completer = self.clientModelsLineEdit.completer()
+            self.clientModelsLineEdit.setText(Utils.setReturnBtnForCompleter(completer))
         selectedText = self.clientModelsLineEdit.text()
 
         if selectedText in self.clientModels.keys():
             self.operationsGroupsHolder.setEnabled(True)
             self.modelOperations.clear()
             modelId = self.clientModels[selectedText]
+            self.setOperationsGroups(modelId)
             modelData = MoS.getModelOperations(modelId)
             self.modelTotalPiecesLineEdit.setText(str(modelData[1]) if modelData[1] else '0')
             operations = modelData[0]
@@ -496,14 +515,9 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             Utils.setupCompleter(self.modelOperations.keys(), self.modelOperationLineEdit)
             self.modelOperationLineEdit.setReadOnly(False)
             self.modelOperationLineEdit.setFocus()
-            operationsGroupsForModel = OpS.getGroupOperationsForModel(modelId)
-            print(operationsGroupsForModel)
-            self.operationsGroupComboBox.insertSeparator(self.operationsGroupComboBox.count())
-            for group, value in operationsGroupsForModel.items():
-                name = f'{value["id"]}: {group}'
-                self.operationsGroupComboBox.addItem(name)
-                self.operationsGroupComboBox.setCurrentIndex(-1)
         else:
+            self.clientModelsLineEdit.clear()
+            self.clientModelsLineEdit.setFocus()
             self.operationsGroupsHolder.setEnabled(False)
             self.modelTotalPiecesLineEdit.clear()
 
@@ -557,7 +571,14 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         if (self.modelOperationLineEdit.text() == 'Група операции' and
                 self.operationsGroupsCheckBox.isChecked() and
                 self.operationsGroupComboBox.currentIndex() > -1):
-            operations = self.operationsGroups[self.operationsGroupComboBox.currentText().split(': ')[1]]['operations']
+            try:
+                operations = self.operationsGroups[
+                    self.operationsGroupComboBox.currentText().split(': ')[1]
+                ]['operations']
+            except KeyError:
+                operations = self.operationsGroupsForModel[
+                    self.operationsGroupComboBox.currentText().split(': ')[1]
+                ]['operations']
             for operation in operations:
                 for key in self.modelOperations.keys():
                     if operation == int(key.split(': ')[0]):
@@ -651,6 +672,13 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         else:
             return None
 
+    def checkWorker(self):
+        if not self.workerNameLineEdit.text() in self.workersInfo:
+            self.workerNameLineEdit.clear()
+            self.workerNameLineEdit.setFocus()
+            MM.showOnWidget(self, "Избран е несъществуващ работник", 'error')
+            return
+
     def updateWorkerInfo(self):
         self.clearOperationInfo(False)
         if self.workerNameLineEdit.text() != '':
@@ -689,6 +717,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.showAllCheckBox.blockSignals(False)
             self.refreshTimePapersForToday(int(workerId))
         else:
+            self.workerNameLineEdit.clear()
+            self.workerNameLineEdit.setFocus()
             self.clearWorker()
 
     def clearWorker(self):

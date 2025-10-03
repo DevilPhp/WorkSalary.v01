@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customCheckBoxWidgetdQPObI.ui'
+## Form generated from reading UI file 'customCheckBoxWidgetMkXbAB.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -56,6 +56,10 @@ class Ui_customCheckBoxWidget(object):
 "\n"
 "QCheckBox:checked {\n"
 "	color: #008b69;\n"
+"}\n"
+"\n"
+"QCheckBox:disable {\n"
+"	color: black;\n"
 "}\n"
 "\n"
 "QLineEdit {\n"
