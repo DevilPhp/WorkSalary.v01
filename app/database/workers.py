@@ -80,8 +80,8 @@ class TimePaper(Base):
     WeekDay = Column(Integer)
     PaymentRatio = Column(Float, default=1)
     ShiftId = Column(Integer, ForeignKey('workingShifts.id'), nullable=True)
-    IsHourlyPaid = Column(Integer, ForeignKey('hourlyPays.id'), nullable=True)
-    IsOvertime = Column(Integer, ForeignKey('overtimePays.id'), nullable=True, default=None)
+    # IsHourlyPaid = Column(Integer, ForeignKey('hourlyPays.id'), nullable=True)
+    # IsOvertime = Column(Integer, ForeignKey('overtimePays.id'), nullable=True, default=None)
     NightShiftMins = Column(Integer, nullable=True)
     WorkerId = Column(Integer, ForeignKey('workers.Номер'), nullable=False)
     TotalPieces = Column(Integer, nullable=False, default=0)
@@ -128,12 +128,12 @@ class WorkingShift(Base):
 class HourlyPay(Base):
     __tablename__ = "hourlyPays"
     id = Column(Integer, primary_key=True)
+    TimePaperId = Column(Integer, ForeignKey('timePapers.id'), nullable=False)
     Start = Column(Time, nullable=False)
     End = Column(Time, nullable=False)
     Efficiency = Column(Float, nullable=False)
     HourlyRate = Column(Float, nullable=False, default=0)
-    # TimePaperId = Column(Integer, ForeignKey('timePapers.id'))
-    DateUpdated = Column(Date, nullable=False, default=datetime.today())
+    DateUpdated = Column(Date, nullable=False, default=datetime.today(), onupdate=datetime.today())
     UserUpdated = Column(String, nullable=False)
 
     timePapers = relationship("TimePaper", back_populates="hourlyPays")
@@ -142,12 +142,12 @@ class HourlyPay(Base):
 class OvertimePay(Base):
     __tablename__ = "overtimePays"
     id = Column(Integer, primary_key=True)
+    TimePaperId = Column(Integer, ForeignKey('timePapers.id'), nullable=False)
     Start = Column(Time, nullable=False)
     End = Column(Time, nullable=False)
     Efficiency = Column(Float, nullable=False)
     OvertimeRate = Column(Float, nullable=False, default=0)
-    # TimePaperId = Column(Integer, ForeignKey('timePapers.id'), nullable=True)
-    DateUpdated = Column(Date, nullable=False, default=datetime.today())
+    DateUpdated = Column(Date, nullable=False, default=datetime.today(), onupdate=datetime.today())
     UserUpdated = Column(String, nullable=False)
 
     timePapers = relationship("TimePaper", back_populates="overtimePays")

@@ -28,8 +28,7 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
             self.tablePaymentDetailsModel.setHorizontalHeaderItem(i, QStandardItem(tableHeaderName))
             self.tablePaymentDetailsModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignLeft)
             self.tablePaymentDetailsModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignVCenter)
-        self.proxyModelPaymentsDetailsTree = CaseInsensitiveProxyModel(
-                                                                       parent=self)
+        self.proxyModelPaymentsDetailsTree = CaseInsensitiveProxyModel(parent=self)
         self.setProxyModel(self.proxyModelPaymentsDetailsTree, self.tablePaymentDetailsModel, self.workerDetalsTreeView)
         # self.timePapersForDayTableView.setModel(self.tablePaymentsModel)
         self.workerDetalsTreeView.header().setDefaultSectionSize(80)
@@ -38,13 +37,13 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
         self.workerDetalsTreeView.setColumnWidth(2, 120)
         self.workerDetalsTreeView.setColumnWidth(1, 120)
         self.refreshPaymentsDetailsTreeView()
-        self.workerDetalsTreeView.selectionModel().selectionChanged.connect(self.treeViewSelectionChanged)
+        # self.workerDetalsTreeView.selectionModel().selectionChanged.connect(self.treeViewSelectionChanged)
 
-    def treeViewSelectionChanged(self):
-        selection = self.workerDetalsTreeView.selectionModel().selectedRows(0)
-        for item in selection:
-            if not item.parent().isValid():
-                print(item.data())
+    # def treeViewSelectionChanged(self):
+    #     selection = self.workerDetalsTreeView.selectionModel().selectedRows(0)
+    #     for item in selection:
+    #         if not item.parent().isValid():
+    #             print(item.data())
 
     # ['ID', 'Дата', 'Смяна', 'Поръчки', 'Операции',
     #  'Време', 'Поч. Раб.' 'Ефект.', 'Нач. лв.', 'Нач. €']
@@ -68,8 +67,10 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
                     QStandardItem(str(details['totalPieces'])),
                     QStandardItem(str(round(details['totalTime'] / details['totalPieces'], 2))
                                   if details['totalPieces'] > 0 else '0'),
-                    QStandardItem(str(round((details['totalTime'] * paymentInLv) + (details['isHourly']*paymentInLv), 2))),
-                    QStandardItem(str(round((details['totalTime'] * paymentInEuro) + (details['isHourly']*paymentInEuro), 2)))
+                    QStandardItem(str(round((details['totalTime'] * details['paymentRatio'] * paymentInLv) +
+                                            (details['isHourly'] * details['paymentRatio'] * paymentInLv), 2))),
+                    QStandardItem(str(round((details['totalTime'] * paymentInEuro) +
+                                            (details['isHourly'] * paymentInEuro), 2)))
                 ]
                 self.tablePaymentDetailsModel.appendRow(row)
 
@@ -88,18 +89,19 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
                                                     / details['operations'][operation]['pieces'], 2))),
                             QStandardItem(
                                 str(round(
-                                    (details['operations'][operation]['time'] * paymentInLv) +
+                                    (details['operations'][operation]['time']*details['paymentRatio']*paymentInLv) +
                                     (details['isHourly'] * paymentInLv), 2
                                     ))
                                 ),
                             QStandardItem(
                                 str(round(
-                                    (details['operations'][operation]['time'] * paymentInEuro) +
+                                    (details['operations'][operation]['time']*details['paymentRatio']*paymentInEuro) +
                                     (details['isHourly'] * paymentInEuro), 2
                                 ))
                             )
                         ]
                         parentRow.appendRow(subRow)
+        self.proxyModelPaymentsDetailsTree.sort(1, Qt.SortOrder.DescendingOrder)
 
     def setProxyModel(self, proxyModel, model, table):
         proxyModel.setSourceModel(model)

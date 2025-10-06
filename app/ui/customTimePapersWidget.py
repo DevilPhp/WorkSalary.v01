@@ -38,7 +38,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.operationsGroups = OpS.getOperationsGroups()
         self.operationsGroupsHolder.setEnabled(False)
         self.operationsGroupsForModel = None
-        self.setOperationsGroups()
+        # self.setOperationsGroups()
         self.lastSelectedModel = None
         self.setupWorkerAndModelsCompleter()
         self.timePaperDateEdit.setDate(QDate.currentDate())
@@ -83,10 +83,10 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.overtimeEnd.timeChanged.connect(self.updateDuration)
         self.hourlyStart.timeChanged.connect(self.updateDuration)
         self.hourlyEnd.timeChanged.connect(self.updateDuration)
-        self.hourlyStart.editingFinished.connect(self.checkIfTimeIsValid)
-        self.hourlyEnd.editingFinished.connect(self.checkIfTimeIsValid)
-        self.overtimeStart.editingFinished.connect(self.checkIfTimeIsValid)
-        self.overtimeEnd.editingFinished.connect(self.checkIfTimeIsValid)
+        # self.hourlyStart.editingFinished.connect(self.checkIfTimeIsValid)
+        # self.hourlyEnd.editingFinished.connect(self.checkIfTimeIsValid)
+        # self.overtimeStart.editingFinished.connect(self.checkIfTimeIsValid)
+        # self.overtimeEnd.editingFinished.connect(self.checkIfTimeIsValid)
 
         self.calendarBtn.clicked.connect(self.showCustomCalendaDialog)
         self.modelPiecesLineEdit.returnPressed.connect(self.addTimePaperOperation)
@@ -173,7 +173,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
     def setOperationsGroupForDB(self):
         self.clearOperationInfo(False)
-        if self.operationsGroupComboBox.currentIndex() > -1:
+        if self.operationsGroupComboBox.currentIndex() > -1 and self.operationsGroupsCheckBox.isChecked():
             self.modelPiecesLineEdit.setReadOnly(False)
             self.modelOperationLineEdit.blockSignals(True)
             self.modelOperationLineEdit.setReadOnly(True)
@@ -192,10 +192,12 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
     def setOperationsGroups(self, modelId=None):
         self.operationsGroupComboBox.clear()
-        for group, value in self.operationsGroups.items():
-            name = f'{value["id"]}: {group}'
-            self.operationsGroupComboBox.addItem(name)
-            self.operationsGroupComboBox.setCurrentIndex(-1)
+        print(self.operationsGroups)
+        if len(self.operationsGroups) > 0:
+            for group, value in self.operationsGroups.items():
+                name = f'{value["id"]}: {group}'
+                self.operationsGroupComboBox.addItem(name)
+                self.operationsGroupComboBox.setCurrentIndex(-1)
         if modelId:
             self.operationsGroupsForModel = OpS.getGroupOperationsForModel(modelId)
             # print(operationsGroupsForModel)
@@ -291,8 +293,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 totalWorkingMins += item[6]
 
             if item[7] == -1:
-                totalWorkingMins += (item[8] + item[9])
-                item[6] = item[8] + item[9]
+                totalWorkingMins += item[8]
+                item[6] = item[8]
 
             row = [
                 timePaperId,
@@ -414,19 +416,25 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.setTotalMinsColor()
 
     def checkIfTimeIsValid(self):
-        if self.sender() == self.hourlyStart or self.sender() == self.hourlyEnd:
+        # if self.sender() == self.hourlyStart or self.sender() == self.hourlyEnd:
+        if self.isHourlyWorking.isChecked():
             if not (self.shiftStart.time() <= self.hourlyStart.time() <= self.shiftEnd.time()) or \
                     not (self.shiftEnd.time() >= self.hourlyEnd.time() >= self.shiftStart.time()):
                 self.hourlyStart.setTime(self.shiftStart.time())
                 self.hourlyEnd.setTime(self.shiftEnd.time())
                 MM.showOnWidget(self, 'Почасовото време не е валидно за работна смяна!', 'warning')
-                return
-        elif self.sender() == self.overtimeStart or self.sender() == self.overtimeEnd:
+                return False
+            else:
+                return True
+        # elif self.sender() == self.overtimeStart or self.sender() == self.overtimeEnd:
+        elif self.isOvertimeWorking.isChecked():
             if (self.shiftStart.time() < self.overtimeStart.time() < self.shiftEnd.time()) or \
                     (self.shiftEnd.time() > self.overtimeEnd.time() > self.shiftStart.time()):
                 MM.showOnWidget(self, 'Почасовото време за прекратяване на допълнителни работни часове не е валидно!',
                                 'warning')
-                return
+                return False
+            else:
+                return True
 
     def setupWorkingTimeWidgets(self):
         self.hourlyEndWidget.setEnabled(False)
@@ -461,6 +469,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.hourlyEndWidget.setEnabled(True)
             self.hourlyStart.setTime(self.shiftStart.time())
             self.hourlyEnd.setTime(self.shiftEnd.time())
+            if self.isOvertimeWorking.isChecked():
+                self.isOvertimeWorking.setChecked(False)
         else:
             self.hourlyStartWidget.setEnabled(False)
             self.hourlyEndWidget.setEnabled(False)
@@ -471,6 +481,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         if self.isOvertimeWorking.isChecked():
             self.overtimeStartWidget.setEnabled(True)
             self.overtimeEndWidget.setEnabled(True)
+            if self.isHourlyWorking.isChecked():
+                self.isHourlyWorking.setChecked(False)
         else:
             self.overtimeStartWidget.setEnabled(False)
             self.overtimeEndWidget.setEnabled(False)
@@ -478,7 +490,6 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.overtimeEnd.setTime(QTime(0, 0))
 
     def setupWorkerAndModelsCompleter(self):
-
         for worker in self.workers:
             self.workersInfo.append(f"{worker[0].Име} {worker[0].Фамилия} - {worker[0].Номер}")
         Utils.setupCompleter(self.workersInfo, self.workerNameLineEdit)
@@ -501,10 +512,12 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         selectedText = self.clientModelsLineEdit.text()
 
         if selectedText in self.clientModels.keys():
-            self.operationsGroupsHolder.setEnabled(True)
-            self.modelOperations.clear()
             modelId = self.clientModels[selectedText]
             self.setOperationsGroups(modelId)
+            # print(self.operationsGroupComboBox)
+            if self.operationsGroupComboBox.count() > 1:
+                self.operationsGroupsHolder.setEnabled(True)
+            self.modelOperations.clear()
             modelData = MoS.getModelOperations(modelId)
             self.modelTotalPiecesLineEdit.setText(str(modelData[1]) if modelData[1] else '0')
             operations = modelData[0]
@@ -565,6 +578,15 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         #     return
         # print('addTimePaperOperation')
         # return
+        if not self.isHourlyWorking.isChecked() and not self.isOvertimeWorking.isChecked():
+            if self.clientModelsLineEdit.text() == '' or self.modelOperationLineEdit.text() == '':
+                MM.showOnWidget(self,
+                                'Не сте избрали клиент и/или операция',
+                                'error')
+                return
+
+        if not self.checkIfTimeIsValid():
+            return
         count = 1
         operationsGroupForAdd = {}
         timePaper = None
@@ -598,18 +620,34 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 modelOperationTime = round(
                     operationsGroupForAdd[modelOperationId] * int(self.modelPiecesLineEdit.text()), 2
                 )
+                orderId = self.clientModels[self.clientModelsLineEdit.text()]
+            elif ((self.modelOperationLineEdit.text() == '' or
+                  self.clientModelsLineEdit.text() == '') and
+                  self.isHourlyWorking.isChecked()):
+                modelOperationId = None
+                modelOperationTime = 0
+                orderId = None
+            elif ((self.modelOperationLineEdit.text() == '' or
+                  self.clientModelsLineEdit.text() == '') and
+                  self.isOvertimeWorking.isChecked()):
+                modelOperationId = None
+                modelOperationTime = 0
+                orderId = None
             else:
                 modelOperationId = self.modelOperations[self.modelOperationLineEdit.text()][1]
                 modelOperationTime = float(self.piecesTimeLineEdit.text())
+                orderId = self.clientModels[self.clientModelsLineEdit.text()]
+
+            overtime = [Utils.convertQtimeToTime(self.overtimeStart.time()),
+                        Utils.convertQtimeToTime(self.overtimeEnd.time()),
+                        float(self.overtimeTotalMins.text())] if self.isOvertimeWorking.isChecked() else None
+
+            hourlyPay = [Utils.convertQtimeToTime(self.hourlyStart.time()),
+                         Utils.convertQtimeToTime(self.hourlyEnd.time()),
+                         float(self.hourlyTotalMins.text())] if self.isHourlyWorking.isChecked() else None
 
             if int(self.workerNumberLineEdit.text()) not in self.existingTimePapers.keys():
                 nightMins = 0
-                overtime = [Utils.convertQtimeToTime(self.overtimeStart.time()),
-                            Utils.convertQtimeToTime(self.overtimeEnd.time()),
-                            float(self.overtimeTotalMins.text())] if self.isHourlyWorking.isChecked() else None
-                hourlyPay = [Utils.convertQtimeToTime(self.hourlyStart.time()),
-                             Utils.convertQtimeToTime(self.hourlyEnd.time()),
-                             float(self.hourlyTotalMins.text())] if self.isOvertimeWorking.isChecked() else None
                 if overtime:
                     nightMins += Utils.checkNightShiftMins(self.overtimeStart.time(), self.overtimeEnd.time())
                 elif hourlyPay:
@@ -617,7 +655,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 else:
                     nightMins += Utils.checkNightShiftMins(self.shiftStart.time(), self.shiftEnd.time())
 
-                if nightMins > 0:
+                if nightMins > 240:
                     nightMins -= 60
 
                 print(f'nightMins: {nightMins}')
@@ -631,9 +669,9 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                     'IsOvertime': overtime,
                     'WorkerId': int(self.workerNumberLineEdit.text()),
                     'user': self.usernameLabel.text(),
-                    'OrderId': self.clientModels[self.clientModelsLineEdit.text()],
+                    'OrderId': orderId,
                     'ModelOperationId': modelOperationId,
-                    'Pieces': int(self.modelPiecesLineEdit.text()),
+                    'Pieces': int(self.modelPiecesLineEdit.text()) if modelOperationId else 0,
                     'WorkingTimeMinutes': modelOperationTime
                 }
                 timePaper = WoS.addNewTimePaperAndOperation(timePaperData)
@@ -644,11 +682,16 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 # print(self.existingTimePapers[int(self.workerNumberLineEdit.text())])
                 timePaperData = {
                     'TimePaperId': self.existingTimePapers[int(self.workerNumberLineEdit.text())],
-                    'OrderId': self.clientModels[self.clientModelsLineEdit.text()],
+                    'OrderId': orderId,
                     'ModelOperationId': modelOperationId,
-                    'Pieces': int(self.modelPiecesLineEdit.text()),
-                    'WorkingTimeMinutes': modelOperationTime
+                    'Pieces': int(self.modelPiecesLineEdit.text()) if modelOperationId else 0,
+                    'IsHourlyPaid': hourlyPay,
+                    'IsOvertime': overtime,
+                    'WorkingTimeMinutes': modelOperationTime,
+                    'user': self.usernameLabel.text()
                 }
+                # print(f'TimePaperData: {timePaperData}')
+                # return
                 timePaper = WoS.updateTimePaperAndOperation(timePaperData)
 
         if timePaper:

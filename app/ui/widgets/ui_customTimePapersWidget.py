@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customTimePapersWidgetmwkcqY.ui'
+## Form generated from reading UI file 'customTimePapersWidgetOyfimU.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -738,7 +738,7 @@ class Ui_customTimePapersWidget(object):
         self.timePaperDateEdit.setFrame(False)
         self.timePaperDateEdit.setAlignment(Qt.AlignCenter)
         self.timePaperDateEdit.setCorrectionMode(QAbstractSpinBox.CorrectToNearestValue)
-        self.timePaperDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 9, 3), QTime(0, 0, 0)))
+        self.timePaperDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 9, 2), QTime(0, 0, 0)))
 
         self.horizontalLayout_15.addWidget(self.timePaperDateEdit)
 
@@ -1275,6 +1275,9 @@ class Ui_customTimePapersWidget(object):
         self.label_11.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041a\u0440\u0430\u0439:", None))
         self.label_6.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0418\u0437\u0432\u044a\u043d\u0440\u0435\u0434\u043d\u0430 \u0420\u0430\u0431.:", None))
         self.label_17.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0447.", None))
+#if QT_CONFIG(tooltip)
+        self.addNewShiftBtn.setToolTip(QCoreApplication.translate("customTimePapersWidget", u"\u0414\u043e\u0431\u0430\u0432\u044f\u043d\u0435 \u043d\u0430 \u0441\u043c\u044f\u043d\u0430", None))
+#endif // QT_CONFIG(tooltip)
         self.addNewShiftBtn.setText("")
         self.shiftNameLineEdit.setPlaceholderText(QCoreApplication.translate("customTimePapersWidget", u"\u0420\u0435\u0434\u043e\u0432\u043d\u0430", None))
         self.label_5.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0421\u043c\u044f\u043d\u0430:", None))

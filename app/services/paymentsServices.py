@@ -12,7 +12,8 @@ class PaymentServices:
             if year:
                 holidays = session.query(Holiday).filter_by(HolidaysPerYearId=year.id).all()
                 for holiday in holidays:
-                    returnedData.append({'name': holiday.HolidayName, 'date': holiday.HolidayDate})
+                    returnedData.append({'id': holiday.id, 'name': holiday.HolidayName, 'date': holiday.HolidayDate})
+            print(returnedData)
             return returnedData
 
     @staticmethod
@@ -24,6 +25,18 @@ class PaymentServices:
             year.HolidaysCount += 1
             session.commit()
             logger.info(f'Added new holiday: {name} on {date} by {user}')
+
+    @staticmethod
+    def deleteHoliday(holidayId, year, user):
+        with setDatabase() as session:
+            holiday = session.query(Holiday).filter_by(id=holidayId).first()
+            if holiday:
+                year = session.query(HolidaysPerYear).filter_by(Year=year).first()
+                session.delete(holiday)
+                year.HolidaysCount -= 1
+                session.commit()
+                logger.info(f'Deleted holiday: {holiday.HolidayName} on {holiday.HolidayDate} by {user}')
+                return True
 
     @staticmethod
     def getHolidaysYears():

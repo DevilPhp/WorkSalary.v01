@@ -75,8 +75,8 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
             overtimePayInEuro = 0
             # payInLeva = 0
             # payInEuro = 0
-            # currentPayment = 0
-            # currentPaymentInEuro = 0
+            currentPayment = 0
+            currentPaymentInEuro = 0
 
             for timePaperPayment in paymentsData[workerPayment]:
                 hourly = paymentsData[workerPayment][timePaperPayment]['hourly']
@@ -87,10 +87,10 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
                     totalHourlyMins = round(totalHourlyMins + hourly[1], 2)
                 if overtime:
                     totalOvertimeMins = round(totalOvertimeMins + overtime[1], 2)
-                # currentPayment = workingTime * paymentInLeva * paymentsData[workerPayment][payment]['paymentRation']
-                # currentPaymentInEuro = workingTime * paymentInEuro * paymentsData[workerPayment][payment]['paymentRation']
+                currentPayment += workingTime * paymentInLeva * paymentsData[workerPayment][timePaperPayment]['paymentRation']
+                currentPaymentInEuro += workingTime * paymentInEuro * paymentsData[workerPayment][timePaperPayment]['paymentRation']
 
-
+                # paymentRatio = paymentsData[workerPayment][timePaperPayment]['paymentRation']
 
                 # print(f'Payment: {workerName} {currentPayment}, Euro: {currentPaymentInEuro}')
                 totalPieces += pieces
@@ -103,11 +103,15 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
             totalTime = round(totalTime + totalHourlyMins + totalOvertimeMins, 2)
             if totalPieces != 0 or totalTime != 0:
                 efficiency = round((totalTime / totalPieces), 2)
-                dispalyTime = f'{int(totalTime / 60)}:{int(totalTime % 60)}' \
+                if 0 < int(totalTime % 60) < 10:
+                    minsDispay = f'0{int(totalTime % 60)}'
+                else:
+                    minsDispay = f'{int(totalTime % 60)}'
+                dispalyTime = f'{int(totalTime / 60)}:{minsDispay}' \
                     if totalTime % 60 > 0 else f'{int(totalTime / 60)}'
             # print(totalTime, totalMins)
-            payInLeva = round(totalTime * paymentInLeva, 2)
-            payInEuro = round(totalTime * paymentInEuro, 2)
+            payInLeva = round(currentPayment, 2)
+            payInEuro = round(currentPaymentInEuro, 2)
 
             row = [
                 QStandardItem(str(count)),

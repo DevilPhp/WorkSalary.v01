@@ -1018,6 +1018,9 @@ QComboBox:header{
                     </item>
                     <item row="0" column="9">
                      <widget class="QPushButton" name="addNewShiftBtn">
+                      <property name="toolTip">
+                       <string>Добавяне на смяна</string>
+                      </property>
                       <property name="text">
                        <string/>
                       </property>
@@ -1220,7 +1223,7 @@ QComboBox:header{
                    <second>0</second>
                    <year>1990</year>
                    <month>9</month>
-                   <day>3</day>
+                   <day>2</day>
                   </datetime>
                  </property>
                  <property name="displayFormat">

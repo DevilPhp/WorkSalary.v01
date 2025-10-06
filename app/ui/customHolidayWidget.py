@@ -1,9 +1,11 @@
 from functools import partial
 
 from PySide6.QtGui import QStandardItemModel, QStandardItem
-from PySide6.QtWidgets import QMenu
+from PySide6.QtWidgets import QMenu, QDialog
 from PySide6.QtCore import Qt, QDate
 from datetime import datetime
+
+from app.ui.customYesNoMessage import CustomYesNowDialog
 from app.ui.widgets.ui_customHolidaysWidget import *
 from app.services.paymentsServices import PaymentServices as Ps
 from app.ui.customCalendarWidget import CustomCalendarDialog
@@ -41,10 +43,13 @@ class CustomHolidaysWidget(QWidget, Ui_customHolidaysWidget):
         self.holidaysTableView.horizontalHeader().setStretchLastSection(True)
         self.holidaysTableView.horizontalHeader().setMinimumWidth(80)
 
+        self.holidaysTableView.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.holidaysTableView.customContextMenuRequested.connect(self.holidaysTableViewContextMenuRequested)
+
         self.currentSelectedYear = None
         self.setYearsBtns()
 
-        self.refreshHolidaysTableView()
+        # self.refreshHolidaysTableView()
 
         self.newHolidayCalBtn.clicked.connect(self.showCalendar)
         self.addNewHolidayBtn.clicked.connect(self.addNewHoliday)
@@ -74,8 +79,11 @@ class CustomHolidaysWidget(QWidget, Ui_customHolidaysWidget):
         self.holodaysTableModel.setRowCount(0)
         holidays = Ps.getHolidaysForYear(self.currentSelectedYear)
         for i, holiday in enumerate(holidays):
+            holidayId = QStandardItem(str(i + 1))
+            print(holiday['id'])
+            holidayId.setData(holiday['id'], Qt.ItemDataRole.UserRole)
             row = [
-                QStandardItem(str(i + 1)),
+                holidayId,
                 QStandardItem(holiday['name']),
                 QStandardItem(holiday['date'].strftime("%d.%m.%Y"))
             ]
@@ -99,7 +107,7 @@ class CustomHolidaysWidget(QWidget, Ui_customHolidaysWidget):
             return
         self.refreshStyleSheets()
         self.currentSelectedYear = year
-        print(f'Year {year} clicked')
+        # print(f'Year {year} clicked')
         btn.setStyleSheet("background-color: #92b1a8;")
         self.refreshHolidaysTableView()
 
@@ -122,6 +130,31 @@ class CustomHolidaysWidget(QWidget, Ui_customHolidaysWidget):
             self.addYear()
         if action == editAction:
             print('Edit action triggered')
+
+    def holidaysTableViewContextMenuRequested(self, position):
+        menu = QMenu(self)
+        deleteAction = menu.addAction('Изтриване')
+        action = menu.exec_(self.holidaysTableView.mapToGlobal(position))
+
+        if action == deleteAction:
+            selectedRowId = self.holidaysTableView.selectionModel().selectedRows(0)[0].data(Qt.ItemDataRole.UserRole)
+            selectedName = self.holidaysTableView.selectionModel().selectedRows(1)[0].data(Qt.ItemDataRole.DisplayRole)
+            selectedDate = self.holidaysTableView.selectionModel().selectedRows(2)[0].data(Qt.ItemDataRole.DisplayRole)
+            # selectedHoliday = self.proxyModelHolidays.data(self.proxyModelHolidays.index(selectedRow, 0))
+            # print(selectedRow)
+            # print(f'Deleting holiday: {selectedHoliday}')
+            # return
+            dialog = CustomYesNowDialog()
+            message = f'Изтриване на: {selectedName} - {selectedDate}'
+            dialog.setMessage(name='', message=message, mode='deleting')
+            result = dialog.exec()
+            if result == QDialog.Accepted:
+                if Ps.deleteHoliday(selectedRowId, self.currentSelectedYear, self.usernameLabel.text()):
+                    MM.showOnWidget(self, f'Успешно изтрит празник {selectedName} - {selectedDate}',
+                                    'success')
+                    self.refreshHolidaysTableView()
+                else:
+                    MM.showOnWidget(self, 'Грешка при изтриване', 'error')
 
     def addYear(self):
         newYear = self.yearsBtns[-1] + 1 if len(self.yearsBtns) > 0 else datetime.now().year

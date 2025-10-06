@@ -4,7 +4,7 @@ from app.logger import logger
 from app.database import getDatabase, setDatabase
 from app.database.workers import Worker, TimePaper, TimePaperOperation, WorkingShift, HourlyPay, OvertimePay, Cehove,\
     PaymentType, WorkerPosition
-from app.database.payment import PaymentPerMinute, NightPaymentPerMinute, HolidaysPerYear
+from app.database.payment import PaymentPerMinute, NightPaymentPerMinute, HolidaysPerYear, Holiday
 from datetime import datetime
 
 class WorkerServices:
@@ -132,10 +132,19 @@ class WorkerServices:
 
     @staticmethod
     def getPaymentsDetailsForWorker(workerId, startDate, endDate):
-        startDate = datetime.strptime('2025-01-10', '%Y-%m-%d').date()
-        endDate = datetime.strptime('2025-02-10', '%Y-%m-%d').date()
+        startDate = datetime.strptime('2025-10-01', '%Y-%m-%d').date()
+        endDate = datetime.strptime('2025-11-01', '%Y-%m-%d').date()
         returnedData = {}
+        currentYear = datetime.now().year
         with getDatabase() as session:
+
+            holidaysPerYear = session.query(HolidaysPerYear).filter_by(Year=currentYear).first().id
+            holidays = session.query(Holiday).filter_by(HolidaysPerYearId=holidaysPerYear).all()
+            if holidays:
+                holidaysList = [holiday.HolidayDate for holiday in holidays]
+            else:
+                holidaysList = []
+
             timePapers = session.query(TimePaper).filter(TimePaper.WorkerId == workerId,
                                                             TimePaper.Date >= startDate,
                                                             TimePaper.Date <= endDate).all()
@@ -157,15 +166,26 @@ class WorkerServices:
                         if timePaperOperation.productionModelOperations.ОперацияNo not in operationsCount:
                             operationsCount.append(timePaperOperation.productionModelOperations.ОперацияNo)
 
+                if timePaper.hourlyPays:
+                    hourlyPay = timePaper.hourlyPays[0].Efficiency
+                else:
+                    hourlyPay = 0
+
+                if timePaper.Date in holidaysList:
+                    paymentRatio = 2
+                else:
+                    paymentRatio = timePaper.PaymentRatio
+
                 returnedData[timePaper.id] = {
                     'date': timePaper.Date.strftime('%d.%m.%Y'),
                     'shift': timePaper.workingShifts.ShiftName,
                     'operations': operationsData,
-                    'isHourly': timePaper.hourlyPays.Efficiency if timePaper.hourlyPays is not None else 0,
+                    'isHourly': hourlyPay,
                     'totalTime': timePaper.TotalHours,
                     'totalPieces': timePaper.TotalPieces,
                     'ordersCount': len(orderCount),
                     'operationsCount': len(operationsCount),
+                    'paymentRatio': paymentRatio
                 }
             return returnedData
 
@@ -182,10 +202,16 @@ class WorkerServices:
     @staticmethod
     def getInfoForPayments(startDate, endDate):
         returnedData = {}
-        startDate = datetime.strptime('2025-01-10', '%Y-%m-%d').date()
-        endDate = datetime.strptime('2025-02-10', '%Y-%m-%d').date()
+        startDate = datetime.strptime('2025-10-01', '%Y-%m-%d').date()
+        endDate = datetime.strptime('2025-11-01', '%Y-%m-%d').date()
+        currentYear = datetime.now().year
         with getDatabase() as session:
-
+            holidaysPerYear = session.query(HolidaysPerYear).filter_by(Year=currentYear).first().id
+            holidays = session.query(Holiday).filter_by(HolidaysPerYearId=holidaysPerYear).all()
+            if holidays:
+                holidaysList = [holiday.HolidayDate for holiday in holidays]
+            else:
+                holidaysList = []
             timePapers = session.query(TimePaper).filter(TimePaper.Date >= startDate,
                                                          TimePaper.Date <= endDate).all()
 
@@ -193,6 +219,29 @@ class WorkerServices:
                 if timePaper.WorkerId is not None:
                     key = f'{timePaper.WorkerId} : {timePaper.workers.Име} {timePaper.workers.Фамилия}'
                     # paymentRation = WorkerServices.getPaymentRation(timePaper)
+                    # print(timePaper.overtimePays, timePaper.hourlyPays)
+
+                    if timePaper.overtimePays:
+                        overtime = [timePaper.overtimePays[0].id,
+                                    timePaper.overtimePays[0].Efficiency,
+                                    timePaper.overtimePays[0].Start,
+                                    timePaper.overtimePays[0].End]
+                    else:
+                        overtime = None
+
+                    if timePaper.hourlyPays:
+                        hourly = [timePaper.hourlyPays[0].id,
+                                  timePaper.hourlyPays[0].Efficiency,
+                                  timePaper.hourlyPays[0].Start,
+                                  timePaper.hourlyPays[0].End]
+                    else:
+                        hourly = None
+
+                    if timePaper.Date in holidaysList:
+                        paymentRation = 2
+                    else:
+                        paymentRation = timePaper.PaymentRatio
+
                     data = {
                                 'date': timePaper.Date.strftime('%d.%m.%Y'),
                                 'shift': [timePaper.workingShifts.ShiftName,
@@ -201,19 +250,11 @@ class WorkerServices:
                                           timePaper.workingShifts.StartTime,
                                           timePaper.workingShifts.EndTime]
                                 if timePaper.workingShifts is not None else None,
-                                'overtime': [timePaper.overtimePays.id,
-                                             timePaper.overtimePays.Efficiency,
-                                             timePaper.overtimePays.Start,
-                                             timePaper.overtimePays.End]
-                                if timePaper.overtimePays is not None else None,
-                                'hourly': [timePaper.hourlyPays.id,
-                                           timePaper.hourlyPays.Efficiency,
-                                           timePaper.hourlyPays.Start,
-                                           timePaper.hourlyPays.End]
-                                if timePaper.hourlyPays is not None else None,
+                                'overtime': overtime,
+                                'hourly': hourly,
                                 'totalPieces': timePaper.TotalPieces,
                                 'totalTime': round(timePaper.TotalHours, 2),
-                                'paymentRation': timePaper.PaymentRatio
+                                'paymentRation': paymentRation
                         }
                     if key not in returnedData.keys():
                         returnedData[key] = {timePaper.id: data}
@@ -305,52 +346,50 @@ class WorkerServices:
     @staticmethod
     def addNewTimePaperAndOperation(timePaperData):
         with setDatabase() as session:
-            holidaysForYear = session.query(HolidaysPerYear).filter_by(Year=int(datetime.strftime(datetime.now(), '%Y'))).first()
-            holidays = [holiday.HolidayDate for holiday in holidaysForYear.holidays]
             if timePaperData['WeekDay'] and timePaperData['WeekDay'] > 5:
                 paymentRatio = 1.75
-            elif timePaperData['Date'] in holidays:
-                paymentRatio = 2
             else:
                 paymentRatio = 1
 
-            if timePaperData['IsHourlyPaid']:
-                newHourlyPay = HourlyPay(
-                    Start=timePaperData['IsHourlyPaid'][0],
-                    End=timePaperData['IsHourlyPaid'][1],
-                    Efficiency=timePaperData['IsHourlyPaid'][2],
-                    UserUpdated=timePaperData['user']
-                )
-                session.add(newHourlyPay)
-                session.flush()
-                timePaperData['IsHourlyPaid'] = newHourlyPay.id
+            #### Need to be added after time paper creation if they exist
 
-            if timePaperData['IsOvertime']:
-                newOvertimePay = OvertimePay(
-                    Start=timePaperData['IsOvertime'][0],
-                    End=timePaperData['IsOvertime'][1],
-                    Efficiency=timePaperData['IsOvertime'][2],
-                    OvertimeRate=0,
-                    UserUpdated=timePaperData['user']
-                )
-                session.add(newOvertimePay)
-                session.flush()
-                timePaperData['IsOvertime'] = newOvertimePay.id
+            # if timePaperData['IsHourlyPaid']:
+            #     newHourlyPay = HourlyPay(
+            #         Start=timePaperData['IsHourlyPaid'][0],
+            #         End=timePaperData['IsHourlyPaid'][1],
+            #         Efficiency=timePaperData['IsHourlyPaid'][2],
+            #         UserUpdated=timePaperData['user']
+            #     )
+            #     session.add(newHourlyPay)
+            #     session.flush()
+            #     timePaperData['IsHourlyPaid'] = newHourlyPay.id
+            #
+            # if timePaperData['IsOvertime']:
+            #     newOvertimePay = OvertimePay(
+            #         Start=timePaperData['IsOvertime'][0],
+            #         End=timePaperData['IsOvertime'][1],
+            #         Efficiency=timePaperData['IsOvertime'][2],
+            #         OvertimeRate=0,
+            #         UserUpdated=timePaperData['user']
+            #     )
+            #     session.add(newOvertimePay)
+            #     session.flush()
+            #     timePaperData['IsOvertime'] = newOvertimePay.id
 
             newTimePaper = TimePaper(
                 Date=timePaperData['Date'],
                 WeekDay=timePaperData['WeekDay'],
                 PaymentRatio=paymentRatio,
                 ShiftId=timePaperData['ShiftId'],
-                IsHourlyPaid=timePaperData['IsHourlyPaid'],
-                IsOvertime=timePaperData['IsOvertime'],
+                # IsHourlyPaid=timePaperData['IsHourlyPaid'],
+                # IsOvertime=timePaperData['IsOvertime'],
                 WorkerId=timePaperData['WorkerId'],
                 userCreated=timePaperData['user']
             )
             session.add(newTimePaper)
             session.flush()
 
-
+            # if timePaperData['OrderId'] and timePaperData['ModelOperationId']:
 
             newTimePaperOperation = TimePaperOperation(
                 TimePaperId=newTimePaper.id,
@@ -374,21 +413,43 @@ class WorkerServices:
     def updateTimePaperAndOperation(timePaperData):
         with setDatabase() as session:
             timePaper = session.query(TimePaper).get(timePaperData['TimePaperId'])
-            newTimePaperOperation = TimePaperOperation(
-                TimePaperId=timePaper.id,
-                OrderId=timePaperData['OrderId'],
-                ModelOperationId=timePaperData['ModelOperationId'],
-                Pieces=timePaperData['Pieces'],
-                WorkingTimeMinutes=timePaperData['WorkingTimeMinutes']
-            )
-            session.add(newTimePaperOperation)
-            session.flush()
-            timePaper.TotalPieces += timePaperData['Pieces']
-            timePaper.TotalHours = round(timePaper.TotalHours + timePaperData['WorkingTimeMinutes'], 2)
-            newTimePaperOperation.productionModelOperations.ProducedPieces += newTimePaperOperation.Pieces
+            if timePaperData['ModelOperationId']:
+                newTimePaperOperation = TimePaperOperation(
+                    TimePaperId=timePaper.id,
+                    OrderId=timePaperData['OrderId'],
+                    ModelOperationId=timePaperData['ModelOperationId'],
+                    Pieces=timePaperData['Pieces'],
+                    WorkingTimeMinutes=timePaperData['WorkingTimeMinutes']
+                )
+                session.add(newTimePaperOperation)
+                session.flush()
+                timePaper.TotalPieces += timePaperData['Pieces']
+                timePaper.TotalHours = round(timePaper.TotalHours + timePaperData['WorkingTimeMinutes'], 2)
+                newTimePaperOperation.productionModelOperations.ProducedPieces += newTimePaperOperation.Pieces
+            elif timePaperData['IsHourlyPaid']:
+                newHourlyPay = HourlyPay(
+                    TimePaperId=timePaper.id,
+                    Start=timePaperData['IsHourlyPaid'][0],
+                    End=timePaperData['IsHourlyPaid'][1],
+                    Efficiency=timePaperData['IsHourlyPaid'][2],
+                    UserUpdated=timePaperData['user']
+                )
+                session.add(newHourlyPay)
+                session.flush()
+            elif timePaperData['IsOvertime']:
+                newOvertimePay = OvertimePay(
+                    TimePaperId=timePaper.id,
+                    Start=timePaperData['IsOvertime'][0],
+                    End=timePaperData['IsOvertime'][1],
+                    Efficiency=timePaperData['IsOvertime'][2],
+                    UserUpdated=timePaperData['user']
+                )
+                session.add(newOvertimePay)
+                session.flush()
             session.commit()
             logger.info(f"Time paper updated: {timePaperData}")
-            return newTimePaperOperation.TimePaperId
+            return True
+            # return newTimePaperOperation.TimePaperId
 
     @staticmethod
     def getWorkers():
@@ -403,8 +464,6 @@ class WorkerServices:
     @staticmethod
     def getTimePapersForDate(date, workerId, showAll=False):
         returnedData = []
-        hourlyTime = 0
-        overtimeTime = 0
         timePapers = []
         with getDatabase() as session:
             if workerId:
@@ -414,30 +473,37 @@ class WorkerServices:
             for timePaper in timePapers:
 
                 if timePaper.hourlyPays:
-                    hourlyTime = timePaper.hourlyPays.Efficiency
-                    orderId = 'Почасова работа'
+                    for hourlyPay in timePaper.hourlyPays:
+                        hourlyTime = hourlyPay.Efficiency
+                        orderId = 'Почасова работа'
+                        horlyItem = [
+                            timePaper.id,
+                            timePaper.WorkerId,
+                            orderId,
+                            '',
+                            '',
+                            0,
+                            0,
+                            -1,
+                            hourlyTime,
+                        ]
+                        returnedData.append(horlyItem)
                 if timePaper.overtimePays:
-                    overtimeTime = timePaper.overtimePays.Efficiency
-                    orderId = 'Извънредна работа'
-
-                if timePaper.hourlyPays or timePaper.overtimePays:
-                    horlyItem = [
-                        timePaper.id,
-                        timePaper.WorkerId,
-                        orderId,
-                        '',
-                        '',
-                        0,
-                        0,
-                        -1,
-                        hourlyTime,
-                        overtimeTime,
-                    ]
-
-                if timePaper.hourlyPays:
-                    returnedData.append(horlyItem)
-                if timePaper.overtimePays:
-                    returnedData.append(horlyItem)
+                    for overtimePay in timePaper.overtimePays:
+                        overtimeTime = overtimePay.Efficiency
+                        orderId = 'Извънредна работа'
+                        overtimeItem = [
+                            timePaper.id,
+                            timePaper.WorkerId,
+                            orderId,
+                            '',
+                            '',
+                            0,
+                            0,
+                            -1,
+                            overtimeTime,
+                        ]
+                        returnedData.append(overtimeItem)
 
                 for operation in timePaper.timePaperOperations:
                     returnedData.append([

@@ -308,12 +308,15 @@ def insert_data_to_postgres_multi(df1, df2):
 
         if row['Начало на Почасова Работа_I'].time() != timeZero and row[
                 'Край на Почасова работа_I'].time() != timeZero:
-            hourPaidId = createHourlyPaid(row['Начало на Почасова Работа_I'].time(),
-                                          row['Край на Почасова работа_I'].time())
-            timePaperData[row['WorkDayID']]['HourlyPaidId'] = hourPaidId
+            # hourPaidId = createHourlyPaid(row['Начало на Почасова Работа_I'].time(),
+            #                               row['Край на Почасова работа_I'].time())
+            timePaperData[row['WorkDayID']]['HourlyPaid'] = [
+                row['Начало на Почасова Работа_I'].time(),
+                row['Край на Почасова работа_I'].time()
+            ]
             # hourlyPaid.append(hourPaidId)
         else:
-            timePaperData[row['WorkDayID']]['HourlyPaidId'] = None
+            timePaperData[row['WorkDayID']]['HourlyPaid'] = None
     # df = pd.DataFrame(timePaperData).T
     # orderIds = []
 
@@ -335,19 +338,22 @@ def insert_data_to_postgres_multi(df1, df2):
 def addTimePaper(timePaperData):
     # print(timePaperData)
     session = SessionLocal()
-    keys = ['Date', 'ShiftId', 'HourlyPaidId', 'WorkerId']
+    keys = ['Date', 'ShiftId', 'HourlyPaid', 'WorkerId']
     check = []
     try:
         for workDayId, data in timePaperData.items():
             newTimePaper = TimePaper(
                 Date=data['Date'],
                 ShiftId=data['ShiftId'],
-                IsHourlyPaid=data['HourlyPaidId'],
+                # IsHourlyPaid=data['HourlyPaidId'],
                 WorkerId=data['WorkerId'],
                 userCreated='admin'
             )
             session.add(newTimePaper)
-            session.flush()
+            session.commit()
+
+            if data['HourlyPaid']:
+                createHourlyPaid(data['HourlyPaid'][0], data['HourlyPaid'][1], newTimePaper.id)
 
             for operations in data.keys():
                 if operations not in keys and operations != f'{operations} :TP':
@@ -423,7 +429,7 @@ def addTimePaper(timePaperData):
 #         session.close()
 
 
-def createHourlyPaid(start, end):
+def createHourlyPaid(start, end, timePaperId):
     dateStart = datetime.combine(datetime.today(), start)
     dateEnd = datetime.combine(datetime.today(), end)
     diff = dateEnd - dateStart
@@ -437,6 +443,7 @@ def createHourlyPaid(start, end):
     session = SessionLocal()
     try:
         newHourPaid = HourlyPay(
+            TimePaperId=timePaperId,
             Start=start,
             End=end,
             Efficiency=efficiency,
@@ -445,7 +452,7 @@ def createHourlyPaid(start, end):
         )
         session.add(newHourPaid)
         session.commit()
-        return newHourPaid.id
+        # return newHourPaid.id
     except Exception as e:
         print(f"An error occurred: {e}")
         session.rollback()
