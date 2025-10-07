@@ -37,16 +37,7 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
         self.workerDetalsTreeView.setColumnWidth(2, 120)
         self.workerDetalsTreeView.setColumnWidth(1, 120)
         self.refreshPaymentsDetailsTreeView()
-        # self.workerDetalsTreeView.selectionModel().selectionChanged.connect(self.treeViewSelectionChanged)
 
-    # def treeViewSelectionChanged(self):
-    #     selection = self.workerDetalsTreeView.selectionModel().selectedRows(0)
-    #     for item in selection:
-    #         if not item.parent().isValid():
-    #             print(item.data())
-
-    # ['ID', 'Дата', 'Смяна', 'Поръчки', 'Операции',
-    #  'Време', 'Поч. Раб.' 'Ефект.', 'Нач. лв.', 'Нач. €']
     def refreshPaymentsDetailsTreeView(self):
         self.tablePaymentDetailsModel.setRowCount(0)
         paymentsData = WoS.getPaymentsDetailsForWorker(self.workerId, self.startDate, self.endDate)
@@ -105,9 +96,6 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
 
     def setProxyModel(self, proxyModel, model, table):
         proxyModel.setSourceModel(model)
-        # filterableHeaderView = FilterableHeaderView(Qt.Orientation.Horizontal, table)
-        # table.setHorizontalHeader(filterableHeaderView)
-        # filterableHeaderView.filterRequested.connect(partial(self.updateFilter, proxyModel, filterableHeaderView))
         table.setModel(proxyModel)
         table.setSortingEnabled(True)
 

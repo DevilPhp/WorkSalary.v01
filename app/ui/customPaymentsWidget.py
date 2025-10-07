@@ -84,11 +84,19 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
                 pieces = paymentsData[workerPayment][timePaperPayment]['totalPieces']
                 workingTime = paymentsData[workerPayment][timePaperPayment]['totalTime']
                 if hourly:
-                    totalHourlyMins = round(totalHourlyMins + hourly[1], 2)
+                    for hourlyPayment in hourly:
+                        currentPayment += hourly[hourlyPayment][0] * hourly[hourlyPayment][1] * paymentInLeva
+                        currentPaymentInEuro += hourly[hourlyPayment][0] * hourly[hourlyPayment][1] * paymentInEuro
                 if overtime:
-                    totalOvertimeMins = round(totalOvertimeMins + overtime[1], 2)
-                currentPayment += workingTime * paymentInLeva * paymentsData[workerPayment][timePaperPayment]['paymentRation']
-                currentPaymentInEuro += workingTime * paymentInEuro * paymentsData[workerPayment][timePaperPayment]['paymentRation']
+                    for overtimePayment in overtime:
+                        currentPayment += overtime[overtimePayment][0]*overtime[overtimePayment][1]*paymentInLeva
+                        currentPaymentInEuro += overtime[overtimePayment][0]*overtime[overtimePayment][1]*paymentInEuro
+                currentPayment += (workingTime *
+                                   paymentInLeva *
+                                   paymentsData[workerPayment][timePaperPayment]['paymentRatio'])
+                currentPaymentInEuro += (workingTime *
+                                         paymentInEuro *
+                                         paymentsData[workerPayment][timePaperPayment]['paymentRatio'])
 
                 # paymentRatio = paymentsData[workerPayment][timePaperPayment]['paymentRation']
 

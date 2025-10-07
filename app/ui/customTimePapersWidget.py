@@ -146,10 +146,21 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             selectedOperations = []
             selectedRow = self.timePapersForDayTableView.selectionModel().selectedRows(0)
             selectedOper = self.timePapersForDayTableView.selectionModel().selectedRows(4)
+            selectedOvertimesAndHorlis = self.timePapersForDayTableView.selectionModel().selectedRows(2)
             for selectedRow in selectedRow:
-                selectedIds.append(selectedRow.data(Qt.ItemDataRole.UserRole))
+                if self.tableTimePapersModel.item(selectedRow.row(), 2).text() == 'Почасова работа':
+                    key = f'{selectedRow.data(Qt.ItemDataRole.UserRole)}_hourlyPay'
+                elif self.tableTimePapersModel.item(selectedRow.row(), 2).text() == 'Извънредна работа':
+                    key = f'{selectedRow.data(Qt.ItemDataRole.UserRole)}_overtimePay'
+                else:
+                    key = f'{selectedRow.data(Qt.ItemDataRole.UserRole)}_operation'
+                selectedIds.append(key)
             for selectedOperation in selectedOper:
                 selectedOperations.append(selectedOperation.data(Qt.ItemDataRole.DisplayRole))
+            for selectedOvertimeAndHorly in selectedOvertimesAndHorlis:
+                if (selectedOvertimeAndHorly.data(Qt.ItemDataRole.DisplayRole) == 'Почасова работа' or
+                        selectedOvertimeAndHorly.data(Qt.ItemDataRole.DisplayRole) == 'Извънредна работа'):
+                    selectedOperations.append(selectedOvertimeAndHorly.data(Qt.ItemDataRole.DisplayRole))
             dialog = CustomYesNowDialog()
             message = 'Изтриване на:\n\n' + '\n'.join(selectedOperations)
             dialog.setMessage(name='', message=message, mode='deleting')
@@ -295,6 +306,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             if item[7] == -1:
                 totalWorkingMins += item[8]
                 item[6] = item[8]
+                timePaperId.setData(item[9], Qt.ItemDataRole.UserRole)
 
             row = [
                 timePaperId,
@@ -392,7 +404,6 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         calendarDialog.exec_()
 
     def updateDateLabel(self, formattedDate):
-        # print(f'Selected date: {formattedDate}')
         self.timePaperDateEdit.setDate(formattedDate)
         if self.workerNumberLineEdit.text() != '':
             self.refreshTimePapersForToday(int(self.workerNumberLineEdit.text()))
@@ -416,7 +427,6 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.setTotalMinsColor()
 
     def checkIfTimeIsValid(self):
-        # if self.sender() == self.hourlyStart or self.sender() == self.hourlyEnd:
         if self.isHourlyWorking.isChecked():
             if not (self.shiftStart.time() <= self.hourlyStart.time() <= self.shiftEnd.time()) or \
                     not (self.shiftEnd.time() >= self.hourlyEnd.time() >= self.shiftStart.time()):
@@ -426,11 +436,10 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 return False
             else:
                 return True
-        # elif self.sender() == self.overtimeStart or self.sender() == self.overtimeEnd:
         elif self.isOvertimeWorking.isChecked():
-            if (self.shiftStart.time() < self.overtimeStart.time() < self.shiftEnd.time()) or \
-                    (self.shiftEnd.time() > self.overtimeEnd.time() > self.shiftStart.time()):
-                MM.showOnWidget(self, 'Почасовото време за прекратяване на допълнителни работни часове не е валидно!',
+            if (self.shiftStart.time() <= self.overtimeStart.time() <= self.shiftEnd.time()) or \
+                    (self.shiftEnd.time() >= self.overtimeEnd.time() >= self.shiftStart.time()):
+                MM.showOnWidget(self, 'Извънредно време не е валидно за работна смяна!',
                                 'warning')
                 return False
             else:
@@ -574,10 +583,6 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.piecesTimeLineEdit.setText(str(round(pieces * timeForPiece, 2)))
 
     def addTimePaperOperation(self):
-        # if self.checkIsHourlyWorking():
-        #     return
-        # print('addTimePaperOperation')
-        # return
         if not self.isHourlyWorking.isChecked() and not self.isOvertimeWorking.isChecked():
             if self.clientModelsLineEdit.text() == '' or self.modelOperationLineEdit.text() == '':
                 MM.showOnWidget(self,
