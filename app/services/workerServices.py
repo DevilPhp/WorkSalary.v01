@@ -152,6 +152,8 @@ class WorkerServices:
                 operationsData = {}
                 orderCount = []
                 operationsCount = []
+                hourlyPayList = []
+                overtimePayList = []
                 if timePaper.timePaperOperations:
                     for timePaperOperation in timePaper.timePaperOperations:
                         operationsData[timePaperOperation.id] = {
@@ -167,9 +169,12 @@ class WorkerServices:
                             operationsCount.append(timePaperOperation.productionModelOperations.ОперацияNo)
 
                 if timePaper.hourlyPays:
-                    hourlyPay = timePaper.hourlyPays[0].Efficiency
-                else:
-                    hourlyPay = 0
+                    for hourlyPay in timePaper.hourlyPays:
+                        hourlyPayList.append([hourlyPay.Efficiency, hourlyPay.HourlyRate, hourlyPay.id])
+
+                if timePaper.overtimePays:
+                    for overtimePay in timePaper.overtimePays:
+                        overtimePayList.append([overtimePay.Efficiency, overtimePay.OvertimeRate, overtimePay.id])
 
                 if timePaper.Date in holidaysList:
                     paymentRatio = 2
@@ -180,8 +185,8 @@ class WorkerServices:
                     'date': timePaper.Date.strftime('%d.%m.%Y'),
                     'shift': timePaper.workingShifts.ShiftName,
                     'operations': operationsData,
-                    'isHourly': hourlyPay,
-                    # 'isOvertime': overtimePay,
+                    'hourly': hourlyPayList,
+                    'overtime': overtimePayList,
                     'totalTime': timePaper.TotalHours,
                     'totalPieces': timePaper.TotalPieces,
                     'ordersCount': len(orderCount),

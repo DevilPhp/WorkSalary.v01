@@ -22,8 +22,8 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
 
         self.paymentsDetailsTableHolder.layout().addWidget(self.workerDetalsTreeView)
         self.tablePaymentDetailsModel = QStandardItemModel()
-        self.tablePaymentDetailsNames = ['ID', 'Дата', 'Смяна', 'Поръчки', 'Операции',
-                                         'Време', 'Поч. Раб.', 'Бройки', 'Ефект.', 'Нач. лв.', 'Нач. €']
+        self.tablePaymentDetailsNames = ['ID', 'Дата', 'Смяна', 'Поръчки', 'Опер.',
+                                         'Вр.', 'Поч. Раб.', 'Изв. Раб.', 'Бр.', 'Ефект.', 'Нач. лв.', 'Нач. €']
         for i, tableHeaderName in enumerate(self.tablePaymentDetailsNames):
             self.tablePaymentDetailsModel.setHorizontalHeaderItem(i, QStandardItem(tableHeaderName))
             self.tablePaymentDetailsModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignLeft)
@@ -33,10 +33,18 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
         # self.timePapersForDayTableView.setModel(self.tablePaymentsModel)
         self.workerDetalsTreeView.header().setDefaultSectionSize(80)
         self.workerDetalsTreeView.header().setStretchLastSection(True)
-        self.workerDetalsTreeView.setColumnWidth(3, 150)
-        self.workerDetalsTreeView.setColumnWidth(2, 120)
-        self.workerDetalsTreeView.setColumnWidth(1, 120)
+        self.setColumnWidths()
         self.refreshPaymentsDetailsTreeView()
+
+    def setColumnWidths(self):
+        self.workerDetalsTreeView.setColumnWidth(1, 100)
+        self.workerDetalsTreeView.setColumnWidth(3, 100)
+        self.workerDetalsTreeView.setColumnWidth(4, 60)
+        self.workerDetalsTreeView.setColumnWidth(5, 50)
+        self.workerDetalsTreeView.setColumnWidth(6, 85)
+        self.workerDetalsTreeView.setColumnWidth(7, 85)
+        self.workerDetalsTreeView.setColumnWidth(8, 50)
+        self.workerDetalsTreeView.setColumnWidth(9, 70)
 
     def refreshPaymentsDetailsTreeView(self):
         self.tablePaymentDetailsModel.setRowCount(0)
@@ -44,8 +52,27 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
         paymentPerMinute = WoS.getPaymentForMin()
         paymentInLv = paymentPerMinute.PaymentValue
         paymentInEuro = paymentPerMinute.PaymentInEuro
+        totalHourlyTime = 0
+        totalOvertime = 0
+        totalPaymentInLev = 0
+        totalPaymentInEuro = 0
         if paymentsData:
             for payment, details in paymentsData.items():
+                if details['hourly']:
+                    for hourlyPay in details['hourly']:
+                        totalHourlyTime += hourlyPay[0]
+                        totalPaymentInLev += hourlyPay[0] * hourlyPay[1] * details['paymentRatio'] * paymentInLv
+                        totalPaymentInEuro += hourlyPay[0] * hourlyPay[1] * details['paymentRatio'] * paymentInEuro
+
+                if details['overtime']:
+                    for overtimePay in details['overtime']:
+                        totalOvertime += overtimePay[0]
+                        totalPaymentInLev += overtimePay[0] * overtimePay[1] * details['paymentRatio'] * paymentInLv
+                        totalPaymentInEuro += overtimePay[0] * overtimePay[1] * details['paymentRatio'] * paymentInEuro
+
+                totalPaymentInLev += details['totalTime'] * details['paymentRatio'] * paymentInLv
+                totalPaymentInEuro += details['totalTime'] * details['paymentRatio'] * paymentInEuro
+
                 parentRow = QStandardItem(str(payment))
                 row = [
                     parentRow,
@@ -54,16 +81,51 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
                     QStandardItem(str(details['ordersCount'])),
                     QStandardItem(str(details['operationsCount'])),
                     QStandardItem(str(details['totalTime'])),
-                    QStandardItem(str(details['isHourly'])),
+                    QStandardItem(str(totalHourlyTime)),
+                    QStandardItem(str(totalOvertime)),
                     QStandardItem(str(details['totalPieces'])),
                     QStandardItem(str(round(details['totalTime'] / details['totalPieces'], 2))
                                   if details['totalPieces'] > 0 else '0'),
-                    QStandardItem(str(round((details['totalTime'] * details['paymentRatio'] * paymentInLv) +
-                                            (details['isHourly'] * details['paymentRatio'] * paymentInLv), 2))),
-                    QStandardItem(str(round((details['totalTime'] * paymentInEuro) +
-                                            (details['isHourly'] * paymentInEuro), 2)))
+                    QStandardItem(str(round(totalPaymentInLev, 2))),
+                    QStandardItem(str(round(totalPaymentInEuro, 2)))
                 ]
                 self.tablePaymentDetailsModel.appendRow(row)
+
+                if details['hourly']:
+                    for hourlyPay in details['hourly']:
+                        subRow = [
+                            QStandardItem(str(hourlyPay[2])),
+                            QStandardItem(details['date']),
+                            QStandardItem(details['shift']),
+                            QStandardItem('Почасово'),
+                            QStandardItem('0'),
+                            QStandardItem('0'),
+                            QStandardItem(str(hourlyPay[0])),
+                            QStandardItem('0'),
+                            QStandardItem('0'),
+                            QStandardItem('0'),
+                            QStandardItem(str(round(hourlyPay[0] * hourlyPay[1] * details['paymentRatio'] * paymentInLv, 2))),
+                            QStandardItem(str(round(hourlyPay[0] * hourlyPay[1] * details['paymentRatio'] * paymentInEuro, 2)))
+                        ]
+                        parentRow.appendRow(subRow)
+
+                if details['overtime']:
+                    for overtimePay in details['overtime']:
+                        subRow = [
+                            QStandardItem(str(overtimePay[2])),
+                            QStandardItem(details['date']),
+                            QStandardItem(details['shift']),
+                            QStandardItem('Извънреден'),
+                            QStandardItem('0'),
+                            QStandardItem('0'),
+                            QStandardItem('0'),
+                            QStandardItem(str(overtimePay[0])),
+                            QStandardItem('0'),
+                            QStandardItem('0'),
+                            QStandardItem(str(round(overtimePay[0] * overtimePay[1] * details['paymentRatio'] * paymentInLv, 2))),
+                            QStandardItem(str(round(overtimePay[0] * overtimePay[1] * details['paymentRatio'] * paymentInEuro, 2)))
+                        ]
+                        parentRow.appendRow(subRow)
 
                 if details['operations']:
                     for operation in details['operations'].keys():
@@ -74,21 +136,18 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
                             QStandardItem(details['operations'][operation]['order']),
                             QStandardItem(str(details['operations'][operation]['operation'])),
                             QStandardItem(str(round(details['operations'][operation]['time'], 2))),
-                            QStandardItem(str(details['isHourly'])),
+                            QStandardItem('0'),
+                            QStandardItem('0'),
                             QStandardItem(str(details['operations'][operation]['pieces'])),
                             QStandardItem(str(round(details['operations'][operation]['time']
                                                     / details['operations'][operation]['pieces'], 2))),
                             QStandardItem(
                                 str(round(
-                                    (details['operations'][operation]['time']*details['paymentRatio']*paymentInLv) +
-                                    (details['isHourly'] * paymentInLv), 2
-                                    ))
+                                    (details['operations'][operation]['time']*details['paymentRatio']*paymentInLv), 2))
                                 ),
                             QStandardItem(
                                 str(round(
-                                    (details['operations'][operation]['time']*details['paymentRatio']*paymentInEuro) +
-                                    (details['isHourly'] * paymentInEuro), 2
-                                ))
+                                    (details['operations'][operation]['time']*details['paymentRatio']*paymentInEuro), 2))
                             )
                         ]
                         parentRow.appendRow(subRow)

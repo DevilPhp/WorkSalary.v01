@@ -21,18 +21,18 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
         self.paymentsTableHolder.layout().addWidget(self.paymentsTableView)
         self.tablePaymentsModel = QStandardItemModel()
         self.tablePaymentsNames = ['ID', '№', 'Име', 'Зар. дни', 'Бр.',
-                                   'Време', 'Бр./час', 'Лв.', '€']
+                                   'Вр. Опер. в ч.', 'Почас. в ч.', 'Извънр. в ч.', 'Бр./час', 'Лв.', '€']
         for i, tableHeaderName in enumerate(self.tablePaymentsNames):
             self.tablePaymentsModel.setHorizontalHeaderItem(i, QStandardItem(tableHeaderName))
             self.tablePaymentsModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignLeft)
             self.tablePaymentsModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignVCenter)
-        self.proxyModelPaymentsTable = CaseInsensitiveProxyModel(numericColumns=[0, 1, 3, 4, 5, 6, 7, 8],
+        self.proxyModelPaymentsTable = CaseInsensitiveProxyModel(numericColumns=[0, 1, 3, 4, 5, 6, 7, 8, 9, 10],
                                                            parent=self)
         self.setProxyModel(self.proxyModelPaymentsTable, self.tablePaymentsModel, self.paymentsTableView)
         # self.timePapersForDayTableView.setModel(self.tablePaymentsModel)
         self.paymentsTableView.horizontalHeader().setDefaultSectionSize(80)
         self.paymentsTableView.horizontalHeader().setStretchLastSection(True)
-        self.paymentsTableView.setColumnWidth(2, 180)
+        self.setColumnWidths()
         self.fromDateEdit.setDate(QDate.currentDate().addDays(-7))
         self.toDateEdit.setDate(QDate.currentDate())
 
@@ -43,7 +43,16 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
 
         self.searchBtn.clicked.connect(self.refreshPaymentsTable)
         self.paymentsTableView.doubleClicked.connect(self.openPaymentDetails)
-    
+
+    def setColumnWidths(self):
+        self.paymentsTableView.setColumnWidth(0, 20)
+        self.paymentsTableView.setColumnWidth(1, 40)
+        self.paymentsTableView.setColumnWidth(2, 180)
+        self.paymentsTableView.setColumnWidth(4, 50)
+        self.paymentsTableView.setColumnWidth(5, 120)
+        self.paymentsTableView.setColumnWidth(6, 100)
+        self.paymentsTableView.setColumnWidth(7, 110)
+
     def refreshPaymentsTable(self):
         self.tablePaymentsModel.setRowCount(0)
         count = 0
@@ -83,41 +92,46 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
                 overtime = paymentsData[workerPayment][timePaperPayment]['overtime']
                 pieces = paymentsData[workerPayment][timePaperPayment]['totalPieces']
                 workingTime = paymentsData[workerPayment][timePaperPayment]['totalTime']
+                paymentRatio = paymentsData[workerPayment][timePaperPayment]['paymentRatio']
                 if hourly:
                     for hourlyPayment in hourly:
-                        currentPayment += hourly[hourlyPayment][0] * hourly[hourlyPayment][1] * paymentInLeva
-                        currentPaymentInEuro += hourly[hourlyPayment][0] * hourly[hourlyPayment][1] * paymentInEuro
+                        totalHourlyMins += hourly[hourlyPayment][0]
+                        currentPayment += (hourly[hourlyPayment][0] *
+                                           hourly[hourlyPayment][1] *
+                                           paymentRatio *
+                                           paymentInLeva)
+                        currentPaymentInEuro += (hourly[hourlyPayment][0] *
+                                                 hourly[hourlyPayment][1] *
+                                                 paymentRatio *
+                                                 paymentInEuro)
                 if overtime:
                     for overtimePayment in overtime:
+                        totalOvertimeMins += overtime[overtimePayment][0]
                         currentPayment += overtime[overtimePayment][0]*overtime[overtimePayment][1]*paymentInLeva
                         currentPaymentInEuro += overtime[overtimePayment][0]*overtime[overtimePayment][1]*paymentInEuro
                 currentPayment += (workingTime *
                                    paymentInLeva *
-                                   paymentsData[workerPayment][timePaperPayment]['paymentRatio'])
+                                   paymentRatio)
                 currentPaymentInEuro += (workingTime *
                                          paymentInEuro *
-                                         paymentsData[workerPayment][timePaperPayment]['paymentRatio'])
-
-                # paymentRatio = paymentsData[workerPayment][timePaperPayment]['paymentRation']
-
-                # print(f'Payment: {workerName} {currentPayment}, Euro: {currentPaymentInEuro}')
+                                         paymentRatio)
                 totalPieces += pieces
                 totalTime = round(totalTime + workingTime, 2)
-                # payInLeva = round(payInLeva + currentPayment, 2)
-                # payInEuro = round(payInEuro + currentPaymentInEuro, 2)
-                # print(paymentsData[workerPayment][payment]['paymentRation'])
-            dispalyTime = '0'
+            displayOperTime = '0'
+            displayHourlyTime = '0'
+            displayOverTime = '0'
             efficiency = 0
-            totalTime = round(totalTime + totalHourlyMins + totalOvertimeMins, 2)
+            totalTime = round(totalTime, 2)
             if totalPieces != 0 or totalTime != 0:
                 efficiency = round((totalTime / totalPieces), 2)
-                if 0 < int(totalTime % 60) < 10:
-                    minsDispay = f'0{int(totalTime % 60)}'
-                else:
-                    minsDispay = f'{int(totalTime % 60)}'
-                dispalyTime = f'{int(totalTime / 60)}:{minsDispay}' \
-                    if totalTime % 60 > 0 else f'{int(totalTime / 60)}'
-            # print(totalTime, totalMins)
+                displayOperTime = Utils.makeDispalyMins(totalTime)
+
+            if totalOvertimeMins > 0:
+                displayOverTime = Utils.makeDispalyMins(totalOvertimeMins)
+
+            if totalHourlyMins > 0:
+                displayHourlyTime = Utils.makeDispalyMins(totalHourlyMins)
+
             payInLeva = round(currentPayment, 2)
             payInEuro = round(currentPaymentInEuro, 2)
 
@@ -127,7 +141,9 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
                 QStandardItem(workerName),
                 QStandardItem(str(workingDays)),
                 QStandardItem(str(totalPieces)),
-                QStandardItem(dispalyTime),
+                QStandardItem(displayOperTime),
+                QStandardItem(displayHourlyTime),
+                QStandardItem(displayOverTime),
                 QStandardItem(str(efficiency)),
                 QStandardItem(str(payInLeva)),
                 QStandardItem(str(payInEuro))

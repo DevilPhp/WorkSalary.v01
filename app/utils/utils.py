@@ -132,6 +132,16 @@ class Utils:
         return totalMinutes
 
     @staticmethod
+    def makeDispalyMins(time):
+        if 0 < int(time % 60) < 10:
+            minsDispay = f'0{int(time % 60)}'
+        else:
+            minsDispay = f'{int(time % 60)}'
+        dispalyTime = f'{int(time / 60)}:{minsDispay}' \
+            if time % 60 > 0 else f'{int(time / 60)}'
+        return dispalyTime
+
+    @staticmethod
     def convertQtimeToTime(timeQTime):
         stringTime = timeQTime.toString("hh:mm")
         return datetime.strptime(stringTime, "%H:%M").time()
