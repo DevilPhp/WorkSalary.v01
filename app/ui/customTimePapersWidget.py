@@ -583,15 +583,15 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.piecesTimeLineEdit.setText(str(round(pieces * timeForPiece, 2)))
 
     def addTimePaperOperation(self):
-        if not self.isHourlyWorking.isChecked() and not self.isOvertimeWorking.isChecked():
-            if self.clientModelsLineEdit.text() == '' or self.modelOperationLineEdit.text() == '':
+        if self.clientModelsLineEdit.text() == '' or self.modelOperationLineEdit.text() == '':
+            if not self.isHourlyWorking.isChecked() and not self.isOvertimeWorking.isChecked():
                 MM.showOnWidget(self,
                                 'Не сте избрали клиент и/или операция',
                                 'error')
                 return
-
-        if not self.checkIfTimeIsValid():
-            return
+            else:
+                if not self.checkIfTimeIsValid():
+                    return
         count = 1
         operationsGroupForAdd = {}
         timePaper = None

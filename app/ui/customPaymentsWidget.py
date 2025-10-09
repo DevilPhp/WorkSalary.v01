@@ -4,9 +4,9 @@ from PySide6.QtGui import QStandardItemModel, QStandardItem
 
 from app.ui.customSortingMenuWidget import CustomSortingMenuWidget
 from app.ui.widgets.ui_customPaymentsWidget import *
-from app.ui.customPaymentsDetailsWidget import CustomPaymentsDetailsWidget
 from app.models.tableModel import CustomTableViewWithMultiSelection
 from app.models.sortingModel import CaseInsensitiveProxyModel, FilterableHeaderView
+from app.ui.customCalendarWidget import CustomCalendarDialog
 from app.services.workerServices import WorkerServices as WoS
 from app.utils.utils import Utils
 
@@ -41,8 +41,40 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
         
         self.refreshPaymentsTable()
 
+        self.fromCalendarBtn.clicked.connect(self.showCalendarDialog)
+        self.toCalendarBtn.clicked.connect(self.showCalendarDialog)
+
+        self.fromDateEdit.dateChanged.connect(self.checkFromDate)
+        self.toDateEdit.dateChanged.connect(self.checkToDate)
+
         self.searchBtn.clicked.connect(self.refreshPaymentsTable)
         self.paymentsTableView.doubleClicked.connect(self.openPaymentDetails)
+
+    def showCalendarDialog(self):
+        calendarDialog = CustomCalendarDialog()
+        Utils.calculatingIdealDialogShowPos(self, calendarDialog)
+        if self.sender() == self.fromCalendarBtn:
+            calendarDialog.calendarCustomWidget.setSelectedDate(self.fromDateEdit.date())
+            calendarDialog.dateSelected.connect(self.updateFromDateLabel)
+        elif self.sender() == self.toCalendarBtn:
+            calendarDialog.calendarCustomWidget.setSelectedDate(self.toDateEdit.date())
+            calendarDialog.dateSelected.connect(self.updateToDateLabel)
+
+        calendarDialog.exec_()
+
+    def updateFromDateLabel(self, selectedDate):
+        self.fromDateEdit.setDate(selectedDate)
+
+    def updateToDateLabel(self, selectedDate):
+        self.toDateEdit.setDate(selectedDate)
+
+    def checkFromDate(self):
+        if self.fromDateEdit.date() > self.toDateEdit.date():
+            self.toDateEdit.setDate(self.fromDateEdit.date())
+
+    def checkToDate(self):
+        if self.toDateEdit.date() < self.fromDateEdit.date():
+            self.fromDateEdit.setDate(self.toDateEdit.date())
 
     def setColumnWidths(self):
         self.paymentsTableView.setColumnWidth(0, 20)
@@ -60,6 +92,9 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
         startDate = Utils.convertQDateToDate(self.fromDateEdit.date())
         endDate = Utils.convertQDateToDate(self.toDateEdit.date())
         paymentsData = WoS.getInfoForPayments(startDate, endDate)
+        # for pay in paymentsData:
+        #     print(pay, paymentsData[pay])
+        #     return
         paymentForMin = WoS.getPaymentForMin()
         paymentForNightMin = WoS.getPaymentForNightMin()
         paymentInLeva = paymentForMin.PaymentValue
@@ -72,22 +107,16 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
             workerId = workerPayment.split(' : ')[0]
             workerName = workerPayment.split(' : ')[1]
             workingDays = len(paymentsData[workerPayment])
-            totalHourlyMins = 0
-            totalOvertimeMins = 0
-            totalPieces = 0
-            totalTime = 0
-            workingPayInLeva = 0
-            workingPayInEuro = 0
-            hourlyPayInLeva = 0
-            hourlyPayInEuro = 0
-            overtimePayInLeva = 0
-            overtimePayInEuro = 0
-            # payInLeva = 0
-            # payInEuro = 0
-            currentPayment = 0
-            currentPaymentInEuro = 0
+            totalPayInLev = 0
+            totalPayInEuro = 0
 
             for timePaperPayment in paymentsData[workerPayment]:
+                totalHourlyMins = 0
+                totalOvertimeMins = 0
+                totalPieces = 0
+                totalTime = 0
+                currentPayment = 0
+                currentPaymentInEuro = 0
                 hourly = paymentsData[workerPayment][timePaperPayment]['hourly']
                 overtime = paymentsData[workerPayment][timePaperPayment]['overtime']
                 pieces = paymentsData[workerPayment][timePaperPayment]['totalPieces']
@@ -117,6 +146,9 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
                                          paymentRatio)
                 totalPieces += pieces
                 totalTime = round(totalTime + workingTime, 2)
+
+                totalPayInLev += currentPayment
+                totalPayInEuro += currentPaymentInEuro
             displayOperTime = '0'
             displayHourlyTime = '0'
             displayOverTime = '0'
@@ -132,8 +164,8 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
             if totalHourlyMins > 0:
                 displayHourlyTime = Utils.makeDispalyMins(totalHourlyMins)
 
-            payInLeva = round(currentPayment, 2)
-            payInEuro = round(currentPaymentInEuro, 2)
+            payInLeva = round(totalPayInLev, 2)
+            payInEuro = round(totalPayInEuro, 2)
 
             row = [
                 QStandardItem(str(count)),
@@ -155,8 +187,8 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
 
     def openPaymentDetails(self, index):
         workerId = self.proxyModelPaymentsTable.mapToSource(index).siblingAtColumn(1).data(Qt.ItemDataRole.DisplayRole)
-        startDate = Utils.convertQDateToDate(self.fromDateEdit.date())
-        endDate = Utils.convertQDateToDate(self.toDateEdit.date())
+        startDate = self.fromDateEdit.date()
+        endDate = self.toDateEdit.date()
         self.mainWindow.setPaymentsDetailsPage(workerId, startDate, endDate)
 
     def setProxyModel(self, proxyModel, model, table):

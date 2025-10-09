@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customPaymentsDetailsWidgetsxJPKs.ui'
+## Form generated from reading UI file 'customPaymentsDetailsWidgetPyGCyi.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -430,10 +430,10 @@ class Ui_customPaymentsDetailsWidget(object):
 
         self.horizontalLayout_7.addWidget(self.label_25)
 
-        self.label_10 = QLabel(self.widget_12)
-        self.label_10.setObjectName(u"label_10")
+        self.fromDateLineEdit = QLabel(self.widget_12)
+        self.fromDateLineEdit.setObjectName(u"fromDateLineEdit")
 
-        self.horizontalLayout_7.addWidget(self.label_10)
+        self.horizontalLayout_7.addWidget(self.fromDateLineEdit)
 
 
         self.horizontalLayout_8.addWidget(self.widget_12)
@@ -447,10 +447,10 @@ class Ui_customPaymentsDetailsWidget(object):
 
         self.horizontalLayout_6.addWidget(self.label_26)
 
-        self.label_11 = QLabel(self.widget_11)
-        self.label_11.setObjectName(u"label_11")
+        self.toDateLineEdit = QLabel(self.widget_11)
+        self.toDateLineEdit.setObjectName(u"toDateLineEdit")
 
-        self.horizontalLayout_6.addWidget(self.label_11)
+        self.horizontalLayout_6.addWidget(self.toDateLineEdit)
 
 
         self.horizontalLayout_8.addWidget(self.widget_11)
@@ -725,9 +725,9 @@ class Ui_customPaymentsDetailsWidget(object):
         self.label_31.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u041a\u043e\u0435\u0444.", None))
         self.label_32.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u041a\u043e\u0435\u0444.", None))
         self.label_25.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u041e\u0442 \u0414\u0430\u0442\u0430: ", None))
-        self.label_10.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"1.1.25", None))
+        self.fromDateLineEdit.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"1.1.25", None))
         self.label_26.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u0414\u043e \u0414\u0430\u0442\u0430: ", None))
-        self.label_11.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"1.1.25", None))
+        self.toDateLineEdit.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"1.1.25", None))
         self.label_42.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u041e\u0431\u0449\u043e \u0440\u0435\u0434\u043e\u0432\u0435:", None))
         self.totalViewRows.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"0", None))
         self.label_43.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u0417\u0430\u0432\u044a\u0440\u0448\u0435\u043d\u0438 \u0431\u0440 \u0437\u0430 \u0434\u0435\u043d\u044f:", None))

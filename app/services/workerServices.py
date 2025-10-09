@@ -132,19 +132,12 @@ class WorkerServices:
 
     @staticmethod
     def getPaymentsDetailsForWorker(workerId, startDate, endDate):
-        startDate = datetime.strptime('2025-10-01', '%Y-%m-%d').date()
-        endDate = datetime.strptime('2025-11-01', '%Y-%m-%d').date()
+        # startDate = datetime.strptime('2024-10-01', '%Y-%m-%d').date()
+        # endDate = datetime.strptime('2024-11-01', '%Y-%m-%d').date()
         returnedData = {}
         currentYear = datetime.now().year
         with getDatabase() as session:
-
-            holidaysPerYear = session.query(HolidaysPerYear).filter_by(Year=currentYear).first().id
-            holidays = session.query(Holiday).filter_by(HolidaysPerYearId=holidaysPerYear).all()
-            if holidays:
-                holidaysList = [holiday.HolidayDate for holiday in holidays]
-            else:
-                holidaysList = []
-
+            holidaysList = WorkerServices.getHolidaysForYear(session, currentYear)
             timePapers = session.query(TimePaper).filter(TimePaper.WorkerId == workerId,
                                                             TimePaper.Date >= startDate,
                                                             TimePaper.Date <= endDate).all()
@@ -183,7 +176,7 @@ class WorkerServices:
 
                 returnedData[timePaper.id] = {
                     'date': timePaper.Date.strftime('%d.%m.%Y'),
-                    'shift': timePaper.workingShifts.ShiftName,
+                    'shift': timePaper.workingShifts.ShiftName if timePaper.workingShifts else '-',
                     'operations': operationsData,
                     'hourly': hourlyPayList,
                     'overtime': overtimePayList,
@@ -194,6 +187,18 @@ class WorkerServices:
                     'paymentRatio': paymentRatio
                 }
             return returnedData
+
+    @staticmethod
+    def getHolidaysForYear(session, year):
+        holidays = None
+        holidaysPerYear = session.query(HolidaysPerYear).filter_by(Year=year).first()
+        if holidaysPerYear:
+            holidays = session.query(Holiday).filter_by(HolidaysPerYearId=holidaysPerYear.id).all()
+        if holidays:
+            holidaysList = [holiday.HolidayDate for holiday in holidays]
+        else:
+            holidaysList = []
+        return holidaysList
 
     @staticmethod
     def getPaymentForMin():
@@ -208,16 +213,11 @@ class WorkerServices:
     @staticmethod
     def getInfoForPayments(startDate, endDate):
         returnedData = {}
-        startDate = datetime.strptime('2025-10-01', '%Y-%m-%d').date()
-        endDate = datetime.strptime('2025-11-01', '%Y-%m-%d').date()
+        # startDate = datetime.strptime('2024-10-01', '%Y-%m-%d').date()
+        # endDate = datetime.strptime('2024-11-01', '%Y-%m-%d').date()
         currentYear = datetime.now().year
         with getDatabase() as session:
-            holidaysPerYear = session.query(HolidaysPerYear).filter_by(Year=currentYear).first().id
-            holidays = session.query(Holiday).filter_by(HolidaysPerYearId=holidaysPerYear).all()
-            if holidays:
-                holidaysList = [holiday.HolidayDate for holiday in holidays]
-            else:
-                holidaysList = []
+            holidaysList = WorkerServices.getHolidaysForYear(session, currentYear)
             timePapers = session.query(TimePaper).filter(TimePaper.Date >= startDate,
                                                          TimePaper.Date <= endDate).all()
 

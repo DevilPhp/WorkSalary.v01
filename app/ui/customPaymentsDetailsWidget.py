@@ -4,6 +4,7 @@ from app.ui.widgets.ui_customPaymentsDetailsWidget import *
 from app.services.workerServices import WorkerServices as WoS
 from app.models.customTreeView import CustomTreeView
 from app.models.sortingModel import CaseInsensitiveProxyModel
+from app.utils.utils import Utils
 
 
 class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
@@ -18,12 +19,15 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
         self.endDate = endDate
         self.workerDetalsTreeView = CustomTreeView(self)
 
+        self.fromDateLineEdit.setText(self.startDate.toString('dd.MM.yyyy'))
+        self.toDateLineEdit.setText(self.endDate.toString('dd.MM.yyyy'))
+
         self.setupWindowInfo()
 
         self.paymentsDetailsTableHolder.layout().addWidget(self.workerDetalsTreeView)
         self.tablePaymentDetailsModel = QStandardItemModel()
         self.tablePaymentDetailsNames = ['ID', 'Дата', 'Смяна', 'Поръчки', 'Опер.',
-                                         'Вр.', 'Поч. Раб.', 'Изв. Раб.', 'Бр.', 'Ефект.', 'Нач. лв.', 'Нач. €']
+                                         'Вр. мин.', 'Поч. Раб.', 'Изв. Раб.', 'Бр.', 'Ефект.', 'Нач. лв.', 'Нач. €']
         for i, tableHeaderName in enumerate(self.tablePaymentDetailsNames):
             self.tablePaymentDetailsModel.setHorizontalHeaderItem(i, QStandardItem(tableHeaderName))
             self.tablePaymentDetailsModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignLeft)
@@ -48,16 +52,19 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
 
     def refreshPaymentsDetailsTreeView(self):
         self.tablePaymentDetailsModel.setRowCount(0)
-        paymentsData = WoS.getPaymentsDetailsForWorker(self.workerId, self.startDate, self.endDate)
+        startDate = Utils.convertQDateToDate(self.startDate)
+        endDate = Utils.convertQDateToDate(self.endDate)
+        paymentsData = WoS.getPaymentsDetailsForWorker(self.workerId, startDate, endDate)
         paymentPerMinute = WoS.getPaymentForMin()
         paymentInLv = paymentPerMinute.PaymentValue
         paymentInEuro = paymentPerMinute.PaymentInEuro
-        totalHourlyTime = 0
-        totalOvertime = 0
-        totalPaymentInLev = 0
-        totalPaymentInEuro = 0
+        # print(paymentsData)
         if paymentsData:
             for payment, details in paymentsData.items():
+                totalHourlyTime = 0
+                totalOvertime = 0
+                totalPaymentInLev = 0
+                totalPaymentInEuro = 0
                 if details['hourly']:
                     for hourlyPay in details['hourly']:
                         totalHourlyTime += hourlyPay[0]
