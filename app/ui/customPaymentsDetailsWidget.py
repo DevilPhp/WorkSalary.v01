@@ -32,7 +32,8 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
             self.tablePaymentDetailsModel.setHorizontalHeaderItem(i, QStandardItem(tableHeaderName))
             self.tablePaymentDetailsModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignLeft)
             self.tablePaymentDetailsModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignVCenter)
-        self.proxyModelPaymentsDetailsTree = CaseInsensitiveProxyModel(parent=self)
+        self.proxyModelPaymentsDetailsTree = CaseInsensitiveProxyModel(numericColumns=[0, 4, 5, 6, 7, 8, 9, 10, 11],
+                                                                       parent=self)
         self.setProxyModel(self.proxyModelPaymentsDetailsTree, self.tablePaymentDetailsModel, self.workerDetalsTreeView)
         # self.timePapersForDayTableView.setModel(self.tablePaymentsModel)
         self.workerDetalsTreeView.header().setDefaultSectionSize(80)
@@ -56,8 +57,11 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
         endDate = Utils.convertQDateToDate(self.endDate)
         paymentsData = WoS.getPaymentsDetailsForWorker(self.workerId, startDate, endDate)
         paymentPerMinute = WoS.getPaymentForMin()
+        paymentForNightMin = WoS.getPaymentForNightMin()
         paymentInLv = paymentPerMinute.PaymentValue
         paymentInEuro = paymentPerMinute.PaymentInEuro
+        nightPayInLeva = paymentForNightMin.NightPaymentValue
+        nightPayInEuro = paymentForNightMin.NightPaymentInEuro
         # print(paymentsData)
         if paymentsData:
             for payment, details in paymentsData.items():

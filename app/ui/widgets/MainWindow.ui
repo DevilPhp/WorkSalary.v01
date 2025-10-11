@@ -622,9 +622,9 @@ QPushButton:hover {
                  </widget>
                 </item>
                 <item row="1" column="3">
-                 <widget class="QPushButton" name="pushButton_3">
+                 <widget class="QPushButton" name="payPerMinBtn">
                   <property name="text">
-                   <string>PushButton</string>
+                   <string>Заплащане за Мин</string>
                   </property>
                  </widget>
                 </item>
@@ -693,6 +693,13 @@ QPushButton:hover {
                  <widget class="QPushButton" name="holidaysPageBtn">
                   <property name="text">
                    <string>Празнични Дни</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="3">
+                 <widget class="QPushButton" name="nightPayPerMinBtn">
+                  <property name="text">
+                   <string>Нощно Заплашане за Мин</string>
                   </property>
                  </widget>
                 </item>

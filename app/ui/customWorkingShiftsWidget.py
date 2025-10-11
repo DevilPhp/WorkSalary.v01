@@ -31,7 +31,6 @@ class CustomShiftsEditWidget(QWidget, Ui_customWorkingShiftsWidget):
         self.proxyModelShifts.setSourceModel(self.workingShiftsModel)
         self.workingShiftsTableView.setModel(self.proxyModelShifts)
         self.workingShiftsTableView.setSortingEnabled(True)
-        # self.timePapersForDayTableView.setModel(self.tableTimePapersModel)
         self.workingShiftsTableView.horizontalHeader().setStretchLastSection(True)
         self.workingShiftsTableView.horizontalHeader().setMinimumWidth(80)
         self.workingShiftsTableView.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)

@@ -180,6 +180,7 @@ class WorkerServices:
                     'operations': operationsData,
                     'hourly': hourlyPayList,
                     'overtime': overtimePayList,
+                    'nightMins': timePaper.NightShiftMins,
                     'totalTime': timePaper.TotalHours,
                     'totalPieces': timePaper.TotalPieces,
                     'ordersCount': len(orderCount),
@@ -242,6 +243,7 @@ class WorkerServices:
                                 if timePaper.workingShifts is not None else None,
                                 'overtime': overtimeAndHourly[0],
                                 'hourly': overtimeAndHourly[1],
+                                'nightMins': timePaper.NightShiftMins,
                                 'totalPieces': timePaper.TotalPieces,
                                 'totalTime': round(timePaper.TotalHours, 2),
                                 'paymentRatio': paymentRatio
@@ -371,7 +373,8 @@ class WorkerServices:
                 PaymentRatio=paymentRatio,
                 ShiftId=timePaperData['ShiftId'],
                 WorkerId=timePaperData['WorkerId'],
-                userCreated=timePaperData['user']
+                userCreated=timePaperData['user'],
+                NightShiftMins=timePaperData['nightMins']
             )
             session.add(newTimePaper)
             session.commit()
@@ -447,6 +450,19 @@ class WorkerServices:
                 if worker.cehove and worker.workerPosition:
                     data.append([worker, worker.cehove.Група, worker.workerPosition.Длъжност])
             return data
+
+    @staticmethod
+    def getExistingTimePaperShift(timePaperId):
+        with getDatabase() as session:
+            timePaper = session.query(TimePaper).get(timePaperId)
+            if timePaper:
+                returnedShiftInfo = [timePaper.workingShifts.ShiftName,
+                                     timePaper.workingShifts.StartTime,
+                                     timePaper.workingShifts.EndTime]
+                # returnedShiftInfo = timePaper.workingShifts.ShiftName
+                return returnedShiftInfo
+            else:
+                return None
 
     @staticmethod
     def getTimePapersForDate(date, workerId, showAll=False):

@@ -18,6 +18,7 @@ from app.ui.customPaymentsDetailsWidget import CustomPaymentsDetailsWidget
 from app.ui.customWorkersWidget import CustomWorkersWidget
 from app.ui.messagesManager import MessageManager
 from app.ui.customHolidayWidget import CustomHolidaysWidget
+from app.ui.customPayPerMinWidget import CustomPayPerMinWidget
 
 
 
@@ -40,6 +41,7 @@ class MainWindow(QMainWindow):
         self.paymentsPage = None
         self.workersPage = None
         self.holidaysPage = None
+        self.payPerMinPage = None
         self.workerPaymentsDetails = {}
         # self.setAttribute(Qt.WA_TranslucentBackground)
         LoginPage(self)
@@ -55,6 +57,7 @@ class MainWindow(QMainWindow):
         self.ui.paymentsPageBtn.clicked.connect(self.setPaymentsPage)
         self.ui.workersPageBtn.clicked.connect(self.setWorkersPage)
         self.ui.holidaysPageBtn.clicked.connect(self.setHolidaysPage)
+        self.ui.payPerMinBtn.clicked.connect(self.setPayPerMinPage)
         # MessageManager.success('DefaultOperToModelTypeCustomWidget initialized', timeout=3000)
 
         # user = UsersFuncs.createUser('test', '000')
@@ -84,6 +87,9 @@ class MainWindow(QMainWindow):
     def resetHolidaysPage(self):
         self.holidaysPage = None
 
+    def resetPayPerMinPage(self):
+        self.payPerMinPage = None
+
     def removeWorkerPaymentsDetails(self, workerId):
         if workerId in self.workerPaymentsDetails:
             del self.workerPaymentsDetails[workerId]
@@ -99,6 +105,14 @@ class MainWindow(QMainWindow):
             subWindow.setWidget(newWindow)
             self.ui.mainWindowsArea.addSubWindow(subWindow)
             subWindow.show()
+
+    def setPayPerMinPage(self):
+        if self.payPerMinPage is None:
+            self.payPerMinPage = CustomPayPerMinWidget(self)
+            self.payPerMinPage.show()
+            self.payPerMinPage.destroyed.connect(self.resetPayPerMinPage)
+        else:
+            self.payPerMinPage.activateWindow()
 
     def setHolidaysPage(self):
         if self.holidaysPage is None:

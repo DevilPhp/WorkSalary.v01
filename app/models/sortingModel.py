@@ -1,3 +1,4 @@
+from datetime import datetime
 from functools import partial
 
 from PySide6.QtCore import QSortFilterProxyModel, Qt, Signal, QPoint
@@ -7,14 +8,29 @@ from PySide6.QtWidgets import QHeaderView, QMenu, QCheckBox, QWidgetAction, QApp
 
 
 class CaseInsensitiveProxyModel(QSortFilterProxyModel):
-    def __init__(self, numericColumns=None, *args, **kwargs):
+    def __init__(self, numericColumns=None, dateColumns=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.columnFilters = {}
         self.numericColumns = numericColumns or []
+        self.dateColumns = dateColumns or []
 
     def setFilterForColumn(self, column, filterSet):
         self.columnFilters[column] = filterSet[column]
         self.invalidateFilter()
+
+    def _parseDate(self, dateString):
+        """Parse a date string in DD.MM.YY or DD.MM.YYYY format to a datetime object"""
+        if not dateString:
+            return None
+        try:
+            # Try parsing with 2-digit year
+            return datetime.strptime(dateString, '%d.%m.%y')
+        except ValueError:
+            try:
+                # Try parsing with 4-digit year
+                return datetime.strptime(dateString, '%d.%m.%Y')
+            except ValueError:
+                return None
 
     def filterAcceptsRow(self, sourceRow, sourceParent):
         # If no filters are active, accept all rows
@@ -28,22 +44,43 @@ class CaseInsensitiveProxyModel(QSortFilterProxyModel):
             data = self.sourceModel().data(index)
             if data not in filterSet:
                 return False
-            # for filter in filterSet:
-            #     if filter != data + '   ':
-            #         return False
-            # if not any(filterValue.lower() in data.lower() + '   ' for filterValue in filterSet):
-            #     return False
         return True
 
     def lessThan(self, left, right):
-        if left.column() in self.numericColumns:
+        left_column = left.column()
+
+        # Handle numeric columns
+        if left_column in self.numericColumns:
             leftData = self.sourceModel().data(left, Qt.ItemDataRole.DisplayRole)
             rightData = self.sourceModel().data(right, Qt.ItemDataRole.DisplayRole)
-            return float(leftData) > float(rightData)
-        else:
-            leftData = self.sourceModel().data(left)
-            rightData = self.sourceModel().data(right)
-            return str(leftData).lower() > str(rightData).lower()
+            try:
+                return float(leftData) > float(rightData)
+            except (ValueError, TypeError):
+                # Fall back to string comparison if conversion fails
+                return str(leftData).lower() > str(rightData).lower()
+
+        # Handle date columns
+        elif left_column in self.dateColumns:
+            leftData = str(self.sourceModel().data(left))
+            rightData = str(self.sourceModel().data(right))
+
+            left_date = self._parseDate(leftData)
+            right_date = self._parseDate(rightData)
+
+            # If both are valid dates, compare them
+            if left_date and right_date:
+                return left_date > right_date
+            # If only one is a valid date, put the valid one first
+            elif left_date:
+                return False
+            elif right_date:
+                return True
+            # If neither is a valid date, fall back to string comparison
+
+        # Default string comparison
+        leftData = self.sourceModel().data(left)
+        rightData = self.sourceModel().data(right)
+        return str(leftData).lower() > str(rightData).lower()
 
     def clearFilters(self):
         """Clear all active filters"""

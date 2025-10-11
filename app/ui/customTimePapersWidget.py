@@ -328,7 +328,33 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.totalWorkingMinsHolder.setVisible(False)
             self.totalProdPieces.setText(str(totalProdPieces))
 
+        self.checkForExistingShiftInTimePaper(workerId)
+
         self.setTotalMinsColor()
+
+    def checkForExistingShiftInTimePaper(self, workerId):
+        if workerId:
+            if self.existingTimePapers:
+                timePaperId = self.existingTimePapers[int(workerId)]
+                shift = WoS.getExistingTimePaperShift(timePaperId)
+                if shift:
+                    self.shiftNameLineEdit.setCurrentText(shift[0])
+                    self.shiftStart.setTime(QTime(shift[1].hour, shift[1].minute))
+                    self.shiftEnd.setTime(QTime(shift[2].hour, shift[2].minute))
+                    self.addNewShiftBtn.setEnabled(False)
+                    self.refreshShiftsBtn.setEnabled(False)
+                    self.shiftNameLineEdit.setEnabled(False)
+                    self.shiftStart.setEnabled(False)
+                    self.shiftEnd.setEnabled(False)
+            else:
+                self.shiftNameLineEdit.setCurrentIndex(0)
+                self.shiftStart.setTime(QTime(8, 0))
+                self.shiftEnd.setTime(QTime(17, 0))
+                self.addNewShiftBtn.setEnabled(True)
+                self.refreshShiftsBtn.setEnabled(True)
+                self.shiftNameLineEdit.setEnabled(True)
+                self.shiftStart.setEnabled(True)
+                self.shiftEnd.setEnabled(True)
 
     def setTotalMinsColor(self):
         totalWorkingMins = float(self.totalWorkingMins.text())
@@ -414,36 +440,113 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
     def updateDuration(self):
         if self.sender() == self.shiftStart or self.sender() == self.shiftEnd:
             duration = Utils.calculateMinutes(self.shiftStart, self.shiftEnd)
+            if duration < 0:
+                self.shiftStart.setTime(self.shiftEnd.time().addSecs(-1800))
+                duration = Utils.calculateMinutes(self.shiftStart, self.shiftEnd)
             self.shiftTotalMins.setText(str(duration))
             self.setTotalMinsColor()
 
         if self.sender() == self.hourlyStart or self.sender() == self.hourlyEnd:
             duration = Utils.calculateMinutes(self.hourlyStart, self.hourlyEnd)
+            if duration < 0:
+                self.hourlyStart.setTime(self.hourlyEnd.time().addSecs(-1800))
+                duration = Utils.calculateMinutes(self.hourlyStart, self.hourlyEnd)
             self.hourlyTotalMins.setText(str(duration))
 
         if self.sender() == self.overtimeStart or self.sender() == self.overtimeEnd:
             duration = Utils.calculateMinutes(self.overtimeStart, self.overtimeEnd)
+            if duration < 0:
+                self.overtimeStart.setTime(self.overtimeEnd.time().addSecs(-1800))
+                duration = Utils.calculateMinutes(self.overtimeStart, self.overtimeEnd)
             self.overtimeTotalMins.setText(str(duration))
             self.setTotalMinsColor()
 
     def checkIfTimeIsValid(self):
         if self.isHourlyWorking.isChecked():
-            if not (self.shiftStart.time() <= self.hourlyStart.time() <= self.shiftEnd.time()) or \
-                    not (self.shiftEnd.time() >= self.hourlyEnd.time() >= self.shiftStart.time()):
-                self.hourlyStart.setTime(self.shiftStart.time())
-                self.hourlyEnd.setTime(self.shiftEnd.time())
-                MM.showOnWidget(self, 'Почасовото време не е валидно за работна смяна!', 'warning')
-                return False
-            else:
+            # Get all times as QTime objects
+            shiftStart = self.shiftStart.time()
+            shiftEnd = self.shiftEnd.time()
+            hourlyStart = self.hourlyStart.time()
+            hourlyEnd = self.hourlyEnd.time()
+
+            # Check if shift crosses midnight
+            isOvernightShift = shiftEnd <= shiftStart
+
+            if isOvernightShift:
+                # For overnight shifts (e.g., 22:30-5:30)
+                # Hourly time is valid if:
+                # 1. It's between shift start and midnight, OR
+                # 2. It's between midnight and shift end
+                isStartValid = hourlyStart >= shiftStart or hourlyStart <= shiftEnd
+                isEndValid = hourlyEnd >= shiftStart or hourlyEnd <= shiftEnd
+
+                # Check if hourly shift is contained within the working shift
+                if not (isStartValid and isEndValid):
+                    self.hourlyStart.setTime(shiftStart)
+                    self.hourlyEnd.setTime(shiftEnd)
+                    MM.showOnWidget(self, 'Почасовото време не е валидно за работна смяна!', 'warning')
+                    return False
+
+                # Check if hourly shift itself is valid (doesn't cross midnight in wrong direction)
+                if hourlyEnd <= hourlyStart and not (hourlyStart >= shiftStart and hourlyEnd <= shiftEnd):
+                    self.hourlyStart.setTime(shiftStart)
+                    self.hourlyEnd.setTime(shiftEnd)
+                    MM.showOnWidget(self, 'Почасовото време не е валидно - начало и край са разменени!', 'warning')
+                    return False
+
                 return True
+            else:
+                # For regular shifts (e.g., 8:00-17:00)
+                # Both hourly start and end must be within shift times
+                if not (shiftStart <= hourlyStart <= shiftEnd and shiftStart <= hourlyEnd <= shiftEnd):
+                    self.hourlyStart.setTime(shiftStart)
+                    self.hourlyEnd.setTime(shiftEnd)
+                    MM.showOnWidget(self, 'Почасовото време не е валидно за работна смяна!', 'warning')
+                    return False
+
+                # Check if hourly start is before hourly end
+                if hourlyEnd < hourlyStart:
+                    self.hourlyStart.setTime(shiftStart)
+                    self.hourlyEnd.setTime(shiftEnd)
+                    MM.showOnWidget(self, 'Почасовото време не е валидно - начало и край са разменени!', 'warning')
+                    return False
+
+                return True
+
         elif self.isOvertimeWorking.isChecked():
-            if (self.shiftStart.time() <= self.overtimeStart.time() <= self.shiftEnd.time()) or \
-                    (self.shiftEnd.time() >= self.overtimeEnd.time() >= self.shiftStart.time()):
-                MM.showOnWidget(self, 'Извънредно време не е валидно за работна смяна!',
-                                'warning')
-                return False
+            # Get all times as QTime objects
+            shiftStart = self.shiftStart.time()
+            shiftEnd = self.shiftEnd.time()
+            overtimeStart = self.overtimeStart.time()
+            overtimeEnd = self.overtimeEnd.time()
+
+            # Check if shift crosses midnight
+            isOvernightShift = shiftEnd <= shiftStart
+
+            if isOvernightShift:
+                # For overnight shifts, overtime must be outside the shift hours
+                # This is more complex as we need to check if overtime is completely outside the shift
+                isStartOutside = not (overtimeStart >= shiftStart or overtimeStart <= shiftEnd)
+                isEndOutside = not (overtimeEnd >= shiftStart or overtimeEnd <= shiftEnd)
+
+                if not (isStartOutside and isEndOutside):
+                    MM.showOnWidget(self, 'Извънредно време не е валидно за работна смяна!', 'warning')
+                    return False
             else:
-                return True
+                # For regular shifts, overtime must be outside the shift hours
+                # Either before shift start or after shift end
+                if (shiftStart <= overtimeStart <= shiftEnd) or (shiftStart <= overtimeEnd <= shiftEnd):
+                    MM.showOnWidget(self, 'Извънредно време не е валидно за работна смяна!', 'warning')
+                    return False
+
+            # Check if overtime shift itself is valid
+            if overtimeEnd < overtimeStart and not isOvernightShift:
+                MM.showOnWidget(self, 'Извънредно време не е валидно - начало и край са разменени!', 'warning')
+                return False
+
+            return True
+
+        return True  # If neither hourly nor overtime is checked, validation passes
 
     def setupWorkingTimeWidgets(self):
         self.hourlyEndWidget.setEnabled(False)
@@ -471,6 +574,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         for shift in self.workingShifts.keys():
             self.shiftNameLineEdit.addItem(shift)
         Utils.setupCompleter(self.workingShifts.keys(), self.shiftNameLineEdit)
+        self.shiftNameLineEdit.setCurrentIndex(0)
 
     def toggleHourlyWorking(self):
         if self.isHourlyWorking.isChecked():
@@ -677,7 +781,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                     'OrderId': orderId,
                     'ModelOperationId': modelOperationId,
                     'Pieces': int(self.modelPiecesLineEdit.text()) if modelOperationId else 0,
-                    'WorkingTimeMinutes': modelOperationTime
+                    'WorkingTimeMinutes': modelOperationTime,
+                    'nightMins': nightMins if nightMins > 0 else None,
                 }
                 timePaper = WoS.addNewTimePaperAndOperation(timePaperData)
                 if operationsGroupForAdd:
@@ -740,6 +845,9 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.workerNameLineEdit.setText(workerName)
             self.workerLastNameLineEdit.setText(workerLastName)
             self.workerNumberLineEdit.setText(workerId)
+
+            # self.checkForWorkerTimePaper(int(workerId))
+
             workerPlace = None
             workerPosition = None
             for worker in self.workers:
@@ -769,6 +877,22 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.workerNameLineEdit.setFocus()
             self.clearWorker()
 
+        # if self.existingTimePapers:
+        #     timePaperId = self.existingTimePapers[int(workerId)]
+        #     shift = WoS.getExistingTimePaperShift(timePaperId)
+        #     if shift:
+        #         self.shiftNameLineEdit.setCurrentText(shift[0])
+        #         self.shiftStart.setTime(QTime(shift[1].hour, shift[1].minute))
+        #         self.shiftEnd.setTime(QTime(shift[2].hour, shift[2].minute))
+        #         self.shiftNameLineEdit.setEnabled(False)
+        #         self.shiftStart.setEnabled(False)
+        #         self.shiftEnd.setEnabled(False)
+        # else:
+        #     self.shiftNameLineEdit.setCurrentIndex(0)
+        #     self.shiftNameLineEdit.setEnabled(True)
+        #     self.shiftStart.setEnabled(True)
+        #     self.shiftEnd.setEnabled(True)
+
     def clearWorker(self):
         self.workerShiftsHolder.setEnabled(False)
         self.clearWorkerInfo()
@@ -795,6 +919,13 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         else:
             self.clientModelsLineEdit.setFocus()
             self.clientModelsLineEdit.selectAll()
+
+        if self.isHourlyWorking.isChecked():
+            self.isHourlyWorking.setChecked(False)
+
+        if self.isOvertimeWorking.isChecked():
+            self.isOvertimeWorking.setChecked(False)
+
         self.modelOperationLineEdit.clear()
         self.modelPiecesLineEdit.clear()
         self.timeForPieceLineEdit.clear()

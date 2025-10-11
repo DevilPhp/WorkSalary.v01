@@ -1,8 +1,13 @@
 from app.database import getDatabase, setDatabase
 from app.logger import logger
-from app.database.payment import HolidaysPerYear, Holiday
+from app.database.payment import HolidaysPerYear, Holiday, PaymentPerMinute, NightPaymentPerMinute
 
 class PaymentServices:
+
+    @staticmethod
+    def getPayPerMin():
+        with getDatabase() as session:
+            return session.query(PaymentPerMinute).all()
 
     @staticmethod
     def getHolidaysForYear(selectedYear):

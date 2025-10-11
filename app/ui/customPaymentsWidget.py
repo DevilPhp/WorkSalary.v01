@@ -119,6 +119,7 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
                 currentPaymentInEuro = 0
                 hourly = paymentsData[workerPayment][timePaperPayment]['hourly']
                 overtime = paymentsData[workerPayment][timePaperPayment]['overtime']
+                nightMins = paymentsData[workerPayment][timePaperPayment]['nightMins']
                 pieces = paymentsData[workerPayment][timePaperPayment]['totalPieces']
                 workingTime = paymentsData[workerPayment][timePaperPayment]['totalTime']
                 paymentRatio = paymentsData[workerPayment][timePaperPayment]['paymentRatio']
@@ -138,12 +139,39 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
                         totalOvertimeMins += overtime[overtimePayment][0]
                         currentPayment += overtime[overtimePayment][0]*overtime[overtimePayment][1]*paymentInLeva
                         currentPaymentInEuro += overtime[overtimePayment][0]*overtime[overtimePayment][1]*paymentInEuro
-                currentPayment += (workingTime *
-                                   paymentInLeva *
-                                   paymentRatio)
-                currentPaymentInEuro += (workingTime *
-                                         paymentInEuro *
-                                         paymentRatio)
+
+                if nightMins:
+                    if workingTime > nightMins:
+                        nightWorking = nightMins
+                        currentPayment += (nightWorking *
+                                           nightPayInLeva *
+                                           paymentRatio)
+                        currentPaymentInEuro += (nightWorking *
+                                                 nightPayInEuro *
+                                                 paymentRatio)
+                        workingTime = workingTime - nightWorking
+
+                    else:
+                        nightWorking = workingTime
+                        currentPayment += (nightWorking *
+                                           nightPayInLeva *
+                                           paymentRatio)
+                        currentPaymentInEuro += (nightWorking *
+                                                 nightPayInEuro *
+                                                 paymentRatio)
+                        currentPayment += (workingTime *
+                                           paymentInLeva *
+                                           paymentRatio)
+                        currentPaymentInEuro += (workingTime *
+                                                 paymentInEuro *
+                                                 paymentRatio)
+                else:
+                    currentPayment += (workingTime *
+                                       paymentInLeva *
+                                       paymentRatio)
+                    currentPaymentInEuro += (workingTime *
+                                             paymentInEuro *
+                                             paymentRatio)
                 totalPieces += pieces
                 totalTime = round(totalTime + workingTime, 2)
 
