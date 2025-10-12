@@ -15,6 +15,7 @@ class CustomPayPerMinWidget(QWidget, Ui_customPayPerMinWidget):
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
         self.setWindowTitle("Плашане за Мин.")
         self.payPerMin = Ps.getPayPerMin()
+        self.payPerMinNight = Ps.getPayPerMin(False)
         self.payPerMinModel = QStandardItemModel()
         self.payPerMinHeaderNames = ['ID', 'Коеф. в лв', 'Коеф. в €',
                                      'Активно за', 'Модификации', 'Профил', 'Коментар']
@@ -31,21 +32,30 @@ class CustomPayPerMinWidget(QWidget, Ui_customPayPerMinWidget):
         self.payPerMinTableView.setColumnWidth(0, 50)
         # self.payPerMinTableView.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
 
-        self.refreshPayPerMinTable()
+        self.refreshPayPerMinTable(self.payPerMin)
+
+        self.payPerMinNightCheckBox.stateChanged.connect(self.showPayPerMinNight)
 
 
-    def refreshPayPerMinTable(self):
+    def refreshPayPerMinTable(self, data):
         self.payPerMinModel.setRowCount(0)
         row = []
-        for payPerMin in self.payPerMin:
+        for payPerMin in data:
             row = [
-                QStandardItem(str(payPerMin.id)),
-                QStandardItem(str(payPerMin.PaymentValue)),
-                QStandardItem(str(round(payPerMin.PaymentInEuro, 4))),
-                QStandardItem(datetime.strftime(payPerMin.DateActive, '%d.%m.%Y')),
-                QStandardItem(datetime.strftime(payPerMin.LastUpdated, '%d.%m.%Y')),
-                QStandardItem(payPerMin.UpdatedBy),
-                QStandardItem(payPerMin.Comment)
+                QStandardItem(str(payPerMin['id'])),
+                QStandardItem(str(payPerMin['valueLeva'])),
+                QStandardItem(str(round(payPerMin['valueEUR'], 4))),
+                QStandardItem(datetime.strftime(payPerMin['dateActive'], '%d.%m.%Y')),
+                QStandardItem(datetime.strftime(payPerMin['lastUpdated'], '%d.%m.%Y')),
+                QStandardItem(payPerMin['updatedBy']),
+                QStandardItem(payPerMin['comment'])
             ]
             self.payPerMinModel.appendRow(row)
 
+    def showPayPerMinNight(self):
+        if self.payPerMinNightCheckBox.isChecked():
+            self.pageTitle.setText("ПЛАЩАНЕ ЗА МИН. НОЩЕН ТРУД")
+            self.refreshPayPerMinTable(self.payPerMinNight)
+        else:
+            self.pageTitle.setText("ПЛАЩАНЕ ЗА МИН.")
+            self.refreshPayPerMinTable(self.payPerMin)

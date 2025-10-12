@@ -33,6 +33,7 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
             self.tablePaymentDetailsModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignLeft)
             self.tablePaymentDetailsModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignVCenter)
         self.proxyModelPaymentsDetailsTree = CaseInsensitiveProxyModel(numericColumns=[0, 4, 5, 6, 7, 8, 9, 10, 11],
+                                                                       dateColumns=[1],
                                                                        parent=self)
         self.setProxyModel(self.proxyModelPaymentsDetailsTree, self.tablePaymentDetailsModel, self.workerDetalsTreeView)
         # self.timePapersForDayTableView.setModel(self.tablePaymentsModel)

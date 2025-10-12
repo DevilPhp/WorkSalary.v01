@@ -27,7 +27,7 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
             self.tablePaymentsModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignLeft)
             self.tablePaymentsModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignVCenter)
         self.proxyModelPaymentsTable = CaseInsensitiveProxyModel(numericColumns=[0, 1, 3, 4, 5, 6, 7, 8, 9, 10],
-                                                           parent=self)
+                                                                    parent=self)
         self.setProxyModel(self.proxyModelPaymentsTable, self.tablePaymentsModel, self.paymentsTableView)
         # self.timePapersForDayTableView.setModel(self.tablePaymentsModel)
         self.paymentsTableView.horizontalHeader().setDefaultSectionSize(80)

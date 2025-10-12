@@ -33,7 +33,7 @@ class CustomWorkersWidget(QWidget, Ui_customWorkersEditWidget):
             self.workersModel.setHorizontalHeaderItem(i, QStandardItem(tableHeaderName))
             self.workersModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignLeft)
             self.workersModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignVCenter)
-        self.proxyModelWorkers = CaseInsensitiveProxyModel(numericColumns=[0], parent=self)
+        self.proxyModelWorkers = CaseInsensitiveProxyModel(numericColumns=[0], dateColumns=[6, 7, 13], parent=self)
         self.proxyModelWorkers.setSourceModel(self.workersModel)
         self.workersTableView.setModel(self.proxyModelWorkers)
         self.workersTableView.setSortingEnabled(True)

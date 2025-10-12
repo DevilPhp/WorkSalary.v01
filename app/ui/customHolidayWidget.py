@@ -35,7 +35,7 @@ class CustomHolidaysWidget(QWidget, Ui_customHolidaysWidget):
             self.holodaysTableModel.setHorizontalHeaderItem(i, QStandardItem(tableHeaderName))
             self.holodaysTableModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignLeft)
             self.holodaysTableModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignVCenter)
-        self.proxyModelHolidays = CaseInsensitiveProxyModel(numericColumns=[0], parent=self)
+        self.proxyModelHolidays = CaseInsensitiveProxyModel(numericColumns=[0], dateColumns=[2], parent=self)
         self.proxyModelHolidays.setSourceModel(self.holodaysTableModel)
         self.holidaysTableView.setModel(self.proxyModelHolidays)
         self.holidaysTableView.setSortingEnabled(True)

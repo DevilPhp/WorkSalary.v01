@@ -27,7 +27,7 @@ class CustomShiftsEditWidget(QWidget, Ui_customWorkingShiftsWidget):
             self.workingShiftsModel.setHorizontalHeaderItem(i, QStandardItem(tableHeaderName))
             self.workingShiftsModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignLeft)
             self.workingShiftsModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignVCenter)
-        self.proxyModelShifts = CaseInsensitiveProxyModel(numericColumns=[0, 4, 5], parent=self)
+        self.proxyModelShifts = CaseInsensitiveProxyModel(numericColumns=[0, 4, 5], dateColumns=[6], parent=self)
         self.proxyModelShifts.setSourceModel(self.workingShiftsModel)
         self.workingShiftsTableView.setModel(self.proxyModelShifts)
         self.workingShiftsTableView.setSortingEnabled(True)

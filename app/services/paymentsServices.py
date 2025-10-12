@@ -5,9 +5,37 @@ from app.database.payment import HolidaysPerYear, Holiday, PaymentPerMinute, Nig
 class PaymentServices:
 
     @staticmethod
-    def getPayPerMin():
+    def getPayPerMin(dayMin=True):
         with getDatabase() as session:
-            return session.query(PaymentPerMinute).all()
+            returnedData = []
+            if dayMin:
+                payPerMins = session.query(PaymentPerMinute).all()
+            else:
+                payPerMins = session.query(NightPaymentPerMinute).all()
+            for payPerMin in payPerMins:
+                returnedData.append({'id': payPerMin.id,
+                                     'valueLeva': payPerMin.PaymentValue if dayMin else payPerMin.NightPaymentValue,
+                                     'valueEUR': payPerMin.PaymentInEuro if dayMin else payPerMin.NightPaymentInEuro,
+                                     'dateActive': payPerMin.DateActive,
+                                     'comment': payPerMin.Comment,
+                                     'lastUpdated': payPerMin.LastUpdated,
+                                     'updatedBy': payPerMin.UpdatedBy})
+            return returnedData
+
+    # @staticmethod
+    # def getPayPerMinNight():
+    #     with getDatabase() as session:
+    #         returnedData = []
+    #         payPerNightMins = session.query(NightPaymentPerMinute).all()
+    #         for payPerMin in payPerNightMins:
+    #             returnedData.append({'id': payPerMin.id,
+    #                                  'valueLeva': payPerMin.NightPaymentValue,
+    #                                  'valueEUR': payPerMin.NightPaymentInEuro,
+    #                                  'dateActive': payPerMin.DateActive,
+    #                                  'comment': payPerMin.Comment,
+    #                                  'lastUpdated': payPerMin.LastUpdated,
+    #                                  'updatedBy': payPerMin.UpdatedBy})
+    #         return returnedData
 
     @staticmethod
     def getHolidaysForYear(selectedYear):

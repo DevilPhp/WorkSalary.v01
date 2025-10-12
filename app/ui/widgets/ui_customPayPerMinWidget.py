@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customPayPerMinWidgetxAzFoq.ui'
+## Form generated from reading UI file 'customPayPerMinWidgetRjiIEM.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -15,9 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractItemView, QApplication, QHBoxLayout, QHeaderView,
-    QLabel, QPushButton, QScrollArea, QSizePolicy,
-    QTableView, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QHBoxLayout,
+    QHeaderView, QLabel, QPushButton, QScrollArea,
+    QSizePolicy, QTableView, QVBoxLayout, QWidget)
 import resources_rc
 
 class Ui_customPayPerMinWidget(object):
@@ -53,6 +53,9 @@ class Ui_customPayPerMinWidget(object):
 "	background-color: #aeaeae;\n"
 "}\n"
 "\n"
+"QCheckBox {\n"
+"	font-size: 10pt;\n"
+"}\n"
 "\n"
 "QLineEdit, QDateEdit{\n"
 "	border: none;\n"
@@ -79,11 +82,11 @@ class Ui_customPayPerMinWidget(object):
 "}\n"
 "\n"
 "#userIcon, #newHolidayCalBtn {\n"
-"	background-color: #dfdfdf;\n"
+"	background"
+                        "-color: #dfdfdf;\n"
 "}\n"
 "\n"
-"#usernameLab"
-                        "el {\n"
+"#usernameLabel {\n"
 "	font-size: 11pt;\n"
 "}")
         self.verticalLayout = QVBoxLayout(customPayPerMinWidget)
@@ -148,6 +151,21 @@ class Ui_customPayPerMinWidget(object):
 
         self.verticalLayout_4.addWidget(self.addNewPayPerMinEntryBtn, 0, Qt.AlignLeft)
 
+        self.widget_2 = QWidget(self.widget)
+        self.widget_2.setObjectName(u"widget_2")
+        self.widget_2.setMinimumSize(QSize(0, 0))
+        self.horizontalLayout_4 = QHBoxLayout(self.widget_2)
+        self.horizontalLayout_4.setSpacing(0)
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.payPerMinNightCheckBox = QCheckBox(self.widget_2)
+        self.payPerMinNightCheckBox.setObjectName(u"payPerMinNightCheckBox")
+
+        self.horizontalLayout_4.addWidget(self.payPerMinNightCheckBox, 0, Qt.AlignLeft)
+
+
+        self.verticalLayout_4.addWidget(self.widget_2)
+
 
         self.verticalLayout.addWidget(self.widget, 0, Qt.AlignTop)
 
@@ -156,7 +174,7 @@ class Ui_customPayPerMinWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 888, 702))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 888, 670))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -220,5 +238,6 @@ class Ui_customPayPerMinWidget(object):
         self.userIcon.setText("")
         self.usernameLabel.setText(QCoreApplication.translate("customPayPerMinWidget", u"admin", None))
         self.addNewPayPerMinEntryBtn.setText(QCoreApplication.translate("customPayPerMinWidget", u"\u0414\u043e\u0431\u0430\u0432\u044f\u043d\u0435", None))
+        self.payPerMinNightCheckBox.setText(QCoreApplication.translate("customPayPerMinWidget", u"\u041c\u0438\u043d. \u041d\u043e\u0449\u0435\u043d \u0442\u0440\u0443\u0434", None))
     # retranslateUi
 

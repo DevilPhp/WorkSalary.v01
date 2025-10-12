@@ -112,6 +112,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.modelPiecesLineEdit.textChanged.connect(self.updateModelPieces)
         self.timeForPieceLineEdit.textChanged.connect(self.updateModelPieces)
         self.modelOperationLineEdit.editingFinished.connect(self.updateModelOperation)
+        print('here')
 
     def showAllWorkersForDate(self):
         if self.showAllCheckBox.checkState() == Qt.CheckState.Checked:

@@ -636,6 +636,7 @@ def extract_and_transform_data():
     endTime = t.time()
     executionTime = endTime - startTime
     print(f"\n\n#####################################\nExecution time: {executionTime:.2f} seconds")
+    print('hello')
 
 
 if __name__ == "__main__":

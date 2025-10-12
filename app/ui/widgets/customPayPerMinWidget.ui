@@ -47,6 +47,9 @@ QPushButton:hover{
 	background-color: #aeaeae;
 }
 
+QCheckBox {
+	font-size: 10pt;
+}
 
 QLineEdit, QDateEdit{
 	border: none;
@@ -218,6 +221,40 @@ QMenu::item:selected {
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QWidget" name="widget_2" native="true">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item alignment="Qt::AlignLeft">
+          <widget class="QCheckBox" name="payPerMinNightCheckBox">
+           <property name="text">
+            <string>Мин. Нощен труд</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -232,7 +269,7 @@ QMenu::item:selected {
         <x>0</x>
         <y>0</y>
         <width>888</width>
-        <height>702</height>
+        <height>670</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_12">
