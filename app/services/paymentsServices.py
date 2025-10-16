@@ -16,6 +16,7 @@ class PaymentServices:
                 returnedData.append({'id': payPerMin.id,
                                      'valueLeva': payPerMin.PaymentValue if dayMin else payPerMin.NightPaymentValue,
                                      'valueEUR': payPerMin.PaymentInEuro if dayMin else payPerMin.NightPaymentInEuro,
+                                     'active': payPerMin.Active,
                                      'dateActive': payPerMin.DateActive,
                                      'comment': payPerMin.Comment,
                                      'lastUpdated': payPerMin.LastUpdated,
@@ -36,6 +37,50 @@ class PaymentServices:
     #                                  'lastUpdated': payPerMin.LastUpdated,
     #                                  'updatedBy': payPerMin.UpdatedBy})
     #         return returnedData
+
+    @staticmethod
+    def addPayPerMin(user, newEntry, day):
+        with setDatabase() as session:
+            if day:
+                newPayPerMin = PaymentPerMinute(PaymentValue=newEntry['levaPerMin'], PaymentInEuro=newEntry['euroPerMin'],
+                                              DateActive=newEntry['dateActive'], Comment=newEntry['comment'],
+                                                UpdatedBy=user)
+                session.add(newPayPerMin)
+                session.commit()
+                logger.info(f'Added new payment per minute: {newPayPerMin.id} - id - by {user}')
+                return True
+            elif not day:
+                newPayPerMin = NightPaymentPerMinute(NightPaymentValue=newEntry['levaPerMin'],
+                                                     NightPaymentInEuro=newEntry['euroPerMin'],
+                                                     DateActive=newEntry['dateActive'],
+                                                     Comment=newEntry['comment'],
+                                                     UpdatedBy=user)
+                session.add(newPayPerMin)
+                session.commit()
+                logger.info(f'Added new night payment per minute: {newPayPerMin.id} - id - by {user}')
+                return True
+            else:
+                return False
+
+    @staticmethod
+    def deletePayPerMin(user, selectedId, day=True):
+        with setDatabase() as session:
+            if day:
+                payPerMin = session.query(PaymentPerMinute).filter_by(id=selectedId).first()
+                if payPerMin:
+                    session.delete(payPerMin)
+                    session.commit()
+                    logger.info(f'Deleted payment per minute: {selectedId} - by {user}')
+                    return True
+            elif not day:
+                payPerMin = session.query(NightPaymentPerMinute).filter_by(id=selectedId).first()
+                if payPerMin:
+                    session.delete(payPerMin)
+                    session.commit()
+                    logger.info(f'Deleted night payment per minute: {selectedId} - by {user}')
+                    return True
+            else:
+                return False
 
     @staticmethod
     def getHolidaysForYear(selectedYear):

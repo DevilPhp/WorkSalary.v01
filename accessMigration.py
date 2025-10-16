@@ -179,6 +179,7 @@ def checkForColumns(table_name, df):
         df.drop(columns=['MinuteRabID'], inplace=True)
         euroRate = 1.95583
         paymentInEuro = []
+        active = []
         columns = {
             'MinuteRabVal': 'PaymentValue',
             'DateValid': 'DateActive',
@@ -187,14 +188,23 @@ def checkForColumns(table_name, df):
             'ModifiedBy': 'UpdatedBy'
         }
         df.rename(columns=columns, inplace=True)
+        # print(len(df['PaymentValue']))
+        # return
         for index, row in enumerate(df['PaymentValue']):
-            df.at[index, 'PaymentValue'] = round(row, 6)
-            paymentInEuro.append(round(row / euroRate, 6))
+            df.at[index, 'PaymentValue'] = round(row, 5)
+            paymentInEuro.append(round(row / euroRate, 5))
+            # print(len(df['PaymentValue']))
+            if index == len(df['PaymentValue']) - 1:
+                active.append(True)
+            else:
+                active.append(False)
         df['PaymentInEuro'] = paymentInEuro
+        df['Active'] = active
 
     elif table_name == 'nightPaymentPerMinutes':
         euroRate = 1.95583
         paymentInEuro = []
+        active = []
         columns = {
             'МинРабЧасСтаф': 'NightPaymentValue',
             'ДатаВал': 'DateActive',
@@ -203,9 +213,14 @@ def checkForColumns(table_name, df):
         }
         df.rename(columns=columns, inplace=True)
         for index, row in enumerate(df['NightPaymentValue']):
-            df.at[index, 'NightPaymentValue'] = round(row, 6)
-            paymentInEuro.append(round(row / euroRate, 6))
+            df.at[index, 'NightPaymentValue'] = round(row, 5)
+            paymentInEuro.append(round(row / euroRate, 5))
+            if index == len(df['NightPaymentValue']) - 1:
+                active.append(True)
+            else:
+                active.append(False)
         df['NightPaymentInEuro'] = paymentInEuro
+        df['Active'] = active
 
     return df
 

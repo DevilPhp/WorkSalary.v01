@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customPayPerMinWidgetRjiIEM.ui'
+## Form generated from reading UI file 'customPayPerMinWidgetHFgKmJ.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -57,6 +57,11 @@ class Ui_customPayPerMinWidget(object):
 "	font-size: 10pt;\n"
 "}\n"
 "\n"
+"QStandartItem{\n"
+"	\n"
+"	background-color: rgb(85, 255, 127);\n"
+"}\n"
+"\n"
 "QLineEdit, QDateEdit{\n"
 "	border: none;\n"
 "	font-size: 11pt;\n"
@@ -78,12 +83,12 @@ class Ui_customPayPerMinWidget(object):
 "}\n"
 "\n"
 "#pageTitle {\n"
-"	font: 700 13pt \"Segoe UI\";\n"
+"	font: 700 13"
+                        "pt \"Segoe UI\";\n"
 "}\n"
 "\n"
 "#userIcon, #newHolidayCalBtn {\n"
-"	background"
-                        "-color: #dfdfdf;\n"
+"	background-color: #dfdfdf;\n"
 "}\n"
 "\n"
 "#usernameLabel {\n"
@@ -211,7 +216,7 @@ class Ui_customPayPerMinWidget(object):
 "	background-color: rgba(198, 228, 254, 45);\n"
 "}")
         self.payPerMinTableView.setAlternatingRowColors(True)
-        self.payPerMinTableView.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.payPerMinTableView.setSelectionMode(QAbstractItemView.SingleSelection)
         self.payPerMinTableView.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.payPerMinTableView.setShowGrid(False)
         self.payPerMinTableView.setCornerButtonEnabled(False)

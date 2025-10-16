@@ -292,7 +292,7 @@ QComboBox::item{
           <widget class="QWidget" name="widget_5" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_8">
             <property name="spacing">
-             <number>65</number>
+             <number>45</number>
             </property>
             <property name="leftMargin">
              <number>0</number>
@@ -352,7 +352,7 @@ QComboBox::item{
                    <second>0</second>
                    <year>1990</year>
                    <month>9</month>
-                   <day>5</day>
+                   <day>4</day>
                   </datetime>
                  </property>
                  <property name="displayFormat">
@@ -434,7 +434,7 @@ QComboBox::item{
                    <second>0</second>
                    <year>1990</year>
                    <month>9</month>
-                   <day>6</day>
+                   <day>5</day>
                   </datetime>
                  </property>
                  <property name="displayFormat">

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customPaymentsWidgetXIBCHR.ui'
+## Form generated from reading UI file 'customPaymentsWidgetIFYxlw.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -211,7 +211,7 @@ class Ui_customPaymentsWidget(object):
         self.widget_5 = QWidget(self.operationsHolder)
         self.widget_5.setObjectName(u"widget_5")
         self.horizontalLayout_8 = QHBoxLayout(self.widget_5)
-        self.horizontalLayout_8.setSpacing(65)
+        self.horizontalLayout_8.setSpacing(45)
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
         self.horizontalLayout_8.setContentsMargins(0, 0, 0, 0)
         self.widget_12 = QWidget(self.widget_5)
@@ -231,7 +231,7 @@ class Ui_customPaymentsWidget(object):
         self.fromDateEdit.setFrame(False)
         self.fromDateEdit.setAlignment(Qt.AlignCenter)
         self.fromDateEdit.setCorrectionMode(QAbstractSpinBox.CorrectToNearestValue)
-        self.fromDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 9, 5), QTime(0, 0, 0)))
+        self.fromDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 9, 4), QTime(0, 0, 0)))
 
         self.horizontalLayout_7.addWidget(self.fromDateEdit)
 
@@ -268,7 +268,7 @@ class Ui_customPaymentsWidget(object):
         self.toDateEdit.setFrame(False)
         self.toDateEdit.setAlignment(Qt.AlignCenter)
         self.toDateEdit.setCorrectionMode(QAbstractSpinBox.CorrectToNearestValue)
-        self.toDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 9, 6), QTime(0, 0, 0)))
+        self.toDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 9, 5), QTime(0, 0, 0)))
 
         self.horizontalLayout_6.addWidget(self.toDateEdit)
 

@@ -202,14 +202,19 @@ class WorkerServices:
         return holidaysList
 
     @staticmethod
+    def getPaymentsForMin():
+        with getDatabase() as session:
+            return session.query(PaymentPerMinute).order_by(PaymentPerMinute.id.asc()).all()
+
+    @staticmethod
     def getPaymentForMin():
         with getDatabase() as session:
-            return session.query(PaymentPerMinute).order_by(PaymentPerMinute.id.desc()).first()
+            return session.query(PaymentPerMinute).filter_by(Active=True).first()
 
     @staticmethod
     def getPaymentForNightMin():
         with getDatabase() as session:
-            return session.query(NightPaymentPerMinute).order_by(NightPaymentPerMinute.id.desc()).first()
+            return session.query(NightPaymentPerMinute).filter_by(Active=True).first()
 
     @staticmethod
     def getInfoForPayments(startDate, endDate):

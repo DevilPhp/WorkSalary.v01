@@ -51,6 +51,11 @@ QCheckBox {
 	font-size: 10pt;
 }
 
+QStandartItem{
+	
+	background-color: rgb(85, 255, 127);
+}
+
 QLineEdit, QDateEdit{
 	border: none;
 	font-size: 11pt;
@@ -337,7 +342,7 @@ QAbstractItemView::item:selected{
              <bool>true</bool>
             </property>
             <property name="selectionMode">
-             <enum>QAbstractItemView::ExtendedSelection</enum>
+             <enum>QAbstractItemView::SingleSelection</enum>
             </property>
             <property name="selectionBehavior">
              <enum>QAbstractItemView::SelectRows</enum>

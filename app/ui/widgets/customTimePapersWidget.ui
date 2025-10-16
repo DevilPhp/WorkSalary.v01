@@ -1223,7 +1223,7 @@ QComboBox:header{
                    <second>0</second>
                    <year>1990</year>
                    <month>9</month>
-                   <day>2</day>
+                   <day>1</day>
                   </datetime>
                  </property>
                  <property name="displayFormat">

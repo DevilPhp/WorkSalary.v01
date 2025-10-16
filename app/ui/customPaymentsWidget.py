@@ -38,6 +38,8 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
 
         self.checkBoxFiltering = {}
         self.initialCheckBoxes = {}
+
+        # self.setPayPerMinComboBox()
         
         self.refreshPaymentsTable()
 
@@ -49,6 +51,11 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
 
         self.searchBtn.clicked.connect(self.refreshPaymentsTable)
         self.paymentsTableView.doubleClicked.connect(self.openPaymentDetails)
+
+    # def setPayPerMinComboBox(self):
+    #     paymentsPerMin = WoS.getPaymentsForMin()
+    #     self.payPerMinComboBox.clear()
+
 
     def showCalendarDialog(self):
         calendarDialog = CustomCalendarDialog()
