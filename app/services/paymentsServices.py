@@ -5,17 +5,49 @@ from app.database.payment import HolidaysPerYear, Holiday, PaymentPerMinute, Nig
 class PaymentServices:
 
     @staticmethod
+    def updatePayPerMin(itemId, currentId, user):
+        with setDatabase() as session:
+            currentPayPerMin = session.query(PaymentPerMinute).get(currentId)
+            print(currentPayPerMin)
+            if currentPayPerMin:
+                currentPayPerMin.Active = False
+            newPayPerMin = session.query(PaymentPerMinute).get(itemId)
+            if newPayPerMin:
+                newPayPerMin.Active = True
+
+            session.commit()
+            logger.info(f"Payment per minute from id {currentId} to id {itemId} - updated by {user}")
+            return True
+
+    @staticmethod
+    def updatePayPerMinNight(itemId, currentId, user):
+        with setDatabase() as session:
+            currentPayPerMin = session.query(NightPaymentPerMinute).get(currentId)
+            if currentPayPerMin:
+                currentPayPerMin.Active = False
+            newPayPerMin = session.query(NightPaymentPerMinute).get(itemId)
+            if newPayPerMin:
+                newPayPerMin.Active = True
+
+            session.commit()
+            logger.info(f"Night payment per minute from id {currentId} to id {itemId} - updated by {user}")
+            return True
+
+
+
+    @staticmethod
     def getPayPerMin(dayMin=True):
         with getDatabase() as session:
             returnedData = []
             if dayMin:
-                payPerMins = session.query(PaymentPerMinute).all()
+                payPerMins = session.query(PaymentPerMinute).order_by(PaymentPerMinute.id).all()
             else:
-                payPerMins = session.query(NightPaymentPerMinute).all()
+                payPerMins = session.query(NightPaymentPerMinute).order_by(NightPaymentPerMinute.id).all()
             for payPerMin in payPerMins:
                 returnedData.append({'id': payPerMin.id,
                                      'valueLeva': payPerMin.PaymentValue if dayMin else payPerMin.NightPaymentValue,
                                      'valueEUR': payPerMin.PaymentInEuro if dayMin else payPerMin.NightPaymentInEuro,
+                                     'levaPerEuro': payPerMin.EuroPerLev,
                                      'active': payPerMin.Active,
                                      'dateActive': payPerMin.DateActive,
                                      'comment': payPerMin.Comment,
@@ -42,8 +74,11 @@ class PaymentServices:
     def addPayPerMin(user, newEntry, day):
         with setDatabase() as session:
             if day:
-                newPayPerMin = PaymentPerMinute(PaymentValue=newEntry['levaPerMin'], PaymentInEuro=newEntry['euroPerMin'],
-                                              DateActive=newEntry['dateActive'], Comment=newEntry['comment'],
+                newPayPerMin = PaymentPerMinute(PaymentValue=newEntry['levaPerMin'],
+                                                PaymentInEuro=newEntry['euroPerMin'],
+                                                EuroPerLev=newEntry['levaPerEuro'],
+                                                DateActive=newEntry['dateActive'],
+                                                Comment=newEntry['comment'],
                                                 UpdatedBy=user)
                 session.add(newPayPerMin)
                 session.commit()
@@ -52,6 +87,7 @@ class PaymentServices:
             elif not day:
                 newPayPerMin = NightPaymentPerMinute(NightPaymentValue=newEntry['levaPerMin'],
                                                      NightPaymentInEuro=newEntry['euroPerMin'],
+                                                     EuroPerLev=newEntry['levaPerEuro'],
                                                      DateActive=newEntry['dateActive'],
                                                      Comment=newEntry['comment'],
                                                      UpdatedBy=user)

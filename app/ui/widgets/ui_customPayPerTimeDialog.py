@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customPayPerTimeDialogeVKPZd.ui'
+## Form generated from reading UI file 'customPayPerTimeDialogkqpYFd.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -15,9 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QDateEdit, QDialog, QGridLayout,
-    QHBoxLayout, QLabel, QLineEdit, QPushButton,
-    QSizePolicy, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QDateEdit, QDialog,
+    QGridLayout, QHBoxLayout, QLabel, QLineEdit,
+    QPushButton, QSizePolicy, QVBoxLayout, QWidget)
 import resources_rc
 
 class Ui_CustomPayPerTimeDialog(object):
@@ -225,12 +225,6 @@ class Ui_CustomPayPerTimeDialog(object):
 
         self.gridLayout.addWidget(self.levaPerMinLineEdit, 1, 1, 1, 1)
 
-        self.euroPerLevaLineEdit = QLineEdit(self.widget)
-        self.euroPerLevaLineEdit.setObjectName(u"euroPerLevaLineEdit")
-        self.euroPerLevaLineEdit.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
-
-        self.gridLayout.addWidget(self.euroPerLevaLineEdit, 3, 1, 1, 1)
-
         self.label_2 = QLabel(self.widget)
         self.label_2.setObjectName(u"label_2")
 
@@ -241,6 +235,42 @@ class Ui_CustomPayPerTimeDialog(object):
         self.euroPerMinLineEdit.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
 
         self.gridLayout.addWidget(self.euroPerMinLineEdit, 2, 1, 1, 1)
+
+        self.widget_3 = QWidget(self.widget)
+        self.widget_3.setObjectName(u"widget_3")
+        self.horizontalLayout_3 = QHBoxLayout(self.widget_3)
+        self.horizontalLayout_3.setSpacing(10)
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.euroPerLevaLineEdit = QLineEdit(self.widget_3)
+        self.euroPerLevaLineEdit.setObjectName(u"euroPerLevaLineEdit")
+        self.euroPerLevaLineEdit.setMaximumSize(QSize(80, 16777215))
+        self.euroPerLevaLineEdit.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
+
+        self.horizontalLayout_3.addWidget(self.euroPerLevaLineEdit)
+
+        self.widget_4 = QWidget(self.widget_3)
+        self.widget_4.setObjectName(u"widget_4")
+        self.horizontalLayout_4 = QHBoxLayout(self.widget_4)
+        self.horizontalLayout_4.setSpacing(5)
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.percentageCheckBox = QCheckBox(self.widget_4)
+        self.percentageCheckBox.setObjectName(u"percentageCheckBox")
+
+        self.horizontalLayout_4.addWidget(self.percentageCheckBox, 0, Qt.AlignRight)
+
+        self.percentageLineEdit = QLineEdit(self.widget_4)
+        self.percentageLineEdit.setObjectName(u"percentageLineEdit")
+        self.percentageLineEdit.setMaximumSize(QSize(50, 16777215))
+
+        self.horizontalLayout_4.addWidget(self.percentageLineEdit)
+
+
+        self.horizontalLayout_3.addWidget(self.widget_4)
+
+
+        self.gridLayout.addWidget(self.widget_3, 3, 1, 1, 1)
 
 
         self.verticalLayout_3.addLayout(self.gridLayout)
@@ -296,10 +326,12 @@ class Ui_CustomPayPerTimeDialog(object):
         self.label_3.setText(QCoreApplication.translate("CustomPayPerTimeDialog", u"\u20ac/\u041c\u0438\u043d", None))
         self.levaPerMinLineEdit.setText("")
         self.levaPerMinLineEdit.setPlaceholderText(QCoreApplication.translate("CustomPayPerTimeDialog", u"0", None))
-        self.euroPerLevaLineEdit.setText(QCoreApplication.translate("CustomPayPerTimeDialog", u"1.95583", None))
         self.label_2.setText(QCoreApplication.translate("CustomPayPerTimeDialog", u"\u041b\u0432/\u041c\u0438\u043d", None))
         self.euroPerMinLineEdit.setText("")
         self.euroPerMinLineEdit.setPlaceholderText(QCoreApplication.translate("CustomPayPerTimeDialog", u"0", None))
+        self.euroPerLevaLineEdit.setText(QCoreApplication.translate("CustomPayPerTimeDialog", u"1.95583", None))
+        self.percentageCheckBox.setText(QCoreApplication.translate("CustomPayPerTimeDialog", u"%", None))
+        self.percentageLineEdit.setPlaceholderText(QCoreApplication.translate("CustomPayPerTimeDialog", u"0", None))
         self.yesBtn.setText(QCoreApplication.translate("CustomPayPerTimeDialog", u" \u0414\u0410", None))
     # retranslateUi
 

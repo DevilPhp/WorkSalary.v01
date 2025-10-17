@@ -22,16 +22,15 @@ class CustomPayPerMinWidget(QWidget, Ui_customPayPerMinWidget):
         self.payPerMin = Ps.getPayPerMin()
         self.payPerMinNight = Ps.getPayPerMin(False)
         self.payPerMinModel = QStandardItemModel()
-        self.payPerMinHeaderNames = ['ID', 'Коеф. в лв', 'Коеф. в €',
+        self.payPerMinHeaderNames = ['ID', 'Коеф. в лв', 'Коеф. в €', 'лв/€',
                                      'Активно', 'Активно за', 'Модификации', 'Профил', 'Коментар']
         for i, tableHeaderName in enumerate(self.payPerMinHeaderNames):
             self.payPerMinModel.setHorizontalHeaderItem(i, QStandardItem(tableHeaderName))
             self.payPerMinModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignLeft)
             self.payPerMinModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignVCenter)
-        self.proxyModelPayPerMin = CaseInsensitiveProxyModel(numericColumns=[0, 1, 2], dateColumns=[3, 4], parent=self)
-
-        # Connect to the itemChanged signal to handle checkbox changes
-
+        self.proxyModelPayPerMin = CaseInsensitiveProxyModel(numericColumns=[0, 1, 2, 3],
+                                                             dateColumns=[5, 6],
+                                                             parent=self)
 
         self.proxyModelPayPerMin.setSourceModel(self.payPerMinModel)
         self.payPerMinTableView.setModel(self.proxyModelPayPerMin)
@@ -75,6 +74,7 @@ class CustomPayPerMinWidget(QWidget, Ui_customPayPerMinWidget):
                 idCell,
                 QStandardItem(str(payPerMin['valueLeva'])),
                 QStandardItem(str(round(payPerMin['valueEUR'], 4))),
+                QStandardItem(str(round(payPerMin['levaPerEuro'], 4))),
                 activeCell,
                 QStandardItem(datetime.strftime(payPerMin['dateActive'], '%d.%m.%Y')),
                 QStandardItem(datetime.strftime(payPerMin['lastUpdated'], '%d.%m.%Y')),
@@ -86,7 +86,7 @@ class CustomPayPerMinWidget(QWidget, Ui_customPayPerMinWidget):
 
     def clearCheckedPayPerMinCheckbox(self):
         if 0 <= self.checkedItemRow < self.payPerMinModel.rowCount():
-            currentItem = self.payPerMinModel.item(self.checkedItemRow, 3)
+            currentItem = self.payPerMinModel.item(self.checkedItemRow, 4)
             if currentItem:
                 # Temporarily block signals to prevent recursive calls
                 self.payPerMinModel.blockSignals(True)
@@ -94,18 +94,39 @@ class CustomPayPerMinWidget(QWidget, Ui_customPayPerMinWidget):
                 currentItem.setData('Неактивно', Qt.ItemDataRole.DisplayRole)
                 self.payPerMinModel.blockSignals(False)
 
+                # Force the view to update this specific cell
+                modelIndex = self.payPerMinModel.index(self.checkedItemRow, 4)
+                self.payPerMinTableView.update(self.proxyModelPayPerMin.mapFromSource(modelIndex))
+
         # self.payPerMinModel.blockSignals(False)
 
     def onCheckboxChanged(self, item):
         # print(item.checkState())
-        if item.column() == 3:
+        if item.column() == 4:
             if item.checkState() == Qt.CheckState.Checked:
                 if self.checkedItemRow != item.row():
-                    self.clearCheckedPayPerMinCheckbox()
+                    currentItemId = self.payPerMinModel.item(
+                        self.checkedItemRow, 4).data(Qt.ItemDataRole.UserRole)
+                    # self.clearCheckedPayPerMinCheckbox()
+                    # self.checkedItemRow = item.row()
                     # item.setCheckState(Qt.CheckState.Checked)
-                    item.setData('Активно', Qt.ItemDataRole.DisplayRole)
-                    self.checkedItemRow = item.row()
-                    print(self.checkedItemRow)
+                    # item.setData('Активно', Qt.ItemDataRole.DisplayRole)
+                    # # self.checkedItemRow = item.row()
+                    itemId = item.data(Qt.ItemDataRole.UserRole)
+                    if self.payPerMinNightCheckBox.isChecked():
+                        print(itemId, currentItemId)
+                        # print(f'Checked item row NIGHT: {self.checkedItemRow}')
+                        Ps.updatePayPerMinNight(itemId, currentItemId, self.usernameLabel.text())
+                        self.payPerMinNight = Ps.getPayPerMin(False)
+                        self.refreshPayPerMinTable(self.payPerMinNight)
+                        MM.showOnWidget(self, f'Активен платеж за Мин. за нощен труд!', 'success')
+                    else:
+                        # print(f'Checked item row DAY: {self.checkedItemRow}')
+                        Ps.updatePayPerMin(itemId, currentItemId, self.usernameLabel.text())
+                        self.payPerMin = Ps.getPayPerMin()
+                        self.refreshPayPerMinTable(self.payPerMin)
+                        MM.showOnWidget(self, f'Активен платеж за Мин.', 'success')
+                    # print(self.checkedItemRow)
                 # print(f'Checked item row: {self.checkedItemRow}')
             elif item.checkState() == Qt.CheckState.Unchecked:
                 if self.checkedItemRow == item.row():
@@ -113,7 +134,6 @@ class CustomPayPerMinWidget(QWidget, Ui_customPayPerMinWidget):
                     item.setCheckState(Qt.CheckState.Checked)
                     item.setData('Активно', Qt.ItemDataRole.DisplayRole)
                     self.payPerMinModel.blockSignals(False)
-                    print(f'{self.checkedItemRow} - checked')
 
         # print(item.checkState())
         # if item.column() == 3 and item.checkState() == Qt.CheckState.Unchecked:
@@ -130,7 +150,9 @@ class CustomPayPerMinWidget(QWidget, Ui_customPayPerMinWidget):
             self.refreshPayPerMinTable(self.payPerMin)
 
     def addNewPayPerMinEntry(self):
-        dialog = CustomPayPerTimeDialog()
+        currentLev = float(self.payPerMinModel.item(self.checkedItemRow, 1).data(Qt.ItemDataRole.DisplayRole))
+        currentEuro = float(self.payPerMinModel.item(self.checkedItemRow, 2).data(Qt.ItemDataRole.DisplayRole))
+        dialog = CustomPayPerTimeDialog(currentLev, currentEuro)
         dialog.newEntryInfo.connect(self.aceptNewPayPerMinEntry)
         dialog.exec_()
         # dialog.show()

@@ -177,8 +177,9 @@ def checkForColumns(table_name, df):
 
     elif table_name == 'paymentPerMinutes':
         df.drop(columns=['MinuteRabID'], inplace=True)
-        euroRate = 1.95583
+        euroRate = 1.9558
         paymentInEuro = []
+        euroRateList = []
         active = []
         columns = {
             'MinuteRabVal': 'PaymentValue',
@@ -193,6 +194,7 @@ def checkForColumns(table_name, df):
         for index, row in enumerate(df['PaymentValue']):
             df.at[index, 'PaymentValue'] = round(row, 5)
             paymentInEuro.append(round(row / euroRate, 5))
+            euroRateList.append(euroRate)
             # print(len(df['PaymentValue']))
             if index == len(df['PaymentValue']) - 1:
                 active.append(True)
@@ -200,10 +202,12 @@ def checkForColumns(table_name, df):
                 active.append(False)
         df['PaymentInEuro'] = paymentInEuro
         df['Active'] = active
+        df['EuroPerLev'] = euroRateList
 
     elif table_name == 'nightPaymentPerMinutes':
-        euroRate = 1.95583
+        euroRate = 1.9558
         paymentInEuro = []
+        euroRateList = []
         active = []
         columns = {
             'МинРабЧасСтаф': 'NightPaymentValue',
@@ -215,13 +219,14 @@ def checkForColumns(table_name, df):
         for index, row in enumerate(df['NightPaymentValue']):
             df.at[index, 'NightPaymentValue'] = round(row, 5)
             paymentInEuro.append(round(row / euroRate, 5))
+            euroRateList.append(euroRate)
             if index == len(df['NightPaymentValue']) - 1:
                 active.append(True)
             else:
                 active.append(False)
         df['NightPaymentInEuro'] = paymentInEuro
         df['Active'] = active
-
+        df['EuroPerLev'] = euroRateList
     return df
 
 
