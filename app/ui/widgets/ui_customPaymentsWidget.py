@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customPaymentsWidgetIFYxlw.ui'
+## Form generated from reading UI file 'customPaymentsWidgetuLsZwD.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -15,9 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractSpinBox, QApplication, QDateEdit, QFrame,
-    QHBoxLayout, QLabel, QPushButton, QScrollArea,
-    QSizePolicy, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QAbstractSpinBox, QApplication, QCheckBox, QDateEdit,
+    QFrame, QHBoxLayout, QLabel, QPushButton,
+    QScrollArea, QSizePolicy, QVBoxLayout, QWidget)
 import resources_rc
 
 class Ui_customPaymentsWidget(object):
@@ -105,8 +105,9 @@ class Ui_customPaymentsWidget(object):
 "	font-weight: 700;\n"
 "}\n"
 "\n"
-"#widget_3 * {\n"
-"	font-size: 11pt;\n"
+"#widget_3 QCheckBox {\n"
+"	font-size: 10pt;\n"
+"	padding: 0px;\n"
 "}\n"
 "\n"
 "QComboBox{\n"
@@ -126,9 +127,9 @@ class Ui_customPaymentsWidget(object):
 "	font: 720 10.5pt \"Segoe UI\";\n"
 "	border-radius: 0px;\n"
 "	alternate-background-color: #2c313c;\n"
-"}\n"
-"QComboBox::item:sele"
-                        "cted{\n"
+""
+                        "}\n"
+"QComboBox::item:selected{\n"
 "	color: #2b2b2c;\n"
 "	font: 900 10.5pt \"Segoe UI\";\n"
 "	border-radius: 0px;\n"
@@ -296,6 +297,31 @@ class Ui_customPaymentsWidget(object):
 
         self.horizontalLayout_8.addWidget(self.pushButton)
 
+        self.widget_3 = QWidget(self.widget_5)
+        self.widget_3.setObjectName(u"widget_3")
+        self.widget_3.setMinimumSize(QSize(0, 0))
+        self.verticalLayout_3 = QVBoxLayout(self.widget_3)
+        self.verticalLayout_3.setSpacing(0)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.overtimeCheckBox = QCheckBox(self.widget_3)
+        self.overtimeCheckBox.setObjectName(u"overtimeCheckBox")
+
+        self.verticalLayout_3.addWidget(self.overtimeCheckBox)
+
+        self.hourlyCheckBox = QCheckBox(self.widget_3)
+        self.hourlyCheckBox.setObjectName(u"hourlyCheckBox")
+
+        self.verticalLayout_3.addWidget(self.hourlyCheckBox)
+
+        self.nightTimeCheckBox = QCheckBox(self.widget_3)
+        self.nightTimeCheckBox.setObjectName(u"nightTimeCheckBox")
+
+        self.verticalLayout_3.addWidget(self.nightTimeCheckBox)
+
+
+        self.horizontalLayout_8.addWidget(self.widget_3)
+
 
         self.verticalLayout_2.addWidget(self.widget_5, 0, Qt.AlignLeft)
 
@@ -321,7 +347,7 @@ class Ui_customPaymentsWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1161, 759))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1161, 737))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -512,6 +538,9 @@ class Ui_customPaymentsWidget(object):
         self.toCalendarBtn.setText("")
         self.searchBtn.setText(QCoreApplication.translate("customPaymentsWidget", u"\u0422\u044a\u0440\u0441\u0435\u043d\u0435", None))
         self.pushButton.setText(QCoreApplication.translate("customPaymentsWidget", u"Excel", None))
+        self.overtimeCheckBox.setText(QCoreApplication.translate("customPaymentsWidget", u"\u0418\u0437\u0432\u044a\u043d\u0440\u0435\u0434\u0435\u043d", None))
+        self.hourlyCheckBox.setText(QCoreApplication.translate("customPaymentsWidget", u"\u041f\u043e\u0447\u0430\u0441\u043e\u0432\u043e", None))
+        self.nightTimeCheckBox.setText(QCoreApplication.translate("customPaymentsWidget", u"\u041d\u043e\u0449\u0435\u043d", None))
         self.label_42.setText(QCoreApplication.translate("customPaymentsWidget", u"\u041e\u0431\u0449\u043e \u0440\u0435\u0434\u043e\u0432\u0435:", None))
         self.totalViewRows.setText(QCoreApplication.translate("customPaymentsWidget", u"0", None))
         self.label_43.setText(QCoreApplication.translate("customPaymentsWidget", u"\u0417\u0430\u0432\u044a\u0440\u0448\u0435\u043d\u0438 \u0431\u0440 \u0437\u0430 \u0434\u0435\u043d\u044f:", None))

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customPaymentsDetailsWidgetPyGCyi.ui'
+## Form generated from reading UI file 'customPaymentsDetailsWidgetnkNGJG.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -418,7 +418,7 @@ class Ui_customPaymentsDetailsWidget(object):
         self.widget_5 = QWidget(self.operationsHolder)
         self.widget_5.setObjectName(u"widget_5")
         self.horizontalLayout_8 = QHBoxLayout(self.widget_5)
-        self.horizontalLayout_8.setSpacing(65)
+        self.horizontalLayout_8.setSpacing(40)
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
         self.horizontalLayout_8.setContentsMargins(0, 0, 0, 0)
         self.widget_12 = QWidget(self.widget_5)
@@ -454,6 +454,70 @@ class Ui_customPaymentsDetailsWidget(object):
 
 
         self.horizontalLayout_8.addWidget(self.widget_11)
+
+        self.widget_3 = QWidget(self.widget_5)
+        self.widget_3.setObjectName(u"widget_3")
+        self.widget_3.setMinimumSize(QSize(0, 0))
+        self.horizontalLayout_10 = QHBoxLayout(self.widget_3)
+        self.horizontalLayout_10.setSpacing(0)
+        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
+        self.horizontalLayout_10.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout = QGridLayout()
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.gridLayout_2 = QGridLayout()
+        self.gridLayout_2.setObjectName(u"gridLayout_2")
+        self.euroPerMinNightLabel = QLabel(self.widget_3)
+        self.euroPerMinNightLabel.setObjectName(u"euroPerMinNightLabel")
+
+        self.gridLayout_2.addWidget(self.euroPerMinNightLabel, 1, 3, 1, 1)
+
+        self.euroPerMinDayLabel = QLabel(self.widget_3)
+        self.euroPerMinDayLabel.setObjectName(u"euroPerMinDayLabel")
+
+        self.gridLayout_2.addWidget(self.euroPerMinDayLabel, 1, 1, 1, 1)
+
+        self.levaPerMinDayLabel = QLabel(self.widget_3)
+        self.levaPerMinDayLabel.setObjectName(u"levaPerMinDayLabel")
+        self.levaPerMinDayLabel.setMinimumSize(QSize(60, 0))
+
+        self.gridLayout_2.addWidget(self.levaPerMinDayLabel, 0, 1, 1, 1)
+
+        self.label_9 = QLabel(self.widget_3)
+        self.label_9.setObjectName(u"label_9")
+
+        self.gridLayout_2.addWidget(self.label_9, 1, 0, 1, 1)
+
+        self.levaPerMinNightLabel = QLabel(self.widget_3)
+        self.levaPerMinNightLabel.setObjectName(u"levaPerMinNightLabel")
+        self.levaPerMinNightLabel.setMinimumSize(QSize(60, 0))
+
+        self.gridLayout_2.addWidget(self.levaPerMinNightLabel, 0, 3, 1, 1)
+
+        self.label_7 = QLabel(self.widget_3)
+        self.label_7.setObjectName(u"label_7")
+        self.label_7.setMinimumSize(QSize(90, 0))
+
+        self.gridLayout_2.addWidget(self.label_7, 0, 0, 1, 1)
+
+        self.label_35 = QLabel(self.widget_3)
+        self.label_35.setObjectName(u"label_35")
+        self.label_35.setMinimumSize(QSize(90, 0))
+
+        self.gridLayout_2.addWidget(self.label_35, 0, 2, 1, 1)
+
+        self.label_40 = QLabel(self.widget_3)
+        self.label_40.setObjectName(u"label_40")
+
+        self.gridLayout_2.addWidget(self.label_40, 1, 2, 1, 1)
+
+
+        self.gridLayout.addLayout(self.gridLayout_2, 0, 0, 1, 1)
+
+
+        self.horizontalLayout_10.addLayout(self.gridLayout)
+
+
+        self.horizontalLayout_8.addWidget(self.widget_3)
 
 
         self.verticalLayout_2.addWidget(self.widget_5, 0, Qt.AlignLeft)
@@ -499,7 +563,7 @@ class Ui_customPaymentsDetailsWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1161, 613))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1161, 603))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -728,6 +792,14 @@ class Ui_customPaymentsDetailsWidget(object):
         self.fromDateLineEdit.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"1.1.25", None))
         self.label_26.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u0414\u043e \u0414\u0430\u0442\u0430: ", None))
         self.toDateLineEdit.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"1.1.25", None))
+        self.euroPerMinNightLabel.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"0", None))
+        self.euroPerMinDayLabel.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"0", None))
+        self.levaPerMinDayLabel.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"0.1081", None))
+        self.label_9.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u20ac/\u043c\u0438\u043d. \u0414\u0435\u043d", None))
+        self.levaPerMinNightLabel.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"0.1081", None))
+        self.label_7.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u043b\u0432/\u043c\u0438\u043d. \u0414\u0435\u043d", None))
+        self.label_35.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u043b\u0432/\u043c\u0438\u043d. \u041d\u043e\u0449", None))
+        self.label_40.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u20ac/\u043c\u0438\u043d. \u041d\u043e\u0449", None))
         self.label_42.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u041e\u0431\u0449\u043e \u0440\u0435\u0434\u043e\u0432\u0435:", None))
         self.totalViewRows.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"0", None))
         self.label_43.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u0417\u0430\u0432\u044a\u0440\u0448\u0435\u043d\u0438 \u0431\u0440 \u0437\u0430 \u0434\u0435\u043d\u044f:", None))

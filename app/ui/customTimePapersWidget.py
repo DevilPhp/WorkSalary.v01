@@ -112,7 +112,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.modelPiecesLineEdit.textChanged.connect(self.updateModelPieces)
         self.timeForPieceLineEdit.textChanged.connect(self.updateModelPieces)
         self.modelOperationLineEdit.editingFinished.connect(self.updateModelOperation)
-        print('here')
+        # print('here')
 
     def showAllWorkersForDate(self):
         if self.showAllCheckBox.checkState() == Qt.CheckState.Checked:
@@ -522,17 +522,27 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             overtimeEnd = self.overtimeEnd.time()
 
             # Check if shift crosses midnight
-            isOvernightShift = shiftEnd <= shiftStart
+            isOvernightShift = overtimeEnd <= overtimeStart
+            print(isOvernightShift)
 
             if isOvernightShift:
-                # For overnight shifts, overtime must be outside the shift hours
-                # This is more complex as we need to check if overtime is completely outside the shift
-                isStartOutside = not (overtimeStart >= shiftStart or overtimeStart <= shiftEnd)
-                isEndOutside = not (overtimeEnd >= shiftStart or overtimeEnd <= shiftEnd)
+                print('here')
 
-                if not (isStartOutside and isEndOutside):
+                # For overnight shifts (where overtime crosses midnight)
+
+                # Create a helper function to check if a time is within the shift
+                def is_time_in_shift(time_to_check):
+                    if shiftEnd <= shiftStart:  # If shift also crosses midnight
+                        return time_to_check >= shiftStart or time_to_check <= shiftEnd
+                    else:  # Regular shift
+                        return shiftStart <= time_to_check <= shiftEnd
+
+                # Check if overtime start or end overlaps with shift
+                if is_time_in_shift(overtimeStart) or is_time_in_shift(overtimeEnd):
                     MM.showOnWidget(self, 'Извънредно време не е валидно за работна смяна!', 'warning')
                     return False
+
+                return True
             else:
                 # For regular shifts, overtime must be outside the shift hours
                 # Either before shift start or after shift end
@@ -755,21 +765,20 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             hourlyPay = [Utils.convertQtimeToTime(self.hourlyStart.time()),
                          Utils.convertQtimeToTime(self.hourlyEnd.time()),
                          float(self.hourlyTotalMins.text())] if self.isHourlyWorking.isChecked() else None
+            nightMins = 0
+            if overtime:
+                nightMins += Utils.checkNightShiftMins(self.overtimeStart.time(), self.overtimeEnd.time())
+            elif hourlyPay:
+                nightMins += Utils.checkNightShiftMins(self.hourlyStart.time(), self.hourlyEnd.time())
+            else:
+                nightMins += Utils.checkNightShiftMins(self.shiftStart.time(), self.shiftEnd.time())
+
+            if nightMins > 240:
+                nightMins -= 60
+
+            print(f'nightMins: {nightMins}')
 
             if int(self.workerNumberLineEdit.text()) not in self.existingTimePapers.keys():
-                nightMins = 0
-                if overtime:
-                    nightMins += Utils.checkNightShiftMins(self.overtimeStart.time(), self.overtimeEnd.time())
-                elif hourlyPay:
-                    nightMins += Utils.checkNightShiftMins(self.hourlyStart.time(), self.hourlyEnd.time())
-                else:
-                    nightMins += Utils.checkNightShiftMins(self.shiftStart.time(), self.shiftEnd.time())
-
-                if nightMins > 240:
-                    nightMins -= 60
-
-                print(f'nightMins: {nightMins}')
-
                 date = datetime.strptime(self.timePaperDateEdit.date().toString('yyyy-MM-dd'), '%Y-%m-%d').date()
                 timePaperData = {
                     'Date': date,
@@ -783,7 +792,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                     'ModelOperationId': modelOperationId,
                     'Pieces': int(self.modelPiecesLineEdit.text()) if modelOperationId else 0,
                     'WorkingTimeMinutes': modelOperationTime,
-                    'nightMins': nightMins if nightMins > 0 else None,
+                    'nightMins': nightMins,
                 }
                 timePaper = WoS.addNewTimePaperAndOperation(timePaperData)
                 if operationsGroupForAdd:
@@ -799,7 +808,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                     'IsHourlyPaid': hourlyPay,
                     'IsOvertime': overtime,
                     'WorkingTimeMinutes': modelOperationTime,
-                    'user': self.usernameLabel.text()
+                    'user': self.usernameLabel.text(),
+                    'nightMins': nightMins,
                 }
                 # print(f'TimePaperData: {timePaperData}')
                 # return

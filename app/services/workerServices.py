@@ -406,6 +406,11 @@ class WorkerServices:
 
     @staticmethod
     def addTimePaperDetails(session, timePaper, timePaperData):
+        if timePaper.NightShiftMins:
+            timePaper.NightShiftMins += timePaperData['nightMins']
+        else:
+            timePaper.NightShiftMins = timePaperData['nightMins']
+
         if timePaperData['ModelOperationId']:
             newTimePaperOperation = TimePaperOperation(
                 TimePaperId=timePaper.id,
@@ -419,6 +424,11 @@ class WorkerServices:
             timePaper.TotalPieces += timePaperData['Pieces']
             timePaper.TotalHours = round(timePaper.TotalHours + timePaperData['WorkingTimeMinutes'], 2)
             newTimePaperOperation.productionModelOperations.ProducedPieces += newTimePaperOperation.Pieces
+            print(timePaper.NightShiftMins)
+            if timePaper.NightShiftMins:
+                timePaper.NightShiftMins += timePaperData['nightMins']
+            else:
+                timePaper.NightShiftMins = timePaperData['nightMins']
             return True
         elif timePaperData['IsHourlyPaid']:
             newHourlyPay = HourlyPay(

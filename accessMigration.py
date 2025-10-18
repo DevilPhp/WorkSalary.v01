@@ -467,6 +467,7 @@ def createHourlyPaid(start, end, timePaperId):
             Start=start,
             End=end,
             Efficiency=efficiency,
+            NightMins=0,
             DateUpdated=datetime.today(),
             UserUpdated='admin'
         )

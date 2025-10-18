@@ -98,8 +98,9 @@ QLineEdit, QDateEdit{
 	font-weight: 700;
 }
 
-#widget_3 * {
-	font-size: 11pt;
+#widget_3 QCheckBox {
+	font-size: 10pt;
+	padding: 0px;
 }
 
 QComboBox{
@@ -484,6 +485,54 @@ QComboBox::item{
               </property>
              </widget>
             </item>
+            <item>
+             <widget class="QWidget" name="widget_3" native="true">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_3">
+               <property name="spacing">
+                <number>0</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QCheckBox" name="overtimeCheckBox">
+                 <property name="text">
+                  <string>Извънреден</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="hourlyCheckBox">
+                 <property name="text">
+                  <string>Почасово</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="nightTimeCheckBox">
+                 <property name="text">
+                  <string>Нощен</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
            </layout>
           </widget>
          </item>
@@ -531,7 +580,7 @@ QComboBox::item{
         <x>0</x>
         <y>0</y>
         <width>1161</width>
-        <height>759</height>
+        <height>737</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_12">

@@ -63,6 +63,10 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
         paymentInEuro = paymentPerMinute.PaymentInEuro
         nightPayInLeva = paymentForNightMin.NightPaymentValue
         nightPayInEuro = paymentForNightMin.NightPaymentInEuro
+        self.levaPerMinDayLabel.setText(str(paymentInLv))
+        self.euroPerMinDayLabel.setText(str(paymentInEuro))
+        self.levaPerMinNightLabel.setText(str(nightPayInLeva))
+        self.euroPerMinNightLabel.setText(str(nightPayInEuro))
         # print(paymentsData)
         if paymentsData:
             for payment, details in paymentsData.items():
