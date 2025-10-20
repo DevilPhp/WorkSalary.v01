@@ -21,12 +21,12 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
         self.paymentsTableHolder.layout().addWidget(self.paymentsTableView)
         self.tablePaymentsModel = QStandardItemModel()
         self.tablePaymentsNames = ['ID', '№', 'Име', 'Зар. дни', 'Бр.',
-                                   'Вр. Опер. в ч.', 'Почас. в ч.', 'Извънр. в ч.', 'Бр./час', 'Лв.', '€']
+                                   'Вр. Опер. в ч.', 'Почас. в ч.', 'Извънр. в ч.', 'Нощен в ч.', 'Бр./час', 'Лв.', '€']
         for i, tableHeaderName in enumerate(self.tablePaymentsNames):
             self.tablePaymentsModel.setHorizontalHeaderItem(i, QStandardItem(tableHeaderName))
             self.tablePaymentsModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignLeft)
             self.tablePaymentsModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignVCenter)
-        self.proxyModelPaymentsTable = CaseInsensitiveProxyModel(numericColumns=[0, 1, 3, 4, 5, 6, 7, 8, 9, 10],
+        self.proxyModelPaymentsTable = CaseInsensitiveProxyModel(numericColumns=[0, 1, 3, 4, 9, 10, 11],
                                                                     parent=self)
         self.setProxyModel(self.proxyModelPaymentsTable, self.tablePaymentsModel, self.paymentsTableView)
         # self.timePapersForDayTableView.setModel(self.tablePaymentsModel)
@@ -39,9 +39,15 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
         self.checkBoxFiltering = {}
         self.initialCheckBoxes = {}
 
+        self.hourlyCheckBox.stateChanged.connect(self.onHourlyStateChanged)
+        self.overtimeCheckBox.stateChanged.connect(self.onOvertimeStateChanged)
+        self.nightTimeCheckBox.stateChanged.connect(self.onNightTimeStateChanged)
+        self.selectAllCheckBox.stateChanged.connect(self.onSelectAllStateChanged)
+
         # self.setPayPerMinComboBox()
         
         self.refreshPaymentsTable()
+        self.setInitialColumns()
 
         self.fromCalendarBtn.clicked.connect(self.showCalendarDialog)
         self.toCalendarBtn.clicked.connect(self.showCalendarDialog)
@@ -55,6 +61,37 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
     # def setPayPerMinComboBox(self):
     #     paymentsPerMin = WoS.getPaymentsForMin()
     #     self.payPerMinComboBox.clear()
+
+    def setInitialColumns(self):
+        self.paymentsTableView.setColumnHidden(6, True)
+        self.paymentsTableView.setColumnHidden(7, True)
+        self.paymentsTableView.setColumnHidden(8, True)
+
+    def checkAllstate(self):
+        if self.hourlyCheckBox.isChecked() and self.overtimeCheckBox.isChecked() and self.nightTimeCheckBox.isChecked():
+            self.selectAllCheckBox.setChecked(True)
+        else:
+            self.selectAllCheckBox.blockSignals(True)
+            self.selectAllCheckBox.setChecked(False)
+            self.selectAllCheckBox.blockSignals(False)
+
+    def onSelectAllStateChanged(self, state):
+        self.hourlyCheckBox.setChecked(state)
+        self.overtimeCheckBox.setChecked(state)
+        self.nightTimeCheckBox.setChecked(state)
+
+    def onHourlyStateChanged(self, state):
+        self.paymentsTableView.setColumnHidden(6, not state)
+        self.checkAllstate()
+
+    def onOvertimeStateChanged(self, state):
+        self.paymentsTableView.setColumnHidden(7, not state)
+        self.checkAllstate()
+
+    def onNightTimeStateChanged(self, state):
+        self.paymentsTableView.setColumnHidden(8, not state)
+        self.checkAllstate()
+
 
 
     def showCalendarDialog(self):
@@ -122,25 +159,38 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
                 totalOvertimeMins = 0
                 totalPieces = 0
                 totalTime = 0
+                totalNightMins = 0
                 currentPayment = 0
                 currentPaymentInEuro = 0
                 hourly = paymentsData[workerPayment][timePaperPayment]['hourly']
                 overtime = paymentsData[workerPayment][timePaperPayment]['overtime']
                 nightMins = paymentsData[workerPayment][timePaperPayment]['nightMins']
                 pieces = paymentsData[workerPayment][timePaperPayment]['totalPieces']
-                workingTime = paymentsData[workerPayment][timePaperPayment]['totalTime']
+                workingTime = paymentsData[workerPayment][timePaperPayment]['totalTime'] - nightMins
                 paymentRatio = paymentsData[workerPayment][timePaperPayment]['paymentRatio']
                 if hourly:
                     for hourlyPayment in hourly:
-                        totalHourlyMins += hourly[hourlyPayment][0]
-                        currentPayment += (hourly[hourlyPayment][0] *
-                                           hourly[hourlyPayment][1] *
-                                           paymentRatio *
-                                           paymentInLeva)
-                        currentPaymentInEuro += (hourly[hourlyPayment][0] *
-                                                 hourly[hourlyPayment][1] *
-                                                 paymentRatio *
-                                                 paymentInEuro)
+                        hourlyEfficient = hourly[hourlyPayment][0]
+                        hourlyRatio = hourlyPayment[1]
+                        hourlyNightMins = hourly[hourlyPayment][2]
+                        totalHourlyMins += hourlyEfficient
+                        totalNightMins += hourlyNightMins
+                        currentPayment += self.calculatePayment(hourlyEfficient - hourlyNightMins,
+                                              hourlyRatio, paymentRatio, paymentInLeva)
+                        currentPayment += self.calculatePayment(hourlyNightMins, hourlyRatio,
+                                                                paymentRatio, nightPayInLeva)
+                        # currentPayment += (hourlyNightMins *
+                        #                    hourlyRatio *
+                        #                    paymentRatio *
+                        #                    nightPayInLeva)
+                        currentPaymentInEuro += self.calculatePayment(hourlyEfficient - hourlyNightMins,
+                                                                      hourlyRatio, paymentRatio, paymentInEuro)
+                        # currentPaymentInEuro += (hourly[hourlyPayment][0] *
+                        #                          hourly[hourlyPayment][1] *
+                        #                          paymentRatio *
+                        #                          paymentInEuro)
+                        currentPaymentInEuro += self.calculatePayment(hourlyNightMins, hourlyRatio,
+                                                                      paymentRatio, nightPayInEuro)
                 if overtime:
                     for overtimePayment in overtime:
                         totalOvertimeMins += overtime[overtimePayment][0]
@@ -216,6 +266,14 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
                 QStandardItem(str(payInEuro))
             ]
             self.tablePaymentsModel.appendRow(row)
+
+    def calculatePayment(self, efficient, ratio, paymentRatio, payment):
+        return (
+         efficient *
+         ratio *
+         paymentRatio *
+         payment
+    )
 
     def closeEvent(self, event):
         self.mainWindow.closeAllPaymentsDetails()

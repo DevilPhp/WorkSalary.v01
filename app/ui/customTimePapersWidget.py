@@ -773,10 +773,13 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             else:
                 nightMins += Utils.checkNightShiftMins(self.shiftStart.time(), self.shiftEnd.time())
 
-            if nightMins > 240:
-                nightMins -= 60
+            currentShiftNightMins = Utils.checkNightShiftMins(self.shiftStart.time(), self.shiftEnd.time())
+
+            # if nightMins > 240:
+            #     nightMins -= 60
 
             print(f'nightMins: {nightMins}')
+            print(f'currentShiftNightMins: {currentShiftNightMins}')
 
             if int(self.workerNumberLineEdit.text()) not in self.existingTimePapers.keys():
                 date = datetime.strptime(self.timePaperDateEdit.date().toString('yyyy-MM-dd'), '%Y-%m-%d').date()
@@ -793,6 +796,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                     'Pieces': int(self.modelPiecesLineEdit.text()) if modelOperationId else 0,
                     'WorkingTimeMinutes': modelOperationTime,
                     'nightMins': nightMins,
+                    'currentShiftNightMins': currentShiftNightMins,
                 }
                 timePaper = WoS.addNewTimePaperAndOperation(timePaperData)
                 if operationsGroupForAdd:
@@ -810,6 +814,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                     'WorkingTimeMinutes': modelOperationTime,
                     'user': self.usernameLabel.text(),
                     'nightMins': nightMins,
+                    'currentShiftNightMins': currentShiftNightMins,
                 }
                 # print(f'TimePaperData: {timePaperData}')
                 # return

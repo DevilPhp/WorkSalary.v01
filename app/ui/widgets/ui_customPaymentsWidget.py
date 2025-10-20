@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customPaymentsWidgetuLsZwD.ui'
+## Form generated from reading UI file 'customPaymentsWidgetQWIYLu.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -304,6 +304,11 @@ class Ui_customPaymentsWidget(object):
         self.verticalLayout_3.setSpacing(0)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.selectAllCheckBox = QCheckBox(self.widget_3)
+        self.selectAllCheckBox.setObjectName(u"selectAllCheckBox")
+
+        self.verticalLayout_3.addWidget(self.selectAllCheckBox)
+
         self.overtimeCheckBox = QCheckBox(self.widget_3)
         self.overtimeCheckBox.setObjectName(u"overtimeCheckBox")
 
@@ -347,7 +352,7 @@ class Ui_customPaymentsWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1161, 737))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1161, 719))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -538,6 +543,7 @@ class Ui_customPaymentsWidget(object):
         self.toCalendarBtn.setText("")
         self.searchBtn.setText(QCoreApplication.translate("customPaymentsWidget", u"\u0422\u044a\u0440\u0441\u0435\u043d\u0435", None))
         self.pushButton.setText(QCoreApplication.translate("customPaymentsWidget", u"Excel", None))
+        self.selectAllCheckBox.setText(QCoreApplication.translate("customPaymentsWidget", u"\u0412\u0441\u0438\u0447\u043a\u0438", None))
         self.overtimeCheckBox.setText(QCoreApplication.translate("customPaymentsWidget", u"\u0418\u0437\u0432\u044a\u043d\u0440\u0435\u0434\u0435\u043d", None))
         self.hourlyCheckBox.setText(QCoreApplication.translate("customPaymentsWidget", u"\u041f\u043e\u0447\u0430\u0441\u043e\u0432\u043e", None))
         self.nightTimeCheckBox.setText(QCoreApplication.translate("customPaymentsWidget", u"\u041d\u043e\u0449\u0435\u043d", None))

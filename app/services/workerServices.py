@@ -277,11 +277,11 @@ class WorkerServices:
         hourly = {}
         if timePaper.overtimePays:
             for overtimePay in timePaper.overtimePays:
-                overtime[overtimePay.id] = [overtimePay.Efficiency, overtimePay.OvertimeRate]
+                overtime[overtimePay.id] = [overtimePay.Efficiency, overtimePay.OvertimeRate, overtimePay.NightMins]
 
         if timePaper.hourlyPays:
             for hourlyPay in timePaper.hourlyPays:
-                hourly[hourlyPay.id] = [hourlyPay.Efficiency, hourlyPay.HourlyRate]
+                hourly[hourlyPay.id] = [hourlyPay.Efficiency, hourlyPay.HourlyRate, hourlyPay.NightMins]
 
         return overtime, hourly
 
@@ -340,6 +340,10 @@ class WorkerServices:
                         timePaperOperation.timePaper.TotalHours -= timePaperOperation.WorkingTimeMinutes
                         timePaperOperation.timePaper.TotalHours = round(timePaperOperation.timePaper.TotalHours, 2)
                         timePaperOperation.productionModelOperations.ProducedPieces -= timePaperOperation.Pieces
+                        if timePaperOperation.WorkingTimeMinutes <= timePaperOperation.timePaper.NightShiftMins > 0:
+                            timePaperOperation.timePaper.NightShiftMins -= timePaperOperation.WorkingTimeMinutes
+                        elif timePaperOperation.WorkingTimeMinutes > timePaperOperation.timePaper.NightShiftMins > 0:
+                            timePaperOperation.timePaper.NightShiftMins = 0
                         session.delete(timePaperOperation)
                         logger.info(f"Time paper operation deleted: {timePaperOperationId}")
                 elif timePaperOperationId.split('_')[1] == 'hourlyPay':
@@ -378,8 +382,8 @@ class WorkerServices:
                 PaymentRatio=paymentRatio,
                 ShiftId=timePaperData['ShiftId'],
                 WorkerId=timePaperData['WorkerId'],
-                userCreated=timePaperData['user'],
-                NightShiftMins=timePaperData['nightMins']
+                userCreated=timePaperData['user']
+                # NightShiftMins=timePaperData['nightMins']
             )
             session.add(newTimePaper)
             session.commit()
@@ -406,12 +410,24 @@ class WorkerServices:
 
     @staticmethod
     def addTimePaperDetails(session, timePaper, timePaperData):
-        if timePaper.NightShiftMins:
-            timePaper.NightShiftMins += timePaperData['nightMins']
-        else:
-            timePaper.NightShiftMins = timePaperData['nightMins']
+
+        # if timePaperData['nightMins'] > 0:
+        #     timePaper.NightShiftMins += timePaperData['nightMins']
+        currentNightMin = 0
+        if timePaper.hourlyPays:
+            for hourlyPay in timePaper.hourlyPays:
+                currentNightMin += hourlyPay.NightMins
+        currentNightMin += timePaper.NightShiftMins
+        currentShiftNightMins = timePaperData['currentShiftNightMins']
+        nightMins = timePaperData['nightMins']
 
         if timePaperData['ModelOperationId']:
+            operationNightMin = 0
+            if currentNightMin < nightMins > 0:
+                if nightMins - currentNightMin >= timePaperData['WorkingTimeMinutes']:
+                    operationNightMin = timePaperData['WorkingTimeMinutes']
+                else:
+                    operationNightMin = nightMins - currentNightMin
             newTimePaperOperation = TimePaperOperation(
                 TimePaperId=timePaper.id,
                 OrderId=timePaperData['OrderId'],
@@ -423,30 +439,39 @@ class WorkerServices:
             session.flush()
             timePaper.TotalPieces += timePaperData['Pieces']
             timePaper.TotalHours = round(timePaper.TotalHours + timePaperData['WorkingTimeMinutes'], 2)
-            newTimePaperOperation.productionModelOperations.ProducedPieces += newTimePaperOperation.Pieces
-            print(timePaper.NightShiftMins)
-            if timePaper.NightShiftMins:
-                timePaper.NightShiftMins += timePaperData['nightMins']
-            else:
-                timePaper.NightShiftMins = timePaperData['nightMins']
+            timePaper.NightShiftMins = round(timePaper.NightShiftMins + operationNightMin, 2)
             return True
+
         elif timePaperData['IsHourlyPaid']:
+            hourlyNightMin = 0
+            if currentNightMin < currentShiftNightMins and nightMins > 0:
+                if currentShiftNightMins - currentNightMin >= nightMins:
+                    hourlyNightMin = nightMins
+                else:
+                    hourlyNightMin = currentShiftNightMins - currentNightMin
             newHourlyPay = HourlyPay(
                 TimePaperId=timePaper.id,
                 Start=timePaperData['IsHourlyPaid'][0],
                 End=timePaperData['IsHourlyPaid'][1],
                 Efficiency=timePaperData['IsHourlyPaid'][2],
+                NightMins=round(hourlyNightMin, 2),
                 UserUpdated=timePaperData['user']
             )
             session.add(newHourlyPay)
             session.flush()
             return True
+
         elif timePaperData['IsOvertime']:
+            if timePaperData['nightMins'] > 0:
+                overtimeNightMin = timePaperData['nightMins']
+            else:
+                overtimeNightMin = 0
             newOvertimePay = OvertimePay(
                 TimePaperId=timePaper.id,
                 Start=timePaperData['IsOvertime'][0],
                 End=timePaperData['IsOvertime'][1],
                 Efficiency=timePaperData['IsOvertime'][2],
+                NightMins=overtimeNightMin,
                 OvertimeRate=1.5,
                 UserUpdated=timePaperData['user']
             )
