@@ -104,24 +104,39 @@ class CustomTableViewWithMultiSelection(QTableView):
 
         ''')
 
+    def checkSender(self, parrentName):
+        selectedItems = {}
+        if parrentName == 'timePaperTableHolder':
+            selectedItems['pieces'] = self.selectionModel().selectedRows(5)
+            selectedItems['piecesTime'] = self.selectionModel().selectedRows(6)
+        elif parrentName == 'paymentsTableHolder':
+            selectedItems['payInLeva'] = self.selectionModel().selectedRows(12)
+            selectedItems['payInEuro'] = self.selectionModel().selectedRows(13)
+        return selectedItems
+
     def keyPressEvent(self, event):
+        parrentName = self.parent().objectName()
+
+        if event.key() == Qt.Key.Key_Escape:
+            self.clearCurrentSelection.emit(True)
+            self.clearSelection()
+
         if event.key() in (Qt.Key.Key_Up, Qt.Key.Key_Down):
             selectedItems = {}
             index = self.currentIndex()
 
             if event.key() == Qt.Key.Key_Up and index.row() > 0:
                 self.selectRow(index.row() - 1)
-                selectedItems['pieces'] = self.selectionModel().selectedRows(5)
-                selectedItems['piecesTime'] = self.selectionModel().selectedRows(6)
+                selectedItems = self.checkSender(parrentName)
                 self.selectedRows.emit(selectedItems)
 
             elif event.key() == Qt.Key.Key_Down and index.row() < self.model().rowCount() - 1:
                 self.selectRow(index.row() + 1)
-                selectedItems['pieces'] = self.selectionModel().selectedRows(5)
-                selectedItems['piecesTime'] = self.selectionModel().selectedRows(6)
+                selectedItems = self.checkSender(parrentName)
                 self.selectedRows.emit(selectedItems)
 
     def mouseReleaseEvent(self, event):
+        parrentName = self.parent().objectName()
         if event.button() == Qt.MouseButton.LeftButton:
             selectedItems = {}
             index = self.indexAt(event.pos())
@@ -129,8 +144,7 @@ class CustomTableViewWithMultiSelection(QTableView):
                 modifiers = event.modifiers()
                 if not (modifiers & Qt.KeyboardModifier.ControlModifier or
                         modifiers & Qt.KeyboardModifier.ShiftModifier) or self.selectionModel().selectedRows(0):
-                    selectedItems['pieces'] = self.selectionModel().selectedRows(5)
-                    selectedItems['piecesTime'] = self.selectionModel().selectedRows(6)
+                    selectedItems = self.checkSender(parrentName)
                     self.selectedRows.emit(selectedItems)
 
             else:

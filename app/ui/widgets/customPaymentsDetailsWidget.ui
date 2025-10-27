@@ -53,14 +53,21 @@ QLineEdit{
 	max-width: 40px;
 }
 
+#widget_6 QCheckBox {
+	font-size: 10pt;
+	padding: 0px;
+	font-weight: 600;
+}
+
 #statusBar {
 	border: 1px solid #7c9399;
 }
 #statusBar *{
 	font-size: 9pt;
+	font-weight: 600;
 }
 
-#avrTimePerPiece, #totalSelectedPieces, #totalSelectedTime, #totalSelectedRows, #totalViewRows, #totalProducedPieces {
+#avrLevaLabel, #totalLevaLabel, #totalEuroLabel, #totalSelectedRows, #totalViewRows, #avrEuroLabel {
 	font-weight: 700;
 }
 
@@ -100,7 +107,7 @@ QLineEdit{
    <property name="bottomMargin">
     <number>5</number>
    </property>
-   <item alignment="Qt::AlignTop">
+   <item>
     <widget class="QWidget" name="widget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <property name="spacing">
@@ -215,7 +222,7 @@ QLineEdit{
         </layout>
        </widget>
       </item>
-      <item alignment="Qt::AlignLeft">
+      <item alignment="Qt::AlignLeft|Qt::AlignTop">
        <widget class="QWidget" name="workerInfoHolder" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -260,21 +267,6 @@ QLineEdit{
             </size>
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_9">
-            <property name="spacing">
-             <number>5</number>
-            </property>
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
             <item>
              <layout class="QGridLayout" name="workerInfoLayout">
               <property name="horizontalSpacing">
@@ -283,183 +275,6 @@ QLineEdit{
               <property name="verticalSpacing">
                <number>5</number>
               </property>
-              <item row="2" column="8">
-               <widget class="QLabel" name="workerOvertimeLabel">
-                <property name="text">
-                 <string>0</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="2">
-               <widget class="QLabel" name="label_3">
-                <property name="text">
-                 <string>Фамилия:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="5">
-               <widget class="QLabel" name="label_15">
-                <property name="text">
-                 <string>Ефективност:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="3">
-               <widget class="QLabel" name="workerPositionLabel">
-                <property name="minimumSize">
-                 <size>
-                  <width>160</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>Не е посочено</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="9">
-               <widget class="QLabel" name="label_18">
-                <property name="text">
-                 <string>Нач. лв.:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="7">
-               <widget class="QLabel" name="label_12">
-                <property name="text">
-                 <string>Раб. Време:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="10">
-               <widget class="QLabel" name="label_19">
-                <property name="minimumSize">
-                 <size>
-                  <width>35</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>0</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="13">
-               <widget class="QLabel" name="label_30">
-                <property name="text">
-                 <string>Коеф.</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="8">
-               <widget class="QLabel" name="workerWorkingTimeLabel">
-                <property name="minimumSize">
-                 <size>
-                  <width>35</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>0</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="6">
-               <widget class="QLabel" name="workerEfficLabel">
-                <property name="text">
-                 <string>0</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="5">
-               <widget class="QLabel" name="label_2">
-                <property name="text">
-                 <string>Видове Опер.:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="7">
-               <widget class="QLabel" name="label_13">
-                <property name="text">
-                 <string>Почас. Раб.:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="12">
-               <widget class="QLabel" name="label_28">
-                <property name="text">
-                 <string>0</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="3">
-               <widget class="QLabel" name="workerLastNameLabel">
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0">
-               <widget class="QLabel" name="label_6">
-                <property name="text">
-                 <string>Цех:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QLabel" name="workerNumberLabel">
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="4">
-               <widget class="QLabel" name="spacer">
-                <property name="minimumSize">
-                 <size>
-                  <width>40</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="6">
-               <widget class="QLabel" name="workerPiecesLabel">
-                <property name="minimumSize">
-                 <size>
-                  <width>35</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>0</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="6">
-               <widget class="QLabel" name="workerOperationsTypesLabel">
-                <property name="text">
-                 <string>0</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QLabel" name="label_5">
-                <property name="text">
-                 <string>Номер:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="10">
-               <widget class="QLabel" name="label_24">
-                <property name="text">
-                 <string>0</string>
-                </property>
-               </widget>
-              </item>
               <item row="2" column="2">
                <widget class="QLabel" name="label_8">
                 <property name="text">
@@ -467,72 +282,10 @@ QLineEdit{
                 </property>
                </widget>
               </item>
-              <item row="2" column="7">
-               <widget class="QLabel" name="label_14">
+              <item row="0" column="0">
+               <widget class="QLabel" name="label">
                 <property name="text">
-                 <string>Извънреден:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="10">
-               <widget class="QLabel" name="label_23">
-                <property name="text">
-                 <string>0</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="11">
-               <widget class="QLabel" name="label_20">
-                <property name="text">
-                 <string>Нач. €:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="11">
-               <widget class="QLabel" name="label_21">
-                <property name="text">
-                 <string>Нач. €:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="12">
-               <widget class="QLabel" name="label_29">
-                <property name="text">
-                 <string>0</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="12">
-               <widget class="QLabel" name="label_27">
-                <property name="minimumSize">
-                 <size>
-                  <width>35</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>0</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="9">
-               <widget class="QLabel" name="label_16">
-                <property name="text">
-                 <string>Нач. лв.:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="8">
-               <widget class="QLabel" name="workerHourPaidTimeLabel">
-                <property name="text">
-                 <string>0</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="5">
-               <widget class="QLabel" name="label_4">
-                <property name="text">
-                 <string>Бройки:</string>
+                 <string>Име:</string>
                 </property>
                </widget>
               </item>
@@ -549,6 +302,54 @@ QLineEdit{
                 </property>
                </widget>
               </item>
+              <item row="2" column="3">
+               <widget class="QLabel" name="workerPositionLabel">
+                <property name="minimumSize">
+                 <size>
+                  <width>160</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Не е посочено</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLabel" name="workerNumberLabel">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="label_6">
+                <property name="text">
+                 <string>Цех:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_5">
+                <property name="text">
+                 <string>Номер:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QLabel" name="label_3">
+                <property name="text">
+                 <string>Фамилия:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="3">
+               <widget class="QLabel" name="workerLastNameLabel">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
               <item row="0" column="1">
                <widget class="QLabel" name="workerNameLabel">
                 <property name="text">
@@ -556,66 +357,87 @@ QLineEdit{
                 </property>
                </widget>
               </item>
-              <item row="1" column="9">
-               <widget class="QLabel" name="label_17">
+              <item row="1" column="2">
+               <widget class="QLabel" name="paymentLevaLabel">
                 <property name="text">
-                 <string>Нач. лв.:</string>
+                 <string>0.0 лв</string>
                 </property>
                </widget>
               </item>
-              <item row="0" column="0">
-               <widget class="QLabel" name="label">
+              <item row="1" column="3">
+               <widget class="QLabel" name="paymentEuroLabel">
                 <property name="text">
-                 <string>Име:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="11">
-               <widget class="QLabel" name="label_22">
-                <property name="text">
-                 <string>Нач. €:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="14">
-               <widget class="QLineEdit" name="workerWorkingTimeKoefLineEdit">
-                <property name="text">
-                 <string>1.00</string>
-                </property>
-                <property name="placeholderText">
-                 <string>1</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="14">
-               <widget class="QLineEdit" name="workerHourTimeKoefLineEdit">
-                <property name="text">
-                 <string>1.00</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="14">
-               <widget class="QLineEdit" name="workerOvertimeKoefLineEdit">
-                <property name="text">
-                 <string>1.00</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="13">
-               <widget class="QLabel" name="label_31">
-                <property name="text">
-                 <string>Коеф.</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="13">
-               <widget class="QLabel" name="label_32">
-                <property name="text">
-                 <string>Коеф.</string>
+                 <string>0.0 €</string>
                 </property>
                </widget>
               </item>
              </layout>
+            </item>
+            <item>
+             <widget class="QWidget" name="widget_6" native="true">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_11">
+               <property name="spacing">
+                <number>0</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <layout class="QGridLayout" name="gridLayout_3">
+                 <item row="1" column="0">
+                  <widget class="QCheckBox" name="selectAllCheckBox">
+                   <property name="text">
+                    <string>Всички</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="0">
+                  <widget class="QCheckBox" name="hourlyCheckBox">
+                   <property name="text">
+                    <string>Почасово</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="0">
+                  <widget class="QCheckBox" name="nightTimeCheckBox">
+                   <property name="text">
+                    <string>Нощен</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0">
+                  <widget class="QCheckBox" name="overtimeCheckBox">
+                   <property name="text">
+                    <string>Извънреден</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QCheckBox" name="weekendHolidaysCheckBox">
+                   <property name="text">
+                    <string>Почивни/Парзнични дни</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
             </item>
            </layout>
           </widget>
@@ -623,7 +445,7 @@ QLineEdit{
         </layout>
        </widget>
       </item>
-      <item>
+      <item alignment="Qt::AlignTop">
        <widget class="QWidget" name="operationsHolder" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -647,7 +469,7 @@ QLineEdit{
          <property name="bottomMargin">
           <number>0</number>
          </property>
-         <item>
+         <item alignment="Qt::AlignTop">
           <widget class="QFrame" name="optionsHolder">
            <property name="frameShape">
             <enum>QFrame::StyledPanel</enum>
@@ -868,34 +690,7 @@ QLineEdit{
             <property name="bottomMargin">
              <number>0</number>
             </property>
-            <item>
-             <widget class="QWidget" name="timePapersHolder" native="true">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>0</height>
-               </size>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_3">
-               <property name="spacing">
-                <number>5</number>
-               </property>
-               <property name="leftMargin">
-                <number>0</number>
-               </property>
-               <property name="topMargin">
-                <number>0</number>
-               </property>
-               <property name="rightMargin">
-                <number>0</number>
-               </property>
-               <property name="bottomMargin">
-                <number>0</number>
-               </property>
-              </layout>
-             </widget>
-            </item>
-            <item>
+            <item alignment="Qt::AlignTop">
              <widget class="QFrame" name="optionsHolder_2">
               <property name="frameShape">
                <enum>QFrame::StyledPanel</enum>
@@ -942,7 +737,7 @@ QLineEdit{
         <x>0</x>
         <y>0</y>
         <width>1161</width>
-        <height>603</height>
+        <height>598</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -1084,41 +879,6 @@ QLineEdit{
          <property name="bottomMargin">
           <number>0</number>
          </property>
-         <item>
-          <widget class="QWidget" name="widget_19" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_27">
-            <property name="spacing">
-             <number>5</number>
-            </property>
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="label_43">
-              <property name="text">
-               <string>Завършени бр за деня:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="totalProducedPieces">
-              <property name="text">
-               <string>0</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
         </layout>
        </widget>
       </item>
@@ -1130,9 +890,9 @@ QLineEdit{
           <height>0</height>
          </size>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_20">
+        <layout class="QHBoxLayout" name="horizontalLayout_12">
          <property name="spacing">
-          <number>15</number>
+          <number>5</number>
          </property>
          <property name="leftMargin">
           <number>0</number>
@@ -1146,7 +906,7 @@ QLineEdit{
          <property name="bottomMargin">
           <number>0</number>
          </property>
-         <item>
+         <item alignment="Qt::AlignLeft">
           <widget class="QWidget" name="widget_16" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_24">
             <property name="spacing">
@@ -1181,7 +941,7 @@ QLineEdit{
            </layout>
           </widget>
          </item>
-         <item>
+         <item alignment="Qt::AlignLeft">
           <widget class="QWidget" name="widget_10" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_22">
             <property name="spacing">
@@ -1202,12 +962,12 @@ QLineEdit{
             <item>
              <widget class="QLabel" name="label_38">
               <property name="text">
-               <string>Бройки:</string>
+               <string>Лв.:</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="totalSelectedPieces">
+             <widget class="QLabel" name="totalLevaLabel">
               <property name="text">
                <string>0</string>
               </property>
@@ -1216,7 +976,7 @@ QLineEdit{
            </layout>
           </widget>
          </item>
-         <item>
+         <item alignment="Qt::AlignLeft">
           <widget class="QWidget" name="widget_15" native="true">
            <property name="minimumSize">
             <size>
@@ -1243,12 +1003,12 @@ QLineEdit{
             <item>
              <widget class="QLabel" name="label_37">
               <property name="text">
-               <string>Време:</string>
+               <string>€:</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="totalSelectedTime">
+             <widget class="QLabel" name="totalEuroLabel">
               <property name="text">
                <string>0.0</string>
               </property>
@@ -1257,7 +1017,7 @@ QLineEdit{
            </layout>
           </widget>
          </item>
-         <item>
+         <item alignment="Qt::AlignLeft">
           <widget class="QWidget" name="widget_18" native="true">
            <property name="minimumSize">
             <size>
@@ -1284,12 +1044,53 @@ QLineEdit{
             <item>
              <widget class="QLabel" name="label_39">
               <property name="text">
-               <string>Ср. Време за бр.:</string>
+               <string>Ср. лв.:</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="avrTimePerPiece">
+             <widget class="QLabel" name="avrLevaLabel">
+              <property name="text">
+               <string>0.0</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="widget_19" native="true">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_28">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="label_43">
+              <property name="text">
+               <string>Ср. €:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="avrEuroLabel">
               <property name="text">
                <string>0.0</string>
               </property>

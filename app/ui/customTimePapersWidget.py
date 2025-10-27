@@ -1,8 +1,9 @@
 from datetime import datetime
 from functools import partial
+import json
 
-from PySide6.QtCore import QTimer
-from PySide6.QtGui import QStandardItemModel, QStandardItem, QDoubleValidator
+from PySide6.QtCore import QTimer, QMimeData
+from PySide6.QtGui import QStandardItemModel, QStandardItem, QDoubleValidator, QClipboard
 from PySide6.QtWidgets import QMenu, QDialog
 
 from app.ui.widgets.ui_customTimePapersWidget import *
@@ -62,6 +63,9 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.timePapersForDayTableView.customContextMenuRequested.connect(self.showCustomContextMenu)
         self.timePapersForDayTableView.selectedRows.connect(self.showTimePaperDetails)
         self.timePapersForDayTableView.clearCurrentSelection.connect(self.resetSelectedInfo)
+
+        self.clipboardData = None
+
         self.workerShiftsHolder.setEnabled(False)
         self.modelAndOperationHolder.setVisible(False)
         validatorInt = QDoubleValidator(0, 999999, 0)
@@ -140,6 +144,17 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
     def showCustomContextMenu(self, pos):
         menu = QMenu(self)
         deleteAction = menu.addAction("Изтрий")
+        copyAction = menu.addAction("Копирай")
+        pasteAction = menu.addAction("Постави")
+
+        # Check if clipboard has our custom data format
+        clipboard = QApplication.clipboard()
+        mimeData = clipboard.mimeData()
+        hasTableData = mimeData.hasFormat("application/x-knitex-tabledata")
+
+        # Disable paste action if no data is in clipboard
+        pasteAction.setEnabled(hasTableData)
+
         action = menu.exec_(self.timePapersForDayTableView.viewport().mapToGlobal(pos))
 
         if action == deleteAction:
@@ -175,6 +190,77 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                     MM.showOnWidget(self, 'Грешка при изтриване', 'error')
             else:
                 return
+
+        elif action == copyAction:
+            self.copySelectedRows()
+        elif action == pasteAction:
+            self.pasteFromClipboard()
+
+    def pasteFromClipboard(self):
+        """Paste previously copied rows from system clipboard"""
+        clipboard = QApplication.clipboard()
+        mimeData = clipboard.mimeData()
+
+        if not mimeData.hasFormat("application/x-knitex-tabledata"):
+            return
+
+        # Get the data from clipboard
+        jsonData = mimeData.data("application/x-knitex-tabledata").data().decode()
+        copiedData = json.loads(jsonData)
+
+        if not copiedData:
+            return
+
+        # currentDate = self.timePaperDateEdit.date().toString('yyyy-MM-dd')
+        self.addTimePaperOperation(True, copiedData)
+
+        # print(len(copiedData))
+
+    def copySelectedRows(self):
+        """Copy selected rows to system clipboard"""
+        selectedRows = self.timePapersForDayTableView.selectionModel().selectedRows()
+        if not selectedRows:
+            return
+
+        # Create a list to store the copied data
+        copiedData = []
+
+        # Get all selected rows data
+        for index in selectedRows:
+            rowData = {}
+            # Store all column data for this row
+            for col in range(self.tableTimePapersModel.columnCount()):
+                modelIndex = self.proxyModelWorkers.index(index.row(), col)
+                # Get both display data and user role data if available
+                displayData = modelIndex.data(Qt.ItemDataRole.DisplayRole)
+                userData = modelIndex.data(Qt.ItemDataRole.UserRole)
+
+                # Convert to string if needed
+                if displayData is not None:
+                    displayData = str(displayData)
+
+                rowData[col] = {
+                    'display': displayData,
+                    'userRole': userData
+                }
+
+            copiedData.append(rowData)
+
+        # Create a mime data object
+        mimeData = QMimeData()
+
+        # Store the data in a custom mime type
+        jsonData = json.dumps(copiedData)
+        mimeData.setData("application/x-knitex-tabledata", jsonData.encode())
+
+        # Also set plain text for pasting to other applications
+        plainText = "\t".join([row[0]['display'] for row in copiedData])
+        mimeData.setText(plainText)
+
+        # Set the mime data to clipboard
+        QApplication.clipboard().setMimeData(mimeData)
+
+        MM.showOnWidget(self, f"Копирани {len(copiedData)} реда", 'info')
 
     def refreshOpersGroup(self):
         self.operationsGroups = OpS.getOperationsGroups()
@@ -304,16 +390,23 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             elif workerId:
                 totalWorkingMins += item[6]
 
+            col2 = QStandardItem(item[2])
+            col3 = QStandardItem(str(item[3]))
+
             if item[7] == -1:
                 totalWorkingMins += item[8]
                 item[6] = item[8]
                 timePaperId.setData(item[9], Qt.ItemDataRole.UserRole)
 
+            else:
+                col2.setData(item[8], Qt.ItemDataRole.UserRole)
+                col3.setData(item[9], Qt.ItemDataRole.UserRole)
+
             row = [
                 timePaperId,
                 QStandardItem(str(item[1])),
-                QStandardItem(item[2]),
-                QStandardItem(str(item[3])),
+                col2,
+                col3,
                 QStandardItem(item[4]),
                 QStandardItem(str(item[5])),
                 QStandardItem(Utils.setFloatToStr(item[6])),
@@ -697,9 +790,11 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             timeForPiece = float(self.timeForPieceLineEdit.text())
             self.piecesTimeLineEdit.setText(str(round(pieces * timeForPiece, 2)))
 
-    def addTimePaperOperation(self):
+    def addTimePaperOperation(self, copy=False, copyData=None):
+        overMinsForBreak = 300
+
         if self.clientModelsLineEdit.text() == '' or self.modelOperationLineEdit.text() == '':
-            if not self.isHourlyWorking.isChecked() and not self.isOvertimeWorking.isChecked():
+            if not self.isHourlyWorking.isChecked() and not self.isOvertimeWorking.isChecked() and not copy:
                 MM.showOnWidget(self,
                                 'Не сте избрали клиент и/или операция',
                                 'error')
@@ -734,7 +829,12 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                             'error')
             return
 
+        if copy and copyData:
+            count = len(copyData)
+        print(copyData)
+
         for i in range(count):
+            pieces = None
             if operationsGroupForAdd:
                 modelOperationId = list(operationsGroupForAdd.keys())[i]
                 modelOperationTime = round(
@@ -753,10 +853,18 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 modelOperationId = None
                 modelOperationTime = 0
                 orderId = None
+            elif copy and copyData[i]:
+                modelOperationId = int(copyData[i]['3']['userRole'])
+                orderId = int(copyData[i]['2']['userRole'])
+                modelOperationTime = float(copyData[i]['6']['display'])
+                pieces = int(copyData[i]['5']['display'])
+                # print(f'copyData: {modelOperationId}, {orderId}, {modelOperationTime}, {pieces}')
+                # return
             else:
                 modelOperationId = self.modelOperations[self.modelOperationLineEdit.text()][1]
                 modelOperationTime = float(self.piecesTimeLineEdit.text())
                 orderId = self.clientModels[self.clientModelsLineEdit.text()]
+                pieces = int(self.modelPiecesLineEdit.text())
 
             overtime = [Utils.convertQtimeToTime(self.overtimeStart.time()),
                         Utils.convertQtimeToTime(self.overtimeEnd.time()),
@@ -774,9 +882,11 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 nightMins += Utils.checkNightShiftMins(self.shiftStart.time(), self.shiftEnd.time())
 
             currentShiftNightMins = Utils.checkNightShiftMins(self.shiftStart.time(), self.shiftEnd.time())
+            if currentShiftNightMins > overMinsForBreak:
+                currentShiftNightMins -= 60
 
-            # if nightMins > 240:
-            #     nightMins -= 60
+            if nightMins > overMinsForBreak:
+                nightMins -= 60
 
             print(f'nightMins: {nightMins}')
             print(f'currentShiftNightMins: {currentShiftNightMins}')
@@ -793,13 +903,13 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                     'user': self.usernameLabel.text(),
                     'OrderId': orderId,
                     'ModelOperationId': modelOperationId,
-                    'Pieces': int(self.modelPiecesLineEdit.text()) if modelOperationId else 0,
+                    'Pieces': pieces if modelOperationId else 0,
                     'WorkingTimeMinutes': modelOperationTime,
                     'nightMins': nightMins,
                     'currentShiftNightMins': currentShiftNightMins,
                 }
                 timePaper = WoS.addNewTimePaperAndOperation(timePaperData)
-                if operationsGroupForAdd:
+                if operationsGroupForAdd or copy:
                     self.existingTimePapers[int(self.workerNumberLineEdit.text())] = timePaper
                 # print(self.existingTimePapers)
             else:
@@ -808,7 +918,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                     'TimePaperId': self.existingTimePapers[int(self.workerNumberLineEdit.text())],
                     'OrderId': orderId,
                     'ModelOperationId': modelOperationId,
-                    'Pieces': int(self.modelPiecesLineEdit.text()) if modelOperationId else 0,
+                    'Pieces': pieces if modelOperationId else 0,
                     'IsHourlyPaid': hourlyPay,
                     'IsOvertime': overtime,
                     'WorkingTimeMinutes': modelOperationTime,

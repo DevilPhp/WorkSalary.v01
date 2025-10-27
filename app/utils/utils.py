@@ -2,10 +2,17 @@ from datetime import datetime, date, time, timedelta
 
 from PySide6.QtGui import QStandardItemModel, QStandardItem, QCursor
 from PySide6.QtWidgets import QCompleter, QLineEdit, QApplication, QTableView
-from PySide6.QtCore import Qt, QStringListModel
+from PySide6.QtCore import Qt, QStringListModel, QTime
 
 
 class Utils:
+
+    @staticmethod
+    def calculatePayment(efficient, ratio, paymentRatio, payment):
+        return (efficient *
+                ratio *
+                paymentRatio *
+                payment)
 
     @staticmethod
     def setReturnBtnForCompleter(completer):
@@ -82,9 +89,9 @@ class Utils:
     def checkNightShiftMins(startTime, endTime):
         if startTime is None or endTime is None:
             return 0
-
-        startTime = Utils.convertQtimeToTime(startTime)
-        endTime = Utils.convertQtimeToTime(endTime)
+        if isinstance(startTime, QTime) and isinstance(endTime, QTime):
+            startTime = Utils.convertQtimeToTime(startTime)
+            endTime = Utils.convertQtimeToTime(endTime)
 
         # Anchor everything to an arbitrary reference date
         DefaultDay = date(2000, 1, 1)

@@ -7,6 +7,7 @@ from app.database.workers import Worker, TimePaper, TimePaperOperation, WorkingS
 from app.database.payment import PaymentPerMinute, NightPaymentPerMinute, HolidaysPerYear, Holiday
 from datetime import datetime
 
+
 class WorkerServices:
 
     @staticmethod
@@ -154,6 +155,7 @@ class WorkerServices:
                             'operation': timePaperOperation.productionModelOperations.ОперацияNo,
                             'time': timePaperOperation.WorkingTimeMinutes,
                             'pieces': timePaperOperation.Pieces,
+                            'nightMins': timePaperOperation.NightMins,
                         }
                         if timePaperOperation.productionModelOperations.ПоръчкаNo not in orderCount:
                             orderCount.append(timePaperOperation.productionModelOperations.ПоръчкаNo)
@@ -163,11 +165,13 @@ class WorkerServices:
 
                 if timePaper.hourlyPays:
                     for hourlyPay in timePaper.hourlyPays:
-                        hourlyPayList.append([hourlyPay.Efficiency, hourlyPay.HourlyRate, hourlyPay.id])
+                        hourlyPayList.append([hourlyPay.Efficiency, hourlyPay.HourlyRate,
+                                              hourlyPay.id, hourlyPay.NightMins])
 
                 if timePaper.overtimePays:
                     for overtimePay in timePaper.overtimePays:
-                        overtimePayList.append([overtimePay.Efficiency, overtimePay.OvertimeRate, overtimePay.id])
+                        overtimePayList.append([overtimePay.Efficiency, overtimePay.OvertimeRate,
+                                                overtimePay.id, overtimePay.NightMins])
 
                 if timePaper.Date in holidaysList:
                     paymentRatio = 2
@@ -560,6 +564,8 @@ class WorkerServices:
                         operation.Pieces,
                         operation.WorkingTimeMinutes,
                         operation.id,
+                        operation.productionModelOperations.OrderId,
+                        operation.productionModelOperations.id
                     ])
             return returnedData
 

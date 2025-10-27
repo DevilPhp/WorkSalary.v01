@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1173</width>
-    <height>915</height>
+    <height>901</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -65,7 +65,7 @@ QLineEdit, QDateEdit{
 	font-size: 9pt;
 }
 
-#avrTimePerPiece, #totalSelectedPieces, #totalSelectedTime, #totalSelectedRows, #totalViewRows, #totalProducedPieces {
+#avrEuroLabel, #avrLevaLabel, #totalLevaLabel, #totalSelectedRows, #totalEuroLabel, #totalViewRows {
 	font-weight: 700;
 }
 
@@ -353,7 +353,7 @@ QComboBox::item{
                    <second>0</second>
                    <year>1990</year>
                    <month>9</month>
-                   <day>4</day>
+                   <day>3</day>
                   </datetime>
                  </property>
                  <property name="displayFormat">
@@ -435,7 +435,7 @@ QComboBox::item{
                    <second>0</second>
                    <year>1990</year>
                    <month>9</month>
-                   <day>5</day>
+                   <day>4</day>
                   </datetime>
                  </property>
                  <property name="displayFormat">
@@ -479,7 +479,7 @@ QComboBox::item{
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton">
+             <widget class="QPushButton" name="exportToExcelBtn">
               <property name="text">
                <string>Excel</string>
               </property>
@@ -510,32 +510,56 @@ QComboBox::item{
                 <number>0</number>
                </property>
                <item>
-                <widget class="QCheckBox" name="selectAllCheckBox">
-                 <property name="text">
-                  <string>Всички</string>
+                <layout class="QGridLayout" name="gridLayout">
+                 <property name="horizontalSpacing">
+                  <number>10</number>
                  </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QCheckBox" name="overtimeCheckBox">
-                 <property name="text">
-                  <string>Извънреден</string>
+                 <property name="verticalSpacing">
+                  <number>2</number>
                  </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QCheckBox" name="hourlyCheckBox">
-                 <property name="text">
-                  <string>Почасово</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QCheckBox" name="nightTimeCheckBox">
-                 <property name="text">
-                  <string>Нощен</string>
-                 </property>
-                </widget>
+                 <item row="3" column="0">
+                  <widget class="QCheckBox" name="nightTimeCheckBox">
+                   <property name="text">
+                    <string>Нощен</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QCheckBox" name="selectAllCheckBox">
+                   <property name="text">
+                    <string>Всички</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QCheckBox" name="overtimeCheckBox">
+                   <property name="text">
+                    <string>Извънреден</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0">
+                  <widget class="QCheckBox" name="hourlyCheckBox">
+                   <property name="text">
+                    <string>Почасово</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QCheckBox" name="weekendDaysCheckBox">
+                   <property name="text">
+                    <string>Почивни дни</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QCheckBox" name="holidaysCheckBox">
+                   <property name="text">
+                    <string>Празнични дни</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
                </item>
               </layout>
              </widget>
@@ -587,7 +611,7 @@ QComboBox::item{
         <x>0</x>
         <y>0</y>
         <width>1161</width>
-        <height>719</height>
+        <height>697</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -729,41 +753,6 @@ QComboBox::item{
          <property name="bottomMargin">
           <number>0</number>
          </property>
-         <item>
-          <widget class="QWidget" name="widget_19" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_27">
-            <property name="spacing">
-             <number>5</number>
-            </property>
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="label_43">
-              <property name="text">
-               <string>Завършени бр за деня:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="totalProducedPieces">
-              <property name="text">
-               <string>0</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
         </layout>
        </widget>
       </item>
@@ -775,9 +764,9 @@ QComboBox::item{
           <height>0</height>
          </size>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_20">
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
          <property name="spacing">
-          <number>15</number>
+          <number>10</number>
          </property>
          <property name="leftMargin">
           <number>0</number>
@@ -847,14 +836,14 @@ QComboBox::item{
             <item>
              <widget class="QLabel" name="label_38">
               <property name="text">
-               <string>Бройки:</string>
+               <string>Тотал Лв</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="totalSelectedPieces">
+             <widget class="QLabel" name="totalLevaLabel">
               <property name="text">
-               <string>0</string>
+               <string>0.0</string>
               </property>
              </widget>
             </item>
@@ -888,12 +877,12 @@ QComboBox::item{
             <item>
              <widget class="QLabel" name="label_37">
               <property name="text">
-               <string>Време:</string>
+               <string>Тотал €</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="totalSelectedTime">
+             <widget class="QLabel" name="totalEuroLabel">
               <property name="text">
                <string>0.0</string>
               </property>
@@ -929,12 +918,53 @@ QComboBox::item{
             <item>
              <widget class="QLabel" name="label_39">
               <property name="text">
-               <string>Ср. Време за бр.:</string>
+               <string>Ср. лв.:</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="avrTimePerPiece">
+             <widget class="QLabel" name="avrLevaLabel">
+              <property name="text">
+               <string>0.0</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="widget_19" native="true">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_27">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="label_40">
+              <property name="text">
+               <string>Ср. €:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="avrEuroLabel">
               <property name="text">
                <string>0.0</string>
               </property>

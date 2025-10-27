@@ -1,5 +1,8 @@
 import sys
 import locale
+import json
+from PySide6.QtCore import QMimeData
+from PySide6.QtGui import QClipboard
 
 from app.logger import logger
 from PySide6.QtWidgets import QMdiSubWindow
@@ -43,6 +46,7 @@ class MainWindow(QMainWindow):
         self.holidaysPage = None
         self.payPerMinPage = None
         self.workerPaymentsDetails = {}
+        self.clipboardData = QApplication.clipboard()
         # self.setAttribute(Qt.WA_TranslucentBackground)
         LoginPage(self)
         MainMenuPage(self)
@@ -130,9 +134,10 @@ class MainWindow(QMainWindow):
         else:
             self.workersPage.activateWindow()
 
-    def setPaymentsDetailsPage(self, workerId, start, end):
+    def setPaymentsDetailsPage(self, workerId, start, end, totalLeva, totalEuro):
         if workerId not in self.workerPaymentsDetails:
-            self.workerPaymentsDetails[workerId] = CustomPaymentsDetailsWidget(self, workerId, start, end)
+            self.workerPaymentsDetails[workerId] = CustomPaymentsDetailsWidget(self, workerId, start, end,
+                                                                               totalLeva, totalEuro)
             self.workerPaymentsDetails[workerId].show()
             self.workerPaymentsDetails[workerId].destroyed.connect(lambda: self.removeWorkerPaymentsDetails(workerId))
         else:

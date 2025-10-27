@@ -45,11 +45,73 @@ class CustomTreeView(QTreeView):
                         background-color: rgba(198, 228, 254, 45);
                         selection-color: #324b4c;
                     }
+                    
+                    QTreeView::item:has-children:open {
+                        background-color: #7fd1ae;
+                    }
+                    QTreeView::branch:has-children:open {
+                        background-color: #7e7e7e;
+                    }
                 ''')
 
-    # def doubleClickedItem(self, indexRow):
-    #     if not self.isExpanded(indexRow):
-    #         print('yes')
-    #         self.expand(indexRow)
-    #     else:
-    #         self.collapse(indexRow)
+    def keyPressEvent(self, event):
+        parrentName = self.parent().objectName()
+
+        if event.key() == Qt.Key.Key_Escape:
+            self.clearCurrentSelection.emit(True)
+            self.clearSelection()
+
+        if event.key() in (Qt.Key.Key_Up, Qt.Key.Key_Down):
+            selectedItems = {}
+            index = self.currentIndex()
+
+            if event.key() == Qt.Key.Key_Up and index.row() > 0:
+                self.selectRow(index.row() - 1)
+                # selectedItems = self.checkSender(parrentName)
+                selectedItems['payInLeva'] = self.selectionModel().selectedRows(12)
+                selectedItems['payInEuro'] = self.selectionModel().selectedRows(13)
+                self.selectedRows.emit(selectedItems)
+
+            elif event.key() == Qt.Key.Key_Down and index.row() < self.model().rowCount() - 1:
+                self.selectRow(index.row() + 1)
+                # selectedItems = self.checkSender(parrentName)
+                selectedItems['payInLeva'] = self.selectionModel().selectedRows(12)
+                selectedItems['payInEuro'] = self.selectionModel().selectedRows(13)
+                self.selectedRows.emit(selectedItems)
+
+        print(selectedItems)
+
+    def mouseReleaseEvent(self, event):
+        parrentName = self.parent().objectName()
+        if event.button() == Qt.MouseButton.LeftButton:
+            selectedItems = {}
+            index = self.indexAt(event.pos())
+            if index.isValid():
+                modifiers = event.modifiers()
+                if not (modifiers & Qt.KeyboardModifier.ControlModifier or
+                        modifiers & Qt.KeyboardModifier.ShiftModifier) or self.selectionModel().selectedRows(0):
+                    # selectedItems = self.checkSender(parrentName)
+                    selectedItems['payInLeva'] = self.selectionModel().selectedRows(12)
+                    selectedItems['payInEuro'] = self.selectionModel().selectedRows(13)
+                    print(selectedItems)
+                    self.selectedRows.emit(selectedItems)
+
+            else:
+                self.clearCurrentSelection.emit(True)
+                self.clearSelection()
+
+        super().mouseReleaseEvent(event)
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.MouseButton.LeftButton:
+            index = self.indexAt(event.pos())
+            if index.isValid():
+                # If clicking on a new row without Ctrl or Shift, clear previous selection
+                modifiers = event.modifiers()
+                if not (modifiers & Qt.KeyboardModifier.ControlModifier or
+                        modifiers & Qt.KeyboardModifier.ShiftModifier):
+                    # self.clearCurrentSelection.emit(True)
+                    self.clearSelection()
+                    # self.clearFocus()
+
+        super().mousePressEvent(event)

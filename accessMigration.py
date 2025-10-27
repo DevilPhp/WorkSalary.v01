@@ -12,6 +12,7 @@ from app.database.workers import OperationType, PaymentType, Cehove, WorkingShif
 from app.database.operations import modelOperationsType, ProductionModelOperations, Operation
 from app.database.models import ProductionModel
 import time as t
+from app.utils.utils import Utils
 
 ACCESS_DB_PATH = r"E:\fedbase\ts4rep_new.accdb"
 
@@ -310,6 +311,8 @@ def insert_data_to_postgres_multi(df1, df2):
         timePaperData[row['WorkDayID']] = {}
         timePaperData[row['WorkDayID']]['WorkerId'] = row['Номер']
         timePaperData[row['WorkDayID']]['Date'] = row['Дата']
+        # datetime.isoweekday(row['Дата'])
+        timePaperData[row['WorkDayID']]['WeekDay'] = row['Дата'].date().isoweekday()
         isShiftFound = False
         # print(index, row1, row2)
         for shift in shifts:
@@ -317,7 +320,8 @@ def insert_data_to_postgres_multi(df1, df2):
             # return
             # print(count, len(shifts))
             if row['Начало на работа'].time() == shift.StartTime and row['Край на работа'].time() == shift.EndTime:
-                timePaperData[row['WorkDayID']]['ShiftId'] = shift.id
+                nightMin = Utils.checkNightShiftMins(shift.StartTime, shift.EndTime)
+                timePaperData[row['WorkDayID']]['ShiftId'] = [shift.id, nightMin]
                 isShiftFound = True
                 # print('Shift found')
                 break
@@ -342,13 +346,23 @@ def insert_data_to_postgres_multi(df1, df2):
 
     for index, row in df1.iterrows():
         if row['WorkDayID'] in timePaperData.keys():
+            # nightMins = timePaperData[row['WorkDayID']]['ShiftId'][1]
+            # operNightMins = 0
+            # if nightMins > 0 <= nightMin - row['Време']:
+            #     operNightMins = round(row['Време'], 2)
+            #     nightMin -= row['Време']
+            # elif nightMin > 0 > nightMin - row['Време']:
+            #     operNightMins = round(nightMin, 2)
+            #     nightMin = 0
             if row['ПоръчкаNo'] not in timePaperData[row['WorkDayID']].keys():
                 # orderIds.append(row['ПоръчкаNo'])
                 timePaperData[row['WorkDayID']][row['ПоръчкаNo']] = [row['ОперацияNo']]
-                timePaperData[row['WorkDayID']][f'{row["ПоръчкаNo"]} :TP'] = [[round(row['Време'], 2), int(row['Бройки'])]]
+                timePaperData[row['WorkDayID']][f'{row["ПоръчкаNo"]} :TP'] = [[round(row['Време'], 2),
+                                                                               int(row['Бройки'])]]
             else:
                 timePaperData[row['WorkDayID']][row['ПоръчкаNo']].append(row['ОперацияNo'])
-                timePaperData[row['WorkDayID']][f'{row["ПоръчкаNo"]} :TP'].append([round(row['Време'], 2), int(row['Бройки'])])
+                timePaperData[row['WorkDayID']][f'{row["ПоръчкаNo"]} :TP'].append([round(row['Време'], 2),
+                                                                                   int(row['Бройки'])])
 
     # df['OrderId'] = orderIds
     # print(df)
@@ -362,18 +376,24 @@ def addTimePaper(timePaperData):
     check = []
     try:
         for workDayId, data in timePaperData.items():
+            if data['WeekDay'] > 5:
+                paymentRatio = 1.75
+            else:
+                paymentRatio = 1
             newTimePaper = TimePaper(
                 Date=data['Date'],
-                ShiftId=data['ShiftId'],
+                ShiftId=data['ShiftId'][0] if data['ShiftId'] else None,
                 # IsHourlyPaid=data['HourlyPaidId'],
+                WeekDay=data['WeekDay'],
+                NightShiftMins=data['ShiftId'][1] if data['ShiftId'] else 0,
+                PaymentRatio=paymentRatio,
                 WorkerId=data['WorkerId'],
                 userCreated='admin'
             )
             session.add(newTimePaper)
             session.commit()
 
-            if data['HourlyPaid']:
-                createHourlyPaid(data['HourlyPaid'][0], data['HourlyPaid'][1], newTimePaper.id)
+            currentShiftNightMins = newTimePaper.NightShiftMins
 
             for operations in data.keys():
                 if operations not in keys and operations != f'{operations} :TP':
@@ -410,12 +430,23 @@ def addTimePaper(timePaperData):
                             # print(operation.id, operation.Операция, operation.TimeForOper)
                             operTime = timePaperData[workDayId][f'{operations} :TP'][index][0]
                             operPieces = timePaperData[workDayId][f'{operations} :TP'][index][1]
+                            operNightMins = 0
+
+                            if currentShiftNightMins > 0:
+                                if currentShiftNightMins - operTime < 0:
+                                    operNightMins = currentShiftNightMins
+                                    currentShiftNightMins = 0
+                                else:
+                                    operNightMins = operTime
+                                    currentShiftNightMins -= operTime
+
                             newTimePaperOperation = TimePaperOperation(
                                 TimePaperId=newTimePaper.id,
                                 OrderId=orderId.id,
                                 ModelOperationId=operation.id,
                                 Pieces=operPieces,
-                                WorkingTimeMinutes=operTime
+                                WorkingTimeMinutes=operTime,
+                                NightMins=operNightMins
                             )
                             session.add(newTimePaperOperation)
                             session.flush()
@@ -423,6 +454,15 @@ def addTimePaper(timePaperData):
                             newTimePaper.TotalHours = round(newTimePaper.TotalHours + operTime, 2)
 
                             newTimePaperOperation.productionModelOperations.ProducedPieces += int(operPieces)
+
+            if data['HourlyPaid']:
+                hourlyNightMins = createHourlyPaid(data['HourlyPaid'][0],
+                                                  data['HourlyPaid'][1], newTimePaper.id,
+                                                  currentShiftNightMins)
+            if hourlyNightMins:
+                newTimePaper.NightShiftMins = hourlyNightMins
+            elif currentShiftNightMins > 0:
+                newTimePaper.NightShiftMins = currentShiftNightMins
         session.commit()
         existOpers = len(timePaperData.keys()) - zeroCount
         print(f"{existOpers} records successful and {zeroCount} records created")
@@ -434,22 +474,7 @@ def addTimePaper(timePaperData):
         session.close()
 
 
-# def addOperationToTimePaper(timePaperId, orderId, operation):
-#     session = SessionLocal()
-#     try:
-#
-#         session.add(newTimePaperOperation)
-#         session.commit()
-#         return newTimePaperOperation.id
-#     except Exception as e:
-#         print(f"An error occurred: {e}")
-#         session.rollback()
-#         return None
-#     finally:
-#         session.close()
-
-
-def createHourlyPaid(start, end, timePaperId):
+def createHourlyPaid(start, end, timePaperId, nightMins):
     dateStart = datetime.combine(datetime.today(), start)
     dateEnd = datetime.combine(datetime.today(), end)
     diff = dateEnd - dateStart
@@ -460,6 +485,14 @@ def createHourlyPaid(start, end, timePaperId):
     else:
         efficiency = int(diff.total_seconds() / 60)
 
+    hourlyNightMins = Utils.checkNightShiftMins(start, end)
+    if nightMins > 0 < hourlyNightMins:
+        if nightMins - hourlyNightMins < 0:
+            hourlyNightMins = nightMins
+            nightMins = 0
+        else:
+            nightMins -= hourlyNightMins
+
     session = SessionLocal()
     try:
         newHourPaid = HourlyPay(
@@ -467,12 +500,13 @@ def createHourlyPaid(start, end, timePaperId):
             Start=start,
             End=end,
             Efficiency=efficiency,
-            NightMins=0,
+            NightMins=hourlyNightMins,
             DateUpdated=datetime.today(),
             UserUpdated='admin'
         )
         session.add(newHourPaid)
         session.commit()
+        return nightMins
         # return newHourPaid.id
     except Exception as e:
         print(f"An error occurred: {e}")

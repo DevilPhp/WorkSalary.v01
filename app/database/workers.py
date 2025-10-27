@@ -105,6 +105,7 @@ class TimePaperOperation(Base):
     ModelOperationId = Column(Integer, ForeignKey('productionModelOperations.id'), nullable=True)
     Pieces = Column(Integer, nullable=False, default=0)
     WorkingTimeMinutes = Column(Float, nullable=False, default=0)
+    NightMins = Column(Float, nullable=True, default=0)
 
     timePaper = relationship("TimePaper", back_populates="timePaperOperations")
     productionModels = relationship("ProductionModel", back_populates="timePaperOperations")
