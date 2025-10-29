@@ -75,6 +75,10 @@ QMenu::item {
 	padding: 5px;
 }
 
+QMenu::item:disabled {
+	color: #8e9090;
+}
+
 QMenu::item:selected {
 	background-color: #aeaeae;
 	padding-left: 7px;

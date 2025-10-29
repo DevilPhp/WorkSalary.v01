@@ -93,6 +93,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             self.actualCheckBox.setEnabled(True)
             self.saveNewModel.setText("Запазване")
             self.operationsHolder.setEnabled(True)
+            self.modelsLineEdit.setReadOnly(True)
         else:
             self.resetNewModelInfo()
             self.newModelCheckBox.setEnabled(True)
@@ -100,6 +101,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             self.actualCheckBox.setEnabled(True)
             self.newModelInfoHolder.setEnabled(False)
             self.operationsHolder.setEnabled(False)
+            self.modelsLineEdit.setReadOnly(False)
 
     def setEditModelVisible(self, visible):
         if visible:
@@ -632,12 +634,14 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             self.actualCheckBox.setCheckState(Qt.CheckState.Checked)
             self.editModelHolder.setEnabled(False)
             self.operationsHolder.setEnabled(True)
+            self.modelsLineEdit.setReadOnly(True)
         else:
             self.resetNewModelInfo()
             self.editModelHolder.setEnabled(True)
             self.newModelInfoHolder.setEnabled(False)
             self.actualCheckBox.setCheckState(Qt.CheckState.Unchecked)
             self.operationsHolder.setEnabled(False)
+            self.modelsLineEdit.setReadOnly(False)
 
     def setModelInfoIfExists(self):
         modelInfo = Ms.getModelInfo(self.modelNames[self.modelsLineEdit.text()][0])

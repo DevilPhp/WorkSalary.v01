@@ -697,9 +697,9 @@ QPushButton:hover {
                  </widget>
                 </item>
                 <item row="3" column="3">
-                 <widget class="QPushButton" name="nightPayPerMinBtn">
+                 <widget class="QPushButton" name="parametersBtn">
                   <property name="text">
-                   <string>Нощно Заплашане за Мин</string>
+                   <string>Номенклатури</string>
                   </property>
                  </widget>
                 </item>

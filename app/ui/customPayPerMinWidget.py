@@ -155,28 +155,6 @@ class CustomPayPerMinWidget(QWidget, Ui_customPayPerMinWidget):
         dialog = CustomPayPerTimeDialog(currentLev, currentEuro)
         dialog.newEntryInfo.connect(self.aceptNewPayPerMinEntry)
         dialog.exec_()
-        # dialog.show()
-        # Utils.calculatingIdealDialogShowPos(self, dialog)
-        # dialog.show()
-        # if result == QDialog.DialogCode.Accepted:
-        #     if dialog.levaPerMinLineEdit.text() == '':
-        #         dialog.levaPerMinLineEdit.setText('0')
-        #     levaPerMin = float(dialog.levaPerMinLineEdit.text())
-        #
-        #     if dialog.euroPerMinLineEdit.text() == '':
-        #         dialog.euroPerMinLineEdit.setText('0')
-        #     euroPerMin = float(dialog.euroPerMinLineEdit.text())
-        #
-        #     if dialog.activedDateLineEdit.date():
-        #         dateActive = Utils.convertQDateToDate(dialog.activedDateLineEdit.date())
-        #     else:
-        #         dateActive = Utils.convertQDateToDate(datetime.now())
-        #
-        #     comment = dialog.commentLineEdit.text()
-        #
-        #     print(levaPerMin, euroPerMin, dateActive, comment)
-        # elif result == QDialog.DialogCode.Rejected:
-        #     print('No new entry')
 
     def aceptNewPayPerMinEntry(self, newEntry):
         if self.payPerMinNightCheckBox.isChecked():

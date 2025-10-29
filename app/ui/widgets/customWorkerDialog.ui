@@ -450,7 +450,11 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
             </widget>
            </item>
            <item row="4" column="1">
-            <widget class="QLineEdit" name="workerNumber"/>
+            <widget class="QLineEdit" name="workerNumber">
+             <property name="inputMethodHints">
+              <set>Qt::ImhNone</set>
+             </property>
+            </widget>
            </item>
            <item row="3" column="1">
             <widget class="QLineEdit" name="workerLastname"/>
@@ -543,7 +547,7 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
             </font>
            </property>
            <property name="focusPolicy">
-            <enum>Qt::ClickFocus</enum>
+            <enum>Qt::NoFocus</enum>
            </property>
            <property name="text">
             <string> ДА</string>

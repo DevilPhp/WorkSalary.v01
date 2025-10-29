@@ -12,6 +12,7 @@ from PySide6.QtWidgets import QGraphicsDropShadowEffect
 
 class CustomPayPerTimeDialog(QDialog, Ui_CustomPayPerTimeDialog):
     newEntryInfo = Signal(dict)
+
     def __init__(self, currentLev, currentEuro, parent=None):
         super().__init__(parent)
         self.setupUi(self)

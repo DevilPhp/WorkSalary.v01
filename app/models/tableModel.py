@@ -104,6 +104,9 @@ class CustomTableViewWithMultiSelection(QTableView):
 
         ''')
 
+    def setEditTriggers(self, triggers):
+        super().setEditTriggers(triggers)
+
     def checkSender(self, parrentName):
         selectedItems = {}
         if parrentName == 'timePaperTableHolder':
@@ -120,6 +123,7 @@ class CustomTableViewWithMultiSelection(QTableView):
         if event.key() == Qt.Key.Key_Escape:
             self.clearCurrentSelection.emit(True)
             self.clearSelection()
+            self.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
 
         if event.key() in (Qt.Key.Key_Up, Qt.Key.Key_Down):
             selectedItems = {}

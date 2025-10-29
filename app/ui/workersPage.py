@@ -10,20 +10,20 @@ class WorkersPageCustomWidget(QWidget, Ui_workersPageWidget):
     def __init__(self, mainWindow, tableName, parent=None):
         super().__init__(parent)
         self.setupUi(self)
+        self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
         self.mainWindow = mainWindow
         self.tableName = tableName
         self.proxyModelWorkers = None
-        title = self.mainWindow.ui.pageBtn.text()
-        self.setWindowTitle(title)
+        # title = self.mainWindow.ui.pageBtn.text()
+        self.setWindowTitle(tableName)
         # self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.loadData()
 
         selectionModel = SingleMultiSelectionModel(self.tableView.model())
         self.tableView.setSelectionModel(selectionModel)
 
-
     def loadData(self):
-        print('Fetching data from database...')
+        # print('Fetching data from database...')
         # tableName = 'workerPositions'
         data = fetchDataFromDbWithRelations(self.tableName)
         # print(data.dtypes)
@@ -33,7 +33,7 @@ class WorkersPageCustomWidget(QWidget, Ui_workersPageWidget):
                                                            parent=self)
         self.setProxyModel(self.proxyModelWorkers, model, self.tableView)
         self.tableView.resizeColumnsToContents()
-        self.tableView.sortByColumn(0, Qt.SortOrder.AscendingOrder)
+        self.tableView.sortByColumn(0, Qt.SortOrder.DescendingOrder)
 
     def setProxyModel(self, proxyModel, model, table):
         proxyModel.setSourceModel(model)

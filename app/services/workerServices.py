@@ -339,15 +339,18 @@ class WorkerServices:
                 if timePaperOperationId.split('_')[1] == 'operation':
                     timePaperOperation = session.query(TimePaperOperation).get(int(timePaperOperationId.split('_')[0]))
                     if timePaperOperation is not None:
+                        nightMins = timePaperOperation.timePaper.NightShiftMins
                         timePaperId = timePaperOperation.TimePaperId
+
                         timePaperOperation.timePaper.TotalPieces -= timePaperOperation.Pieces
                         timePaperOperation.timePaper.TotalHours -= timePaperOperation.WorkingTimeMinutes
                         timePaperOperation.timePaper.TotalHours = round(timePaperOperation.timePaper.TotalHours, 2)
+
                         timePaperOperation.productionModelOperations.ProducedPieces -= timePaperOperation.Pieces
-                        if timePaperOperation.WorkingTimeMinutes <= timePaperOperation.timePaper.NightShiftMins > 0:
-                            timePaperOperation.timePaper.NightShiftMins -= timePaperOperation.WorkingTimeMinutes
-                        elif timePaperOperation.WorkingTimeMinutes > timePaperOperation.timePaper.NightShiftMins > 0:
-                            timePaperOperation.timePaper.NightShiftMins = 0
+
+                        nightMins -= timePaperOperation.NightMins
+                        timePaperOperation.timePaper.NightShiftMins = round(nightMins, 2)
+
                         session.delete(timePaperOperation)
                         logger.info(f"Time paper operation deleted: {timePaperOperationId}")
                 elif timePaperOperationId.split('_')[1] == 'hourlyPay':
@@ -370,6 +373,63 @@ class WorkerServices:
                     logger.info(f"Time paper deleted: {timePaper.id}")
             session.commit()
             return True
+
+    @staticmethod
+    def updateTimePaperPieces(operId, newPieces, newTime, nightShiftMins):
+        with setDatabase() as session:
+            timePaperOperation = session.query(TimePaperOperation).get(operId)
+            if timePaperOperation is not None:
+                hourlyNightMins = WorkerServices.getNightMinsFromHourly(
+                    timePaperOperation.timePaper.id, session
+                )
+                nightShiftMins -= hourlyNightMins
+                totalTimePaperTime = timePaperOperation.timePaper.TotalHours
+                totalTimePaperPieces = timePaperOperation.timePaper.TotalPieces
+                totalNightMins = timePaperOperation.timePaper.NightShiftMins
+
+                totalTimePaperTime -= timePaperOperation.WorkingTimeMinutes
+                totalTimePaperPieces -= timePaperOperation.Pieces
+
+                if timePaperOperation.NightMins > 0:
+                    totalNightMins -= timePaperOperation.NightMins
+
+                if nightShiftMins > 0:
+                    if nightShiftMins < totalNightMins + newTime:
+                        timePaperOperation.NightMins = newTime - ((totalNightMins + newTime) - nightShiftMins)
+                    else:
+                        timePaperOperation.NightMins = newTime
+
+                totalNightMins += timePaperOperation.NightMins
+
+                timePaperOperation.Pieces = newPieces
+                timePaperOperation.WorkingTimeMinutes = round(newTime, 2)
+
+                totalTimePaperPieces += newPieces
+                totalTimePaperTime += newTime
+                totalTimePaperTime = round(totalTimePaperTime, 2)
+
+                timePaperOperation.timePaper.TotalHours = totalTimePaperTime
+                timePaperOperation.timePaper.TotalPieces = totalTimePaperPieces
+                timePaperOperation.timePaper.NightShiftMins = round(totalNightMins, 2)
+
+                session.commit()
+                logger.info(f"Time paper operation updated: {operId} New pieces: {newPieces}, New time: {newTime}")
+                return True
+            else:
+                logger.error(f"Unable to update time paper operation: {operId}")
+                return False
+
+    @staticmethod
+    def getNightMinsFromHourly(timePaperId, session):
+        totalNightMins = 0
+
+        hourly = session.query(HourlyPay).filter_by(TimePaperId=timePaperId).all()
+
+        if hourly:
+            for hourlyPay in hourly:
+                totalNightMins += hourlyPay.NightMins
+
+        return totalNightMins
 
 
     @staticmethod
@@ -437,7 +497,8 @@ class WorkerServices:
                 OrderId=timePaperData['OrderId'],
                 ModelOperationId=timePaperData['ModelOperationId'],
                 Pieces=timePaperData['Pieces'],
-                WorkingTimeMinutes=timePaperData['WorkingTimeMinutes']
+                WorkingTimeMinutes=timePaperData['WorkingTimeMinutes'],
+                NightMins=round(operationNightMin, 2)
             )
             session.add(newTimePaperOperation)
             session.flush()

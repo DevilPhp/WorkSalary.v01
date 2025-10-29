@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customPayPerTimeDialogkqpYFd.ui'
+## Form generated from reading UI file 'customPayPerTimeDialogJNmTvC.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -329,7 +329,7 @@ class Ui_CustomPayPerTimeDialog(object):
         self.label_2.setText(QCoreApplication.translate("CustomPayPerTimeDialog", u"\u041b\u0432/\u041c\u0438\u043d", None))
         self.euroPerMinLineEdit.setText("")
         self.euroPerMinLineEdit.setPlaceholderText(QCoreApplication.translate("CustomPayPerTimeDialog", u"0", None))
-        self.euroPerLevaLineEdit.setText(QCoreApplication.translate("CustomPayPerTimeDialog", u"1.95583", None))
+        self.euroPerLevaLineEdit.setText(QCoreApplication.translate("CustomPayPerTimeDialog", u"1.9558", None))
         self.percentageCheckBox.setText(QCoreApplication.translate("CustomPayPerTimeDialog", u"%", None))
         self.percentageLineEdit.setPlaceholderText(QCoreApplication.translate("CustomPayPerTimeDialog", u"0", None))
         self.yesBtn.setText(QCoreApplication.translate("CustomPayPerTimeDialog", u" \u0414\u0410", None))

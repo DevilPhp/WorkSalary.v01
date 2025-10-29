@@ -2,9 +2,9 @@ from datetime import datetime
 from functools import partial
 import json
 
-from PySide6.QtCore import QTimer, QMimeData
+from PySide6.QtCore import QTimer, QMimeData, QEvent
 from PySide6.QtGui import QStandardItemModel, QStandardItem, QDoubleValidator, QClipboard
-from PySide6.QtWidgets import QMenu, QDialog
+from PySide6.QtWidgets import QMenu, QDialog, QAbstractItemView
 
 from app.ui.widgets.ui_customTimePapersWidget import *
 from app.utils.utils import Utils
@@ -63,6 +63,10 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.timePapersForDayTableView.customContextMenuRequested.connect(self.showCustomContextMenu)
         self.timePapersForDayTableView.selectedRows.connect(self.showTimePaperDetails)
         self.timePapersForDayTableView.clearCurrentSelection.connect(self.resetSelectedInfo)
+        self.originalPiecesValue = None
+        self.editedRowId = None
+        self.editedRowIndex = None
+        self.isEditing = False
 
         self.clipboardData = None
 
@@ -146,6 +150,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         deleteAction = menu.addAction("Изтрий")
         copyAction = menu.addAction("Копирай")
         pasteAction = menu.addAction("Постави")
+        editAction = menu.addAction("Редактиране")
 
         # Check if clipboard has our custom data format
         clipboard = QApplication.clipboard()
@@ -191,10 +196,103 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             else:
                 return
 
+        elif action == editAction:
+            self.editTimePaper(pos)
         elif action == copyAction:
             self.copySelectedRows()
         elif action == pasteAction:
             self.pasteFromClipboard()
+
+    def editTimePaper(self, pos):
+        # print(pos)
+        # print(self.timePapersForDayTableView.selectionModel().selectedRows(0))
+        selectedRows = self.timePapersForDayTableView.selectionModel().selectedRows(0)[-1]
+
+        if not selectedRows:
+            return
+
+        selectedRow = selectedRows.row()
+        piecesIndex = self.proxyModelWorkers.index(selectedRow, 5)
+
+        # self.originalEditTriggers = self.timePapersForDayTableView.editTriggers()
+
+        self.timePapersForDayTableView.setEditTriggers(QAbstractItemView.EditTrigger.AllEditTriggers)
+        # self.timePapersForDayTableView.installEventFilter(self)
+        self.timePapersForDayTableView.edit(piecesIndex)
+
+        self.proxyModelWorkers.dataChanged.connect(self.handleTimePaperEdit)
+
+        self.originalPiecesValue = piecesIndex.data(Qt.ItemDataRole.DisplayRole)
+        self.editedRowId = selectedRows.data(Qt.ItemDataRole.UserRole)
+        self.editedRowIndex = selectedRow
+
+        self.isEditing = True
+
+    def handleTimePaperEdit(self, topLeft, bottomRight, roles):
+        if topLeft.column() != 5:
+            return
+
+        try:
+            self.proxyModelWorkers.dataChanged.disconnect(self.handleTimePaperEdit)
+        except RuntimeError:
+            pass
+        self.timePapersForDayTableView.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+
+        # self.timePapersForDayTableView.removeEventFilter(self)
+        # self.isEditing = False
+
+        newValue = topLeft.data(Qt.ItemDataRole.DisplayRole)
+
+        try:
+            newPieces = int(newValue)
+            if newPieces <= 0:
+                raise ValueError('Pieces must be positive')
+
+            operId = self.proxyModelWorkers.index(self.editedRowIndex, 0).data(Qt.ItemDataRole.UserRole)
+            # print(operId)
+            timeIndex = self.proxyModelWorkers.index(self.editedRowIndex, 6)
+            timePerPiece = float(timeIndex.data(Qt.ItemDataRole.DisplayRole)) / int(self.originalPiecesValue)
+            newTime = newPieces * timePerPiece
+
+            currentNightShiftMins = Utils.checkNightShiftMins(self.shiftStart.time(), self.shiftEnd.time())
+            if currentNightShiftMins > 300:
+                currentNightShiftMins -= 60
+
+            self.tableTimePapersModel.item(self.proxyModelWorkers.mapToSource(timeIndex).row(),
+                                           6).setText(Utils.setFloatToStr(round(newTime, 2)))
+            success = WoS.updateTimePaperPieces(operId, newPieces, newTime, currentNightShiftMins)
+            if success:
+                workerId = self.workerNumberLineEdit.text() if self.workerNumberLineEdit.text() else None
+                if workerId:
+                    self.refreshTimePapersForToday(int(workerId))
+                else:
+                    self.refreshTimePapersForToday()
+                MM.showOnWidget(self, 'Успешно редактирана', 'info')
+            else:
+                MM.showOnWidget(self, 'Грешка при редактиране', 'error')
+        except ValueError as e:
+            # Revert to original value if there's an error
+            sourceIndex = self.proxyModelWorkers.mapToSource(topLeft)
+            self.tableTimePapersModel.item(sourceIndex.row(), 5).setText(str(self.originalPiecesValue))
+            MM.showOnWidget(self, f"Невалидна стойност", 'error')
+
+    # def eventFilter(self, obj, event):
+    #     print('hello')
+    #     if hasattr(self, 'isEditing') and self.isEditing and event.type() == QEvent.KeyPress:
+    #         if event.key() == Qt.Key.Key_Escape:
+    #             self.timePapersForDayTableView.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+    #             self.timePapersForDayTableView.removeEventFilter(self)
+    #             self.isEditing = False
+    #
+    #             # Disconnect the data changed signal
+    #             try:
+    #                 self.proxyModelWorkers.dataChanged.disconnect(self.handleTimePaperEdit)
+    #             except RuntimeError:
+    #                 pass
+    #
+    #             return True
+    #
+    #     return super().eventFilter(obj, event)
 
     def pasteFromClipboard(self):
         """Paste previously copied rows from system clipboard"""
@@ -290,7 +388,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
     def setOperationsGroups(self, modelId=None):
         self.operationsGroupComboBox.clear()
-        print(self.operationsGroups)
+        # print(self.operationsGroups)
         if len(self.operationsGroups) > 0:
             for group, value in self.operationsGroups.items():
                 name = f'{value["id"]}: {group}'
@@ -831,7 +929,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
         if copy and copyData:
             count = len(copyData)
-        print(copyData)
+        # print(copyData)
 
         for i in range(count):
             pieces = None
@@ -888,8 +986,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             if nightMins > overMinsForBreak:
                 nightMins -= 60
 
-            print(f'nightMins: {nightMins}')
-            print(f'currentShiftNightMins: {currentShiftNightMins}')
+            # print(f'nightMins: {nightMins}')
+            # print(f'currentShiftNightMins: {currentShiftNightMins}')
 
             if int(self.workerNumberLineEdit.text()) not in self.existingTimePapers.keys():
                 date = datetime.strptime(self.timePaperDateEdit.date().toString('yyyy-MM-dd'), '%Y-%m-%d').date()
@@ -940,16 +1038,16 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.clearOperationInfo(False)
             self.operationsGroupsCheckBox.setCheckState(Qt.CheckState.Unchecked)
 
-    def checkIsHourlyWorking(self):
-        if self.isHourlyWorking.isChecked():
-            if self.hourlyStart.time() == self.shiftStart.time() and self.hourlyEnd.time() == self.shiftEnd.time():
-                print('FullHourlyWork')
-                return 'FullHourlyWork'
-            else:
-                print('HourlyWork')
-                return 'HourlyWork'
-        else:
-            return None
+    # def checkIsHourlyWorking(self):
+    #     if self.isHourlyWorking.isChecked():
+    #         if self.hourlyStart.time() == self.shiftStart.time() and self.hourlyEnd.time() == self.shiftEnd.time():
+    #             print('FullHourlyWork')
+    #             return 'FullHourlyWork'
+    #         else:
+    #             print('HourlyWork')
+    #             return 'HourlyWork'
+    #     else:
+    #         return None
 
     def checkWorker(self):
         if not self.workerNameLineEdit.text() in self.workersInfo:

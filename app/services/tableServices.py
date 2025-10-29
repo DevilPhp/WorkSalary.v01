@@ -72,8 +72,6 @@ def fetchDataFromDbWithRelations(tableName, relationships=None):
     #         # return fetchDataFromDb(tableName)
     #     finally:
     #         session.close()
-
-
     elif tableName == 'operations':
         session = SessionLocal()
         try:

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'workersPageCustomWidgetxUZoGk.ui'
+## Form generated from reading UI file 'workersPageCustomWidgetkKnjGT.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -114,24 +114,43 @@ class Ui_workersPageWidget(object):
         self.widget = QWidget(workersPageWidget)
         self.widget.setObjectName(u"widget")
         self.verticalLayout_2 = QVBoxLayout(self.widget)
+        self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.tableView = QTableView(self.widget)
         self.tableView.setObjectName(u"tableView")
         self.tableView.setStyleSheet(u"QHeaderView:section{\n"
-"	font: 700 10pt \"Segoe UI\";\n"
-"	selection-background-color: rgba(50, 75, 76, 50);\n"
+"	font: 700 10.5pt \"Segoe UI\";\n"
+"	background-color: #dfdfdf;\n"
+"	padding-left: 10px;\n"
+"	padding-top:10px;\n"
+"	padding-right:10px;\n"
+"	selection-background-color: #7f7f7f;\n"
 "}\n"
-"\n"
-"QAbstractItemView:item::hover, QHeaderView::section:hover{\n"
-"	background-color: rgba(6, 132, 136, 10);\n"
+"QVerticalView:section{\n"
+"	min-height: 30;\n"
+"}\n"
+"QAbstractItemView{\n"
+"	alternate-background-color: #d3d3d3;\n"
+"	font: 10.5pt \"Segoe UI\";\n"
+"	selection-background-color: rgba(198, 228, 254, 45);\n"
+"	selection-color: #324b4c;\n"
+"}\n"
+"QAbstractItemView:item{\n"
+"	selection-background-color: rgba(198, 228, 254, 45);\n"
+"	selection-color: #324b4c;\n"
+"}\n"
+"            \n"
+"QAbstractItemView::item:selected{\n"
+"	background-color: rgba(198, 228, 254, 45);\n"
 "}")
         self.tableView.setAlternatingRowColors(True)
         self.tableView.setSelectionMode(QAbstractItemView.MultiSelection)
-        self.tableView.setSelectionBehavior(QAbstractItemView.SelectItems)
+        self.tableView.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.tableView.setIconSize(QSize(5, 5))
-        self.tableView.setShowGrid(True)
+        self.tableView.setShowGrid(False)
         self.tableView.setCornerButtonEnabled(False)
-        self.tableView.verticalHeader().setVisible(True)
+        self.tableView.verticalHeader().setVisible(False)
 
         self.verticalLayout_2.addWidget(self.tableView)
 

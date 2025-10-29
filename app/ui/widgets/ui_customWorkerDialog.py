@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customWorkerDialoggheOBn.ui'
+## Form generated from reading UI file 'customWorkerDialogAQvpNe.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -303,6 +303,7 @@ class Ui_CustomWorkerDialog(object):
 
         self.workerNumber = QLineEdit(self.widget)
         self.workerNumber.setObjectName(u"workerNumber")
+        self.workerNumber.setInputMethodHints(Qt.ImhNone)
 
         self.gridLayout.addWidget(self.workerNumber, 4, 1, 1, 1)
 
@@ -374,7 +375,7 @@ class Ui_CustomWorkerDialog(object):
         self.yesBtn = QPushButton(self.buttonsWidget)
         self.yesBtn.setObjectName(u"yesBtn")
         self.yesBtn.setFont(font)
-        self.yesBtn.setFocusPolicy(Qt.ClickFocus)
+        self.yesBtn.setFocusPolicy(Qt.NoFocus)
         icon1 = QIcon()
         icon1.addFile(u":/icons/app/assets/icons/Check-Square--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.yesBtn.setIcon(icon1)

@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from PySide6.QtCore import Signal
+from PySide6.QtGui import QIntValidator
 
 from app.ui.widgets.ui_customWorkerDialog import *
 from PySide6.QtWidgets import QGraphicsDropShadowEffect, QCompleter
@@ -11,6 +12,7 @@ from app.utils.utils import Utils
 
 class CustomWorkerDialog(QDialog, Ui_CustomWorkerDialog):
     workerInfo = Signal(dict)
+
     def __init__(self, workerId=None, existingWorkers=None, parent=None):
         super().__init__(parent)
         self.setupUi(self)
@@ -33,6 +35,9 @@ class CustomWorkerDialog(QDialog, Ui_CustomWorkerDialog):
         self.leaveDateEdit.setEnabled(False)
         self.calLeavingBtn.setEnabled(False)
 
+        validator = QIntValidator(1, 99999)
+        self.workerNumber.setValidator(validator)
+
         self.setComboBoxes()
 
         self.inputsList = [
@@ -54,6 +59,16 @@ class CustomWorkerDialog(QDialog, Ui_CustomWorkerDialog):
         self.startCheckBox.stateChanged.connect(self.toggleStartDate)
         self.leavingCheckBox.stateChanged.connect(self.toggleLeaveDate)
         self.workerNumber.editingFinished.connect(self.checkWorkerNumber)
+        self.workerName.returnPressed.connect(self.setFocusForWorkerName)
+        self.workerSirname.returnPressed.connect(self.setFocusForWorkerSirname)
+        self.workerLastname.returnPressed.connect(self.setFocusForWorkerLastname)
+        self.workerEGN.returnPressed.connect(self.setFocusForWorkerEGN)
+        self.workerEGN.textChanged.connect(self.checkWorkerEGN)
+        self.workerTel.returnPressed.connect(self.setFocusForWorkerTel)
+        self.workerTel.textChanged.connect(self.checkWorkerTel)
+        self.workerTownAdress.returnPressed.connect(self.setFocusForWorkerTownAdress)
+        self.workerStreetAdress.returnPressed.connect(self.setFocusForWorkerStreetAdress)
+        # self.workerNumber.textChanged.connect(self.checkWorkerNumber)
         # self.yesBtn.clicked.connect(self.accept)
 
         if workerId:
@@ -64,22 +79,80 @@ class CustomWorkerDialog(QDialog, Ui_CustomWorkerDialog):
         self.yesBtn.clicked.connect(self.emitWorkerInfo)
         Utils.setupCompleter(self.existingWorkers, self.workerNumber)
 
+        self.workerName.setFocus()
+
+    def checkWorkerEGN(self, text):
+        currentText = text
+        if not currentText.isdigit():
+            currentText = currentText[:-1]
+            self.workerEGN.setText(currentText)
+
+        if len(currentText) == 11:
+            self.workerEGN.setText(currentText[:10])
+
+    def checkWorkerTel(self, text):
+        currentText = text
+        if len(currentText) == 1 and currentText == '+':
+            self.workerTel.setText('00')
+        elif not currentText.isdigit():
+            currentText = currentText[:-1]
+            self.workerTel.setText(currentText)
+
+    def setFocusForWorkerName(self):
+        self.workerSirname.selectAll()
+        self.workerSirname.setFocus()
+
+    def setFocusForWorkerSirname(self):
+        self.workerLastname.selectAll()
+        self.workerLastname.setFocus()
+
+    def setFocusForWorkerLastname(self):
+        self.workerNumber.selectAll()
+        self.workerNumber.setFocus()
+
+    def setFocusForWorkerEGN(self):
+        self.workerTel.selectAll()
+        self.workerTel.setFocus()
+
+    def setFocusForWorkerTel(self):
+        self.workerTownAdress.selectAll()
+        self.workerTownAdress.setFocus()
+
+    def setFocusForWorkerTownAdress(self):
+        self.workerStreetAdress.selectAll()
+        self.workerStreetAdress.setFocus()
+
+    def setFocusForWorkerStreetAdress(self):
+        self.workerName.selectAll()
+        self.workerName.setFocus()
+
     def checkWorkerNumber(self):
         if self.existingWorkers:
-            if int(self.workerNumber.text()) in self.existingWorkers:
+            if self.workerNumber.text() in self.existingWorkers:
                 self.workerNumber.setText('')
+                self.workerNumber.setFocus()
+            else:
+                self.workerEGN.selectAll()
+                self.workerEGN.setFocus()
 
     def emitWorkerInfo(self):
         workerData = {}
         isNewWorker = False
         if self.isDialogChanged:
 
+            if self.workerName.text() == '':
+                self.workerName.setFocus()
+                return
+            elif self.workerNumber.text() == '':
+                self.workerNumber.setFocus()
+                return
+
             if not self.workerId and self.workerNumber.text() != '':
                 self.workerId = int(self.workerNumber.text())
                 isNewWorker = True
-            elif not self.workerId and self.workerNumber.text() == '':
-                self.workerId = None
-                isNewWorker = True
+            # elif not self.workerId and self.workerNumber.text() == '':
+            #     self.workerId = None
+            #     isNewWorker = True
 
             startDate = datetime.strptime(self.startDateEdit.date().toString('yyyy-MM-dd'), '%Y-%m-%d') \
                 if self.startDateEdit.date().isValid() and self.startCheckBox.isChecked() else None
@@ -89,7 +162,7 @@ class CustomWorkerDialog(QDialog, Ui_CustomWorkerDialog):
             workerData = {
                 'isNew': isNewWorker,
                 'id': self.workerId,
-                'firstName': self.workerName.text() if self.workerName.text() != '' else None,
+                'firstName': self.workerName.text(),
                 'middleName': self.workerSirname.text() if self.workerSirname.text() != '' else None,
                 'lastName': self.workerLastname.text() if self.workerLastname.text() != '' else None,
                 'cehId': self.cehoveComboBox.currentIndex() + 1 if self.cehoveComboBox.currentIndex() >= 0 else None,

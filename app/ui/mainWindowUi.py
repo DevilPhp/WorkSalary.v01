@@ -22,10 +22,10 @@ from app.ui.customWorkersWidget import CustomWorkersWidget
 from app.ui.messagesManager import MessageManager
 from app.ui.customHolidayWidget import CustomHolidaysWidget
 from app.ui.customPayPerMinWidget import CustomPayPerMinWidget
-
-
+from app.ui.customParametersWidget import CustomParametersWidget
 
 locale.setlocale(locale.LC_TIME, 'bg_BG.utf8')
+
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -45,9 +45,9 @@ class MainWindow(QMainWindow):
         self.workersPage = None
         self.holidaysPage = None
         self.payPerMinPage = None
+        self.parametersPage = None
         self.workerPaymentsDetails = {}
         self.clipboardData = QApplication.clipboard()
-        # self.setAttribute(Qt.WA_TranslucentBackground)
         LoginPage(self)
         MainMenuPage(self)
         createTable()
@@ -62,13 +62,13 @@ class MainWindow(QMainWindow):
         self.ui.workersPageBtn.clicked.connect(self.setWorkersPage)
         self.ui.holidaysPageBtn.clicked.connect(self.setHolidaysPage)
         self.ui.payPerMinBtn.clicked.connect(self.setPayPerMinPage)
-        # MessageManager.success('DefaultOperToModelTypeCustomWidget initialized', timeout=3000)
-
-        # user = UsersFuncs.createUser('test', '000')
-        # print(user)
+        self.ui.parametersBtn.clicked.connect(self.setParametersPage)
 
     def closeEvent(self, event):
         QApplication.quit()
+
+    def resetParametersPage(self):
+        self.parametersPage = None
 
     def resetWorkersPage(self):
         self.workersPage = None
@@ -109,6 +109,14 @@ class MainWindow(QMainWindow):
             subWindow.setWidget(newWindow)
             self.ui.mainWindowsArea.addSubWindow(subWindow)
             subWindow.show()
+
+    def setParametersPage(self):
+        if self.parametersPage is None:
+            self.parametersPage = CustomParametersWidget(self)
+            self.parametersPage.show()
+            self.parametersPage.destroyed.connect(self.resetParametersPage)
+        else:
+            self.parametersPage.activateWindow()
 
     def setPayPerMinPage(self):
         if self.payPerMinPage is None:
