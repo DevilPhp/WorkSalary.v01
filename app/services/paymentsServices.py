@@ -28,7 +28,6 @@ class PaymentServices:
             newPayPerMin = session.query(NightPaymentPerMinute).get(itemId)
             if newPayPerMin:
                 newPayPerMin.Active = True
-
             session.commit()
             logger.info(f"Night payment per minute from id {currentId} to id {itemId} - updated by {user}")
             return True
@@ -82,7 +81,7 @@ class PaymentServices:
                                                 UpdatedBy=user)
                 session.add(newPayPerMin)
                 session.commit()
-                logger.info(f'Added new payment per minute: {newPayPerMin.id} - id - by {user}')
+                logger.info(f'Added new payment per minute: {newPayPerMin.id}-id - by {user}')
                 return True
             elif not day:
                 newPayPerMin = NightPaymentPerMinute(NightPaymentValue=newEntry['levaPerMin'],
@@ -93,7 +92,7 @@ class PaymentServices:
                                                      UpdatedBy=user)
                 session.add(newPayPerMin)
                 session.commit()
-                logger.info(f'Added new night payment per minute: {newPayPerMin.id} - id - by {user}')
+                logger.info(f'Added new night payment per minute: {newPayPerMin.id}-id - by {user}')
                 return True
             else:
                 return False
@@ -127,7 +126,7 @@ class PaymentServices:
                 holidays = session.query(Holiday).filter_by(HolidaysPerYearId=year.id).all()
                 for holiday in holidays:
                     returnedData.append({'id': holiday.id, 'name': holiday.HolidayName, 'date': holiday.HolidayDate})
-            print(returnedData)
+            # print(returnedData)
             return returnedData
 
     @staticmethod

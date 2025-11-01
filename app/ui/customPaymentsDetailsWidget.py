@@ -1,3 +1,4 @@
+from PySide6.QtCore import Signal
 from PySide6.QtGui import QStandardItemModel, QStandardItem
 
 from app.ui.widgets.ui_customPaymentsDetailsWidget import *
@@ -8,12 +9,17 @@ from app.utils.utils import Utils
 
 
 class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
-    def __init__(self, mainWindow, workerId, startDate, endDate, totalPayInLeva, totalPayInEuro, parent=None):
+    logoutSignal = Signal(bool)
+
+    def __init__(self, mainWindow, workerId, startDate, endDate, totalPayInLeva, totalPayInEuro, user, parent=None):
         super().__init__(parent)
         self.setupUi(self)
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
         self.setWindowTitle(f'Детайли за работник с ID: {workerId}')
         self.mainWindow = mainWindow
+        self.usernameLabel.setText(user)
+        self.user = user
+
         self.workerId = workerId
         self.startDate = startDate
         self.endDate = endDate
@@ -55,6 +61,8 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
         self.nightTimeCheckBox.stateChanged.connect(self.onNightTimeStateChanged)
         self.selectAllCheckBox.stateChanged.connect(self.onSelectAllStateChanged)
         self.weekendHolidaysCheckBox.stateChanged.connect(self.onWeekendHolidaysStateChanged)
+
+        self.logoutBtn.clicked.connect(self.logout)
 
     def showPaymentDetails(self, selectedRows):
         numberSelectedRows = len(selectedRows['payInEuro'])
@@ -358,3 +366,6 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
         self.workerNumberLabel.setText(str(workerData['id']))
         self.workerPlaceLabel.setText(workerData['place'])
         self.workerPositionLabel.setText(workerData['position'])
+
+    def logout(self):
+        self.logoutSignal.emit(True)

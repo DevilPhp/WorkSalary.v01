@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customPaymentsWidgetxXvOql.ui'
+## Form generated from reading UI file 'customPaymentsWidgetJCsGHV.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -89,8 +89,17 @@ class Ui_customPaymentsWidget(object):
 "	font: 700 13pt \"Segoe UI\";\n"
 "}\n"
 "\n"
-"#userIcon, #fromCalendarBtn, #toCalendarBtn {\n"
+"#fromCalendarBtn, #toCalendarBtn {\n"
 "	background-color: #dfdfdf;\n"
+"}\n"
+"\n"
+"#userIcon, #logoutBtn{\n"
+"	background-color: #dfdfdf;\n"
+"	padding: 0px;\n"
+"}\n"
+"\n"
+"#logoutBtn:hover{\n"
+"	icon: url(:/icons/app/assets/icons/Log-Out--Streamline-Feather_#192626.svg);\n"
 "}\n"
 "\n"
 "#refreshShiftsBtn {\n"
@@ -120,7 +129,8 @@ class Ui_customPaymentsWidget(object):
 "QComboBox::drop-down{\n"
 "	image: url(':/icons/app/assets/icons/Alt-Arrow-Down--Streamline-Solar-Broken.svg');\n"
 "	width: 18px;\n"
-"	height: 18px;\n"
+""
+                        "	height: 18px;\n"
 "}\n"
 "\n"
 "QComboBox:hover{\n"
@@ -129,8 +139,7 @@ class Ui_customPaymentsWidget(object):
 "	border-radius: 0px;\n"
 "	alternate-background-color: #2c313c;\n"
 "}\n"
-"QComboBox::"
-                        "item:selected{\n"
+"QComboBox::item:selected{\n"
 "	color: #2b2b2c;\n"
 "	font: 900 10.5pt \"Segoe UI\";\n"
 "	border-radius: 0px;\n"
@@ -178,12 +187,21 @@ class Ui_customPaymentsWidget(object):
         self.horizontalLayout_3.setSpacing(10)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 5, 0)
+        self.logoutBtn = QPushButton(self.userHolder)
+        self.logoutBtn.setObjectName(u"logoutBtn")
+        icon = QIcon()
+        icon.addFile(u":/icons/app/assets/icons/Log-Out--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.logoutBtn.setIcon(icon)
+        self.logoutBtn.setIconSize(QSize(24, 24))
+
+        self.horizontalLayout_3.addWidget(self.logoutBtn)
+
         self.userIcon = QPushButton(self.userHolder)
         self.userIcon.setObjectName(u"userIcon")
         self.userIcon.setFocusPolicy(Qt.NoFocus)
-        icon = QIcon()
-        icon.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.userIcon.setIcon(icon)
+        icon1 = QIcon()
+        icon1.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.userIcon.setIcon(icon1)
         self.userIcon.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_3.addWidget(self.userIcon)
@@ -233,7 +251,7 @@ class Ui_customPaymentsWidget(object):
         self.fromDateEdit.setFrame(False)
         self.fromDateEdit.setAlignment(Qt.AlignCenter)
         self.fromDateEdit.setCorrectionMode(QAbstractSpinBox.CorrectToNearestValue)
-        self.fromDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 9, 3), QTime(0, 0, 0)))
+        self.fromDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 9, 2), QTime(0, 0, 0)))
 
         self.horizontalLayout_7.addWidget(self.fromDateEdit)
 
@@ -243,9 +261,9 @@ class Ui_customPaymentsWidget(object):
         self.fromCalendarBtn.setStyleSheet(u"*{\n"
 "	padding: 0px;\n"
 "}")
-        icon1 = QIcon()
-        icon1.addFile(u":/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.fromCalendarBtn.setIcon(icon1)
+        icon2 = QIcon()
+        icon2.addFile(u":/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.fromCalendarBtn.setIcon(icon2)
         self.fromCalendarBtn.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_7.addWidget(self.fromCalendarBtn)
@@ -270,7 +288,7 @@ class Ui_customPaymentsWidget(object):
         self.toDateEdit.setFrame(False)
         self.toDateEdit.setAlignment(Qt.AlignCenter)
         self.toDateEdit.setCorrectionMode(QAbstractSpinBox.CorrectToNearestValue)
-        self.toDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 9, 4), QTime(0, 0, 0)))
+        self.toDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 9, 3), QTime(0, 0, 0)))
 
         self.horizontalLayout_6.addWidget(self.toDateEdit)
 
@@ -280,7 +298,7 @@ class Ui_customPaymentsWidget(object):
         self.toCalendarBtn.setStyleSheet(u"*{\n"
 "	padding: 0px;\n"
 "}")
-        self.toCalendarBtn.setIcon(icon1)
+        self.toCalendarBtn.setIcon(icon2)
         self.toCalendarBtn.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_6.addWidget(self.toCalendarBtn)
@@ -370,7 +388,7 @@ class Ui_customPaymentsWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1161, 697))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1161, 707))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -552,6 +570,7 @@ class Ui_customPaymentsWidget(object):
     def retranslateUi(self, customPaymentsWidget):
         customPaymentsWidget.setWindowTitle(QCoreApplication.translate("customPaymentsWidget", u"Form", None))
         self.pageTitle.setText(QCoreApplication.translate("customPaymentsWidget", u"\u041d\u0410\u0427\u0418\u0421\u041b\u0415\u041d\u0418\u042f", None))
+        self.logoutBtn.setText("")
         self.userIcon.setText("")
         self.usernameLabel.setText(QCoreApplication.translate("customPaymentsWidget", u"admin", None))
         self.label_25.setText(QCoreApplication.translate("customPaymentsWidget", u"\u041e\u0442 \u0414\u0430\u0442\u0430: ", None))

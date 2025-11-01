@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customPaymentsDetailsWidgetZWqIFQ.ui'
+## Form generated from reading UI file 'customPaymentsDetailsWidgetePfTNU.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -45,7 +45,6 @@ class Ui_customPaymentsDetailsWidget(object):
 "	background-color: #c9c9c9;\n"
 "	border: none;\n"
 "	border-radius: 10px;\n"
-"	padding: 5px;\n"
 "	font-size: 12pt;\n"
 "}\n"
 "\n"
@@ -77,8 +76,8 @@ class Ui_customPaymentsDetailsWidget(object):
 "	font-weight: 700;\n"
 "}\n"
 "\n"
-"#modelHolder QLabel, #"
-                        "newModelInfoHolder *{\n"
+"#modelHolder QLabel, #newModelInfoHolder "
+                        "*{\n"
 "	font-size: 10pt;\n"
 "}\n"
 "\n"
@@ -90,8 +89,12 @@ class Ui_customPaymentsDetailsWidget(object):
 "	font: 700 13pt \"Segoe UI\";\n"
 "}\n"
 "\n"
-"#userIcon, #fromCalendarBtn, #toCalendarBtn {\n"
+"#userIcon, #fromCalendarBtn, #toCalendarBtn, #logoutBtn {\n"
 "	background-color: #dfdfdf;\n"
+"}\n"
+"\n"
+"#logoutBtn:hover{\n"
+"	icon: url(:/icons/app/assets/icons/Log-Out--Streamline-Feather_#192626.svg);\n"
 "}\n"
 "\n"
 "#usernameLabel {\n"
@@ -133,12 +136,21 @@ class Ui_customPaymentsDetailsWidget(object):
         self.horizontalLayout_3.setSpacing(10)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 5, 0)
+        self.logoutBtn = QPushButton(self.userHolder)
+        self.logoutBtn.setObjectName(u"logoutBtn")
+        icon = QIcon()
+        icon.addFile(u":/icons/app/assets/icons/Log-Out--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.logoutBtn.setIcon(icon)
+        self.logoutBtn.setIconSize(QSize(24, 24))
+
+        self.horizontalLayout_3.addWidget(self.logoutBtn)
+
         self.userIcon = QPushButton(self.userHolder)
         self.userIcon.setObjectName(u"userIcon")
         self.userIcon.setFocusPolicy(Qt.NoFocus)
-        icon = QIcon()
-        icon.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.userIcon.setIcon(icon)
+        icon1 = QIcon()
+        icon1.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.userIcon.setIcon(icon1)
         self.userIcon.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_3.addWidget(self.userIcon)
@@ -448,7 +460,7 @@ class Ui_customPaymentsDetailsWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1161, 598))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1161, 608))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -630,6 +642,7 @@ class Ui_customPaymentsDetailsWidget(object):
     def retranslateUi(self, customPaymentsDetailsWidget):
         customPaymentsDetailsWidget.setWindowTitle(QCoreApplication.translate("customPaymentsDetailsWidget", u"Form", None))
         self.pageTitle.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u0414\u0415\u0422\u0410\u0419\u041b\u0418", None))
+        self.logoutBtn.setText("")
         self.userIcon.setText("")
         self.usernameLabel.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"admin", None))
         self.label_8.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u0414\u043b\u044a\u0436\u043d.", None))

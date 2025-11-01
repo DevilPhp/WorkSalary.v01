@@ -1,5 +1,6 @@
 from functools import partial
 
+from PySide6.QtCore import Signal
 from PySide6.QtGui import QStandardItemModel, QStandardItem
 
 from app.ui.customSortingMenuWidget import CustomSortingMenuWidget
@@ -12,18 +13,21 @@ from app.utils.utils import Utils
 
 
 class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
-    def __init__(self, mainWindow, parent=None):
+    logoutSignal = Signal(bool)
+
+    def __init__(self, mainWindow, user, parent=None):
         super().__init__(parent)
         self.setupUi(self)
         self.mainWindow = mainWindow
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
+        self.usernameLabel.setText(user)
+        self.user = user
+
         self.paymentsTableView = CustomTableViewWithMultiSelection()
         self.paymentsTableHolder.layout().addWidget(self.paymentsTableView)
         self.tablePaymentsModel = QStandardItemModel()
         self.tablePaymentsNames = ['ID', '№', 'Име', 'Зар. дни', 'В поч. дни', 'В Празници', 'Бр.',
                                    'Вр. Опер. в ч.', 'Почас. в ч.', 'Извънр. в ч.', 'Нощен в ч.', 'Бр./час', 'Лв.', '€']
-        # self.excelTableNames = ['ID', '№', 'Име', 'Зар. дни', 'В поч. дни', 'В Празници', 'Бр.',
-        #                            'Вр. Опер. в ч.', 'Почас. в ч.', 'Извънр. в ч.', 'Нощен в ч.', 'Бр./час', 'Лв.', '€']
         for i, tableHeaderName in enumerate(self.tablePaymentsNames):
             self.tablePaymentsModel.setHorizontalHeaderItem(i, QStandardItem(tableHeaderName))
             self.tablePaymentsModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignLeft)
@@ -67,6 +71,8 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
 
         self.searchBtn.clicked.connect(self.refreshPaymentsTable)
         self.paymentsTableView.doubleClicked.connect(self.openPaymentDetails)
+
+        self.logoutBtn.clicked.connect(self.logout)
 
     # def setPayPerMinComboBox(self):
     #     paymentsPerMin = WoS.getPaymentsForMin()
@@ -543,5 +549,7 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
             proxyModel.setFilterForColumn(col, self.checkBoxFiltering)
         proxyModel.invalidateFilter()
         self.totalViewRows.setText(str(proxyModel.rowCount()))
-    
+
+    def logout(self):
+        self.logoutSignal.emit(True)
     

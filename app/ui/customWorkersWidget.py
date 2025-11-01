@@ -1,4 +1,6 @@
 from datetime import datetime
+
+from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QMenu, QGraphicsDropShadowEffect, QDialog
 from app.ui.widgets.ui_customWorkersWidget import *
 from PySide6.QtGui import QStandardItemModel, QStandardItem
@@ -11,12 +13,18 @@ from app.utils.utils import Utils
 
 
 class CustomWorkersWidget(QWidget, Ui_customWorkersEditWidget):
-    def __init__(self, mainWindow, parent=None):
+    logoutSignal = Signal(bool)
+
+    def __init__(self, mainWindow, user, parent=None):
         super().__init__(parent)
         self.setupUi(self)
         self.mainWindow = mainWindow
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
         self.setWindowTitle("Персонал")
+
+        self.user = user
+        self.usernameLabel.setText(user)
+
         self.workersInfo = WoS.getWorkersInfo()
         self.existingWorkersId = [str(key) for key in self.workersInfo.keys()]
         self.workerDialog = None
@@ -51,6 +59,8 @@ class CustomWorkersWidget(QWidget, Ui_customWorkersEditWidget):
         self.adressCheckBox.stateChanged.connect(self.toggleAdress)
         self.expCheckBox.stateChanged.connect(self.toggleExp)
         self.allCheckBox.stateChanged.connect(self.toggleAll)
+
+        self.logoutBtn.clicked.connect(self.logout)
 
     def showCustomMenu(self, position):
         menu = QMenu(self)
@@ -205,3 +215,5 @@ class CustomWorkersWidget(QWidget, Ui_customWorkersEditWidget):
         self.workersTableView.setColumnHidden(12, not state)  # Телефон
         self.checkAllstate()
 
+    def logout(self):
+        self.logoutSignal.emit(True)

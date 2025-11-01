@@ -2,7 +2,7 @@ from datetime import datetime
 from functools import partial
 import json
 
-from PySide6.QtCore import QTimer, QMimeData, QEvent
+from PySide6.QtCore import QTimer, QMimeData, QEvent, Signal
 from PySide6.QtGui import QStandardItemModel, QStandardItem, QDoubleValidator, QClipboard
 from PySide6.QtWidgets import QMenu, QDialog, QAbstractItemView
 
@@ -20,12 +20,17 @@ from app.ui.customYesNoMessage import CustomYesNowDialog
 
 
 class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
-    def __init__(self, mainWindow, parent=None):
+    logoutSignal = Signal(bool)
+
+    def __init__(self, mainWindow, user, parent=None):
         super().__init__(parent)
         self.setupUi(self)
         self.mainWindow = mainWindow
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
         self.setWindowTitle("Листове за време")
+        self.usernameLabel.setText(user)
+        self.user = user
+
         self.workers = WoS.getWorkers()
         self.models = MoS.getClientsAndModels()
         self.overtimeWarning.setVisible(False)
@@ -121,6 +126,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.timeForPieceLineEdit.textChanged.connect(self.updateModelPieces)
         self.modelOperationLineEdit.editingFinished.connect(self.updateModelOperation)
         # print('here')
+
+        self.logoutBtn.clicked.connect(self.logout)
 
     def showAllWorkersForDate(self):
         if self.showAllCheckBox.checkState() == Qt.CheckState.Checked:
@@ -998,7 +1005,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                     'IsHourlyPaid': hourlyPay,
                     'IsOvertime': overtime,
                     'WorkerId': int(self.workerNumberLineEdit.text()),
-                    'user': self.usernameLabel.text(),
+                    'user': self.user,
                     'OrderId': orderId,
                     'ModelOperationId': modelOperationId,
                     'Pieces': pieces if modelOperationId else 0,
@@ -1020,7 +1027,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                     'IsHourlyPaid': hourlyPay,
                     'IsOvertime': overtime,
                     'WorkingTimeMinutes': modelOperationTime,
-                    'user': self.usernameLabel.text(),
+                    'user': self.user,
                     'nightMins': nightMins,
                     'currentShiftNightMins': currentShiftNightMins,
                 }
@@ -1159,3 +1166,6 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.isDefaultTimeCheckBox.blockSignals(False)
         self.piecesForProdLineEdit.clear()
         self.piecesProducedLineEdit.clear()
+
+    def logout(self):
+        self.logoutSignal.emit(True)

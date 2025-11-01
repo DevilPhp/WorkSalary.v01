@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customHolidaysWidgetacVwcB.ui'
+## Form generated from reading UI file 'customHolidaysWidgetmVHuoi.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -92,9 +92,19 @@ class Ui_customHolidaysWidget(object):
 "	font: 700 13pt \"Segoe UI\";\n"
 "}\n"
 "\n"
-"#userIcon, #newHolidayCalBtn {\n"
+"#newHolidayCalBtn {\n"
 "	background-color: #dfdfdf;\n"
 "}\n"
+"\n"
+"#userIcon, #logoutBtn{\n"
+"	background-color: #dfdfdf;\n"
+"	padding: 0px;\n"
+"}\n"
+"\n"
+"#logoutBtn:hover{\n"
+"	icon: url(:/icons/app/assets/icons/Log-Out--Streamline-Feather_#192626.svg);\n"
+"}\n"
+"\n"
 "\n"
 "#usernameLabel {\n"
 "	font-size: 11pt;\n"
@@ -143,12 +153,21 @@ class Ui_customHolidaysWidget(object):
         self.horizontalLayout_3.setSpacing(10)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 5, 0)
+        self.logoutBtn = QPushButton(self.userHolder)
+        self.logoutBtn.setObjectName(u"logoutBtn")
+        icon = QIcon()
+        icon.addFile(u":/icons/app/assets/icons/Log-Out--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.logoutBtn.setIcon(icon)
+        self.logoutBtn.setIconSize(QSize(24, 24))
+
+        self.horizontalLayout_3.addWidget(self.logoutBtn)
+
         self.userIcon = QPushButton(self.userHolder)
         self.userIcon.setObjectName(u"userIcon")
         self.userIcon.setFocusPolicy(Qt.NoFocus)
-        icon = QIcon()
-        icon.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.userIcon.setIcon(icon)
+        icon1 = QIcon()
+        icon1.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.userIcon.setIcon(icon1)
         self.userIcon.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_3.addWidget(self.userIcon)
@@ -226,7 +245,7 @@ class Ui_customHolidaysWidget(object):
         self.newHolidayDate.setFrame(False)
         self.newHolidayDate.setAlignment(Qt.AlignCenter)
         self.newHolidayDate.setCorrectionMode(QAbstractSpinBox.CorrectToNearestValue)
-        self.newHolidayDate.setMinimumDateTime(QDateTime(QDate(1990, 9, 4), QTime(0, 0, 0)))
+        self.newHolidayDate.setMinimumDateTime(QDateTime(QDate(1990, 9, 3), QTime(0, 0, 0)))
 
         self.horizontalLayout_9.addWidget(self.newHolidayDate)
 
@@ -236,9 +255,9 @@ class Ui_customHolidaysWidget(object):
         self.newHolidayCalBtn.setStyleSheet(u"*{\n"
 "	padding: 0px;\n"
 "}")
-        icon1 = QIcon()
-        icon1.addFile(u":/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.newHolidayCalBtn.setIcon(icon1)
+        icon2 = QIcon()
+        icon2.addFile(u":/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.newHolidayCalBtn.setIcon(icon2)
         self.newHolidayCalBtn.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_9.addWidget(self.newHolidayCalBtn, 0, Qt.AlignLeft)
@@ -328,7 +347,7 @@ class Ui_customHolidaysWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 888, 503))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 888, 513))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -387,6 +406,7 @@ class Ui_customHolidaysWidget(object):
     def retranslateUi(self, customHolidaysWidget):
         customHolidaysWidget.setWindowTitle(QCoreApplication.translate("customHolidaysWidget", u"Form", None))
         self.pageTitle.setText(QCoreApplication.translate("customHolidaysWidget", u"\u041f\u0420\u0410\u0417\u041d\u0418\u0427\u041d\u0418 \u0414\u041d\u0418", None))
+        self.logoutBtn.setText("")
         self.userIcon.setText("")
         self.usernameLabel.setText(QCoreApplication.translate("customHolidaysWidget", u"admin", None))
         self.label.setText(QCoreApplication.translate("customHolidaysWidget", u"\u0414\u043e\u0431\u0430\u0432\u044f\u043d\u0435 \u043d\u0430 \u043f\u0440\u0430\u0437\u043d\u0438\u043a", None))

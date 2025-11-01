@@ -165,10 +165,7 @@ QTableView::Item:selected {
          <string notr="true">QHeaderView:section{
 	font: 700 10.5pt &quot;Segoe UI&quot;;
 	background-color: #dfdfdf;
-	padding-left: 10px;
-	padding-top:10px;
-	padding-right:10px;
-	selection-background-color: #7f7f7f;
+	padding: 5px;
 }
 QVerticalView:section{
 	min-height: 30;
@@ -178,12 +175,13 @@ QAbstractItemView{
 	font: 10.5pt &quot;Segoe UI&quot;;
 	selection-background-color: rgba(198, 228, 254, 45);
 	selection-color: #324b4c;
+	focus: none;
 }
 QAbstractItemView:item{
 	selection-background-color: rgba(198, 228, 254, 45);
 	selection-color: #324b4c;
+	focus: none;
 }
-            
 QAbstractItemView::item:selected{
 	background-color: rgba(198, 228, 254, 45);
 }</string>

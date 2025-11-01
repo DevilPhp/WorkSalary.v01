@@ -13,12 +13,17 @@ from PySide6.QtWidgets import QCheckBox, QMenu, QDialog
 
 
 class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper):
-    def __init__(self, mainWindow, parent=None):
+    logoutSignal = Signal(bool)
+
+    def __init__(self, mainWindow, user, parent=None):
         super().__init__(parent)
         self.setupUi(self)
         # MessageManager.initialize(self)
         self.mainWindow = mainWindow
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
+        self.usernameLabel.setText(user)
+        self.user = user
+
         self.operations = OpS.getAllOperations()
         self.comboBoxItems = {}
         # print(self.geometry())
@@ -32,6 +37,8 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
         self.addNewOperation.clicked.connect(self.addNewOperationDialog)
         self.addNeModelType.clicked.connect(self.addNewModelTypeDialog)
         self.delDefModelTypeBtn.clicked.connect(self.deleteDefaultModelType)
+
+        self.logoutBtn.clicked.connect(self.logout)
 
     def deleteDefaultModelType(self):
         defaultModelType = int(self.defaultModelTypeComboBox.currentText().split(':  ')[0])
@@ -242,6 +249,9 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
 
         # Reconnect signal
         self.selectAllCheckbox.blockSignals(False)
+
+    def logout(self):
+        self.logoutSignal.emit(True)
 
 
 class CustomCheckboxWidget(QWidget, Ui_customCheckBoxWidget):

@@ -84,9 +84,15 @@ yearsBtnsHolder QPushButton:clicked {
 	font: 700 13pt &quot;Segoe UI&quot;;
 }
 
-#userIcon, #newHolidayCalBtn {
+#userIcon, #logoutBtn{
 	background-color: #dfdfdf;
+	padding: 0px;
 }
+
+#logoutBtn:hover{
+	icon: url(:/icons/app/assets/icons/Log-Out--Streamline-Feather_#192626.svg);
+}
+
 
 #usernameLabel {
 	font-size: 11pt;
@@ -198,6 +204,23 @@ yearsBtnsHolder QPushButton:clicked {
             <property name="bottomMargin">
              <number>0</number>
             </property>
+            <item>
+             <widget class="QPushButton" name="logoutBtn">
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="../../../resources.qrc">
+                <normaloff>:/icons/app/assets/icons/Log-Out--Streamline-Feather.svg</normaloff>:/icons/app/assets/icons/Log-Out--Streamline-Feather.svg</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+             </widget>
+            </item>
             <item>
              <widget class="QPushButton" name="userIcon">
               <property name="focusPolicy">
@@ -325,6 +348,13 @@ yearsBtnsHolder QPushButton:clicked {
                 </widget>
                </item>
                <item>
+                <widget class="QPushButton" name="operTypesBtn">
+                 <property name="text">
+                  <string>Видове Длъжност</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
                 <widget class="QPushButton" name="yarnsBtn">
                  <property name="text">
                   <string>Прежди</string>
@@ -368,7 +398,7 @@ yearsBtnsHolder QPushButton:clicked {
         <x>0</x>
         <y>0</y>
         <width>888</width>
-        <height>663</height>
+        <height>673</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -436,7 +466,7 @@ QAbstractItemView::item:selected{
              <bool>true</bool>
             </property>
             <property name="selectionMode">
-             <enum>QAbstractItemView::ExtendedSelection</enum>
+             <enum>QAbstractItemView::SingleSelection</enum>
             </property>
             <property name="selectionBehavior">
              <enum>QAbstractItemView::SelectRows</enum>

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'MainWindowcvEywL.ui'
+## Form generated from reading UI file 'MainWindowbtutjg.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -24,7 +24,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1284, 967)
+        MainWindow.resize(1284, 958)
         MainWindow.setMinimumSize(QSize(756, 670))
         font = QFont()
         font.setFamilies([u"Segoe UI"])
@@ -74,8 +74,12 @@ class Ui_MainWindow(object):
 "	padding-top: 50px;\n"
 "}\n"
 "\n"
-"#userIcon {\n"
+"#userIcon, #logoutBtn{\n"
 "	background-color: #dfdfdf;\n"
+"}\n"
+"\n"
+"#logoutBtn:hover{\n"
+"	icon: url(:/icons/app/assets/icons/Log-Out--Streamline-Feather_#192626.svg);\n"
 "}\n"
 "\n"
 "#usernameLabel {\n"
@@ -284,6 +288,16 @@ class Ui_MainWindow(object):
         self.horizontalLayout_8.setSpacing(10)
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
         self.horizontalLayout_8.setContentsMargins(0, 0, 5, 0)
+        self.logoutBtn = QPushButton(self.widget_9)
+        self.logoutBtn.setObjectName(u"logoutBtn")
+        self.logoutBtn.setFocusPolicy(Qt.NoFocus)
+        icon3 = QIcon()
+        icon3.addFile(u":/icons/app/assets/icons/Log-Out--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.logoutBtn.setIcon(icon3)
+        self.logoutBtn.setIconSize(QSize(24, 24))
+
+        self.horizontalLayout_8.addWidget(self.logoutBtn)
+
         self.userIcon = QPushButton(self.widget_9)
         self.userIcon.setObjectName(u"userIcon")
         self.userIcon.setFocusPolicy(Qt.NoFocus)
@@ -460,7 +474,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -476,6 +490,7 @@ class Ui_MainWindow(object):
         self.loginBtn.setText(QCoreApplication.translate("MainWindow", u" \u0412\u0425\u041e\u0414", None))
         self.infoLabel.setText(QCoreApplication.translate("MainWindow", u"Dev v0.1.010", None))
         self.label_8.setText("")
+        self.logoutBtn.setText("")
         self.userIcon.setText("")
         self.usernameLabel.setText(QCoreApplication.translate("MainWindow", u"admin", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438", None))

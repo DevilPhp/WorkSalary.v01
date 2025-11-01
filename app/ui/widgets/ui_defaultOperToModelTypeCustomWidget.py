@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'defaultOperToModelTypeCustomWidgetpqSxUJ.ui'
+## Form generated from reading UI file 'defaultOperToModelTypeCustomWidgetvMHrqW.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -58,8 +58,13 @@ class Ui_customWidgetForDefaultOper(object):
 "	font: 700 13pt \"Segoe UI\";\n"
 "}\n"
 "\n"
-"#userIcon {\n"
+"#userIcon, #logoutBtn{\n"
 "	background-color: #dfdfdf;\n"
+"	padding: 0px;\n"
+"}\n"
+"\n"
+"#logoutBtn:hover{\n"
+"	icon: url(:/icons/app/assets/icons/Log-Out--Streamline-Feather_#192626.svg);\n"
 "}\n"
 "\n"
 "#usernameLabel {\n"
@@ -121,12 +126,21 @@ class Ui_customWidgetForDefaultOper(object):
         self.horizontalLayout_3.setSpacing(10)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 5, 0)
+        self.logoutBtn = QPushButton(self.widget_3)
+        self.logoutBtn.setObjectName(u"logoutBtn")
+        icon = QIcon()
+        icon.addFile(u":/icons/app/assets/icons/Log-Out--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.logoutBtn.setIcon(icon)
+        self.logoutBtn.setIconSize(QSize(24, 24))
+
+        self.horizontalLayout_3.addWidget(self.logoutBtn)
+
         self.userIcon = QPushButton(self.widget_3)
         self.userIcon.setObjectName(u"userIcon")
         self.userIcon.setFocusPolicy(Qt.NoFocus)
-        icon = QIcon()
-        icon.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.userIcon.setIcon(icon)
+        icon1 = QIcon()
+        icon1.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.userIcon.setIcon(icon1)
         self.userIcon.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_3.addWidget(self.userIcon)
@@ -176,9 +190,9 @@ class Ui_customWidgetForDefaultOper(object):
 
         self.delDefModelTypeBtn = QPushButton(self.optionsHolder)
         self.delDefModelTypeBtn.setObjectName(u"delDefModelTypeBtn")
-        icon1 = QIcon()
-        icon1.addFile(u":/icons/app/assets/icons/Trash-Bin-Trash--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.delDefModelTypeBtn.setIcon(icon1)
+        icon2 = QIcon()
+        icon2.addFile(u":/icons/app/assets/icons/Trash-Bin-Trash--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.delDefModelTypeBtn.setIcon(icon2)
         self.delDefModelTypeBtn.setIconSize(QSize(22, 22))
 
         self.horizontalLayout_4.addWidget(self.delDefModelTypeBtn, 0, Qt.AlignRight)
@@ -220,6 +234,7 @@ class Ui_customWidgetForDefaultOper(object):
         self.addNewOperation.setText(QCoreApplication.translate("customWidgetForDefaultOper", u"\u041d\u043e\u0432\u0430 \u043e\u043f\u0435\u0440\u0430\u0446\u0438\u044f", None))
         self.addNeModelType.setText(QCoreApplication.translate("customWidgetForDefaultOper", u"\u041d\u043e\u0432 \u0432\u0438\u0434", None))
         self.pageTitle.setText(QCoreApplication.translate("customWidgetForDefaultOper", u"\u041e\u041f\u0415\u0420\u0410\u0426\u0418\u0418 \u0418 \u0412\u0418\u0414\u041e\u0412\u0415 \u041c\u041e\u0414\u0415\u041b\u0418", None))
+        self.logoutBtn.setText("")
         self.userIcon.setText("")
         self.usernameLabel.setText(QCoreApplication.translate("customWidgetForDefaultOper", u"admin", None))
         self.selectAllCheckbox.setText(QCoreApplication.translate("customWidgetForDefaultOper", u"\u0412\u0441\u0438\u0447\u043a\u0438", None))

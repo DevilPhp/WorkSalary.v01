@@ -47,12 +47,17 @@ class MainWindow(QMainWindow):
         self.payPerMinPage = None
         self.parametersPage = None
         self.workerPaymentsDetails = {}
+        self.openedWindows = []
         self.clipboardData = QApplication.clipboard()
+
+        self.user = None
         LoginPage(self)
+
         MainMenuPage(self)
         createTable()
         logger.info('Application started')
-        windows = ['clients', 'operations']
+        # windows = ['clients', 'operations']
+
         self.ui.pageBtn.clicked.connect(lambda: self.changePage(windows))
         self.ui.setDefaultOperBtn.clicked.connect(self.setDefaultOperPage)
         self.ui.setModelsOperBtn.clicked.connect(self.setModelOperPage)
@@ -63,6 +68,8 @@ class MainWindow(QMainWindow):
         self.ui.holidaysPageBtn.clicked.connect(self.setHolidaysPage)
         self.ui.payPerMinBtn.clicked.connect(self.setPayPerMinPage)
         self.ui.parametersBtn.clicked.connect(self.setParametersPage)
+
+        self.ui.logoutBtn.clicked.connect(lambda: self.logout(True))
 
     def closeEvent(self, event):
         QApplication.quit()
@@ -111,91 +118,134 @@ class MainWindow(QMainWindow):
             subWindow.show()
 
     def setParametersPage(self):
+        # self.parametersPage = None
+        # print(self.parametersPage)
         if self.parametersPage is None:
-            self.parametersPage = CustomParametersWidget(self)
+            # print(self.user)
+            self.parametersPage = CustomParametersWidget(self, self.user)
             self.parametersPage.show()
             self.parametersPage.destroyed.connect(self.resetParametersPage)
+            self.parametersPage.logoutSignal.connect(self.logout)
         else:
             self.parametersPage.activateWindow()
 
     def setPayPerMinPage(self):
         if self.payPerMinPage is None:
-            self.payPerMinPage = CustomPayPerMinWidget(self)
+            self.payPerMinPage = CustomPayPerMinWidget(self, self.user)
             self.payPerMinPage.show()
             self.payPerMinPage.destroyed.connect(self.resetPayPerMinPage)
+            self.payPerMinPage.logoutSignal.connect(self.logout)
         else:
             self.payPerMinPage.activateWindow()
 
     def setHolidaysPage(self):
         if self.holidaysPage is None:
-            self.holidaysPage = CustomHolidaysWidget(self)
+            self.holidaysPage = CustomHolidaysWidget(self, self.user)
             self.holidaysPage.show()
             self.holidaysPage.destroyed.connect(self.resetHolidaysPage)
+            self.holidaysPage.logoutSignal.connect(self.logout)
         else:
             self.holidaysPage.activateWindow()
 
     def setWorkersPage(self):
         if self.workersPage is None:
-            self.workersPage = CustomWorkersWidget(self)
+            self.workersPage = CustomWorkersWidget(self, self.user)
             self.workersPage.show()
             self.workersPage.destroyed.connect(self.resetWorkersPage)
+            self.workersPage.logoutSignal.connect(self.logout)
         else:
             self.workersPage.activateWindow()
 
     def setPaymentsDetailsPage(self, workerId, start, end, totalLeva, totalEuro):
         if workerId not in self.workerPaymentsDetails:
             self.workerPaymentsDetails[workerId] = CustomPaymentsDetailsWidget(self, workerId, start, end,
-                                                                               totalLeva, totalEuro)
+                                                                               totalLeva, totalEuro, self.user)
             self.workerPaymentsDetails[workerId].show()
             self.workerPaymentsDetails[workerId].destroyed.connect(lambda: self.removeWorkerPaymentsDetails(workerId))
+            self.workerPaymentsDetails[workerId].logoutSignal.connect(self.logout)
         else:
             self.workerPaymentsDetails[workerId].activateWindow()
 
     def setPaymentsPage(self):
         if self.paymentsPage is None:
-            self.paymentsPage = CustomPaymentsWidget(self)
+            self.paymentsPage = CustomPaymentsWidget(self, self.user)
             self.paymentsPage.show()
             self.paymentsPage.destroyed.connect(self.resetPaymentsPage)
+            self.paymentsPage.logoutSignal.connect(self.logout)
         else:
             self.paymentsPage.activateWindow()
 
     def setWorkingShiftsPage(self, initialData=None):
         if self.workingShiftsPage is None:
-            self.workingShiftsPage = CustomShiftsEditWidget(self)
+            self.workingShiftsPage = CustomShiftsEditWidget(self, self.user)
             if initialData:
                 self.workingShiftsPage.workingShiftsNameLineEdit.setText(initialData[0])
                 self.workingShiftsPage.shiftStart.setTime(initialData[1])
                 self.workingShiftsPage.shiftEnd.setTime(initialData[2])
             self.workingShiftsPage.show()
             self.workingShiftsPage.destroyed.connect(self.resetWorkingShiftsPage)
+            self.workingShiftsPage.logoutSignal.connect(self.logout)
         else:
             self.workingShiftsPage.activateWindow()
 
     def setTimePapersPage(self):
         if self.timePapersPage is None:
-            self.timePapersPage = CustomTimePapersWidget(self)
+            self.timePapersPage = CustomTimePapersWidget(self, self.user)
             self.timePapersPage.show()
             self.timePapersPage.destroyed.connect(self.resetTimePapersPage)
+            self.timePapersPage.logoutSignal.connect(self.logout)
         else:
             self.timePapersPage.activateWindow()
 
     def setDefaultOperPage(self):
         if self.defaultModelOperPage is None:
-            self.defaultModelOperPage = DefaultOperToModelTypeCustomWidget(self)
+            self.defaultModelOperPage = DefaultOperToModelTypeCustomWidget(self, self.user)
             self.defaultModelOperPage.show()
             self.defaultModelOperPage.destroyed.connect(self.resetDefaultOperPage)
+            self.defaultModelOperPage.logoutSignal.connect(self.logout)
         else:
             self.defaultModelOperPage.activateWindow()
 
     def setModelOperPage(self, isCallingFromOtherWindow=False):
         if self.modelOperPage is None:
-            self.modelOperPage = CustomWidgetForModelOper(self)
+            self.modelOperPage = CustomWidgetForModelOper(self, self.user)
             self.modelOperPage.show()
             self.modelOperPage.destroyed.connect(self.resetModelOperPage)
+            self.modelOperPage.logoutSignal.connect(self.logout)
             if isCallingFromOtherWindow:
                 self.modelOperPage.setWindowsForTimePapersCall()
         else:
             self.modelOperPage.activateWindow()
+
+    def logout(self, signal):
+        if signal:
+            pages = [
+                self.defaultModelOperPage,
+                self.modelOperPage,
+                self.timePapersPage,
+                self.workingShiftsPage,
+                self.paymentsPage,
+                self.workersPage,
+                self.holidaysPage,
+                self.payPerMinPage,
+                self.parametersPage,
+            ]
+
+            pages.extend(self.workerPaymentsDetails.values())
+
+            for page in pages:
+                if page is not None:
+                    page.close()
+
+            self.ui.stackedWidget.setCurrentIndex(0)
+            self.ui.userNameField.setText(self.ui.usernameLabel.text())
+            self.ui.userPassField.clear()
+            self.ui.userNameField.selectAll()
+            self.ui.userNameField.setFocus()
+            self.user = None
+            self.activateWindow()
+            MessageManager.showOnWidget(self, f'Изход на {self.ui.usernameLabel.text()}', 'info')
+            # MessageManager.info(f'Изход на {self.ui.usernameLabel.text()}', 3000)
 
 
 def startUi():

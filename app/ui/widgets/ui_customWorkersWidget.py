@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customWorkersWidgetWpBVpZ.ui'
+## Form generated from reading UI file 'customWorkersWidgetgVBgTS.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -97,8 +97,17 @@ class Ui_customWorkersEditWidget(object):
 "	font: 700 13pt \"Segoe UI\";\n"
 "}\n"
 "\n"
-"#userIcon, #calendarBtn {\n"
+"#calendarBtn {\n"
 "	background-color: #dfdfdf;\n"
+"}\n"
+"\n"
+"#userIcon, #logoutBtn{\n"
+"	background-color: #dfdfdf;\n"
+"	padding: 0px;\n"
+"}\n"
+"\n"
+"#logoutBtn:hover{\n"
+"	icon: url(:/icons/app/assets/icons/Log-Out--Streamline-Feather_#192626.svg);\n"
 "}\n"
 "\n"
 "#usernameLabel {\n"
@@ -127,15 +136,15 @@ class Ui_customWorkersEditWidget(object):
 "\n"
 "QComboBox:hover{\n"
 "	color: #2b2b2c;\n"
-"	font: 720 10.5pt \"Segoe UI\";\n"
+"	font: "
+                        "720 10.5pt \"Segoe UI\";\n"
 "	border-radius: 0px;\n"
 "	alternate-background-color: #2c313c;\n"
 "}\n"
 "QComboBox::item:selected{\n"
 "	color: #2b2b2c;\n"
 "	font: 900 10.5pt \"Segoe UI\";\n"
-"	bor"
-                        "der-radius: 0px;\n"
+"	border-radius: 0px;\n"
 "}\n"
 "QComboBox::item{\n"
 "	color: #324b4c;\n"
@@ -180,12 +189,21 @@ class Ui_customWorkersEditWidget(object):
         self.horizontalLayout_3.setSpacing(10)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 5, 0)
+        self.logoutBtn = QPushButton(self.userHolder)
+        self.logoutBtn.setObjectName(u"logoutBtn")
+        icon = QIcon()
+        icon.addFile(u":/icons/app/assets/icons/Log-Out--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.logoutBtn.setIcon(icon)
+        self.logoutBtn.setIconSize(QSize(24, 24))
+
+        self.horizontalLayout_3.addWidget(self.logoutBtn)
+
         self.userIcon = QPushButton(self.userHolder)
         self.userIcon.setObjectName(u"userIcon")
         self.userIcon.setFocusPolicy(Qt.NoFocus)
-        icon = QIcon()
-        icon.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.userIcon.setIcon(icon)
+        icon1 = QIcon()
+        icon1.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.userIcon.setIcon(icon1)
         self.userIcon.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_3.addWidget(self.userIcon)
@@ -299,7 +317,7 @@ class Ui_customWorkersEditWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1268, 559))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1268, 569))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -364,6 +382,7 @@ class Ui_customWorkersEditWidget(object):
     def retranslateUi(self, customWorkersEditWidget):
         customWorkersEditWidget.setWindowTitle(QCoreApplication.translate("customWorkersEditWidget", u"Form", None))
         self.pageTitle.setText(QCoreApplication.translate("customWorkersEditWidget", u"\u041f\u0415\u0420\u0421\u041e\u041d\u0410\u041b", None))
+        self.logoutBtn.setText("")
         self.userIcon.setText("")
         self.usernameLabel.setText(QCoreApplication.translate("customWorkersEditWidget", u"admin", None))
         self.addNewWorkerBtn.setText(QCoreApplication.translate("customWorkersEditWidget", u"\u041d\u043e\u0432 \u0420\u0430\u0431\u043e\u0442\u043d\u0438\u043a", None))

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customYesNowDialogxuSjvV.ui'
+## Form generated from reading UI file 'customYesNowDialogCGnrjB.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -24,7 +24,7 @@ class Ui_CustomYesNoDialog(object):
     def setupUi(self, CustomYesNoDialog):
         if not CustomYesNoDialog.objectName():
             CustomYesNoDialog.setObjectName(u"CustomYesNoDialog")
-        CustomYesNoDialog.resize(641, 734)
+        CustomYesNoDialog.resize(641, 726)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)

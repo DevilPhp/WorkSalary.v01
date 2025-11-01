@@ -9,6 +9,46 @@ from app.database.operations import DefaultOperForVidObleklo, ProductionModelOpe
 class ModelService:
 
     @staticmethod
+    def addNewMachine(data, rows):
+        with setDatabase() as session:
+            if data:
+                newMachineType = Machine(MachineId=rows + 1)
+                for row, value in data.items():
+                    setattr(newMachineType, row, value)
+                session.add(newMachineType)
+                session.commit()
+                if newMachineType.MachineId:
+                    logger.info(f'MachineType {newMachineType.MachineId} - {newMachineType.MachineFine} added')
+                    return True
+                else:
+                    logger.error('Failed to add new MachineType')
+                    return False
+            else:
+                logger.error('No data provided for new MachineType')
+                return False
+
+    @staticmethod
+    def addNewYarn(data, rows):
+        with setDatabase() as session:
+            if data:
+                newYarnType = Yarn(YarnID=rows + 1)
+                for row, value in data.items():
+                    setattr(newYarnType, row, value)
+                session.add(newYarnType)
+                session.commit()
+                if newYarnType.YarnID:
+                    logger.info(
+                        f'YarnType {newYarnType.YarnID} - {newYarnType.ПреждаТип} - {newYarnType.Състав} added'
+                    )
+                    return True
+                else:
+                    logger.error('Failed to add new YarnType')
+                    return False
+            else:
+                logger.error('No data provided for new YarnType')
+                return False
+
+    @staticmethod
     def deleteDefaultModelType(modelTypeId):
         with setDatabase() as session:
             modelType = session.query(VidObleklo).filter_by(OblekloVid=modelTypeId).first()

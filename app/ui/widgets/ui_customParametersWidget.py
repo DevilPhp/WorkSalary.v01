@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customParametersWidgetnkOrIg.ui'
+## Form generated from reading UI file 'customParametersWidgetmwLMIz.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -91,9 +91,15 @@ class Ui_customParametersWidget(object):
 "	font: 700 13pt \"Segoe UI\";\n"
 "}\n"
 "\n"
-"#userIcon, #newHolidayCalBtn {\n"
+"#userIcon, #logoutBtn{\n"
 "	background-color: #dfdfdf;\n"
+"	padding: 0px;\n"
 "}\n"
+"\n"
+"#logoutBtn:hover{\n"
+"	icon: url(:/icons/app/assets/icons/Log-Out--Streamline-Feather_#192626.svg);\n"
+"}\n"
+"\n"
 "\n"
 "#usernameLabel {\n"
 "	font-size: 11pt;\n"
@@ -142,12 +148,21 @@ class Ui_customParametersWidget(object):
         self.horizontalLayout_3.setSpacing(10)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 5, 0)
+        self.logoutBtn = QPushButton(self.userHolder)
+        self.logoutBtn.setObjectName(u"logoutBtn")
+        icon = QIcon()
+        icon.addFile(u":/icons/app/assets/icons/Log-Out--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.logoutBtn.setIcon(icon)
+        self.logoutBtn.setIconSize(QSize(24, 24))
+
+        self.horizontalLayout_3.addWidget(self.logoutBtn)
+
         self.userIcon = QPushButton(self.userHolder)
         self.userIcon.setObjectName(u"userIcon")
         self.userIcon.setFocusPolicy(Qt.NoFocus)
-        icon = QIcon()
-        icon.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.userIcon.setIcon(icon)
+        icon1 = QIcon()
+        icon1.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.userIcon.setIcon(icon1)
         self.userIcon.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_3.addWidget(self.userIcon)
@@ -203,6 +218,11 @@ class Ui_customParametersWidget(object):
 
         self.horizontalLayout_4.addWidget(self.workingPosBtn)
 
+        self.operTypesBtn = QPushButton(self.widget_7)
+        self.operTypesBtn.setObjectName(u"operTypesBtn")
+
+        self.horizontalLayout_4.addWidget(self.operTypesBtn)
+
         self.yarnsBtn = QPushButton(self.widget_7)
         self.yarnsBtn.setObjectName(u"yarnsBtn")
 
@@ -235,7 +255,7 @@ class Ui_customParametersWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 888, 663))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 888, 673))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -272,7 +292,7 @@ class Ui_customParametersWidget(object):
 "	background-color: rgba(198, 228, 254, 45);\n"
 "}")
         self.parametersTableView.setAlternatingRowColors(True)
-        self.parametersTableView.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.parametersTableView.setSelectionMode(QAbstractItemView.SingleSelection)
         self.parametersTableView.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.parametersTableView.setCornerButtonEnabled(False)
         self.parametersTableView.verticalHeader().setVisible(False)
@@ -295,11 +315,13 @@ class Ui_customParametersWidget(object):
     def retranslateUi(self, customParametersWidget):
         customParametersWidget.setWindowTitle(QCoreApplication.translate("customParametersWidget", u"Form", None))
         self.pageTitle.setText(QCoreApplication.translate("customParametersWidget", u"\u041d\u041e\u041c\u0415\u041d\u041a\u041b\u0410\u0422\u0423\u0420\u0418", None))
+        self.logoutBtn.setText("")
         self.userIcon.setText("")
         self.usernameLabel.setText(QCoreApplication.translate("customParametersWidget", u"admin", None))
         self.cehoveBtn.setText(QCoreApplication.translate("customParametersWidget", u"\u0420\u0430\u0431\u043e\u0442\u043d\u0438 \u043c\u0435\u0441\u0442\u0430", None))
         self.machinesBtn.setText(QCoreApplication.translate("customParametersWidget", u"\u041c\u0430\u0448\u0438\u043d\u0438", None))
         self.workingPosBtn.setText(QCoreApplication.translate("customParametersWidget", u"\u0414\u043b\u044a\u0436\u043d\u043e\u0441\u0442\u0438", None))
+        self.operTypesBtn.setText(QCoreApplication.translate("customParametersWidget", u"\u0412\u0438\u0434\u043e\u0432\u0435 \u0414\u043b\u044a\u0436\u043d\u043e\u0441\u0442", None))
         self.yarnsBtn.setText(QCoreApplication.translate("customParametersWidget", u"\u041f\u0440\u0435\u0436\u0434\u0438", None))
         self.usersBtn.setText(QCoreApplication.translate("customParametersWidget", u"\u041f\u043e\u0442\u0440\u0435\u0431\u0438\u0442\u0435\u043b\u0438", None))
         self.addNewEntryBtn.setText(QCoreApplication.translate("customParametersWidget", u"\u0414\u043e\u0431\u0430\u0432\u044f\u043d\u0435", None))

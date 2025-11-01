@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from PySide6.QtCore import Signal
 from PySide6.QtGui import QStandardItemModel, QStandardItem
 from PySide6.QtWidgets import QDialog, QMenu
 
@@ -13,12 +14,16 @@ from app.utils.utils import Utils
 
 
 class CustomPayPerMinWidget(QWidget, Ui_customPayPerMinWidget):
-    def __init__(self, mainWindow, parent=None):
+    logoutSignal = Signal(bool)
+
+    def __init__(self, mainWindow, user, parent=None):
         super().__init__(parent)
         self.setupUi(self)
         self.mainWindow = mainWindow
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
         self.setWindowTitle("Плашане за Мин.")
+        self.usernameLabel.setText(user)
+        self.user = user
         self.payPerMin = Ps.getPayPerMin()
         self.payPerMinNight = Ps.getPayPerMin(False)
         self.payPerMinModel = QStandardItemModel()
@@ -48,6 +53,8 @@ class CustomPayPerMinWidget(QWidget, Ui_customPayPerMinWidget):
 
         self.payPerMinNightCheckBox.stateChanged.connect(self.showPayPerMinNight)
         self.addNewPayPerMinEntryBtn.clicked.connect(self.addNewPayPerMinEntry)
+
+        self.logoutBtn.clicked.connect(self.logout)
 
     def refreshPayPerMinTable(self, data):
         self.payPerMinModel.setRowCount(0)
@@ -116,13 +123,13 @@ class CustomPayPerMinWidget(QWidget, Ui_customPayPerMinWidget):
                     if self.payPerMinNightCheckBox.isChecked():
                         print(itemId, currentItemId)
                         # print(f'Checked item row NIGHT: {self.checkedItemRow}')
-                        Ps.updatePayPerMinNight(itemId, currentItemId, self.usernameLabel.text())
+                        Ps.updatePayPerMinNight(itemId, currentItemId, self.user)
                         self.payPerMinNight = Ps.getPayPerMin(False)
                         self.refreshPayPerMinTable(self.payPerMinNight)
                         MM.showOnWidget(self, f'Активен платеж за Мин. за нощен труд!', 'success')
                     else:
                         # print(f'Checked item row DAY: {self.checkedItemRow}')
-                        Ps.updatePayPerMin(itemId, currentItemId, self.usernameLabel.text())
+                        Ps.updatePayPerMin(itemId, currentItemId, self.user)
                         self.payPerMin = Ps.getPayPerMin()
                         self.refreshPayPerMinTable(self.payPerMin)
                         MM.showOnWidget(self, f'Активен платеж за Мин.', 'success')
@@ -158,12 +165,12 @@ class CustomPayPerMinWidget(QWidget, Ui_customPayPerMinWidget):
 
     def aceptNewPayPerMinEntry(self, newEntry):
         if self.payPerMinNightCheckBox.isChecked():
-            result = Ps.addPayPerMin(self.usernameLabel.text(), newEntry, False)
+            result = Ps.addPayPerMin(self.user, newEntry, False)
             if result:
                 self.payPerMinNight = Ps.getPayPerMin(False)
                 self.refreshPayPerMinTable(self.payPerMinNight)
         else:
-            result = Ps.addPayPerMin(self.usernameLabel.text(), newEntry, True)
+            result = Ps.addPayPerMin(self.user, newEntry, True)
             if result:
                 self.payPerMin = Ps.getPayPerMin()
                 self.refreshPayPerMinTable(self.payPerMin)
@@ -190,7 +197,7 @@ class CustomPayPerMinWidget(QWidget, Ui_customPayPerMinWidget):
                 result = dialog.exec()
                 if result == QDialog.Accepted:
                     if self.payPerMinNightCheckBox.isChecked():
-                        if Ps.deletePayPerMin(self.usernameLabel.text(), selectedId, False):
+                        if Ps.deletePayPerMin(self.user, selectedId, False):
                             self.payPerMinNight = Ps.getPayPerMin(False)
                             self.refreshPayPerMinTable(self.payPerMinNight)
                             MM.showOnWidget(self, 'Изтриването е успешно!', 'success')
@@ -198,7 +205,7 @@ class CustomPayPerMinWidget(QWidget, Ui_customPayPerMinWidget):
                             MM.showOnWidget(self, 'Изтриването не е успешно!', 'error')
                             return
                     else:
-                        if Ps.deletePayPerMin(self.usernameLabel.text(), selectedId):
+                        if Ps.deletePayPerMin(self.user, selectedId):
                             self.payPerMin = Ps.getPayPerMin()
                             self.refreshPayPerMinTable(self.payPerMin)
                             MM.showOnWidget(self, 'Изтриването е успешно!', 'success')
@@ -208,3 +215,6 @@ class CustomPayPerMinWidget(QWidget, Ui_customPayPerMinWidget):
 
         elif action == editAction:
             print('Edit entry')
+
+    def logout(self):
+        self.logoutSignal.emit(True)

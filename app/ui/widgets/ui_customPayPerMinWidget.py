@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customPayPerMinWidgetHFgKmJ.ui'
+## Form generated from reading UI file 'customPayPerMinWidgetnIAnLZ.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -87,8 +87,13 @@ class Ui_customPayPerMinWidget(object):
                         "pt \"Segoe UI\";\n"
 "}\n"
 "\n"
-"#userIcon, #newHolidayCalBtn {\n"
+"#userIcon, #logoutBtn{\n"
 "	background-color: #dfdfdf;\n"
+"	padding: 0px;\n"
+"}\n"
+"\n"
+"#logoutBtn:hover{\n"
+"	icon: url(:/icons/app/assets/icons/Log-Out--Streamline-Feather_#192626.svg);\n"
 "}\n"
 "\n"
 "#usernameLabel {\n"
@@ -130,12 +135,21 @@ class Ui_customPayPerMinWidget(object):
         self.horizontalLayout_3.setSpacing(10)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 5, 0)
+        self.logoutBtn = QPushButton(self.userHolder)
+        self.logoutBtn.setObjectName(u"logoutBtn")
+        icon = QIcon()
+        icon.addFile(u":/icons/app/assets/icons/Log-Out--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.logoutBtn.setIcon(icon)
+        self.logoutBtn.setIconSize(QSize(24, 24))
+
+        self.horizontalLayout_3.addWidget(self.logoutBtn)
+
         self.userIcon = QPushButton(self.userHolder)
         self.userIcon.setObjectName(u"userIcon")
         self.userIcon.setFocusPolicy(Qt.NoFocus)
-        icon = QIcon()
-        icon.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.userIcon.setIcon(icon)
+        icon1 = QIcon()
+        icon1.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.userIcon.setIcon(icon1)
         self.userIcon.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_3.addWidget(self.userIcon)
@@ -179,7 +193,7 @@ class Ui_customPayPerMinWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 888, 670))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 888, 680))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -240,6 +254,7 @@ class Ui_customPayPerMinWidget(object):
     def retranslateUi(self, customPayPerMinWidget):
         customPayPerMinWidget.setWindowTitle(QCoreApplication.translate("customPayPerMinWidget", u"Form", None))
         self.pageTitle.setText(QCoreApplication.translate("customPayPerMinWidget", u"\u041f\u041b\u0410\u0429\u0410\u041d\u0415 \u0417\u0410 \u041c\u0418\u041d.", None))
+        self.logoutBtn.setText("")
         self.userIcon.setText("")
         self.usernameLabel.setText(QCoreApplication.translate("customPayPerMinWidget", u"admin", None))
         self.addNewPayPerMinEntryBtn.setText(QCoreApplication.translate("customPayPerMinWidget", u"\u0414\u043e\u0431\u0430\u0432\u044f\u043d\u0435", None))

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'operToModelTypeCustomWidgetbKWKas.ui'
+## Form generated from reading UI file 'operToModelTypeCustomWidgetRHPMVm.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -76,18 +76,24 @@ class Ui_customWidgetForModelOper(object):
 "	font: 700 13pt \"Segoe UI\";\n"
 "}\n"
 "\n"
-"#userIcon {\n"
+"#userIcon, #logoutBtn{\n"
 "	background-color: #dfdfdf;\n"
+"	padding:"
+                        " 0px;\n"
 "}\n"
 "\n"
-"#username"
-                        "Label {\n"
+"#logoutBtn:hover{\n"
+"	icon: url(:/icons/app/assets/icons/Log-Out--Streamline-Feather_#192626.svg);\n"
+"}\n"
+"\n"
+"\n"
+"#usernameLabel {\n"
 "	font-size: 11pt;\n"
 "}")
         self.verticalLayout = QVBoxLayout(customWidgetForModelOper)
         self.verticalLayout.setSpacing(10)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setContentsMargins(10, 10, 10, 10)
+        self.verticalLayout.setContentsMargins(5, 5, 5, 5)
         self.mainWidget = QWidget(customWidgetForModelOper)
         self.mainWidget.setObjectName(u"mainWidget")
         self.verticalLayout_4 = QVBoxLayout(self.mainWidget)
@@ -132,12 +138,21 @@ class Ui_customWidgetForModelOper(object):
         self.horizontalLayout_3.setSpacing(10)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 5, 0)
+        self.logoutBtn = QPushButton(self.userHolder)
+        self.logoutBtn.setObjectName(u"logoutBtn")
+        icon1 = QIcon()
+        icon1.addFile(u":/icons/app/assets/icons/Log-Out--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.logoutBtn.setIcon(icon1)
+        self.logoutBtn.setIconSize(QSize(24, 24))
+
+        self.horizontalLayout_3.addWidget(self.logoutBtn)
+
         self.userIcon = QPushButton(self.userHolder)
         self.userIcon.setObjectName(u"userIcon")
         self.userIcon.setFocusPolicy(Qt.NoFocus)
-        icon1 = QIcon()
-        icon1.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.userIcon.setIcon(icon1)
+        icon2 = QIcon()
+        icon2.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.userIcon.setIcon(icon2)
         self.userIcon.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_3.addWidget(self.userIcon)
@@ -511,6 +526,7 @@ class Ui_customWidgetForModelOper(object):
         self.operationsGroupViewBtn.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0413\u0440\u0443\u043f\u0438\u0440\u0430\u043d\u0435", None))
         self.operationsGroupsReturnBtn.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041d\u0430\u0437\u0430\u0434", None))
         self.pageTitle.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041e\u041f\u0415\u0420\u0410\u0426\u0418\u0418 \u0417\u0410 \u041c\u041e\u0414\u0415\u041b\u0418", None))
+        self.logoutBtn.setText("")
         self.userIcon.setText("")
         self.usernameLabel.setText(QCoreApplication.translate("customWidgetForModelOper", u"admin", None))
         self.label.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0422\u044a\u0440\u0441\u0435\u043d\u0435", None))

@@ -81,8 +81,17 @@ QLineEdit, QDateEdit{
 	font: 700 13pt &quot;Segoe UI&quot;;
 }
 
-#userIcon, #fromCalendarBtn, #toCalendarBtn {
+#fromCalendarBtn, #toCalendarBtn {
 	background-color: #dfdfdf;
+}
+
+#userIcon, #logoutBtn{
+	background-color: #dfdfdf;
+	padding: 0px;
+}
+
+#logoutBtn:hover{
+	icon: url(:/icons/app/assets/icons/Log-Out--Streamline-Feather_#192626.svg);
 }
 
 #refreshShiftsBtn {
@@ -233,6 +242,23 @@ QComboBox::item{
              <number>0</number>
             </property>
             <item>
+             <widget class="QPushButton" name="logoutBtn">
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="../../../resources.qrc">
+                <normaloff>:/icons/app/assets/icons/Log-Out--Streamline-Feather.svg</normaloff>:/icons/app/assets/icons/Log-Out--Streamline-Feather.svg</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
              <widget class="QPushButton" name="userIcon">
               <property name="focusPolicy">
                <enum>Qt::NoFocus</enum>
@@ -353,7 +379,7 @@ QComboBox::item{
                    <second>0</second>
                    <year>1990</year>
                    <month>9</month>
-                   <day>3</day>
+                   <day>2</day>
                   </datetime>
                  </property>
                  <property name="displayFormat">
@@ -435,7 +461,7 @@ QComboBox::item{
                    <second>0</second>
                    <year>1990</year>
                    <month>9</month>
-                   <day>4</day>
+                   <day>3</day>
                   </datetime>
                  </property>
                  <property name="displayFormat">
@@ -611,7 +637,7 @@ QComboBox::item{
         <x>0</x>
         <y>0</y>
         <width>1161</width>
-        <height>697</height>
+        <height>707</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_12">

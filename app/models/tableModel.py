@@ -6,10 +6,39 @@ from app.models.customSelectionModel import SingleMultiSelectionModel
 
 
 class TableModel(QAbstractTableModel):
+    dataEdited = Signal(int, int, object)
     def __init__(self, data):
         super().__init__()
         self._data = data.copy()
         self._data = self._data.fillna('')
+
+    def setData(self, index, value, role=Qt.ItemDataRole.EditRole):
+        if role == Qt.ItemDataRole.EditRole:
+            row = index.row()
+            col = index.column()
+
+            if col > 0:
+
+                # Try to convert the value to the original data type of the column
+                try:
+                    original_dtype = self._data.iloc[:, col].dtype
+                    if pd.api.types.is_numeric_dtype(original_dtype):
+                        # Allow empty string to be set as NaN or handle as you see fit
+                        if value == '':
+                            self._data.iloc[row, col] = np.nan
+                        else:
+                            self._data.iloc[row, col] = original_dtype.type(value)
+                    else:
+                        self._data.iloc[row, col] = value
+                except (ValueError, TypeError):
+                    return False  # Failed to convert type
+
+                self.dataChanged.emit(index, index, [role])
+                self.dataEdited.emit(row, col, value)
+                return True
+            else:
+                return False
+        return False
 
     def rowCount(self, parent=None):
         return self._data.shape[0]

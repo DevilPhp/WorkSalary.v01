@@ -3,12 +3,91 @@ from sqlalchemy import func
 from app.logger import logger
 from app.database import getDatabase, setDatabase
 from app.database.workers import Worker, TimePaper, TimePaperOperation, WorkingShift, HourlyPay, OvertimePay, Cehove,\
-    PaymentType, WorkerPosition
+    PaymentType, WorkerPosition, OperationType
 from app.database.payment import PaymentPerMinute, NightPaymentPerMinute, HolidaysPerYear, Holiday
 from datetime import datetime
 
 
 class WorkerServices:
+
+    @staticmethod
+    def addNewOperationType(data, rows):
+        with setDatabase() as session:
+            if data:
+                newOperationType = OperationType(OperTypeID=rows + 1)
+                for row, value in data.items():
+                    setattr(newOperationType, row, value)
+                session.add(newOperationType)
+                session.commit()
+                if newOperationType.OperTypeID:
+                    logger.info(f'OperationType {newOperationType.OperTypeID} - {newOperationType.OperName} added')
+                    return True
+                else:
+                    logger.error('Failed to add new OperationType')
+                    return False
+            else:
+                logger.error('No data provided for new OperationType')
+                return False
+
+    @staticmethod
+    def addNewWorkerPosition(data, rows):
+        with setDatabase() as session:
+            if data:
+                newPosition = WorkerPosition(ДлъжностКод=rows + 1)
+                print(newPosition)
+                for row, value in data.items():
+                    # print(f'Adding new WorkerPosition: {row} - {value}')
+                    setattr(newPosition, row, value)
+                session.add(newPosition)
+                session.commit()
+                if newPosition.ДлъжностКод:
+                    logger.info(f'WorkerPosition {newPosition.ДлъжностКод} - {newPosition.ДлъжностКод} added')
+                    return True
+                else:
+                    logger.error('Failed to add new WorkerPosition')
+                    return False
+            else:
+                logger.error('No data provided for new WorkerPosition')
+                return False
+
+    @staticmethod
+    def addNewCehove(data):
+        with setDatabase() as session:
+            if data:
+                newCeh = Cehove()
+                for row, value in data.items():
+                    # print(f'Adding new Cehove: {row} - {value}')
+                    setattr(newCeh, row, value)
+                session.add(newCeh)
+                session.commit()
+                if newCeh.id:
+                    logger.info(f'Cehove {newCeh.id} - {newCeh.Група} added')
+                    return True
+                else:
+                    logger.error('Failed to add new Cehove')
+                    return False
+            else:
+                logger.error('No data provided for new Cehove')
+                return False
+
+    @staticmethod
+    def getWorkersForCehove():
+        returnedData = []
+        with getDatabase() as session:
+            workers = session.query(Worker).order_by(Worker.Номер).all()
+            for worker in workers:
+                returnedData.append(f'{worker.Номер}:  {worker.Име} {worker.Фамилия}')
+            return returnedData
+
+    @staticmethod
+    def getOperationTypes():
+        returnedData = []
+        with getDatabase() as session:
+            operationsTypes = session.query(OperationType).order_by(OperationType.OperTypeID).all()
+            print(operationsTypes)
+            for operationType in operationsTypes:
+                returnedData.append(f'{operationType.OperTypeID}:  {operationType.OperName}')
+            return returnedData
 
     @staticmethod
     def deleteWorker(workerId):

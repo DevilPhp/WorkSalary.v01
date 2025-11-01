@@ -1,5 +1,6 @@
 from functools import partial
 
+from PySide6.QtCore import Signal
 from PySide6.QtGui import QDoubleValidator
 from PySide6.QtWidgets import QDialog
 
@@ -15,12 +16,17 @@ import datetime
 
 
 class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
-    def __init__(self, mainWindow, parent=None):
+    logoutSignal = Signal(bool)
+
+    def __init__(self, mainWindow, user, parent=None):
         super().__init__(parent)
         self.setupUi(self)
         self.mainWindow = mainWindow
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
         self.setWindowTitle('Операции за модели')
+        self.usernameLabel.setText(user)
+        self.user = user
+
         self.operationsGroupsHolder.setVisible(False)
         self.operationsGroupsReturnBtn.setVisible(False)
         validatorInt = QDoubleValidator(0, 999999, 0)
@@ -79,6 +85,8 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.forModelLineEdit.editingFinished.connect(self.forModelLineEditChange)
 
         self.clientsLineEdit.setFocus()
+
+        self.logoutBtn.clicked.connect(self.logout)
 
         # logger.info('Models and Operations Page initialized successfully!')
         # MessageManager.showOnWidget(self, 'Models and Operations Page initialized successfully!',
@@ -432,7 +440,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             'pieces': orderPieces,
             'dateCreated': datetime.datetime.now(),
             'targetDate': datetime.datetime.now() + datetime.timedelta(days=30),
-            'userCreated': self.usernameLabel.text(),
+            'userCreated': self.user,
             'descr': self.descrLineEdit.text()
         }
         if self.isNewModel:
@@ -793,3 +801,6 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         elif '.' in text:
             text = text.split('.')[0]
         self.piecesLineEdit.setText(text)
+
+    def logout(self):
+        self.logoutSignal.emit(True)

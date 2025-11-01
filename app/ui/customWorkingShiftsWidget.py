@@ -1,3 +1,4 @@
+from PySide6.QtCore import Signal
 from PySide6.QtGui import QStandardItemModel, QStandardItem, QDoubleValidator
 from PySide6.QtWidgets import QMenu, QDialog
 
@@ -11,11 +12,16 @@ from datetime import datetime
 
 
 class CustomShiftsEditWidget(QWidget, Ui_customWorkingShiftsWidget):
-    def __init__(self, mainWindow, parent=None):
+    logoutSignal = Signal(bool)
+
+    def __init__(self, mainWindow, user, parent=None):
         super().__init__(parent)
         self.setupUi(self)
         self.mainWindow = mainWindow
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
+        self.usernameLabel.setText(user)
+        self.user = user
+
         self.workingShifts = None
         self.workingShiftsNames = {}
         validatorInt = QDoubleValidator(0, 999999, 0)
@@ -43,7 +49,10 @@ class CustomShiftsEditWidget(QWidget, Ui_customWorkingShiftsWidget):
         self.shiftBreakLineEdit.textChanged.connect(self.updateShiftDuration)
         self.acceptWorkingShiftsBtn.clicked.connect(self.acceptWorkingShifts)
 
+        self.logoutBtn.clicked.connect(self.logout)
+
         self.workingShiftsNameLineEdit.setFocus()
+
 
     def showCustomContextMenu(self, position):
         menu = QMenu(self)
@@ -111,7 +120,7 @@ class CustomShiftsEditWidget(QWidget, Ui_customWorkingShiftsWidget):
                         endShiftTime,
                         int(self.shiftBreakLineEdit.text()) if self.shiftBreakLineEdit.text() else 60,
                         float(self.shiftTotalMins.text()),
-                        self.usernameLabel.text()
+                        self.user
                     ]
                     success = WoS.addWorkingShift(newShift)
                     if success:
@@ -119,7 +128,7 @@ class CustomShiftsEditWidget(QWidget, Ui_customWorkingShiftsWidget):
                         self.refreshWorkingShiftsTable()
                         self.resetShiftInfo()
         else:
-            MM.showOnWidget(self, f'Въведени е невалидно име за смяна \n{shiftName}', 'warning')
+            MM.showOnWidget(self, f'Въведено е невалидно име за смяна \n{shiftName}', 'warning')
 
     def resetShiftInfo(self):
         self.workingShiftsNameLineEdit.clear()
@@ -162,3 +171,6 @@ class CustomShiftsEditWidget(QWidget, Ui_customWorkingShiftsWidget):
             ]
             self.workingShiftsNames[shift.ShiftName] = shift.id
             self.workingShiftsModel.appendRow(row)
+
+    def logout(self):
+        self.logoutSignal.emit(True)
