@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customParametersWidgetmwLMIz.ui'
+## Form generated from reading UI file 'customParametersWidgetQHLpCE.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -203,6 +203,11 @@ class Ui_customParametersWidget(object):
         self.horizontalLayout_4.setSpacing(10)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.clientsBtn = QPushButton(self.widget_7)
+        self.clientsBtn.setObjectName(u"clientsBtn")
+
+        self.horizontalLayout_4.addWidget(self.clientsBtn)
+
         self.cehoveBtn = QPushButton(self.widget_7)
         self.cehoveBtn.setObjectName(u"cehoveBtn")
 
@@ -318,6 +323,7 @@ class Ui_customParametersWidget(object):
         self.logoutBtn.setText("")
         self.userIcon.setText("")
         self.usernameLabel.setText(QCoreApplication.translate("customParametersWidget", u"admin", None))
+        self.clientsBtn.setText(QCoreApplication.translate("customParametersWidget", u"\u041a\u043b\u0438\u0435\u043d\u0442\u0438", None))
         self.cehoveBtn.setText(QCoreApplication.translate("customParametersWidget", u"\u0420\u0430\u0431\u043e\u0442\u043d\u0438 \u043c\u0435\u0441\u0442\u0430", None))
         self.machinesBtn.setText(QCoreApplication.translate("customParametersWidget", u"\u041c\u0430\u0448\u0438\u043d\u0438", None))
         self.workingPosBtn.setText(QCoreApplication.translate("customParametersWidget", u"\u0414\u043b\u044a\u0436\u043d\u043e\u0441\u0442\u0438", None))

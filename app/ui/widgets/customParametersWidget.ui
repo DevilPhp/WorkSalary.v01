@@ -327,6 +327,13 @@ yearsBtnsHolder QPushButton:clicked {
                 <number>0</number>
                </property>
                <item>
+                <widget class="QPushButton" name="clientsBtn">
+                 <property name="text">
+                  <string>Клиенти</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
                 <widget class="QPushButton" name="cehoveBtn">
                  <property name="text">
                   <string>Работни места</string>

@@ -38,6 +38,7 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
 QPushButton {
 	background-color: #c9c9c9;
 	border: none;
+	padding: 5px;
 	border-radius: 10px;
 	font-size: 12pt;
 }
@@ -84,6 +85,7 @@ QLineEdit{
 
 #userIcon, #fromCalendarBtn, #toCalendarBtn, #logoutBtn {
 	background-color: #dfdfdf;
+	padding: 0px;
 }
 
 #logoutBtn:hover{
@@ -256,23 +258,46 @@ QLineEdit{
           <height>0</height>
          </size>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_5">
-         <property name="spacing">
-          <number>35</number>
-         </property>
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>5</number>
-         </property>
-         <item alignment="Qt::AlignLeft|Qt::AlignTop">
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item alignment="Qt::AlignLeft">
+          <widget class="QWidget" name="widget_7" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <property name="spacing">
+             <number>10</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="excelBtn">
+              <property name="text">
+               <string>Excel</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="includeSubrowCheckBox">
+              <property name="text">
+               <string>С подредове за ден.</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
           <widget class="QWidget" name="workerHolder" native="true">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -757,7 +782,7 @@ QLineEdit{
         <x>0</x>
         <y>0</y>
         <width>1161</width>
-        <height>608</height>
+        <height>557</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_12">

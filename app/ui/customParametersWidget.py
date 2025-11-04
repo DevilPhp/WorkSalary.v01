@@ -38,6 +38,7 @@ class CustomParametersWidget(QWidget, Ui_customParametersWidget):
 
         # self.loadTable('cehove')
 
+        self.clientsBtn.clicked.connect(lambda: self.btnClicked('clients', self.clientsBtn))
         self.cehoveBtn.clicked.connect(lambda: self.btnClicked('cehove', self.cehoveBtn))
         self.machinesBtn.clicked.connect(lambda: self.btnClicked('machines', self.machinesBtn))
         self.workingPosBtn.clicked.connect(lambda: self.btnClicked('workerPositions', self.workingPosBtn))
@@ -53,7 +54,7 @@ class CustomParametersWidget(QWidget, Ui_customParametersWidget):
 
         self.logoutBtn.clicked.connect(self.logout)
 
-        self.btnClicked('cehove', self.cehoveBtn)
+        self.btnClicked('clients', self.clientsBtn)
 
     def addNewEntry(self):
         headers = {}
@@ -86,6 +87,8 @@ class CustomParametersWidget(QWidget, Ui_customParametersWidget):
             self.addNewOperationType(data)
         elif self.selectedTable == 'yarns':
             self.addNewYarn(data)
+        elif self.selectedTable == 'clients':
+            self.addNewClient(data)
         else:
             return
 
@@ -98,6 +101,16 @@ class CustomParametersWidget(QWidget, Ui_customParametersWidget):
             MM.showOnWidget(self, f"потребител '{data['Потребител']}' вече съществува!", 'error')
         else:
             MM.showOnWidget(self, f"потребител '{data['Потребител']}' не може да бъде добавен", 'error')
+
+    def addNewClient(self, data):
+        result = Ms.addNewClient(data, self.model.rowCount())
+        if result == 1:
+            MM.showOnWidget(self, f"Клиент '{data['Клиент']}' е добавен успешно!",'success')
+            self.btnClicked('clients', self.clientsBtn)
+        elif result == -1:
+            MM.showOnWidget(self, f"Клиент '{data['Клиент']}' вече съществува!", 'error')
+        else:
+            MM.showOnWidget(self, f"Клиент '{data['Клиент']}' не може да бъде добавен!", 'error')
 
     def addNewCehove(self, data):
         result = Ws.addNewCehove(data)
@@ -170,6 +183,13 @@ class CustomParametersWidget(QWidget, Ui_customParametersWidget):
         self.model = None
         data = fetchDataFromDbWithRelations(tableName)
         self.model = TableModel(data)
+
+        editableColumns = []
+        if tableName == 'cehove':
+            editableColumns = [1]
+
+        self.model.setEditableColumns(editableColumns)
+
         self.parametersTableView.setModel(self.model)
         self.numericColumns = [i for i, dtype in enumerate(data.dtypes) if pd.api.types.is_numeric_dtype(dtype)]
         self.dataColumns = [i for i, dtype in enumerate(data.dtypes) if pd.api.types.is_datetime64_any_dtype(dtype)]
@@ -193,6 +213,7 @@ class CustomParametersWidget(QWidget, Ui_customParametersWidget):
     def showContextMenu(self, pos):
         menu = QMenu(self)
         deleteAction = menu.addAction("Изтрий")
+        # editAction = menu.addAction("Редактиране")
         action = menu.exec_(self.parametersTableView.viewport().mapToGlobal(pos))
 
         if action == deleteAction:
@@ -221,17 +242,84 @@ class CustomParametersWidget(QWidget, Ui_customParametersWidget):
             self.deleteSelectedOperationType(rowId, name)
         elif self.selectedTable == 'yarns':
             self.deleteSelectedYarn(rowId, name)
+        elif self.selectedTable == 'clients':
+            self.deleteSelectedClient(rowId, name)
 
     def deleteSelectedUser(self, rowId, name):
         if name == self.user:
             MM.showOnWidget(self, f"Не можете да изтриете текущия потребител!", 'error')
             return
-
         if Us.deleteUser(rowId):
             self.loadTable('users')
-            MM.showOnWidget(self, f"Потребител '{name}' е изтрит успешно!", 'success')
+            MM.showOnWidget(self, f"Потребител '{name}' е изтрит успешно!", 'success', 1500)
         else:
             MM.showOnWidget(self, f"Потребител '{name}' не може да бъде изтрит!", 'error')
+
+    def deleteSelectedClient(self, rowId, name):
+        result = Ms.deleteClient(rowId, name)
+        if result == 1:
+            self.loadTable('clients')
+            MM.showOnWidget(self, f"Клиент: '{name}' е изтрит успешно!", 'success', 1500)
+        elif result == -1:
+            MM.showOnWidget(self, f"Клиент: '{name}' има съществуващи врзки с произв. модел/модели!",
+                            'warning', 3000)
+        else:
+            MM.showOnWidget(self, f"Клиент: '{name}' не може да бъде изтрит!", 'error')
+
+    def deleteSelectedCehove(self, rowId, name):
+        result = Ws.deleteSelectedCehove(rowId)
+        if result == 1:
+            self.loadTable('cehove')
+            MM.showOnWidget(self, f"Работно място: '{name}' е изтрито успешно!", 'success', 1500)
+        elif result == -1:
+            MM.showOnWidget(self, f"Работно място: '{name}' има съществуващи врзки с работници!",
+                            'warning', 3000)
+        else:
+            MM.showOnWidget(self, f"Работно място: '{name}' не може да бъде изтрито!", 'error')
+
+    def deleteSelectedMachine(self, rowId, name):
+        result = Ms.deleteSelectedMachine(rowId)
+        if result == 1:
+            self.loadTable('machines')
+            MM.showOnWidget(self, f"Машина: '{name}' е изтрита успешно!", 'success', 1500)
+        elif result == -1:
+            MM.showOnWidget(self, f"Машина: '{name}' има съществуващи врзки с производ. модел/модели!",
+                            'warning', 3000)
+        else:
+            MM.showOnWidget(self, f"Машина: '{name}' не може да бъде изтрита!", 'error')
+
+    def deleteSelectedWorkerPosition(self, rowId, name):
+        result = Ws.deleteSelectedWorkerPosition(rowId)
+        if result == 1:
+            self.loadTable('workerPositions')
+            MM.showOnWidget(self, f"Длъжност: '{name}' е изтрита успешно!", 'success', 1500)
+        elif result == -1:
+            MM.showOnWidget(self, f"Длъжност: '{name}' има съществуващи врзки с работници и/или вид длъжност!",
+                            'warning', 3000)
+        else:
+            MM.showOnWidget(self, f"Длъжност: '{name}' не може да бъде изтрита!", 'error')
+
+    def deleteSelectedOperationType(self, rowId, name):
+        result = Ws.deleteSelectedOperationType(rowId)
+        if result == 1:
+            self.loadTable('operationTypes')
+            MM.showOnWidget(self, f"Вид операция: '{name}' е изтрит успешно!", 'success', 1500)
+        elif result == -1:
+            MM.showOnWidget(self, f"Вид операция: '{name}' има съществуващи врзки с длъжности/операции!",
+                            'warning', 3000)
+        else:
+            MM.showOnWidget(self, f"Вид операция: '{name}' не може да бъде изтрита!", 'error')
+
+    def deleteSelectedYarn(self, rowId, name):
+        result = Ms.deleteSelectedYarn(rowId)
+        if result == 1:
+            self.loadTable('yarns')
+            MM.showOnWidget(self, f"Прежда: '{name}' е изтрита успешно!", 'success', 1500)
+        elif result == -1:
+            MM.showOnWidget(self, f"Прежда: '{name}' има съществуващи врзки с поръчки!",
+                            'warning', 3000)
+        else:
+            MM.showOnWidget(self, f"Прежда: '{name}' не може да бъде изтрита!", 'error')
 
     def setProxyModel(self, proxyModel, model, table):
         proxyModel.setSourceModel(model)
@@ -239,7 +327,13 @@ class CustomParametersWidget(QWidget, Ui_customParametersWidget):
         table.setSortingEnabled(True)
 
     def tableDoubleClicked(self, row):
+        # print(self.selectedTable)
+        # print(row.column())
         if row.column() > 0:
+            # if self.selectedTable == 'cehove':
+            #     print('here')
+            #     row.column()
+            #     print(row.column())
             self.originalDispayValue = row.data(Qt.ItemDataRole.DisplayRole)
             self.originalUserValue = row.data(Qt.ItemDataRole.UserRole)
             self.selectedIndex = row

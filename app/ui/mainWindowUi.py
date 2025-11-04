@@ -58,7 +58,7 @@ class MainWindow(QMainWindow):
         logger.info('Application started')
         # windows = ['clients', 'operations']
 
-        self.ui.pageBtn.clicked.connect(lambda: self.changePage(windows))
+        # self.ui.pageBtn.clicked.connect(lambda: self.changePage(windows))
         self.ui.setDefaultOperBtn.clicked.connect(self.setDefaultOperPage)
         self.ui.setModelsOperBtn.clicked.connect(self.setModelOperPage)
         self.ui.timePapersBtn.clicked.connect(self.setTimePapersPage)

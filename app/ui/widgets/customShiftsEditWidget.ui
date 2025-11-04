@@ -681,53 +681,6 @@ QMenu::item:selected {
           <property name="bottomMargin">
            <number>0</number>
           </property>
-          <item>
-           <widget class="QTableView" name="workingShiftsTableView">
-            <property name="focusPolicy">
-             <enum>Qt::NoFocus</enum>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QHeaderView:section{
-	font: 700 10.5pt &quot;Segoe UI&quot;;
-	background-color: #dfdfdf;
-	padding-left: 10px;
-	padding-top:10px;
-	padding-right:10px;
-}
-QVerticalView:section{
-	min-height: 30;
-}
-QAbstractItemView{
-	alternate-background-color: #d3d3d3;
-	font: 10.5pt &quot;Segoe UI&quot;;
-	selection-background-color: rgba(198, 228, 254, 45);
-	selection-color: #324b4c;
-}
-QAbstractItemView:item{
-	selection-background-color: rgba(198, 228, 254, 45);
-	selection-color: #324b4c;
-}
-QAbstractItemView::item:selected{
-	background-color: rgba(198, 228, 254, 45);
-}</string>
-            </property>
-            <property name="editTriggers">
-             <set>QAbstractItemView::NoEditTriggers</set>
-            </property>
-            <property name="alternatingRowColors">
-             <bool>true</bool>
-            </property>
-            <property name="selectionBehavior">
-             <enum>QAbstractItemView::SelectRows</enum>
-            </property>
-            <property name="cornerButtonEnabled">
-             <bool>false</bool>
-            </property>
-            <attribute name="verticalHeaderVisible">
-             <bool>false</bool>
-            </attribute>
-           </widget>
-          </item>
          </layout>
         </widget>
        </item>

@@ -115,8 +115,6 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
         header_fill = PatternFill(start_color="DFDFDF", end_color="DFDFDF", fill_type="solid")
 
         columnHeaders = self.tablePaymentsNames.copy()
-        print(columnHeaders)
-        print(self.tablePaymentsNames)
         if not self.holidaysCheckBox.isChecked():
             columnHeaders.remove('В Празници')
 
@@ -139,11 +137,7 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
             cell.font = Font(bold=True)
             cell.fill = header_fill
             cell.alignment = Alignment(horizontal='center')
-
         # self.excelTableNames = self.tablePaymentsNames
-
-        print(columnHeaders)
-        print(self.tablePaymentsNames)
 
         # Add data rows
         row_idx = 4  # Start from row 4 (after headers)
@@ -176,18 +170,6 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
                 # print(f"View column: {viewColumns}, Value: {value}")
 
             row_idx += 1
-
-        # Auto-adjust column widths
-        # for col in ws.columns:
-        #     max_length = 0
-        #     column = col[0].column_letter
-        #     for cell in col:
-        #         if cell.value:
-        #             cell_length = len(str(cell.value))
-        #             if cell_length > max_length:
-        #                 max_length = cell_length
-        #     adjusted_width = (max_length + 2)
-        #     ws.column_dimensions[column].width = adjusted_width
 
         # Add summary at the bottom
         summary_row = row_idx + 1

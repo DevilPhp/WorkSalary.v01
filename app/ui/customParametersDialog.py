@@ -42,6 +42,10 @@ class CustomAddParametersDialog(Ui_customAddParametersDialog, QDialog):
                     userInput = row.widget().inputComboBox.currentText()
                     newEntry[name] = int(userInput.split(':  ')[0])
 
+                elif name == "Ниво":
+                    userInput = row.widget().inputComboBox.currentText()
+                    newEntry[name] = userInput
+
                 else:
                     newEntry[name] = userInput
 
@@ -64,7 +68,7 @@ class CustomAddParametersDialog(Ui_customAddParametersDialog, QDialog):
                 info[1] = "float"
         # print(param, info[1])
         row = CustomParametersRowWidget(info[1])
-        if param == "SupervisorNo" or param == "ВидОперация":
+        if param == "SupervisorNo" or param == "ВидОперация" or param == "Ниво":
             self.setComboBox(param, row)
             row.inputComboBox.setVisible(True)
             row.inputLineEdit.setVisible(False)
@@ -88,3 +92,9 @@ class CustomAddParametersDialog(Ui_customAddParametersDialog, QDialog):
                 row.inputComboBox.addItem(operType)
             row.inputComboBox.setEditable(True)
             Utils.setupCompleter(operTypes, row.inputComboBox.lineEdit())
+
+        elif param == "Ниво":
+            userRols = ["Guest", "User", "Admin"]
+            for userRole in userRols:
+                row.inputComboBox.addItem(userRole)
+            row.inputComboBox.setCurrentIndex(0)

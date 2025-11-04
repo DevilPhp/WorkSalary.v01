@@ -7,6 +7,7 @@ from app.ui.messagesManager import MessageManager as MM
 from app.ui.widgets.ui_defaultOperToModelTypeCustomWidget import *
 from app.ui.widgets.ui_customCheckBoxWidget import Ui_customCheckBoxWidget
 from app.ui.customYesNoMessage import CustomYesNowDialog
+from app.ui.customAddOperationDialog import CustomAddOperationDialog
 from app.services.operationServices import OperationsServices as OpS
 from app.services.modelServices import ModelService as Ms
 from PySide6.QtWidgets import QCheckBox, QMenu, QDialog
@@ -66,14 +67,32 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
                 MM.showOnWidget(self, 'Не е добавен вид модели', 'error')
 
     def addNewOperationDialog(self):
-        newText, ok = QtWidgets.QInputDialog.getText(self,"Добавяне", "Въведете име:")
-        if ok and newText:
-            newOperation = OpS.addNewDefaultOperations(newText)
-            if newOperation:
-                self.operations = OpS.getAllOperations()
-                self.clearOperationsLayout()
-                self.setCheckBox()
-                MM.showOnWidget(self, f'Успешно добавяне на операция: {newText}', 'success')
+
+        # if ok and newText:
+        #     newOperation = OpS.addNewDefaultOperations(newText)
+        #     if newOperation:
+        #         self.operations = OpS.getAllOperations()
+        #         self.clearOperationsLayout()
+        #         self.setCheckBox()
+        #         MM.showOnWidget(self, f'Успешно добавяне на операция: {newText}', 'success')
+
+        dialog = CustomAddOperationDialog()
+        dialog.operInfo.connect(self.addOperationToComboBox)
+        dialog.exec()
+
+    def addOperationToComboBox(self, operInfo):
+        operName = operInfo[0]
+        operType = operInfo[1]
+
+        if OpS.addNewDefaultOperations(operName, operType):
+            self.operations = OpS.getAllOperations()
+            self.clearOperationsLayout()
+            self.setCheckBox()
+            MM.showOnWidget(self, f'Успешно добавяне на операция: {operName}', 'success')
+        else:
+            MM.showOnWidget(self, 'Не е добавена операция', 'error')
+
+        # print(operInfo)
 
     def saveOperationsForModelType(self):
         modelTypeIndex = self.defaultModelTypeComboBox.currentIndex() + 1

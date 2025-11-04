@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customShiftsEditWidgetrIZTPn.ui'
+## Form generated from reading UI file 'customShiftsEditWidgetCkXPGK.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -15,10 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractItemView, QApplication, QFrame, QGridLayout,
-    QHBoxLayout, QHeaderView, QLabel, QLineEdit,
-    QPushButton, QScrollArea, QSizePolicy, QTableView,
-    QTimeEdit, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
+    QLabel, QLineEdit, QPushButton, QScrollArea,
+    QSizePolicy, QTimeEdit, QVBoxLayout, QWidget)
 import resources_rc
 
 class Ui_customWorkingShiftsWidget(object):
@@ -399,40 +398,6 @@ class Ui_customWorkingShiftsWidget(object):
         self.verticalLayout_11.setSpacing(5)
         self.verticalLayout_11.setObjectName(u"verticalLayout_11")
         self.verticalLayout_11.setContentsMargins(5, 5, 5, 0)
-        self.workingShiftsTableView = QTableView(self.workingShiftsTable)
-        self.workingShiftsTableView.setObjectName(u"workingShiftsTableView")
-        self.workingShiftsTableView.setFocusPolicy(Qt.NoFocus)
-        self.workingShiftsTableView.setStyleSheet(u"QHeaderView:section{\n"
-"	font: 700 10.5pt \"Segoe UI\";\n"
-"	background-color: #dfdfdf;\n"
-"	padding-left: 10px;\n"
-"	padding-top:10px;\n"
-"	padding-right:10px;\n"
-"}\n"
-"QVerticalView:section{\n"
-"	min-height: 30;\n"
-"}\n"
-"QAbstractItemView{\n"
-"	alternate-background-color: #d3d3d3;\n"
-"	font: 10.5pt \"Segoe UI\";\n"
-"	selection-background-color: rgba(198, 228, 254, 45);\n"
-"	selection-color: #324b4c;\n"
-"}\n"
-"QAbstractItemView:item{\n"
-"	selection-background-color: rgba(198, 228, 254, 45);\n"
-"	selection-color: #324b4c;\n"
-"}\n"
-"QAbstractItemView::item:selected{\n"
-"	background-color: rgba(198, 228, 254, 45);\n"
-"}")
-        self.workingShiftsTableView.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.workingShiftsTableView.setAlternatingRowColors(True)
-        self.workingShiftsTableView.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.workingShiftsTableView.setCornerButtonEnabled(False)
-        self.workingShiftsTableView.verticalHeader().setVisible(False)
-
-        self.verticalLayout_11.addWidget(self.workingShiftsTableView)
-
 
         self.verticalLayout_12.addWidget(self.workingShiftsTable)
 

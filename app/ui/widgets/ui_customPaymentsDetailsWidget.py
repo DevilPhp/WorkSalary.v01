@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customPaymentsDetailsWidgetePfTNU.ui'
+## Form generated from reading UI file 'customPaymentsDetailsWidgetXLtyUr.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -44,6 +44,7 @@ class Ui_customPaymentsDetailsWidget(object):
 "QPushButton {\n"
 "	background-color: #c9c9c9;\n"
 "	border: none;\n"
+"	padding: 5px;\n"
 "	border-radius: 10px;\n"
 "	font-size: 12pt;\n"
 "}\n"
@@ -76,8 +77,8 @@ class Ui_customPaymentsDetailsWidget(object):
 "	font-weight: 700;\n"
 "}\n"
 "\n"
-"#modelHolder QLabel, #newModelInfoHolder "
-                        "*{\n"
+"#modelHolder QLabel, #"
+                        "newModelInfoHolder *{\n"
 "	font-size: 10pt;\n"
 "}\n"
 "\n"
@@ -91,6 +92,7 @@ class Ui_customPaymentsDetailsWidget(object):
 "\n"
 "#userIcon, #fromCalendarBtn, #toCalendarBtn, #logoutBtn {\n"
 "	background-color: #dfdfdf;\n"
+"	padding: 0px;\n"
 "}\n"
 "\n"
 "#logoutBtn:hover{\n"
@@ -174,10 +176,28 @@ class Ui_customPaymentsDetailsWidget(object):
         sizePolicy.setHeightForWidth(self.workerInfoHolder.sizePolicy().hasHeightForWidth())
         self.workerInfoHolder.setSizePolicy(sizePolicy)
         self.workerInfoHolder.setMinimumSize(QSize(0, 0))
-        self.horizontalLayout_5 = QHBoxLayout(self.workerInfoHolder)
-        self.horizontalLayout_5.setSpacing(35)
+        self.verticalLayout_3 = QVBoxLayout(self.workerInfoHolder)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.widget_7 = QWidget(self.workerInfoHolder)
+        self.widget_7.setObjectName(u"widget_7")
+        self.horizontalLayout_5 = QHBoxLayout(self.widget_7)
+        self.horizontalLayout_5.setSpacing(10)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
-        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 5)
+        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.excelBtn = QPushButton(self.widget_7)
+        self.excelBtn.setObjectName(u"excelBtn")
+
+        self.horizontalLayout_5.addWidget(self.excelBtn)
+
+        self.includeSubrowCheckBox = QCheckBox(self.widget_7)
+        self.includeSubrowCheckBox.setObjectName(u"includeSubrowCheckBox")
+        self.includeSubrowCheckBox.setChecked(True)
+
+        self.horizontalLayout_5.addWidget(self.includeSubrowCheckBox)
+
+
+        self.verticalLayout_3.addWidget(self.widget_7, 0, Qt.AlignLeft)
+
         self.workerHolder = QWidget(self.workerInfoHolder)
         self.workerHolder.setObjectName(u"workerHolder")
         sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
@@ -298,7 +318,7 @@ class Ui_customPaymentsDetailsWidget(object):
         self.horizontalLayout_9.addWidget(self.widget_6)
 
 
-        self.horizontalLayout_5.addWidget(self.workerHolder, 0, Qt.AlignLeft|Qt.AlignTop)
+        self.verticalLayout_3.addWidget(self.workerHolder)
 
 
         self.verticalLayout_4.addWidget(self.workerInfoHolder, 0, Qt.AlignLeft|Qt.AlignTop)
@@ -460,7 +480,7 @@ class Ui_customPaymentsDetailsWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1161, 608))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1161, 557))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -645,6 +665,8 @@ class Ui_customPaymentsDetailsWidget(object):
         self.logoutBtn.setText("")
         self.userIcon.setText("")
         self.usernameLabel.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"admin", None))
+        self.excelBtn.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"Excel", None))
+        self.includeSubrowCheckBox.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u0421 \u043f\u043e\u0434\u0440\u0435\u0434\u043e\u0432\u0435 \u0437\u0430 \u0434\u0435\u043d.", None))
         self.label_8.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u0414\u043b\u044a\u0436\u043d.", None))
         self.label.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u0418\u043c\u0435:", None))
         self.workerPlaceLabel.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u041d\u0435 \u0435 \u043f\u043e\u0441\u043e\u0447\u0435\u043d\u043e", None))

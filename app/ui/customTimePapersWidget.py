@@ -49,7 +49,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.setupWorkerAndModelsCompleter()
         self.timePaperDateEdit.setDate(QDate.currentDate())
         self.setupWorkingTimeWidgets()
-        self.timePapersForDayTableView = CustomTableViewWithMultiSelection(self)
+        self.timePapersForDayTableView = CustomTableViewWithMultiSelection(self, )
         self.timePaperTableHolder.layout().addWidget(self.timePapersForDayTableView)
         self.tableTimePapersModel = QStandardItemModel()
         self.tableTimePapersHeadersNames = ['ID', 'Номер', 'ПоръчкаNo', 'ОперацияNo', 'Операция', 'Бройки', 'Време']
@@ -907,6 +907,18 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             else:
                 if not self.checkIfTimeIsValid():
                     return
+        else:
+            if self.modelPiecesLineEdit.text() == '' or self.modelPiecesLineEdit == '0':
+                MM.showOnWidget(self, 'Не сте избрали бройки', 'error')
+                self.modelPiecesLineEdit.setFocus()
+                self.modelPiecesLineEdit.selectAll()
+                return
+            if self.piecesTimeLineEdit.text() == '' or self.piecesTimeLineEdit.text() == '0.0':
+                MM.showOnWidget(self, 'Има нулево време. Проверете операция/операции', 'error')
+                self.piecesTimeLineEdit.setFocus()
+                self.piecesTimeLineEdit.selectAll()
+                return
+
         count = 1
         operationsGroupForAdd = {}
         timePaper = None

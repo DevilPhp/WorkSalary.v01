@@ -368,6 +368,13 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
 
         for checkbox in self.comboBoxItems.values():
             if checkbox[0].isChecked():
+                if checkbox[1].text() == '' or float(checkbox[1].text()) == 0:
+                    MessageManager.showOnWidget(self,
+                                                f"Моля въведете време за опер. {checkbox[0].text().split(':  ')[1]}!",
+                                                'error')
+                    checkbox[1].setFocus()
+                    checkbox[1].selectAll()
+                    return
                 self.addOperationsForNewModel[int(checkbox[0].objectName())] = [checkbox[0].text().split(':  ')[1],
                                                                                 float(checkbox[1].text())
                                                                                 if checkbox[1].text() != '' else 0]

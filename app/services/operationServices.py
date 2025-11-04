@@ -2,6 +2,7 @@ from sqlalchemy import func
 
 from app.database import getDatabase, setDatabase
 from app.database.operations import Operation, ProductionModelOperations, OperationsGroup, OperationsGroupForModel
+from app.database.workers import OperationType
 from app.logger import logger
 
 
@@ -11,8 +12,10 @@ class OperationsServices:
     def deleteOperation(operationId):
         with setDatabase() as session:
             operation = session.query(Operation).filter_by(ОперацияNo=operationId).first()
-            if (operation and not operation.operationTypes and not operation.operationsGroup
-                    and not operation.defaultOperForVidOblekla and not operation.productionModelOperations):
+            if (operation
+                    and not operation.operationsGroup
+                    and not operation.defaultOperForVidOblekla
+                    and not operation.productionModelOperations):
                 session.delete(operation)
                 session.commit()
                 logger.info(f'Operation {operation.ОперацияNo} - {operation.Операция} deleted')
@@ -22,7 +25,7 @@ class OperationsServices:
                 return False
 
     @staticmethod
-    def addNewDefaultOperations(operationsName):
+    def addNewDefaultOperations(operationsName, operType):
         with setDatabase() as session:
             maxId = session.query(func.max(Operation.ОперацияNo)).scalar() or 0
             newOperation = Operation(
@@ -30,6 +33,15 @@ class OperationsServices:
                 Операция=operationsName
             )
             session.add(newOperation)
+            session.flush()
+
+            if operType:
+                operTypeObj = session.query(OperationType).filter_by(OperTypeID=int(operType)).first()
+                newOperation.operationTypes.append(operTypeObj)
+                # session.commit()
+                logger.info(f'New Operation {newOperation.ОперацияNo} - {newOperation.Операция} added with type {operType}')
+                # return [newOperation.ОперацияNo, newOperation.Операция]
+
             session.commit()
             logger.info(f'New Operation {newOperation.ОперацияNo} - {newOperation.Операция} added')
             return [newOperation.ОперацияNo, newOperation.Операция]

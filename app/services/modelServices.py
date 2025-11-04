@@ -9,6 +9,47 @@ from app.database.operations import DefaultOperForVidObleklo, ProductionModelOpe
 class ModelService:
 
     @staticmethod
+    def addNewClient(data, rows):
+        with setDatabase() as session:
+            if data:
+                newClient = Client(ClientID=rows+1)
+                for client in session.query(Client).order_by(Client.ClientID.desc()).all():
+                    if client.Клиент == data['Клиент']:
+                        logger.error(f'Client with name {data["Клиент"]} already exists')
+                        return -1
+                for row, value in data.items():
+                    # print(f'Adding new Client: {row} - {value}')
+                    setattr(newClient, row, value)
+                session.add(newClient)
+                session.commit()
+                if newClient.ClientID:
+                    logger.info(f'Client {newClient.ClientID} - {newClient.Клиент} added')
+                    return 1
+                else:
+                    logger.error('Failed to add new Client')
+                    return 0
+            else:
+                logger.error('No data provided for new Client')
+                return 0
+
+    @staticmethod
+    def deleteClient(rowId, name):
+        with setDatabase() as session:
+            client = session.query(Client).filter_by(ClientID=rowId).first()
+            if client:
+                if not client.productionModel:
+                    session.delete(client)
+                    session.commit()
+                    logger.info(f"Client {rowId} - {name} deleted successfully.")
+                    return 1
+                else:
+                    logger.error(f"Failed to delete Client {rowId}. Client is linked to a prodModel.")
+                    return -1
+            else:
+                logger.error(f"Failed to delete Client {rowId}.")
+                return 0
+
+    @staticmethod
     def addNewMachine(data, rows):
         with setDatabase() as session:
             if data:
@@ -26,6 +67,23 @@ class ModelService:
             else:
                 logger.error('No data provided for new MachineType')
                 return False
+
+    @staticmethod
+    def deleteSelectedMachine(rowId):
+        with setDatabase() as session:
+            machineType = session.query(Machine).filter_by(MachineId=rowId).first()
+            if machineType:
+                if not machineType.productionModel:
+                    session.delete(machineType)
+                    session.commit()
+                    logger.info(f"MachineType {rowId} - {machineType.MachineFine} deleted successfully.")
+                    return 1
+                else:
+                    logger.error(f"Failed to delete MachineType {rowId}. Machine is linked to a Production Model.")
+                    return -1
+            else:
+                logger.error(f"Failed to delete MachineType {rowId}.")
+                return 0
 
     @staticmethod
     def addNewYarn(data, rows):
@@ -47,6 +105,23 @@ class ModelService:
             else:
                 logger.error('No data provided for new YarnType')
                 return False
+
+    @staticmethod
+    def deleteSelectedYarn(rowId):
+        with setDatabase() as session:
+            yarnType = session.query(Yarn).filter_by(YarnID=rowId).first()
+            if yarnType:
+                if not yarnType.productionModel:
+                    session.delete(yarnType)
+                    session.commit()
+                    logger.info(f"YarnType {rowId} - {yarnType.ПреждаТип} - {yarnType.Състав} deleted successfully.")
+                    return 1
+                else:
+                    logger.error(f"Failed to delete YarnType {rowId}. Yarn is linked to a Production Model.")
+                    return -1
+            else:
+                logger.error(f"Failed to delete YarnType {rowId}.")
+                return 0
 
     @staticmethod
     def deleteDefaultModelType(modelTypeId):

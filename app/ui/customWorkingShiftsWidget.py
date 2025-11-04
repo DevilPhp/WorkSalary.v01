@@ -2,6 +2,7 @@ from PySide6.QtCore import Signal
 from PySide6.QtGui import QStandardItemModel, QStandardItem, QDoubleValidator
 from PySide6.QtWidgets import QMenu, QDialog
 
+from app.models.tableModel import CustomTableViewWithMultiSelection
 from app.ui.widgets.ui_customShiftsEditWidget import *
 from app.services.workerServices import WorkerServices as WoS
 from app.utils.utils import Utils
@@ -26,6 +27,9 @@ class CustomShiftsEditWidget(QWidget, Ui_customWorkingShiftsWidget):
         self.workingShiftsNames = {}
         validatorInt = QDoubleValidator(0, 999999, 0)
         self.shiftBreakLineEdit.setValidator(validatorInt)
+
+        self.workingShiftsTableView = CustomTableViewWithMultiSelection(singleSelection=True)
+        self.workingShiftsTable.layout().addWidget(self.workingShiftsTableView)
 
         self.workingShiftsModel = QStandardItemModel()
         self.workingShiftsHeaderNames = ['ID', 'Име', 'Начало', 'Край', 'Почивка', 'Ефективност', 'Дата модификации']
@@ -94,6 +98,7 @@ class CustomShiftsEditWidget(QWidget, Ui_customWorkingShiftsWidget):
         shiftName = self.workingShiftsNameLineEdit.text()
         if shiftName != '':
             if self.workingShiftsTableView.currentIndex().isValid():
+                # print(self.workingShiftsTableView.currentIndex())
                 selectedShiftId = self.workingShiftsTableView.selectedIndexes()[0].data()
                 startShiftTime = datetime.strptime(self.shiftStart.time().toString('hh:mm'), '%H:%M').time()
                 endShiftTime = datetime.strptime(self.shiftEnd.time().toString('hh:mm'), '%H:%M').time()
@@ -127,8 +132,12 @@ class CustomShiftsEditWidget(QWidget, Ui_customWorkingShiftsWidget):
                         MM.showOnWidget(self, f'Успешно добавена смяна {shiftName}', 'success')
                         self.refreshWorkingShiftsTable()
                         self.resetShiftInfo()
+                else:
+                    MM.showOnWidget(self, f'Име за смяна {shiftName} вече съществува!', 'warning')
+                    self.workingShiftsNameLineEdit.setFocus()
+                    self.workingShiftsNameLineEdit.selectAll()
         else:
-            MM.showOnWidget(self, f'Въведено е невалидно име за смяна \n{shiftName}', 'warning')
+            MM.showOnWidget(self, f'Моля въведете име.', 'warning')
 
     def resetShiftInfo(self):
         self.workingShiftsNameLineEdit.clear()

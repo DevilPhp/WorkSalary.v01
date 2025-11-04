@@ -30,6 +30,23 @@ class WorkerServices:
                 return False
 
     @staticmethod
+    def deleteSelectedOperationType(rowId):
+        with setDatabase() as session:
+            operationType = session.query(OperationType).filter_by(OperTypeID=rowId).first()
+            if operationType:
+                if not operationType.workerPositions and not operationType.operations:
+                    session.delete(operationType)
+                    session.commit()
+                    logger.info(f'OperationType {rowId} deleted')
+                    return 1
+                else:
+                    logger.error(f'OperationType {rowId} has workers associated, cannot delete')
+                    return -1
+            else:
+                logger.error(f'OperationType {rowId} not found')
+                return 0
+
+    @staticmethod
     def addNewWorkerPosition(data, rows):
         with setDatabase() as session:
             if data:
@@ -49,6 +66,23 @@ class WorkerServices:
             else:
                 logger.error('No data provided for new WorkerPosition')
                 return False
+
+    @staticmethod
+    def deleteSelectedWorkerPosition(rowId):
+        with setDatabase() as session:
+            position = session.query(WorkerPosition).filter_by(ДлъжностКод=rowId).first()
+            if position:
+                if not position.workers or not position.operationType:
+                    session.delete(position)
+                    session.commit()
+                    logger.info(f'WorkerPosition {rowId} deleted')
+                    return 1
+                else:
+                    logger.error(f'WorkerPosition {rowId} has workers/opersType associated, cannot delete')
+                    return -1
+            else:
+                logger.error(f'WorkerPosition {rowId} not found')
+                return 0
 
     @staticmethod
     def addNewCehove(data):
@@ -71,6 +105,23 @@ class WorkerServices:
                 return False
 
     @staticmethod
+    def deleteSelectedCehove(rowId):
+        with setDatabase() as session:
+            cehove = session.query(Cehove).filter_by(id=rowId).first()
+            if cehove:
+                if not cehove.workers:
+                    session.delete(cehove)
+                    session.commit()
+                    logger.info(f'Cehove {rowId} deleted')
+                    return 1
+                else:
+                    logger.error(f'Cehove {rowId} has workers associated, cannot delete')
+                    return -1
+            else:
+                logger.error(f'Cehove {rowId} not found')
+                return 0
+
+    @staticmethod
     def getWorkersForCehove():
         returnedData = []
         with getDatabase() as session:
@@ -84,7 +135,7 @@ class WorkerServices:
         returnedData = []
         with getDatabase() as session:
             operationsTypes = session.query(OperationType).order_by(OperationType.OperTypeID).all()
-            print(operationsTypes)
+            # print(operationsTypes)
             for operationType in operationsTypes:
                 returnedData.append(f'{operationType.OperTypeID}:  {operationType.OperName}')
             return returnedData

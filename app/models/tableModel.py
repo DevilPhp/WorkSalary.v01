@@ -1,4 +1,4 @@
-from PySide6.QtCore import QAbstractTableModel, Qt, Signal, QItemSelection, QItemSelectionModel
+from PySide6.QtCore import QAbstractTableModel, Qt, Signal, QItemSelection, QItemSelectionModel, QModelIndex
 import pandas as pd
 import numpy as np
 from PySide6.QtWidgets import QTableView, QAbstractItemView
@@ -10,7 +10,11 @@ class TableModel(QAbstractTableModel):
     def __init__(self, data):
         super().__init__()
         self._data = data.copy()
+        self.editableColumns = []
         self._data = self._data.fillna('')
+
+    def setEditableColumns(self, columns):
+        self.editableColumns = columns
 
     def setData(self, index, value, role=Qt.ItemDataRole.EditRole):
         if role == Qt.ItemDataRole.EditRole:
@@ -76,17 +80,25 @@ class TableModel(QAbstractTableModel):
         return None
 
     def flags(self, index):
-        return Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsEditable
+        flags = Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEnabled
+        if index.column() in self.editableColumns:
+            flags |= Qt.ItemFlag.ItemIsEditable
+        return flags
 
 
 class CustomTableViewWithMultiSelection(QTableView):
     selectedRows = Signal(dict)
     clearCurrentSelection = Signal(bool)
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, singleSelection=False):
         super().__init__(parent)
         self.setSelectionBehavior(QTableView.SelectionBehavior.SelectRows)
         self.setSelectionMode(QTableView.SelectionMode.ExtendedSelection)
+
+        self.singleSelection = singleSelection
+
+        if singleSelection:
+            self.setSelectionMode(QTableView.SelectionMode.SingleSelection)
 
         self.setDragEnabled(False)
         self.setDragDropMode(QAbstractItemView.DragDropMode.NoDragDrop)
@@ -96,6 +108,7 @@ class CustomTableViewWithMultiSelection(QTableView):
 
         self.verticalHeader().hide()
         self.setCornerButtonEnabled(False)
+
 
         # self.isDragging = False
         # self.previousSelection = set()
@@ -137,14 +150,17 @@ class CustomTableViewWithMultiSelection(QTableView):
         super().setEditTriggers(triggers)
 
     def checkSender(self, parrentName):
-        selectedItems = {}
-        if parrentName == 'timePaperTableHolder':
-            selectedItems['pieces'] = self.selectionModel().selectedRows(5)
-            selectedItems['piecesTime'] = self.selectionModel().selectedRows(6)
-        elif parrentName == 'paymentsTableHolder':
-            selectedItems['payInLeva'] = self.selectionModel().selectedRows(12)
-            selectedItems['payInEuro'] = self.selectionModel().selectedRows(13)
-        return selectedItems
+        if not self.singleSelection:
+            selectedItems = {}
+            if parrentName == 'timePaperTableHolder':
+                selectedItems['pieces'] = self.selectionModel().selectedRows(5)
+                selectedItems['piecesTime'] = self.selectionModel().selectedRows(6)
+            elif parrentName == 'paymentsTableHolder':
+                selectedItems['payInLeva'] = self.selectionModel().selectedRows(12)
+                selectedItems['payInEuro'] = self.selectionModel().selectedRows(13)
+            return selectedItems
+        else:
+            pass
 
     def keyPressEvent(self, event):
         parrentName = self.parent().objectName()
@@ -153,6 +169,7 @@ class CustomTableViewWithMultiSelection(QTableView):
             self.clearCurrentSelection.emit(True)
             self.clearSelection()
             self.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+            self.setCurrentIndex(QModelIndex())
 
         if event.key() in (Qt.Key.Key_Up, Qt.Key.Key_Down):
             selectedItems = {}

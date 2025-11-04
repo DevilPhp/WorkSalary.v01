@@ -11,7 +11,7 @@ class UserServices:
         with setDatabase() as session:
             username = data.get('Потребител')
             password = data.get('Парола')
-            role = data.get('Ниво') if data.get('Ниво') else 'Guest'
+            role = data.get('Ниво').lower() if data.get('Ниво') else 'guest'
             hashedPassword = encrypt.hash(password)
 
             if session.query(User).filter_by(username=username).first():
