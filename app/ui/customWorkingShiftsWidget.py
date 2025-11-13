@@ -100,8 +100,8 @@ class CustomShiftsEditWidget(QWidget, Ui_customWorkingShiftsWidget):
             if self.workingShiftsTableView.currentIndex().isValid():
                 # print(self.workingShiftsTableView.currentIndex())
                 selectedShiftId = self.workingShiftsTableView.selectedIndexes()[0].data()
-                startShiftTime = datetime.strptime(self.shiftStart.time().toString('hh:mm'), '%H:%M').time()
-                endShiftTime = datetime.strptime(self.shiftEnd.time().toString('hh:mm'), '%H:%M').time()
+                startShiftTime = self.shiftStart.time().toString('hh:mm')
+                endShiftTime = self.shiftEnd.time().toString('hh:mm')
                 updatedShift = [
                     shiftName,
                     startShiftTime,
@@ -117,8 +117,8 @@ class CustomShiftsEditWidget(QWidget, Ui_customWorkingShiftsWidget):
                     self.resetShiftInfo()
             else:
                 if shiftName not in self.workingShiftsNames:
-                    startShiftTime = datetime.strptime(self.shiftStart.time().toString('hh:mm'), '%H:%M').time()
-                    endShiftTime = datetime.strptime(self.shiftEnd.time().toString('hh:mm'), '%H:%M').time()
+                    startShiftTime = self.shiftStart.time().toString('hh:mm')
+                    endShiftTime = self.shiftEnd.time().toString('hh:mm')
                     newShift = [
                         shiftName,
                         startShiftTime,
@@ -170,15 +170,15 @@ class CustomShiftsEditWidget(QWidget, Ui_customWorkingShiftsWidget):
         self.workingShifts = WoS.getWorkingShiftsForEdit()
         for shift in self.workingShifts:
             row = [
-                QStandardItem(str(shift.id)),
-                QStandardItem(shift.ShiftName),
-                QStandardItem(shift.StartTime.strftime('%H:%M')),
-                QStandardItem(shift.EndTime.strftime('%H:%M')),
-                QStandardItem(str(shift.BreakTime)),
-                QStandardItem(str(shift.Efficiency)),
-                QStandardItem(shift.DateUpdated.strftime('%d.%m.%Y'))
+                QStandardItem(str(shift['id'])),
+                QStandardItem(shift['ShiftName']),
+                QStandardItem(shift['StartTime']),
+                QStandardItem(shift['EndTime']),
+                QStandardItem(str(shift['BreakTime'])),
+                QStandardItem(str(shift['Efficiency'])),
+                QStandardItem(shift['DateUpdated'])
             ]
-            self.workingShiftsNames[shift.ShiftName] = shift.id
+            self.workingShiftsNames[shift['ShiftName']] = shift['id']
             self.workingShiftsModel.appendRow(row)
 
     def logout(self):

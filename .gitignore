@@ -6,6 +6,8 @@ __pycache__/
 venv/
 env/
 alembic/
+build/
+dist/
 data/
 
 # Ignore IDE settings

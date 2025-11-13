@@ -31,9 +31,6 @@ class CustomPayPerTimeDialog(QDialog, Ui_CustomPayPerTimeDialog):
         self.percentageLineEdit.setEnabled(False)
         self.percentageCheckBox.stateChanged.connect(self.percentageCheckBoxChange)
 
-        self.yesBtn.clicked.connect(self.acceptNewInput)
-        # self.noBtn.clicked.connect(self.close)
-
         validator = QDoubleValidator(0.1, float('inf'), 4)
         validator.setNotation(QDoubleValidator.Notation.StandardNotation)
         locale = QLocale(QLocale.Language.English)
@@ -47,6 +44,7 @@ class CustomPayPerTimeDialog(QDialog, Ui_CustomPayPerTimeDialog):
 
         self.percentageLineEdit.setValidator(validator2)
 
+        self.yesBtn.clicked.connect(self.acceptNewInput)
         self.levaPerMinLineEdit.textChanged.connect(self.checkText)
         self.levaPerMinLineEdit.editingFinished.connect(self.updateText)
         self.euroPerMinLineEdit.textChanged.connect(self.checkText)
@@ -59,22 +57,8 @@ class CustomPayPerTimeDialog(QDialog, Ui_CustomPayPerTimeDialog):
 
         self.calBtn.clicked.connect(self.openCalendar)
         self.percentageLineEdit.editingFinished.connect(self.updateValuesPerMin)
-        # self.levaPerMinLineEdit.returnPressed.connect(self.updateText)
-
-        # self.euroPerMinLineEdit.returnPressed.connect(self.updateText)
-        # self.euroPerLevaLineEdit.editingFinished.connect(self.updateEuroPerLeva)
 
         self.levaPerMinLineEdit.setFocus()
-
-        # self.show()
-
-    # def updateEuroPerLeva(self):
-    #     self.levaForEuro = float(self.euroPerLevaLineEdit.text())
-    #     if self.levaPerMinLineEdit.text() == "":
-    #         self.levaPerMinLineEdit.setText("0")
-    #     levaPerMin = float(self.levaPerMinLineEdit.text())
-    #     self.euroPerMinLineEdit.setText(str(round(levaPerMin / self.levaForEuro, 5)))
-    #     # self.euroPerMinLineEdit.setFocus()
 
     def updateValuesPerMin(self):
         percentage = float(self.percentageLineEdit.text()) / 100
@@ -89,15 +73,11 @@ class CustomPayPerTimeDialog(QDialog, Ui_CustomPayPerTimeDialog):
         if self.percentageCheckBox.isChecked():
             self.percentageLineEdit.setEnabled(True)
             self.percentageLineEdit.setFocus()
-        # self.percentageLineEdit.setEnabled(self.percentageCheckBox.isChecked())
+
         else:
             self.percentageLineEdit.setEnabled(False)
             self.percentageLineEdit.clear()
             self.levaPerMinLineEdit.setFocus()
-        # if self.percentageLineEdit.isEnabled():
-        #     self.percentageLineEdit.setFocus()
-        # else:
-        #     self.levaPerMinLineEdit.setFocus()
 
     def acceptNewInput(self):
         if self.euroPerMinLineEdit.text() == '' or self.euroPerMinLineEdit.text() == '0':
@@ -115,7 +95,7 @@ class CustomPayPerTimeDialog(QDialog, Ui_CustomPayPerTimeDialog):
         levaPerMin = float(self.levaPerMinLineEdit.text())
         euroPerMin = float(self.euroPerMinLineEdit.text())
         levaPerEuro = float(self.euroPerLevaLineEdit.text())
-        dateActive = datetime.strptime(self.activedDateDateEdit.date().toString('dd.MM.yyyy'), "%d.%m.%Y")
+        dateActive = self.activedDateDateEdit.date().toString('dd.MM.yyyy')
         comment = self.commentLineEdit.text()
         returnedDict = {
             'levaPerMin': levaPerMin,
@@ -124,9 +104,6 @@ class CustomPayPerTimeDialog(QDialog, Ui_CustomPayPerTimeDialog):
             'dateActive': dateActive,
             'comment': comment
         }
-        # returnedDict = [levaPerMin, euroPerMin, dateActive, comment
-        # returnedDict = 'hello'
-        # print(returnedDict)
         self.newEntryInfo.emit(returnedDict)
         self.close()
 
@@ -150,17 +127,8 @@ class CustomPayPerTimeDialog(QDialog, Ui_CustomPayPerTimeDialog):
             self.levaPerMinUpdated = False
 
     def updateText(self):
-
-        # if self.sender() == self.euroPerLevaLineEdit:
-        #     self.levaForEuro = float(self.euroPerLevaLineEdit.text())
-        #     if self.levaPerMinLineEdit.text() == "":
-        #         self.levaPerMinLineEdit.setText("0")
-        #     levaPerMin = float(self.levaPerMinLineEdit.text())
-        #     self.euroPerMinLineEdit.setText(str(round(levaPerMin / self.levaForEuro, 5)))
-        # print('here')
         text = float(self.sender().text())
         self.sender().setText(str(text))
-        # print(text)
 
         if self.sender() == self.levaPerMinLineEdit:
             if not self.levaPerMinUpdated:

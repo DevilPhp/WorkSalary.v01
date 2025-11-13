@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>342</width>
-    <height>353</height>
+    <width>317</width>
+    <height>278</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -80,8 +80,8 @@ QDialog{
      </property>
      <property name="maximumSize">
       <size>
-       <width>260</width>
-       <height>245</height>
+       <width>250</width>
+       <height>225</height>
       </size>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
@@ -92,13 +92,13 @@ QDialog{
        <number>3</number>
       </property>
       <property name="topMargin">
-       <number>3</number>
+       <number>0</number>
       </property>
       <property name="rightMargin">
        <number>3</number>
       </property>
       <property name="bottomMargin">
-       <number>3</number>
+       <number>0</number>
       </property>
       <item>
        <widget class="QFrame" name="calFrame">
@@ -176,7 +176,7 @@ QDialog{
            </property>
            <property name="styleSheet">
             <string notr="true">QToolButton{
-font: 700 11pt &quot;Segoe UI&quot;;
+font: 700 10pt &quot;Segoe UI&quot;;
 padding: 5px;
 }
 QAbstractItemView{
@@ -184,6 +184,7 @@ background-color: #dfdfdf;
 selection-background-color: #dfdfdf;
 selection-color: #2b2b2c;
 focus: none;
+font-size: 8pt;
 }
 QAbstractItemView:disabled{
 background-color: #dfdfdf;
@@ -191,12 +192,12 @@ color: #495466;
 }
 #qt_calendar_prevmonth {
     background-color: #dfdfdf;
-    icon-size: 24px;
+    icon-size: 18px;
     qproperty-icon: url(:/icons/app/assets/icons/Alt-Arrow-Left--Streamline-Solar-Broken.svg);
 }
 #qt_calendar_nextmonth {
     background-color: #dfdfdf;
-    icon-size: 24px;
+    icon-size: 18px;
     qproperty-icon: url(:/icons/app/assets/icons/Alt-Arrow-Right--Streamline-Solar-Broken.svg);
 }
 QMenu{
@@ -210,20 +211,19 @@ border-radius: 0px;
 
 QMenu::item:selected{
 color: #2b2b2c;
-font: 900 10.5pt &quot;Segoe UI&quot;;
+font: 700 9pt &quot;Segoe UI&quot;;
 border-radius: 0px
 }
 QMenu::item{
 color: #324b4c;
-font: 700 10pt &quot;Segoe UI&quot;;
-height: 11px;  
+font: 600 9pt &quot;Segoe UI&quot;;
+height: 10px;  
 border: 4px solid transparent;
 padding: 0px 8px 0px 8px;
 }
 QTableView::item:selected{
 border:2.5px solid #324b4c;
 border-radius:11px;
-
 }
 
 

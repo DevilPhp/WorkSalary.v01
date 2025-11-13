@@ -4,124 +4,111 @@ from app.logger import logger
 from app.database import getDatabase, setDatabase
 from app.database.models import VidObleklo, Client, ProductionModel, Machine, Yarn, ProducedPiecesForModel
 from app.database.operations import DefaultOperForVidObleklo, ProductionModelOperations
+import requests
+from config import API_SERVER
 
 
 class ModelService:
 
     @staticmethod
     def addNewClient(data, rows):
-        with setDatabase() as session:
-            if data:
-                newClient = Client(ClientID=rows+1)
-                for client in session.query(Client).order_by(Client.ClientID.desc()).all():
-                    if client.Клиент == data['Клиент']:
-                        logger.error(f'Client with name {data["Клиент"]} already exists')
-                        return -1
-                for row, value in data.items():
-                    # print(f'Adding new Client: {row} - {value}')
-                    setattr(newClient, row, value)
-                session.add(newClient)
-                session.commit()
-                if newClient.ClientID:
-                    logger.info(f'Client {newClient.ClientID} - {newClient.Клиент} added')
+        if data:
+            response = requests.post(f'{API_SERVER}/model/add_client',
+                                     json={'rows': rows, 'data': data}).json()
+            if response['status'] == 'success':
+                if response['data'] == 1:
+                    logger.info(f'Client {data["Клиент"]} added')
                     return 1
-                else:
-                    logger.error('Failed to add new Client')
-                    return 0
+                elif response['data'] == -1:
+                    logger.error(f'Client with name {data["Клиент"]} already exists')
+                    return -1
             else:
-                logger.error('No data provided for new Client')
+                logger.error('Failed to add new Client')
                 return 0
+        else:
+            logger.error('No data provided for new Client')
+            return 0
 
     @staticmethod
     def deleteClient(rowId, name):
-        with setDatabase() as session:
-            client = session.query(Client).filter_by(ClientID=rowId).first()
-            if client:
-                if not client.productionModel:
-                    session.delete(client)
-                    session.commit()
-                    logger.info(f"Client {rowId} - {name} deleted successfully.")
-                    return 1
-                else:
-                    logger.error(f"Failed to delete Client {rowId}. Client is linked to a prodModel.")
-                    return -1
+        response = requests.post(f'{API_SERVER}/model/delete_client', json={'rowId': rowId, 'name': name}).json()
+        if response['status'] =='success':
+            if response['result'] == 1:
+                logger.info(f"Client {rowId} - {name} deleted successfully.")
+                return 1
+            elif response['result'] == -1:
+                logger.error(f"Failed to delete Client {rowId}. Client is linked to a prodModel.")
+                return -1
             else:
                 logger.error(f"Failed to delete Client {rowId}.")
                 return 0
+        else:
+            logger.error('Failed to delete Client')
+            return 0
 
     @staticmethod
     def addNewMachine(data, rows):
-        with setDatabase() as session:
-            if data:
-                newMachineType = Machine(MachineId=rows + 1)
-                for row, value in data.items():
-                    setattr(newMachineType, row, value)
-                session.add(newMachineType)
-                session.commit()
-                if newMachineType.MachineId:
-                    logger.info(f'MachineType {newMachineType.MachineId} - {newMachineType.MachineFine} added')
-                    return True
-                else:
-                    logger.error('Failed to add new MachineType')
-                    return False
+        if data:
+            response = requests.post(f'{API_SERVER}/model/add_machine_type',
+                                     json={'rows': rows, 'data': data}).json()
+            if response['status'] == 'success':
+                logger.info(f'MachineType {response["data"][0]} - {response["data"][1]} added')
+                return True
             else:
-                logger.error('No data provided for new MachineType')
+                logger.error('Failed to add new MachineType')
                 return False
+        else:
+            logger.error('No data provided for new MachineType')
+            return False
 
     @staticmethod
     def deleteSelectedMachine(rowId):
-        with setDatabase() as session:
-            machineType = session.query(Machine).filter_by(MachineId=rowId).first()
-            if machineType:
-                if not machineType.productionModel:
-                    session.delete(machineType)
-                    session.commit()
-                    logger.info(f"MachineType {rowId} - {machineType.MachineFine} deleted successfully.")
-                    return 1
-                else:
-                    logger.error(f"Failed to delete MachineType {rowId}. Machine is linked to a Production Model.")
-                    return -1
+        response = requests.post(f'{API_SERVER}/model/delete_machine_type', json={'rowId': rowId}).json()
+        if response['status'] == 'success':
+            if response['result'] == 1:
+                logger.info(f"MachineType {rowId} deleted successfully.")
+                return 1
+            elif response['result'] == -1:
+                logger.error(f"Failed to delete MachineType {rowId}.  Machine is linked to a Production Model.")
+                return -1
             else:
                 logger.error(f"Failed to delete MachineType {rowId}.")
                 return 0
+        else:
+            logger.error('Failed to delete MachineType')
+            return 0
 
     @staticmethod
     def addNewYarn(data, rows):
-        with setDatabase() as session:
-            if data:
-                newYarnType = Yarn(YarnID=rows + 1)
-                for row, value in data.items():
-                    setattr(newYarnType, row, value)
-                session.add(newYarnType)
-                session.commit()
-                if newYarnType.YarnID:
-                    logger.info(
-                        f'YarnType {newYarnType.YarnID} - {newYarnType.ПреждаТип} - {newYarnType.Състав} added'
-                    )
-                    return True
-                else:
-                    logger.error('Failed to add new YarnType')
-                    return False
+        if data:
+            response = requests.post(f'{API_SERVER}/model/add_yarn',
+                                     json={'rows': rows, 'data': data}).json()
+            if response['status'] == 'success':
+                logger.info(f'YarnType {response["data"][0]} - {response["data"][1]} - {response["data"][2]} added')
+                return True
             else:
-                logger.error('No data provided for new YarnType')
+                logger.error('Failed to add new YarnType')
                 return False
+        else:
+            logger.error('No data provided for new YarnType')
+            return False
 
     @staticmethod
     def deleteSelectedYarn(rowId):
-        with setDatabase() as session:
-            yarnType = session.query(Yarn).filter_by(YarnID=rowId).first()
-            if yarnType:
-                if not yarnType.productionModel:
-                    session.delete(yarnType)
-                    session.commit()
-                    logger.info(f"YarnType {rowId} - {yarnType.ПреждаТип} - {yarnType.Състав} deleted successfully.")
-                    return 1
-                else:
-                    logger.error(f"Failed to delete YarnType {rowId}. Yarn is linked to a Production Model.")
-                    return -1
+        response = requests.post(f'{API_SERVER}/model/delete_yarn', json={'rowId': rowId}).json()
+        if response['status'] == 'success':
+            if response['result'] == 1:
+                logger.info(f"YarnType {rowId} deleted successfully.")
+                return 1
+            elif response['result'] == -1:
+                logger.error(f"Failed to delete YarnType {rowId}.  Yarn is linked to a Production Model.")
+                return -1
             else:
                 logger.error(f"Failed to delete YarnType {rowId}.")
                 return 0
+        else:
+            logger.error('Failed to delete YarnType')
+            return 0
 
     @staticmethod
     def deleteDefaultModelType(modelTypeId):

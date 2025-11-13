@@ -246,15 +246,15 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
         self.avrEuroLabel.setText("0.0")
 
     def setColumnWidths(self):
-        self.workerDetalsTreeView.setColumnWidth(1, 100)
-        self.workerDetalsTreeView.setColumnWidth(3, 100)
-        self.workerDetalsTreeView.setColumnWidth(4, 60)
-        self.workerDetalsTreeView.setColumnWidth(5, 80)
-        self.workerDetalsTreeView.setColumnWidth(6, 100)
-        self.workerDetalsTreeView.setColumnWidth(7, 85)
-        self.workerDetalsTreeView.setColumnWidth(8, 85)
-        self.workerDetalsTreeView.setColumnWidth(9, 50)
-        self.workerDetalsTreeView.setColumnWidth(10, 70)
+        self.workerDetalsTreeView.setColumnWidth(1, 85)
+        self.workerDetalsTreeView.setColumnWidth(3, 85)
+        self.workerDetalsTreeView.setColumnWidth(4, 52)
+        self.workerDetalsTreeView.setColumnWidth(5, 68)
+        self.workerDetalsTreeView.setColumnWidth(6, 85)
+        self.workerDetalsTreeView.setColumnWidth(7, 72)
+        self.workerDetalsTreeView.setColumnWidth(8, 72)
+        self.workerDetalsTreeView.setColumnWidth(9, 42)
+        self.workerDetalsTreeView.setColumnWidth(10, 60)
 
     def setInitialColumns(self):
         self.workerDetalsTreeView.setColumnHidden(6, True)
@@ -297,211 +297,66 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
 
     def refreshPaymentsDetailsTreeView(self):
         self.tablePaymentDetailsModel.setRowCount(0)
-        totalRows = 0
-        startDate = Utils.convertQDateToDate(self.startDate)
-        endDate = Utils.convertQDateToDate(self.endDate)
+        startDate = QDate.toString(self.startDate, 'dd.MM.yyyy')
+        endDate = QDate.toString(self.endDate, 'dd.MM.yyyy')
         paymentsData = WoS.getPaymentsDetailsForWorker(self.workerId, startDate, endDate)
-        paymentPerMinute = WoS.getPaymentForMin()
-        paymentForNightMin = WoS.getPaymentForNightMin()
-        paymentInLv = paymentPerMinute.PaymentValue
-        paymentInEuro = paymentPerMinute.PaymentInEuro
-        nightPayInLeva = paymentForNightMin.NightPaymentValue + paymentInLv
-        nightPayInEuro = paymentForNightMin.NightPaymentInEuro + paymentInEuro
-        self.levaPerMinDayLabel.setText(str(paymentInLv))
-        self.euroPerMinDayLabel.setText(str(paymentInEuro))
-        self.levaPerMinNightLabel.setText(str(nightPayInLeva))
-        self.euroPerMinNightLabel.setText(str(nightPayInEuro))
-        self.paymentLevaLabel.setText(f'{self.totalPayInLeva} лв')
-        self.paymentEuroLabel.setText(f'{self.totalPayInEuro} €')
-
         if paymentsData:
-            for payment, details in paymentsData.items():
-                totalHourlyTime = 0
-                totalOvertime = 0
-                totalNightTime = 0
-                totalPaymentInLev = 0
-                totalPaymentInEuro = 0
-                if details['hourly']:
-                    data = self.calculatePayment(details['hourly'], details['paymentRatio'], paymentInLv,
-                                                 paymentInEuro, nightPayInLeva, nightPayInEuro)
-                    totalPaymentInLev += data[0]
-                    totalPaymentInEuro += data[1]
-                    totalNightTime += data[2]
-                    totalHourlyTime += data[3]
+            totalRows = 0
 
-                if details['overtime']:
-                    data = self.calculatePayment(details['overtime'], details['paymentRatio'], paymentInLv,
-                                                 paymentInEuro, nightPayInLeva, nightPayInEuro)
-                    totalPaymentInLev += data[0]
-                    totalPaymentInEuro += data[1]
-                    totalNightTime += data[2]
-                    totalOvertime += data[3]
-                if details['nightMins'] > 0:
-                    totalNightTime += details['nightMins']
-                    totalPaymentInLev += Utils.calculatePayment(details['nightMins'], details['paymentRatio'],
-                                                            1, nightPayInLeva)
-                    totalPaymentInEuro += Utils.calculatePayment(details['nightMins'], details['paymentRatio'],
-                                                             1, nightPayInEuro)
+            self.levaPerMinDayLabel.setText(str(paymentsData[0]['paymentInLv']))
+            self.euroPerMinDayLabel.setText(str(paymentsData[0]['paymentInEuro']))
+            self.levaPerMinNightLabel.setText(str(paymentsData[0]['nightPayInLeva']))
+            self.euroPerMinNightLabel.setText(str(paymentsData[0]['nightPayInEuro']))
+            self.paymentLevaLabel.setText(f'{self.totalPayInLeva} лв')
+            self.paymentEuroLabel.setText(f'{self.totalPayInEuro} €')
 
-                totalPaymentInLev += Utils.calculatePayment(details['totalTime'] - details['nightMins'],
-                                                            details['paymentRatio'], 1, paymentInLv)
-                totalPaymentInEuro += Utils.calculatePayment(details['totalTime'] - details['nightMins'],
-                                                            details['paymentRatio'], 1, paymentInEuro)
+            parentRow = None
+            currentParent = 0
+            for row in paymentsData:
+                if row['row'].split('_')[0] == 'parent':
+                    currentParent = row['row'].split('_')[1]
+                    parrentRowToAdd = QStandardItem(str(row['payment']))
+                    parentRow = parrentRowToAdd
+                    parrentRowForAppend = [
+                        parrentRowToAdd,
+                        QStandardItem(row['date']),
+                        QStandardItem(row['shift']),
+                        QStandardItem(str(row['ordersCount'])),
+                        QStandardItem(str(row['operationsCount'])),
+                        QStandardItem(str(row['totalTime'])),
+                        QStandardItem(row['weekendHolidays']),
+                        QStandardItem(str(row['totalHourlyTime'])),
+                        QStandardItem(str(row['totalOvertime'])),
+                        QStandardItem(str(row['totalNightTime'])),
+                        QStandardItem(str(row['totalPieces'])),
+                        QStandardItem(str(row['efficency'])),
+                        QStandardItem(str(row['totalPaymentInLev'])),
+                        QStandardItem(str(row['totalPaymentInEuro']))
+                    ]
+                    totalRows += 1
+                    self.tablePaymentDetailsModel.appendRow(parrentRowForAppend)
 
-                weekendHolidays = QStandardItem('')
-                if details['paymentRatio'] >= 1.75:
-                    weekendHolidays.setText('Почивен ден')
+                elif row['row'] == f'child_{currentParent}':
+                    childRowForAppend = [
+                        QStandardItem(str(row['payment'])),
+                        QStandardItem(row['date']),
+                        QStandardItem(row['shift']),
+                        QStandardItem(str(row['ordersCount'])),
+                        QStandardItem(str(row['operationsCount'])),
+                        QStandardItem(str(row['totalTime'])),
+                        QStandardItem(row['weekendHolidays']),
+                        QStandardItem(str(row['totalHourlyTime'])),
+                        QStandardItem(str(row['totalOvertime'])),
+                        QStandardItem(str(row['totalNightTime'])),
+                        QStandardItem(str(row['totalPieces'])),
+                        QStandardItem(str(row['efficency'])),
+                        QStandardItem(str(row['totalPaymentInLev'])),
+                        QStandardItem(str(row['totalPaymentInEuro']))
+                    ]
+                    parentRow.appendRow(childRowForAppend)
 
-                if details['paymentRatio'] >= 2:
-                    weekendHolidays.setText('Празничен ден')
-
-                parentRow = QStandardItem(str(payment))
-                row = [
-                    parentRow,
-                    QStandardItem(details['date']),
-                    QStandardItem(details['shift']),
-                    QStandardItem(str(details['ordersCount'])),
-                    QStandardItem(str(details['operationsCount'])),
-                    QStandardItem(str(details['totalTime'])),
-                    weekendHolidays,
-                    QStandardItem(str(round(totalHourlyTime, 2))),
-                    QStandardItem(str(round(totalOvertime, 2))),
-                    QStandardItem(str(round(totalNightTime, 2))),
-                    QStandardItem(str(details['totalPieces'])),
-                    QStandardItem(str(round(details['totalTime'] / details['totalPieces'], 2))
-                                  if details['totalPieces'] > 0 else '0'),
-                    QStandardItem(str(round(totalPaymentInLev, 2))),
-                    QStandardItem(str(round(totalPaymentInEuro, 2)))
-                ]
-                self.tablePaymentDetailsModel.appendRow(row)
-                totalRows += 1
-
-                if details['hourly']:
-                    for hourlyPay in details['hourly']:
-
-                        data = self.calculatePaymentNoRepeat(hourlyPay, details['paymentRatio'], paymentInLv,
-                                                             paymentInEuro, nightPayInLeva, nightPayInEuro)
-
-                        subRow = self.makeSubRowForTreeView([hourlyPay[2], details['date'], details['shift'],
-                                                             'Почасово', 0, 0, weekendHolidays, hourlyPay[0], 0,
-                                                             round(hourlyPay[3], 2), 0, 0,
-                                                             round(data[0], 2), round(data[1], 2)
-                                                             ])
-                        parentRow.appendRow(subRow)
-
-                if details['overtime']:
-                    for overtimePay in details['overtime']:
-
-                        data = self.calculatePaymentNoRepeat(overtimePay, details['paymentRatio'], paymentInLv,
-                                                             paymentInEuro, nightPayInLeva, nightPayInEuro)
-
-                        subRow = self.makeSubRowForTreeView([overtimePay[2], details['date'], details['shift'],
-                                                             'Извънреден', 0, 0, weekendHolidays, 0, overtimePay[0],
-                                                             round(overtimePay[3], 2), 0, 0,
-                                                             round(data[0], 2), round(data[1], 2)
-                                                             ])
-                        parentRow.appendRow(subRow)
-
-                if details['operations']:
-                    # nightMins = details['nightMins']
-                    for operation in details['operations'].keys():
-                        operPayInLev = 0
-                        operPayInEuro = 0
-                        operTime = details['operations'][operation]['time']
-                        oprerPieces = details['operations'][operation]['pieces']
-                        nightMins = details['operations'][operation]['nightMins']
-
-                        if nightMins > 0:
-                            if nightMins < operTime:
-                                operPayInLev += Utils.calculatePayment(operTime - nightMins, 1,
-                                                                       details['paymentRatio'], paymentInLv)
-                                operPayInEuro += Utils.calculatePayment(operTime - nightMins, 1,
-                                                                        details['paymentRatio'], nightPayInEuro)
-                            operPayInLev += Utils.calculatePayment(nightMins, 1,
-                                                                   details['paymentRatio'], nightPayInLeva)
-                            operPayInEuro += Utils.calculatePayment(nightMins, 1,
-                                                                    details['paymentRatio'], nightPayInEuro)
-                        else:
-                            operPayInLev += Utils.calculatePayment(operTime, 1,
-                                                                   details['paymentRatio'], paymentInLv)
-                            operPayInEuro += Utils.calculatePayment(operTime, 1,
-                                                                    details['paymentRatio'], paymentInEuro)
-
-                        subRow = self.makeSubRowForTreeView([operation,
-                                                             details['date'], details['shift'],
-                                                             details['operations'][operation]['order'],
-                                                             details['operations'][operation]['operation'],
-                                                             round(details['operations'][operation]['time'], 2),
-                                                             weekendHolidays, '0', '0', round(nightMins, 2),
-                                                             details['operations'][operation]['pieces'],
-                                                             round(operTime / oprerPieces, 2),
-                                                             round(operPayInLev, 2),
-                                                             round(operPayInEuro, 2)
-                                                             ])
-                        parentRow.appendRow(subRow)
-        self.totalViewRows.setText(str(totalRows))
-        self.proxyModelPaymentsDetailsTree.sort(1, Qt.SortOrder.DescendingOrder)
-
-    def makeSubRowForTreeView(self, rows):
-        returnedRow = [
-            QStandardItem(str(rows[0])),  #'ID'
-            QStandardItem(str(rows[1])),  #'Дата'
-            QStandardItem(str(rows[2])),  #'Смяна'
-            QStandardItem(str(rows[3])),  #'Поръчки'
-            QStandardItem(str(rows[4])),  #'Опер.'
-            QStandardItem(str(rows[5])),  #'Вр. мин.'
-            rows[6],  #'Поч./Празн. дни'
-            QStandardItem(str(rows[7])),  #'Поч. Раб.'
-            QStandardItem(str(rows[8])),  #'Изв. Раб.'
-            QStandardItem(str(rows[9])),  #'Нощен труд'
-            QStandardItem(str(rows[10])),  #'Бр.'
-            QStandardItem(str(rows[11])),  #'Ефект.'
-            QStandardItem(str(rows[12])),  #'Нач. лв.'
-            QStandardItem(str(rows[13])),  #'Нач. €'
-        ]
-        return returnedRow
-
-    def calculatePayment(self, data, mainPaymentRation, paymentInLv,
-                         paymentInEuro, nightPayInLeva, nightPayInEuro):
-        totalPaymentInLev = 0
-        totalPaymentInEuro = 0
-        totalNightTime = 0
-        totalTime = 0
-
-        for pay in data:
-            efficient = pay[0]
-            ratio = pay[1]
-            nightMins = pay[3]
-
-            totalPaymentInLev += Utils.calculatePayment(efficient - nightMins, ratio,
-                                                        mainPaymentRation, paymentInLv)
-            totalPaymentInEuro += Utils.calculatePayment(efficient - nightMins, ratio,
-                                                         mainPaymentRation, paymentInEuro)
-            if nightMins > 0:
-                totalNightTime += nightMins
-                totalPaymentInLev += Utils.calculatePayment(nightMins, ratio,
-                                                            mainPaymentRation, nightPayInLeva)
-                totalPaymentInEuro += Utils.calculatePayment(nightMins, ratio,
-                                                             mainPaymentRation, nightPayInEuro)
-            totalTime += efficient
-
-        return totalPaymentInLev, totalPaymentInEuro, totalNightTime, totalTime
-
-    def calculatePaymentNoRepeat(self, data, mainPaymentRation, paymentInLv,
-                                 paymentInEuro, nightPayInLeva, nightPayInEuro):
-        totalPayLv = 0
-        totalPayEuro = 0
-        totalPayLv += Utils.calculatePayment((data[0] - data[3]),
-                                             data[1], mainPaymentRation, paymentInLv)
-        totalPayEuro += Utils.calculatePayment((data[0] - data[3]),
-                                               data[1], mainPaymentRation, paymentInEuro)
-
-        if data[3] > 0:
-            totalPayLv += Utils.calculatePayment(data[3], data[1],
-                                                 mainPaymentRation, nightPayInLeva)
-            totalPayEuro += Utils.calculatePayment(data[3], data[1],
-                                                   mainPaymentRation, nightPayInEuro)
-        return totalPayLv, totalPayEuro
+            self.totalViewRows.setText(str(totalRows))
+            self.proxyModelPaymentsDetailsTree.sort(1, Qt.SortOrder.DescendingOrder)
 
     def setProxyModel(self, proxyModel, model, table):
         proxyModel.setSourceModel(model)

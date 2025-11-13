@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>351</width>
-    <height>22</height>
+    <width>326</width>
+    <height>19</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -28,7 +28,7 @@
   <property name="styleSheet">
    <string notr="true">*{
 	background-color: #dfdfdf;
-	font: 600 10pt &quot;Segoe UI&quot;;
+	font: 600 8pt &quot;Segoe UI&quot;;
 	color: #324b4c;
 }
 
@@ -43,7 +43,7 @@ QMenu::item {
 
 QMenu::item:selected {
 	background-color: #aeaeae;
-	padding-left: 7px;
+	padding-left: 5px;
 }
 
 QPushButton:hover {
@@ -120,7 +120,7 @@ QCheckBox::label {
         </property>
         <property name="minimumSize">
          <size>
-          <width>260</width>
+          <width>240</width>
           <height>0</height>
          </size>
         </property>

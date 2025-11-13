@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customCalendarDialognAeXfH.ui'
+## Form generated from reading UI file 'customCalendarDialogVxaoxI.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -24,7 +24,7 @@ class Ui_CustomCalendarDialog(object):
     def setupUi(self, CustomCalendarDialog):
         if not CustomCalendarDialog.objectName():
             CustomCalendarDialog.setObjectName(u"CustomCalendarDialog")
-        CustomCalendarDialog.resize(342, 353)
+        CustomCalendarDialog.resize(317, 278)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -59,11 +59,11 @@ class Ui_CustomCalendarDialog(object):
         sizePolicy.setHeightForWidth(self.mainWidget.sizePolicy().hasHeightForWidth())
         self.mainWidget.setSizePolicy(sizePolicy)
         self.mainWidget.setMinimumSize(QSize(0, 0))
-        self.mainWidget.setMaximumSize(QSize(260, 245))
+        self.mainWidget.setMaximumSize(QSize(250, 225))
         self.verticalLayout = QVBoxLayout(self.mainWidget)
         self.verticalLayout.setSpacing(3)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setContentsMargins(3, 3, 3, 3)
+        self.verticalLayout.setContentsMargins(3, 0, 3, 0)
         self.calFrame = QFrame(self.mainWidget)
         self.calFrame.setObjectName(u"calFrame")
         self.calFrame.setMaximumSize(QSize(16777215, 16777215))
@@ -92,7 +92,7 @@ class Ui_CustomCalendarDialog(object):
         self.calendarCustomWidget.setFocusPolicy(Qt.NoFocus)
         self.calendarCustomWidget.setAutoFillBackground(False)
         self.calendarCustomWidget.setStyleSheet(u"QToolButton{\n"
-"font: 700 11pt \"Segoe UI\";\n"
+"font: 700 10pt \"Segoe UI\";\n"
 "padding: 5px;\n"
 "}\n"
 "QAbstractItemView{\n"
@@ -100,6 +100,7 @@ class Ui_CustomCalendarDialog(object):
 "selection-background-color: #dfdfdf;\n"
 "selection-color: #2b2b2c;\n"
 "focus: none;\n"
+"font-size: 8pt;\n"
 "}\n"
 "QAbstractItemView:disabled{\n"
 "background-color: #dfdfdf;\n"
@@ -107,12 +108,12 @@ class Ui_CustomCalendarDialog(object):
 "}\n"
 "#qt_calendar_prevmonth {\n"
 "    background-color: #dfdfdf;\n"
-"    icon-size: 24px;\n"
+"    icon-size: 18px;\n"
 "    qproperty-icon: url(:/icons/app/assets/icons/Alt-Arrow-Left--Streamline-Solar-Broken.svg);\n"
 "}\n"
 "#qt_calendar_nextmonth {\n"
 "    background-color: #dfdfdf;\n"
-"    icon-size: 24px;\n"
+"    icon-size: 18px;\n"
 "    qproperty-icon: url(:/icons/app/assets/icons/Alt-Arrow-Right--Streamline-Solar-Broken.svg);\n"
 "}\n"
 "QMenu{\n"
@@ -126,21 +127,20 @@ class Ui_CustomCalendarDialog(object):
 "\n"
 "QMenu::item:selected{\n"
 "color: #2b2b2c;\n"
-"font: 900 10.5pt \"Segoe UI\";\n"
+"font: 700 9pt \"Segoe UI\";\n"
 "border-radius: 0px\n"
 "}\n"
-"QMenu::item{\n"
-"col"
-                        "or: #324b4c;\n"
-"font: 700 10pt \"Segoe UI\";\n"
-"height: 11px;  \n"
+"QMe"
+                        "nu::item{\n"
+"color: #324b4c;\n"
+"font: 600 9pt \"Segoe UI\";\n"
+"height: 10px;  \n"
 "border: 4px solid transparent;\n"
 "padding: 0px 8px 0px 8px;\n"
 "}\n"
 "QTableView::item:selected{\n"
 "border:2.5px solid #324b4c;\n"
 "border-radius:11px;\n"
-"\n"
 "}\n"
 "\n"
 "\n"

@@ -75,7 +75,7 @@ class OperationType(Base):
 
 class TimePaper(Base):
     __tablename__ = "timePapers"
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, index=True)
     Date = Column(Date, nullable=False)
     WeekDay = Column(Integer)
     PaymentRatio = Column(Float, default=1)
@@ -99,7 +99,7 @@ class TimePaper(Base):
 
 class TimePaperOperation(Base):
     __tablename__ = 'timePaperOperations'
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True, autoincrement=True, index=True)
     TimePaperId = Column(Integer, ForeignKey('timePapers.id'), nullable=False)
     OrderId = Column(Integer, ForeignKey('productionModels.id'), nullable=True)
     ModelOperationId = Column(Integer, ForeignKey('productionModelOperations.id'), nullable=True)

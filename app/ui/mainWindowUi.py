@@ -7,6 +7,7 @@ from PySide6.QtGui import QClipboard
 from app.logger import logger
 from PySide6.QtWidgets import QMdiSubWindow
 
+from app.ui.customServerMessageDialog import CustomServerMessageDialog
 from app.ui.widgets.ui_MainWindow import *
 from app.database import createTable
 from app.ui.logInPage import LoginPage
@@ -23,6 +24,10 @@ from app.ui.messagesManager import MessageManager
 from app.ui.customHolidayWidget import CustomHolidaysWidget
 from app.ui.customPayPerMinWidget import CustomPayPerMinWidget
 from app.ui.customParametersWidget import CustomParametersWidget
+import requests
+from config import API_SERVER
+
+from app.utils.appUtils import api_signal_emitter
 
 locale.setlocale(locale.LC_TIME, 'bg_BG.utf8')
 
@@ -37,6 +42,7 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
         self.setWindowTitle("Knitex-96 Work Salary")
         MessageManager.initialize(self)
+        # self.checkForServerConnection()
         self.defaultModelOperPage = None
         self.modelOperPage = None
         self.timePapersPage = None
@@ -51,6 +57,7 @@ class MainWindow(QMainWindow):
         self.clipboardData = QApplication.clipboard()
 
         self.user = None
+        # self.isConnected = False
         LoginPage(self)
 
         MainMenuPage(self)
@@ -70,6 +77,33 @@ class MainWindow(QMainWindow):
         self.ui.parametersBtn.clicked.connect(self.setParametersPage)
 
         self.ui.logoutBtn.clicked.connect(lambda: self.logout(True))
+        api_signal_emitter.server_disconnected.connect(self.handle_server_disconnection)
+
+    def handle_server_disconnection(self):
+        if self.user:  # Only logout if a user is logged in
+            # self.isConnected = False
+            self.logout(True)
+            MessageManager.showOnWidget(self, 'Няма връзка със сървъра. Моля, опитайте по-късно.', 'error')
+
+    def checkForServerConnection(self):
+        try:
+            response = requests.get(f'{API_SERVER}/server/server_status')
+            if response.status_code == 200:
+                logger.info('Server connection established')
+                self.isConnected = True
+                return True
+            else:
+                logger.error('Failed to establish server connection')
+        except requests.exceptions.ConnectionError:
+            self.showServerConnectionMessage()
+            logger.error('Failed to establish server connection')
+            self.isConnected = False
+            return False
+
+    def showServerConnectionMessage(self):
+        serverDialog = CustomServerMessageDialog()
+        # serverDialog.serverSignal.connect(self.checkServerConnection)
+        serverDialog.exec_()
 
     def closeEvent(self, event):
         QApplication.quit()
@@ -118,41 +152,50 @@ class MainWindow(QMainWindow):
             subWindow.show()
 
     def setParametersPage(self):
-        # self.parametersPage = None
-        # print(self.parametersPage)
         if self.parametersPage is None:
-            # print(self.user)
-            self.parametersPage = CustomParametersWidget(self, self.user)
-            self.parametersPage.show()
-            self.parametersPage.destroyed.connect(self.resetParametersPage)
-            self.parametersPage.logoutSignal.connect(self.logout)
+            if self.checkForServerConnection():
+                self.parametersPage = CustomParametersWidget(self, self.user)
+                self.parametersPage.show()
+                self.parametersPage.destroyed.connect(self.resetParametersPage)
+                self.parametersPage.logoutSignal.connect(self.logout)
+            else:
+                self.logout(True)
         else:
             self.parametersPage.activateWindow()
 
     def setPayPerMinPage(self):
         if self.payPerMinPage is None:
-            self.payPerMinPage = CustomPayPerMinWidget(self, self.user)
-            self.payPerMinPage.show()
-            self.payPerMinPage.destroyed.connect(self.resetPayPerMinPage)
-            self.payPerMinPage.logoutSignal.connect(self.logout)
+            if self.checkForServerConnection():
+                self.payPerMinPage = CustomPayPerMinWidget(self, self.user)
+                self.payPerMinPage.show()
+                self.payPerMinPage.destroyed.connect(self.resetPayPerMinPage)
+                self.payPerMinPage.logoutSignal.connect(self.logout)
+            else:
+                self.logout(True)
         else:
             self.payPerMinPage.activateWindow()
 
     def setHolidaysPage(self):
         if self.holidaysPage is None:
-            self.holidaysPage = CustomHolidaysWidget(self, self.user)
-            self.holidaysPage.show()
-            self.holidaysPage.destroyed.connect(self.resetHolidaysPage)
-            self.holidaysPage.logoutSignal.connect(self.logout)
+            if self.checkForServerConnection():
+                self.holidaysPage = CustomHolidaysWidget(self, self.user)
+                self.holidaysPage.show()
+                self.holidaysPage.destroyed.connect(self.resetHolidaysPage)
+                self.holidaysPage.logoutSignal.connect(self.logout)
+            else:
+                self.logout(True)
         else:
             self.holidaysPage.activateWindow()
 
     def setWorkersPage(self):
         if self.workersPage is None:
-            self.workersPage = CustomWorkersWidget(self, self.user)
-            self.workersPage.show()
-            self.workersPage.destroyed.connect(self.resetWorkersPage)
-            self.workersPage.logoutSignal.connect(self.logout)
+            if self.checkForServerConnection():
+                self.workersPage = CustomWorkersWidget(self, self.user)
+                self.workersPage.show()
+                self.workersPage.destroyed.connect(self.resetWorkersPage)
+                self.workersPage.logoutSignal.connect(self.logout)
+            else:
+                self.logout(True)
         else:
             self.workersPage.activateWindow()
 
@@ -168,52 +211,67 @@ class MainWindow(QMainWindow):
 
     def setPaymentsPage(self):
         if self.paymentsPage is None:
-            self.paymentsPage = CustomPaymentsWidget(self, self.user)
-            self.paymentsPage.show()
-            self.paymentsPage.destroyed.connect(self.resetPaymentsPage)
-            self.paymentsPage.logoutSignal.connect(self.logout)
+            if self.checkForServerConnection():
+                self.paymentsPage = CustomPaymentsWidget(self, self.user)
+                self.paymentsPage.show()
+                self.paymentsPage.destroyed.connect(self.resetPaymentsPage)
+                self.paymentsPage.logoutSignal.connect(self.logout)
+            else:
+                self.logout(True)
         else:
             self.paymentsPage.activateWindow()
 
     def setWorkingShiftsPage(self, initialData=None):
         if self.workingShiftsPage is None:
-            self.workingShiftsPage = CustomShiftsEditWidget(self, self.user)
-            if initialData:
-                self.workingShiftsPage.workingShiftsNameLineEdit.setText(initialData[0])
-                self.workingShiftsPage.shiftStart.setTime(initialData[1])
-                self.workingShiftsPage.shiftEnd.setTime(initialData[2])
-            self.workingShiftsPage.show()
-            self.workingShiftsPage.destroyed.connect(self.resetWorkingShiftsPage)
-            self.workingShiftsPage.logoutSignal.connect(self.logout)
+            if self.checkForServerConnection():
+                self.workingShiftsPage = CustomShiftsEditWidget(self, self.user)
+                if initialData:
+                    self.workingShiftsPage.workingShiftsNameLineEdit.setText(initialData[0])
+                    self.workingShiftsPage.shiftStart.setTime(initialData[1])
+                    self.workingShiftsPage.shiftEnd.setTime(initialData[2])
+                self.workingShiftsPage.show()
+                self.workingShiftsPage.destroyed.connect(self.resetWorkingShiftsPage)
+                self.workingShiftsPage.logoutSignal.connect(self.logout)
+            else:
+                self.logout(True)
         else:
             self.workingShiftsPage.activateWindow()
 
     def setTimePapersPage(self):
         if self.timePapersPage is None:
-            self.timePapersPage = CustomTimePapersWidget(self, self.user)
-            self.timePapersPage.show()
-            self.timePapersPage.destroyed.connect(self.resetTimePapersPage)
-            self.timePapersPage.logoutSignal.connect(self.logout)
+            if self.checkForServerConnection():
+                self.timePapersPage = CustomTimePapersWidget(self, self.user)
+                self.timePapersPage.show()
+                self.timePapersPage.destroyed.connect(self.resetTimePapersPage)
+                self.timePapersPage.logoutSignal.connect(self.logout)
+            else:
+                self.logout(True)
         else:
             self.timePapersPage.activateWindow()
 
     def setDefaultOperPage(self):
         if self.defaultModelOperPage is None:
-            self.defaultModelOperPage = DefaultOperToModelTypeCustomWidget(self, self.user)
-            self.defaultModelOperPage.show()
-            self.defaultModelOperPage.destroyed.connect(self.resetDefaultOperPage)
-            self.defaultModelOperPage.logoutSignal.connect(self.logout)
+            if self.checkForServerConnection():
+                self.defaultModelOperPage = DefaultOperToModelTypeCustomWidget(self, self.user)
+                self.defaultModelOperPage.show()
+                self.defaultModelOperPage.destroyed.connect(self.resetDefaultOperPage)
+                self.defaultModelOperPage.logoutSignal.connect(self.logout)
+            else:
+                self.logout(True)
         else:
             self.defaultModelOperPage.activateWindow()
 
     def setModelOperPage(self, isCallingFromOtherWindow=False):
         if self.modelOperPage is None:
-            self.modelOperPage = CustomWidgetForModelOper(self, self.user)
-            self.modelOperPage.show()
-            self.modelOperPage.destroyed.connect(self.resetModelOperPage)
-            self.modelOperPage.logoutSignal.connect(self.logout)
-            if isCallingFromOtherWindow:
-                self.modelOperPage.setWindowsForTimePapersCall()
+            if self.checkForServerConnection():
+                self.modelOperPage = CustomWidgetForModelOper(self, self.user)
+                self.modelOperPage.show()
+                self.modelOperPage.destroyed.connect(self.resetModelOperPage)
+                self.modelOperPage.logoutSignal.connect(self.logout)
+                if isCallingFromOtherWindow:
+                    self.modelOperPage.setWindowsForTimePapersCall()
+            else:
+                self.logout(True)
         else:
             self.modelOperPage.activateWindow()
 

@@ -1,155 +1,114 @@
 from app.database import getDatabase, setDatabase
 from app.logger import logger
 from app.database.payment import HolidaysPerYear, Holiday, PaymentPerMinute, NightPaymentPerMinute
+from app.utils.appUtils import handle_api_connection
+import requests
+from config import API_SERVER
+
 
 class PaymentServices:
 
     @staticmethod
-    def updatePayPerMin(itemId, currentId, user):
-        with setDatabase() as session:
-            currentPayPerMin = session.query(PaymentPerMinute).get(currentId)
-            print(currentPayPerMin)
-            if currentPayPerMin:
-                currentPayPerMin.Active = False
-            newPayPerMin = session.query(PaymentPerMinute).get(itemId)
-            if newPayPerMin:
-                newPayPerMin.Active = True
-
-            session.commit()
-            logger.info(f"Payment per minute from id {currentId} to id {itemId} - updated by {user}")
+    @handle_api_connection
+    def updatePayPerMin(itemId, currentId, user, dayMins):
+        response = requests.post(f"{API_SERVER}/payment/update_pay_per_min",
+                                 json={'itemId': itemId, 'currentId': currentId,
+                                       'user': user, 'dayMins': dayMins}).json()
+        if response['result']:
+            if dayMins:
+                message = 'Payment '
+            else:
+                message = 'Night payment '
+            logger.info(f"{message}per minute from id {currentId} to id {itemId} - updated by {user}")
             return True
 
     @staticmethod
-    def updatePayPerMinNight(itemId, currentId, user):
-        with setDatabase() as session:
-            currentPayPerMin = session.query(NightPaymentPerMinute).get(currentId)
-            if currentPayPerMin:
-                currentPayPerMin.Active = False
-            newPayPerMin = session.query(NightPaymentPerMinute).get(itemId)
-            if newPayPerMin:
-                newPayPerMin.Active = True
-            session.commit()
-            logger.info(f"Night payment per minute from id {currentId} to id {itemId} - updated by {user}")
-            return True
-
-
-
-    @staticmethod
+    @handle_api_connection
     def getPayPerMin(dayMin=True):
-        with getDatabase() as session:
-            returnedData = []
-            if dayMin:
-                payPerMins = session.query(PaymentPerMinute).order_by(PaymentPerMinute.id).all()
-            else:
-                payPerMins = session.query(NightPaymentPerMinute).order_by(NightPaymentPerMinute.id).all()
-            for payPerMin in payPerMins:
-                returnedData.append({'id': payPerMin.id,
-                                     'valueLeva': payPerMin.PaymentValue if dayMin else payPerMin.NightPaymentValue,
-                                     'valueEUR': payPerMin.PaymentInEuro if dayMin else payPerMin.NightPaymentInEuro,
-                                     'levaPerEuro': payPerMin.EuroPerLev,
-                                     'active': payPerMin.Active,
-                                     'dateActive': payPerMin.DateActive,
-                                     'comment': payPerMin.Comment,
-                                     'lastUpdated': payPerMin.LastUpdated,
-                                     'updatedBy': payPerMin.UpdatedBy})
-            return returnedData
-
-    # @staticmethod
-    # def getPayPerMinNight():
-    #     with getDatabase() as session:
-    #         returnedData = []
-    #         payPerNightMins = session.query(NightPaymentPerMinute).all()
-    #         for payPerMin in payPerNightMins:
-    #             returnedData.append({'id': payPerMin.id,
-    #                                  'valueLeva': payPerMin.NightPaymentValue,
-    #                                  'valueEUR': payPerMin.NightPaymentInEuro,
-    #                                  'dateActive': payPerMin.DateActive,
-    #                                  'comment': payPerMin.Comment,
-    #                                  'lastUpdated': payPerMin.LastUpdated,
-    #                                  'updatedBy': payPerMin.UpdatedBy})
-    #         return returnedData
+        response = requests.get(f"{API_SERVER}/payment/get_pay_per_min", json={'dayMin': dayMin}).json()
+        if response['status'] == 'success':
+            return response['data']
+        else:
+            logger.error("Failed to get payment per minute")
+            return []
 
     @staticmethod
+    @handle_api_connection
     def addPayPerMin(user, newEntry, day):
-        with setDatabase() as session:
+        response = requests.post(f"{API_SERVER}/payment/add_pay_per_min",
+                                 json={'user': user, 'day': day, 'newEntry': newEntry}).json()
+        if response['status'] == 'success':
             if day:
-                newPayPerMin = PaymentPerMinute(PaymentValue=newEntry['levaPerMin'],
-                                                PaymentInEuro=newEntry['euroPerMin'],
-                                                EuroPerLev=newEntry['levaPerEuro'],
-                                                DateActive=newEntry['dateActive'],
-                                                Comment=newEntry['comment'],
-                                                UpdatedBy=user)
-                session.add(newPayPerMin)
-                session.commit()
-                logger.info(f'Added new payment per minute: {newPayPerMin.id}-id - by {user}')
-                return True
-            elif not day:
-                newPayPerMin = NightPaymentPerMinute(NightPaymentValue=newEntry['levaPerMin'],
-                                                     NightPaymentInEuro=newEntry['euroPerMin'],
-                                                     EuroPerLev=newEntry['levaPerEuro'],
-                                                     DateActive=newEntry['dateActive'],
-                                                     Comment=newEntry['comment'],
-                                                     UpdatedBy=user)
-                session.add(newPayPerMin)
-                session.commit()
-                logger.info(f'Added new night payment per minute: {newPayPerMin.id}-id - by {user}')
-                return True
+                message = 'Payment '
             else:
-                return False
+                message = 'Night payment '
+            logger.info(f"{message}per minute added - by {user}")
+            return True
+        else:
+            logger.error("Failed to add payment per minute")
+            return False
 
     @staticmethod
+    @handle_api_connection
     def deletePayPerMin(user, selectedId, day=True):
-        with setDatabase() as session:
+        response = requests.post(f"{API_SERVER}/payment/delete_pay_per_min",
+                                 json={'user': user, 'id': selectedId, 'day': day}).json()
+        if response['status'] =='success':
             if day:
-                payPerMin = session.query(PaymentPerMinute).filter_by(id=selectedId).first()
-                if payPerMin:
-                    session.delete(payPerMin)
-                    session.commit()
-                    logger.info(f'Deleted payment per minute: {selectedId} - by {user}')
-                    return True
-            elif not day:
-                payPerMin = session.query(NightPaymentPerMinute).filter_by(id=selectedId).first()
-                if payPerMin:
-                    session.delete(payPerMin)
-                    session.commit()
-                    logger.info(f'Deleted night payment per minute: {selectedId} - by {user}')
-                    return True
+                message = 'payment '
             else:
-                return False
+                message = 'night payment '
+            logger.info(f'Deleted {message}per minute: {selectedId} - by {user}')
+            return True
+        else:
+            logger.error("Failed to delete payment per minute")
+            return False
 
     @staticmethod
+    @handle_api_connection
     def getHolidaysForYear(selectedYear):
-        with getDatabase() as session:
-            returnedData = []
-            year = session.query(HolidaysPerYear).filter_by(Year=selectedYear).first()
-            if year:
-                holidays = session.query(Holiday).filter_by(HolidaysPerYearId=year.id).all()
-                for holiday in holidays:
-                    returnedData.append({'id': holiday.id, 'name': holiday.HolidayName, 'date': holiday.HolidayDate})
-            # print(returnedData)
-            return returnedData
+        response = requests.get(f"{API_SERVER}/payment/get_holidays_for_year",
+                                json={'selectedYear': selectedYear}).json()
+        if response['status'] =='success':
+            return response['data']
+        else:
+            logger.error("Failed to get holidays for year")
+            return []
 
     @staticmethod
+    @handle_api_connection
     def addHoliday(name, date, user, selectedYear):
-        with setDatabase() as session:
-            year = session.query(HolidaysPerYear).filter_by(Year=selectedYear).first()
-            newHoliday = Holiday(HolidayName=name, HolidayDate=date, UpdatedBy=user, HolidaysPerYearId=year.id)
-            session.add(newHoliday)
-            year.HolidaysCount += 1
-            session.commit()
+        print(date)
+        response = requests.post(f"{API_SERVER}/payment/add_holiday",
+                                 json={'name': name, 'date': date, 'user': user, 'selectedYear': selectedYear}).json()
+        if response['status'] =='success':
             logger.info(f'Added new holiday: {name} on {date} by {user}')
+            return True
+        else:
+            logger.error("Failed to add holiday")
+            return False
 
     @staticmethod
+    @handle_api_connection
     def deleteHoliday(holidayId, year, user):
-        with setDatabase() as session:
-            holiday = session.query(Holiday).filter_by(id=holidayId).first()
-            if holiday:
-                year = session.query(HolidaysPerYear).filter_by(Year=year).first()
-                session.delete(holiday)
-                year.HolidaysCount -= 1
-                session.commit()
-                logger.info(f'Deleted holiday: {holiday.HolidayName} on {holiday.HolidayDate} by {user}')
-                return True
+        response = requests.post(f"{API_SERVER}/payment/delete_holiday",
+                                 json={'holidayId': holidayId, 'year': year, 'user': user}).json()
+        if response['status'] =='success':
+            logger.info(f'Deleted holiday: {holidayId} by {user}')
+            return True
+        else:
+            logger.error("Failed to delete holiday")
+            return False
+        #
+        # with setDatabase() as session:
+        #     holiday = session.query(Holiday).filter_by(id=holidayId).first()
+        #     if holiday:
+        #         year = session.query(HolidaysPerYear).filter_by(Year=year).first()
+        #         session.delete(holiday)
+        #         year.HolidaysCount -= 1
+        #         session.commit()
+        #         logger.info(f'Deleted holiday: {holiday.HolidayName} on {holiday.HolidayDate} by {user}')
+        #         return True
 
     @staticmethod
     def getHolidaysYears():

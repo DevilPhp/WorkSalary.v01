@@ -65,17 +65,18 @@ class CustomHolidaysWidget(QWidget, Ui_customHolidaysWidget):
 
     def addNewHoliday(self):
         holidayName = self.holidayNameLineEdit.text()
-        stringDate = self.newHolidayDate.date().toString("dd.MM.yyyy")
-        holidayDate = datetime.strptime(stringDate, "%d.%m.%Y")
+        holidayDate = self.newHolidayDate.date().toString("dd.MM.yyyy")
         user = self.user
 
         if holidayName and holidayDate:
             if self.currentSelectedYear:
-                Ps.addHoliday(holidayName, holidayDate, user, self.currentSelectedYear)
-                self.holidayNameLineEdit.clear()
-                self.newHolidayDate.setDate(QDate.currentDate())
-                self.refreshHolidaysTableView()
-                MM.showOnWidget(self, f"{holidayName} -дата: {stringDate} добавен успешно!", 'success')
+                if Ps.addHoliday(holidayName, holidayDate, user, self.currentSelectedYear):
+                    self.holidayNameLineEdit.clear()
+                    self.newHolidayDate.setDate(QDate.currentDate())
+                    self.refreshHolidaysTableView()
+                    MM.showOnWidget(self, f"{holidayName} -дата: {holidayDate} добавен успешно!", 'success')
+                else:
+                    MM.showOnWidget(self, f"Грешка при добавяне на {holidayName} -дата: {holidayDate}!", 'error')
             else:
                 MM.showOnWidget(self, "Моля изберете година!", 'error')
         else:
@@ -90,7 +91,7 @@ class CustomHolidaysWidget(QWidget, Ui_customHolidaysWidget):
             row = [
                 holidayId,
                 QStandardItem(holiday['name']),
-                QStandardItem(holiday['date'].strftime("%d.%m.%Y"))
+                QStandardItem(holiday['date'])
             ]
             self.holodaysTableModel.appendRow(row)
 

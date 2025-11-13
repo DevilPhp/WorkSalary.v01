@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1284</width>
-    <height>958</height>
+    <width>1037</width>
+    <height>684</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -19,7 +19,7 @@
   <property name="font">
    <font>
     <family>Segoe UI</family>
-    <pointsize>12</pointsize>
+    <pointsize>9</pointsize>
     <italic>false</italic>
     <bold>true</bold>
    </font>
@@ -30,7 +30,7 @@
   <property name="styleSheet">
    <string notr="true">*{
 	background-color: #dfdfdf;
-	font: 700 12pt &quot;Segoe UI&quot;;
+	font: 600 9pt &quot;Segoe UI&quot;;
 	color: #324b4c;
 }
 
@@ -51,23 +51,30 @@ QPushButton:hover {
 	background-color: #aeaeae;
 }
 
+#logoIcon, #logoIcon_2 {
+	background-color: #dfdfdf;
+	padding: 0px;
+	border: none;
+}
+
 #userLogoLabel, #userPassVisBtn {
 	background-color: #dfdfdf;
 	border: none;
 }
 
 #mainMenuWidget QLabel {
-	font: 900 16pt &quot;Segoe UI&quot;;
-	max-height: 30px;
-	padding: 5px;
+	font: 700 10pt &quot;Segoe UI&quot;;
+	max-height: 20px;
+	padding: 3px;
 }
 
 #mainMenuWidget QPushButton {
 	padding: 5px;
+	font-size: 10pt;
 }
 
 #label, #label_8 {
-	padding-top: 50px;
+	padding-top: 30px;
 }
 
 #userIcon, #logoutBtn{
@@ -79,7 +86,7 @@ QPushButton:hover {
 }
 
 #usernameLabel {
-	font-size: 11pt;
+	font-size: 10pt;
 }
 
 </string>
@@ -155,7 +162,7 @@ QPushButton:hover {
                <height>160</height>
               </size>
              </property>
-             <layout class="QHBoxLayout" name="horizontalLayout">
+             <layout class="QVBoxLayout" name="verticalLayout_11">
               <property name="spacing">
                <number>0</number>
               </property>
@@ -171,19 +178,23 @@ QPushButton:hover {
               <property name="bottomMargin">
                <number>0</number>
               </property>
-              <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
-               <widget class="QLabel" name="label">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>0</height>
-                 </size>
+              <item>
+               <widget class="QPushButton" name="logoIcon">
+                <property name="focusPolicy">
+                 <enum>Qt::NoFocus</enum>
                 </property>
                 <property name="text">
                  <string/>
                 </property>
-                <property name="pixmap">
-                 <pixmap resource="../../../resources.qrc">:/logo/app/assets/logo/KnitexLogo3.png</pixmap>
+                <property name="icon">
+                 <iconset resource="../../../resources.qrc">
+                  <normaloff>:/logo/app/assets/logo/KnitexLogo3.png</normaloff>:/logo/app/assets/logo/KnitexLogo3.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>320</width>
+                  <height>280</height>
+                 </size>
                 </property>
                </widget>
               </item>
@@ -195,12 +206,12 @@ QPushButton:hover {
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>300</height>
+               <height>0</height>
               </size>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_3">
               <property name="spacing">
-               <number>35</number>
+               <number>15</number>
               </property>
               <property name="leftMargin">
                <number>0</number>
@@ -231,8 +242,8 @@ QPushButton:hover {
                 </property>
                 <property name="iconSize">
                  <size>
-                  <width>80</width>
-                  <height>80</height>
+                  <width>40</width>
+                  <height>40</height>
                  </size>
                 </property>
                </widget>
@@ -259,7 +270,7 @@ QPushButton:hover {
                   <number>0</number>
                  </property>
                  <property name="bottomMargin">
-                  <number>0</number>
+                  <number>15</number>
                  </property>
                  <item>
                   <layout class="QGridLayout" name="gridLayout">
@@ -271,6 +282,14 @@ QPushButton:hover {
                    </property>
                    <item row="0" column="0">
                     <widget class="QLabel" name="label_4">
+                     <property name="font">
+                      <font>
+                       <family>Segoe UI</family>
+                       <pointsize>9</pointsize>
+                       <italic>false</italic>
+                       <bold>true</bold>
+                      </font>
+                     </property>
                      <property name="text">
                       <string>Потребител</string>
                      </property>
@@ -278,6 +297,14 @@ QPushButton:hover {
                    </item>
                    <item row="0" column="1">
                     <widget class="QLineEdit" name="userNameField">
+                     <property name="font">
+                      <font>
+                       <family>Segoe UI</family>
+                       <pointsize>9</pointsize>
+                       <italic>false</italic>
+                       <bold>true</bold>
+                      </font>
+                     </property>
                      <property name="focusPolicy">
                       <enum>Qt::StrongFocus</enum>
                      </property>
@@ -321,8 +348,8 @@ QPushButton:hover {
                      </property>
                      <property name="iconSize">
                       <size>
-                       <width>22</width>
-                       <height>22</height>
+                       <width>16</width>
+                       <height>16</height>
                       </size>
                      </property>
                     </widget>
@@ -349,6 +376,14 @@ QPushButton:hover {
                      <height>26</height>
                     </size>
                    </property>
+                   <property name="font">
+                    <font>
+                     <family>Segoe UI</family>
+                     <pointsize>9</pointsize>
+                     <italic>false</italic>
+                     <bold>true</bold>
+                    </font>
+                   </property>
                    <property name="focusPolicy">
                     <enum>Qt::NoFocus</enum>
                    </property>
@@ -364,8 +399,8 @@ QPushButton:hover {
                    </property>
                    <property name="iconSize">
                     <size>
-                     <width>24</width>
-                     <height>24</height>
+                     <width>16</width>
+                     <height>16</height>
                     </size>
                    </property>
                   </widget>
@@ -377,7 +412,7 @@ QPushButton:hover {
             </widget>
            </item>
            <item alignment="Qt::AlignHCenter|Qt::AlignBottom">
-            <widget class="QWidget" name="widget_4" native="true">
+            <widget class="QWidget" name="footerWidget" native="true">
              <property name="minimumSize">
               <size>
                <width>0</width>
@@ -386,21 +421,29 @@ QPushButton:hover {
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_3">
               <property name="leftMargin">
-               <number>10</number>
+               <number>0</number>
               </property>
               <property name="topMargin">
-               <number>10</number>
+               <number>0</number>
               </property>
               <property name="rightMargin">
-               <number>10</number>
+               <number>0</number>
               </property>
               <property name="bottomMargin">
-               <number>10</number>
+               <number>5</number>
               </property>
               <item>
-               <widget class="QLabel" name="infoLabel">
+               <widget class="QLabel" name="footerLabel">
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>9</pointsize>
+                  <italic>false</italic>
+                  <bold>true</bold>
+                 </font>
+                </property>
                 <property name="text">
-                 <string>Dev v0.1.010</string>
+                 <string>Author: Filip Chaushev   Dev v0.1.030</string>
                 </property>
                </widget>
               </item>
@@ -482,7 +525,7 @@ QPushButton:hover {
                   <height>160</height>
                  </size>
                 </property>
-                <layout class="QHBoxLayout" name="horizontalLayout_5">
+                <layout class="QVBoxLayout" name="verticalLayout_12">
                  <property name="spacing">
                   <number>0</number>
                  </property>
@@ -498,19 +541,23 @@ QPushButton:hover {
                  <property name="bottomMargin">
                   <number>0</number>
                  </property>
-                 <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
-                  <widget class="QLabel" name="label_8">
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>0</height>
-                    </size>
+                 <item>
+                  <widget class="QPushButton" name="logoIcon_2">
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
                    </property>
                    <property name="text">
                     <string/>
                    </property>
-                   <property name="pixmap">
-                    <pixmap resource="../../../resources.qrc">:/logo/app/assets/logo/KnitexLogo3.png</pixmap>
+                   <property name="icon">
+                    <iconset resource="../../../resources.qrc">
+                     <normaloff>:/logo/app/assets/logo/KnitexLogo3.png</normaloff>:/logo/app/assets/logo/KnitexLogo3.png</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>320</width>
+                     <height>280</height>
+                    </size>
                    </property>
                   </widget>
                  </item>
@@ -521,7 +568,7 @@ QPushButton:hover {
                <widget class="QWidget" name="widget_9" native="true">
                 <layout class="QHBoxLayout" name="horizontalLayout_8">
                  <property name="spacing">
-                  <number>10</number>
+                  <number>3</number>
                  </property>
                  <property name="leftMargin">
                   <number>0</number>
@@ -549,8 +596,8 @@ QPushButton:hover {
                    </property>
                    <property name="iconSize">
                     <size>
-                     <width>24</width>
-                     <height>24</height>
+                     <width>18</width>
+                     <height>18</height>
                     </size>
                    </property>
                   </widget>
@@ -569,8 +616,8 @@ QPushButton:hover {
                    </property>
                    <property name="iconSize">
                     <size>
-                     <width>24</width>
-                     <height>24</height>
+                     <width>18</width>
+                     <height>18</height>
                     </size>
                    </property>
                   </widget>
@@ -637,6 +684,14 @@ QPushButton:hover {
                 </item>
                 <item row="0" column="0">
                  <widget class="QLabel" name="label_2">
+                  <property name="font">
+                   <font>
+                    <family>Segoe UI</family>
+                    <pointsize>10</pointsize>
+                    <italic>false</italic>
+                    <bold>true</bold>
+                   </font>
+                  </property>
                   <property name="text">
                    <string>Листове за време</string>
                   </property>
@@ -733,24 +788,24 @@ QPushButton:hover {
             </widget>
            </item>
            <item alignment="Qt::AlignHCenter|Qt::AlignBottom">
-            <widget class="QWidget" name="widget_11" native="true">
+            <widget class="QWidget" name="footerWidget_2" native="true">
              <layout class="QHBoxLayout" name="horizontalLayout_7">
               <property name="leftMargin">
-               <number>10</number>
+               <number>0</number>
               </property>
               <property name="topMargin">
-               <number>10</number>
+               <number>0</number>
               </property>
               <property name="rightMargin">
-               <number>10</number>
+               <number>0</number>
               </property>
               <property name="bottomMargin">
-               <number>10</number>
+               <number>5</number>
               </property>
               <item>
-               <widget class="QLabel" name="infoLabel_2">
+               <widget class="QLabel" name="footerLabel_2">
                 <property name="text">
-                 <string>Dev v0.1.010</string>
+                 <string>Author: Filip Chaushev   Dev v0.1.030</string>
                 </property>
                </widget>
               </item>

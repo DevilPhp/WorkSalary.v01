@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customSortingMenuWidgetYMZxwa.ui'
+## Form generated from reading UI file 'customSortingMenuWidgetxhNWzb.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -23,7 +23,7 @@ class Ui_customSortingMenuWidget(object):
     def setupUi(self, customSortingMenuWidget):
         if not customSortingMenuWidget.objectName():
             customSortingMenuWidget.setObjectName(u"customSortingMenuWidget")
-        customSortingMenuWidget.resize(133, 43)
+        customSortingMenuWidget.resize(100, 39)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -32,7 +32,7 @@ class Ui_customSortingMenuWidget(object):
         customSortingMenuWidget.setMinimumSize(QSize(0, 0))
         customSortingMenuWidget.setStyleSheet(u"*{\n"
 "	background-color: #dfdfdf;\n"
-"	font: 500 11pt \"Segoe UI\";\n"
+"	font: 500 9pt \"Segoe UI\";\n"
 "	color: #324b4c;\n"
 "}\n"
 "\n"
@@ -43,7 +43,7 @@ class Ui_customSortingMenuWidget(object):
 "\n"
 "QLineEdit{\n"
 "	border: none;\n"
-"	font-size: 11pt;\n"
+"	font-size: 9pt;\n"
 "	border-bottom: 1px solid #7c9399;\n"
 "}\n"
 "\n"
@@ -104,7 +104,7 @@ class Ui_customSortingMenuWidget(object):
         self.scrollArea.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 101, 16))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 68, 16))
         sizePolicy.setHeightForWidth(self.scrollAreaWidgetContents.sizePolicy().hasHeightForWidth())
         self.scrollAreaWidgetContents.setSizePolicy(sizePolicy)
         self.verticalLayout_2 = QVBoxLayout(self.scrollAreaWidgetContents)

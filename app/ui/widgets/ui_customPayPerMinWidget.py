@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customPayPerMinWidgetnIAnLZ.ui'
+## Form generated from reading UI file 'customPayPerMinWidgetZKKpOI.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -24,11 +24,11 @@ class Ui_customPayPerMinWidget(object):
     def setupUi(self, customPayPerMinWidget):
         if not customPayPerMinWidget.objectName():
             customPayPerMinWidget.setObjectName(u"customPayPerMinWidget")
-        customPayPerMinWidget.resize(900, 800)
-        customPayPerMinWidget.setMinimumSize(QSize(900, 800))
+        customPayPerMinWidget.resize(800, 580)
+        customPayPerMinWidget.setMinimumSize(QSize(800, 580))
         customPayPerMinWidget.setStyleSheet(u"*{\n"
 "	background-color: #dfdfdf;\n"
-"	font: 600 12pt \"Segoe UI\";\n"
+"	font: 600 9pt \"Segoe UI\";\n"
 "	color: #324b4c;\n"
 "}\n"
 "\n"
@@ -46,7 +46,7 @@ class Ui_customPayPerMinWidget(object):
 "	border: none;\n"
 "	border-radius: 10px;\n"
 "	padding: 5px;\n"
-"	font-size: 12pt;\n"
+"	font-size: 9pt;\n"
 "}\n"
 "\n"
 "QPushButton:hover{\n"
@@ -54,7 +54,7 @@ class Ui_customPayPerMinWidget(object):
 "}\n"
 "\n"
 "QCheckBox {\n"
-"	font-size: 10pt;\n"
+"	font-size: 8pt;\n"
 "}\n"
 "\n"
 "QStandartItem{\n"
@@ -64,7 +64,7 @@ class Ui_customPayPerMinWidget(object):
 "\n"
 "QLineEdit, QDateEdit{\n"
 "	border: none;\n"
-"	font-size: 11pt;\n"
+"	font-size: 9pt;\n"
 "	border-bottom: 1px solid #7c9399;\n"
 "}\n"
 "\n"
@@ -75,6 +75,7 @@ class Ui_customPayPerMinWidget(object):
 "\n"
 "QMenu::item {\n"
 "	padding: 5px;\n"
+"	font-size: 8pt;\n"
 "}\n"
 "\n"
 "QMenu::item:selected {\n"
@@ -83,8 +84,8 @@ class Ui_customPayPerMinWidget(object):
 "}\n"
 "\n"
 "#pageTitle {\n"
-"	font: 700 13"
-                        "pt \"Segoe UI\";\n"
+""
+                        "	font: 700 11pt \"Segoe UI\";\n"
 "}\n"
 "\n"
 "#userIcon, #logoutBtn{\n"
@@ -97,7 +98,7 @@ class Ui_customPayPerMinWidget(object):
 "}\n"
 "\n"
 "#usernameLabel {\n"
-"	font-size: 11pt;\n"
+"	font-size: 10pt;\n"
 "}")
         self.verticalLayout = QVBoxLayout(customPayPerMinWidget)
         self.verticalLayout.setSpacing(10)
@@ -132,7 +133,7 @@ class Ui_customPayPerMinWidget(object):
         self.userHolder = QWidget(self.headerHolder)
         self.userHolder.setObjectName(u"userHolder")
         self.horizontalLayout_3 = QHBoxLayout(self.userHolder)
-        self.horizontalLayout_3.setSpacing(10)
+        self.horizontalLayout_3.setSpacing(3)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 5, 0)
         self.logoutBtn = QPushButton(self.userHolder)
@@ -140,7 +141,7 @@ class Ui_customPayPerMinWidget(object):
         icon = QIcon()
         icon.addFile(u":/icons/app/assets/icons/Log-Out--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.logoutBtn.setIcon(icon)
-        self.logoutBtn.setIconSize(QSize(24, 24))
+        self.logoutBtn.setIconSize(QSize(18, 18))
 
         self.horizontalLayout_3.addWidget(self.logoutBtn)
 
@@ -150,7 +151,7 @@ class Ui_customPayPerMinWidget(object):
         icon1 = QIcon()
         icon1.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.userIcon.setIcon(icon1)
-        self.userIcon.setIconSize(QSize(24, 24))
+        self.userIcon.setIconSize(QSize(18, 18))
 
         self.horizontalLayout_3.addWidget(self.userIcon)
 
@@ -193,7 +194,7 @@ class Ui_customPayPerMinWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 888, 680))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 788, 473))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -207,16 +208,16 @@ class Ui_customPayPerMinWidget(object):
         self.payPerMinTableView = QTableView(self.payPerMinTableHolder)
         self.payPerMinTableView.setObjectName(u"payPerMinTableView")
         self.payPerMinTableView.setStyleSheet(u"QHeaderView:section{\n"
-"	font: 700 10.5pt \"Segoe UI\";\n"
+"	font: 700 9pt \"Segoe UI\";\n"
 "	background-color: #dfdfdf;\n"
-"	padding: 5px;\n"
+"	padding: 3px;\n"
 "}\n"
-"QVerticalView:section{\n"
-"	min-height: 30;\n"
+"QHeaderView:section:vertical {\n"
+"	min-height: 15px;\n"
 "}\n"
 "QAbstractItemView{\n"
 "	alternate-background-color: #d3d3d3;\n"
-"	font: 10.5pt \"Segoe UI\";\n"
+"	font: 8pt \"Segoe UI\";\n"
 "	selection-background-color: rgba(198, 228, 254, 45);\n"
 "	selection-color: #324b4c;\n"
 "	focus: none;\n"
@@ -235,6 +236,8 @@ class Ui_customPayPerMinWidget(object):
         self.payPerMinTableView.setShowGrid(False)
         self.payPerMinTableView.setCornerButtonEnabled(False)
         self.payPerMinTableView.verticalHeader().setVisible(False)
+        self.payPerMinTableView.verticalHeader().setMinimumSectionSize(20)
+        self.payPerMinTableView.verticalHeader().setDefaultSectionSize(20)
 
         self.verticalLayout_11.addWidget(self.payPerMinTableView)
 

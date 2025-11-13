@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>900</width>
-    <height>800</height>
+    <width>800</width>
+    <height>580</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>900</width>
-    <height>800</height>
+    <width>800</width>
+    <height>580</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -22,7 +22,7 @@
   <property name="styleSheet">
    <string notr="true">*{
 	background-color: #dfdfdf;
-	font: 600 12pt &quot;Segoe UI&quot;;
+	font: 600 9pt &quot;Segoe UI&quot;;
 	color: #324b4c;
 }
 
@@ -40,7 +40,7 @@ QPushButton {
 	border: none;
 	border-radius: 10px;
 	padding: 5px;
-	font-size: 12pt;
+	font-size: 9pt;
 }
 
 QPushButton:hover{
@@ -48,7 +48,7 @@ QPushButton:hover{
 }
 
 QCheckBox {
-	font-size: 10pt;
+	font-size: 8pt;
 }
 
 QStandartItem{
@@ -58,7 +58,7 @@ QStandartItem{
 
 QLineEdit, QDateEdit{
 	border: none;
-	font-size: 11pt;
+	font-size: 9pt;
 	border-bottom: 1px solid #7c9399;
 }
 
@@ -69,6 +69,7 @@ QMenu {
 
 QMenu::item {
 	padding: 5px;
+	font-size: 8pt;
 }
 
 QMenu::item:selected {
@@ -77,7 +78,7 @@ QMenu::item:selected {
 }
 
 #pageTitle {
-	font: 700 13pt &quot;Segoe UI&quot;;
+	font: 700 11pt &quot;Segoe UI&quot;;
 }
 
 #userIcon, #logoutBtn{
@@ -90,7 +91,7 @@ QMenu::item:selected {
 }
 
 #usernameLabel {
-	font-size: 11pt;
+	font-size: 10pt;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -177,7 +178,7 @@ QMenu::item:selected {
           <widget class="QWidget" name="userHolder" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <property name="spacing">
-             <number>10</number>
+             <number>3</number>
             </property>
             <property name="leftMargin">
              <number>0</number>
@@ -202,8 +203,8 @@ QMenu::item:selected {
               </property>
               <property name="iconSize">
                <size>
-                <width>24</width>
-                <height>24</height>
+                <width>18</width>
+                <height>18</height>
                </size>
               </property>
              </widget>
@@ -222,8 +223,8 @@ QMenu::item:selected {
               </property>
               <property name="iconSize">
                <size>
-                <width>24</width>
-                <height>24</height>
+                <width>18</width>
+                <height>18</height>
                </size>
               </property>
              </widget>
@@ -295,8 +296,8 @@ QMenu::item:selected {
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>888</width>
-        <height>680</height>
+        <width>788</width>
+        <height>473</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -337,16 +338,16 @@ QMenu::item:selected {
            <widget class="QTableView" name="payPerMinTableView">
             <property name="styleSheet">
              <string notr="true">QHeaderView:section{
-	font: 700 10.5pt &quot;Segoe UI&quot;;
+	font: 700 9pt &quot;Segoe UI&quot;;
 	background-color: #dfdfdf;
-	padding: 5px;
+	padding: 3px;
 }
-QVerticalView:section{
-	min-height: 30;
+QHeaderView:section:vertical {
+	min-height: 15px;
 }
 QAbstractItemView{
 	alternate-background-color: #d3d3d3;
-	font: 10.5pt &quot;Segoe UI&quot;;
+	font: 8pt &quot;Segoe UI&quot;;
 	selection-background-color: rgba(198, 228, 254, 45);
 	selection-color: #324b4c;
 	focus: none;
@@ -377,6 +378,12 @@ QAbstractItemView::item:selected{
             </property>
             <attribute name="verticalHeaderVisible">
              <bool>false</bool>
+            </attribute>
+            <attribute name="verticalHeaderMinimumSectionSize">
+             <number>20</number>
+            </attribute>
+            <attribute name="verticalHeaderDefaultSectionSize">
+             <number>20</number>
             </attribute>
            </widget>
           </item>

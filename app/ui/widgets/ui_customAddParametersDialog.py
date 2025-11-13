@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customAddParametersDialogRZQTup.ui'
+## Form generated from reading UI file 'customAddParametersDialogxrkoLS.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -24,7 +24,7 @@ class Ui_customAddParametersDialog(object):
     def setupUi(self, customAddParametersDialog):
         if not customAddParametersDialog.objectName():
             customAddParametersDialog.setObjectName(u"customAddParametersDialog")
-        customAddParametersDialog.resize(658, 985)
+        customAddParametersDialog.resize(556, 711)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -33,7 +33,7 @@ class Ui_customAddParametersDialog(object):
         customAddParametersDialog.setMinimumSize(QSize(0, 0))
         customAddParametersDialog.setMouseTracking(True)
         customAddParametersDialog.setStyleSheet(u"*{\n"
-"	font: 600 11pt \"Segoe UI\";\n"
+"	font: 600 9pt \"Segoe UI\";\n"
 "	border: none;\n"
 "	background-color: #dfdfdf;\n"
 "	padding: 0;\n"
@@ -53,7 +53,7 @@ class Ui_customAddParametersDialog(object):
 "\n"
 "QLineEdit, QDateEdit{\n"
 "	border: none;\n"
-"	font-size: 10pt;\n"
+"	font-size: 9pt;\n"
 "	border-bottom: 1px solid #7c9399;\n"
 "}\n"
 "\n"
@@ -65,26 +65,26 @@ class Ui_customAddParametersDialog(object):
 "\n"
 "QComboBox::drop-down{\n"
 "	image: url(':/icons/app/assets/icons/Alt-Arrow-Down--Streamline-Solar-Broken.svg');\n"
-"	width: 18px;\n"
-"	height: 18px;\n"
+"	width: 16px;\n"
+"	height: 16px;\n"
 "}\n"
 "\n"
 "QComboBox:hover{\n"
 "	color: #2b2b2c;\n"
-"	font: 720 10.5pt \"Segoe UI\";\n"
+"	font: 700 9pt \"Segoe UI\";\n"
 "	border-radius: 0px;\n"
 "	alternate-background-color: #2c313c;\n"
 "}\n"
 "QComboBox::item:selected{\n"
 "	color: #2b2b2c;\n"
-"	font: 900 10.5pt \"Segoe UI\";\n"
+"	font: 700 9pt \"Segoe UI\";\n"
 "	border-radius: 0px;\n"
 "}\n"
 "QComboBox::item{\n"
 "	color: #324b4c;\n"
-""
-                        "	font: 700 10pt \"Segoe UI\";\n"
-"	height: 11px;  \n"
+"	fon"
+                        "t: 600 9pt \"Segoe UI\";\n"
+"	height: 10px;  \n"
 "	border: 4px solid transparent;\n"
 "	padding: 0px 8px 0px 8px;\n"
 "}\n"
@@ -99,11 +99,11 @@ class Ui_customAddParametersDialog(object):
 "}\n"
 "\n"
 "#widget * {\n"
-"	font-size: 10pt;\n"
+"	font-size: 9pt;\n"
 "}\n"
 "\n"
 "#dialogTitle {\n"
-"	font-size: 12pt;\n"
+"	font-size: 10pt;\n"
 "	font-weight: 700;\n"
 "}\n"
 "#yesBtn {\n"
@@ -131,7 +131,7 @@ class Ui_customAddParametersDialog(object):
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.mainWidget = QWidget(customAddParametersDialog)
         self.mainWidget.setObjectName(u"mainWidget")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Expanding)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.mainWidget.sizePolicy().hasHeightForWidth())
@@ -139,7 +139,7 @@ class Ui_customAddParametersDialog(object):
         self.mainWidget.setMinimumSize(QSize(0, 0))
         self.mainWidget.setMaximumSize(QSize(16777215, 16777215))
         self.verticalLayout = QVBoxLayout(self.mainWidget)
-        self.verticalLayout.setSpacing(10)
+        self.verticalLayout.setSpacing(6)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(10, 10, 10, 10)
         self.widget_2 = QWidget(self.mainWidget)
@@ -167,12 +167,12 @@ class Ui_customAddParametersDialog(object):
         self.addParametersLayout = QFormLayout()
         self.addParametersLayout.setObjectName(u"addParametersLayout")
         self.addParametersLayout.setHorizontalSpacing(15)
-        self.addParametersLayout.setVerticalSpacing(10)
+        self.addParametersLayout.setVerticalSpacing(5)
 
         self.verticalLayout_3.addLayout(self.addParametersLayout)
 
 
-        self.verticalLayout.addWidget(self.widget)
+        self.verticalLayout.addWidget(self.widget, 0, Qt.AlignLeft)
 
         self.buttonsWidget = QWidget(self.mainWidget)
         self.buttonsWidget.setObjectName(u"buttonsWidget")
@@ -180,7 +180,7 @@ class Ui_customAddParametersDialog(object):
         self.buttonsWidget.setSizePolicy(sizePolicy)
         font = QFont()
         font.setFamilies([u"Segoe UI"])
-        font.setPointSize(11)
+        font.setPointSize(9)
         font.setBold(True)
         font.setItalic(False)
         self.buttonsWidget.setFont(font)
@@ -195,7 +195,7 @@ class Ui_customAddParametersDialog(object):
         icon = QIcon()
         icon.addFile(u":/icons/app/assets/icons/Check-Square--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.yesBtn.setIcon(icon)
-        self.yesBtn.setIconSize(QSize(32, 32))
+        self.yesBtn.setIconSize(QSize(22, 22))
 
         self.horizontalLayout_2.addWidget(self.yesBtn)
 

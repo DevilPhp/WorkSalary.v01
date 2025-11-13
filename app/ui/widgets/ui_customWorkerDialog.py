@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customWorkerDialogAQvpNe.ui'
+## Form generated from reading UI file 'customWorkerDialogQkIcIF.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -25,7 +25,7 @@ class Ui_CustomWorkerDialog(object):
     def setupUi(self, CustomWorkerDialog):
         if not CustomWorkerDialog.objectName():
             CustomWorkerDialog.setObjectName(u"CustomWorkerDialog")
-        CustomWorkerDialog.resize(722, 398)
+        CustomWorkerDialog.resize(574, 345)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -34,7 +34,7 @@ class Ui_CustomWorkerDialog(object):
         CustomWorkerDialog.setMinimumSize(QSize(0, 0))
         CustomWorkerDialog.setMouseTracking(True)
         CustomWorkerDialog.setStyleSheet(u"*{\n"
-"	font: 600 11pt \"Segoe UI\";\n"
+"	font: 600 9pt \"Segoe UI\";\n"
 "	border: none;\n"
 "	background-color: #dfdfdf;\n"
 "	padding: 0;\n"
@@ -54,7 +54,7 @@ class Ui_CustomWorkerDialog(object):
 "\n"
 "QLineEdit, QDateEdit{\n"
 "	border: none;\n"
-"	font-size: 10pt;\n"
+"	font-size: 9pt;\n"
 "	border-bottom: 1px solid #7c9399;\n"
 "}\n"
 "\n"
@@ -66,28 +66,28 @@ class Ui_CustomWorkerDialog(object):
 "\n"
 "QComboBox::drop-down{\n"
 "	image: url(':/icons/app/assets/icons/Alt-Arrow-Down--Streamline-Solar-Broken.svg');\n"
-"	width: 18px;\n"
-"	height: 18px;\n"
+"	width: 16px;\n"
+"	height: 16px;\n"
 "}\n"
 "\n"
 "QComboBox:hover{\n"
 "	color: #2b2b2c;\n"
-"	font: 720 10.5pt \"Segoe UI\";\n"
+"	font: 700 9pt \"Segoe UI\";\n"
 "	border-radius: 0px;\n"
 "	alternate-background-color: #2c313c;\n"
 "}\n"
 "QComboBox::item:selected{\n"
 "	color: #2b2b2c;\n"
-"	font: 900 10.5pt \"Segoe UI\";\n"
+"	font: 700 9pt \"Segoe UI\";\n"
 "	border-radius: 0px;\n"
 "}\n"
 "QComboBox::item{\n"
 "	color: #324b4c;\n"
-""
-                        "	font: 700 10pt \"Segoe UI\";\n"
+"	fon"
+                        "t: 600 9pt \"Segoe UI\";\n"
 "	height: 11px;  \n"
 "	border: 4px solid transparent;\n"
-"	padding: 0px 8px 0px 8px;\n"
+"	padding: 0px 4px 0px 4px;\n"
 "}\n"
 "\n"
 "#calStartBtn, #calLeavingBtn {\n"
@@ -100,11 +100,11 @@ class Ui_CustomWorkerDialog(object):
 "}\n"
 "\n"
 "#widget * {\n"
-"	font-size: 10pt;\n"
+"	font-size: 9pt;\n"
 "}\n"
 "\n"
 "#dialogTitle {\n"
-"	font-size: 12pt;\n"
+"	font-size: 10pt;\n"
 "	font-weight: 700;\n"
 "}\n"
 "#yesBtn {\n"
@@ -140,9 +140,9 @@ class Ui_CustomWorkerDialog(object):
         self.mainWidget.setMinimumSize(QSize(0, 0))
         self.mainWidget.setMaximumSize(QSize(16777215, 16777215))
         self.verticalLayout = QVBoxLayout(self.mainWidget)
-        self.verticalLayout.setSpacing(10)
+        self.verticalLayout.setSpacing(5)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setContentsMargins(10, 10, 10, 10)
+        self.verticalLayout.setContentsMargins(5, 5, 5, 5)
         self.widget_2 = QWidget(self.mainWidget)
         self.widget_2.setObjectName(u"widget_2")
         self.widget_2.setMinimumSize(QSize(0, 0))
@@ -160,7 +160,7 @@ class Ui_CustomWorkerDialog(object):
 
         self.widget = QWidget(self.mainWidget)
         self.widget.setObjectName(u"widget")
-        self.widget.setMinimumSize(QSize(650, 0))
+        self.widget.setMinimumSize(QSize(500, 0))
         self.verticalLayout_3 = QVBoxLayout(self.widget)
         self.verticalLayout_3.setSpacing(0)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
@@ -172,7 +172,7 @@ class Ui_CustomWorkerDialog(object):
         self.widget_5 = QWidget(self.widget)
         self.widget_5.setObjectName(u"widget_5")
         self.horizontalLayout_5 = QHBoxLayout(self.widget_5)
-        self.horizontalLayout_5.setSpacing(10)
+        self.horizontalLayout_5.setSpacing(5)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.startDateEdit = QDateEdit(self.widget_5)
@@ -187,7 +187,7 @@ class Ui_CustomWorkerDialog(object):
         icon = QIcon()
         icon.addFile(u":/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.calStartBtn.setIcon(icon)
-        self.calStartBtn.setIconSize(QSize(20, 20))
+        self.calStartBtn.setIconSize(QSize(16, 16))
 
         self.horizontalLayout_5.addWidget(self.calStartBtn, 0, Qt.AlignLeft)
 
@@ -270,7 +270,7 @@ class Ui_CustomWorkerDialog(object):
         self.widget_6 = QWidget(self.widget)
         self.widget_6.setObjectName(u"widget_6")
         self.horizontalLayout_6 = QHBoxLayout(self.widget_6)
-        self.horizontalLayout_6.setSpacing(10)
+        self.horizontalLayout_6.setSpacing(5)
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
         self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.leaveDateEdit = QDateEdit(self.widget_6)
@@ -283,7 +283,7 @@ class Ui_CustomWorkerDialog(object):
         self.calLeavingBtn.setObjectName(u"calLeavingBtn")
         self.calLeavingBtn.setFocusPolicy(Qt.NoFocus)
         self.calLeavingBtn.setIcon(icon)
-        self.calLeavingBtn.setIconSize(QSize(20, 20))
+        self.calLeavingBtn.setIconSize(QSize(16, 16))
 
         self.horizontalLayout_6.addWidget(self.calLeavingBtn, 0, Qt.AlignLeft)
 
@@ -364,14 +364,14 @@ class Ui_CustomWorkerDialog(object):
         self.buttonsWidget.setSizePolicy(sizePolicy)
         font = QFont()
         font.setFamilies([u"Segoe UI"])
-        font.setPointSize(11)
+        font.setPointSize(9)
         font.setBold(True)
         font.setItalic(False)
         self.buttonsWidget.setFont(font)
         self.horizontalLayout_2 = QHBoxLayout(self.buttonsWidget)
         self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.horizontalLayout_2.setContentsMargins(0, 10, 0, 0)
+        self.horizontalLayout_2.setContentsMargins(0, 5, 0, 0)
         self.yesBtn = QPushButton(self.buttonsWidget)
         self.yesBtn.setObjectName(u"yesBtn")
         self.yesBtn.setFont(font)
@@ -379,7 +379,7 @@ class Ui_CustomWorkerDialog(object):
         icon1 = QIcon()
         icon1.addFile(u":/icons/app/assets/icons/Check-Square--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.yesBtn.setIcon(icon1)
-        self.yesBtn.setIconSize(QSize(32, 32))
+        self.yesBtn.setIconSize(QSize(20, 20))
 
         self.horizontalLayout_2.addWidget(self.yesBtn)
 

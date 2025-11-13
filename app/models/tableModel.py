@@ -107,6 +107,8 @@ class CustomTableViewWithMultiSelection(QTableView):
         # self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
         self.verticalHeader().hide()
+        self.verticalHeader().setDefaultSectionSize(20)
+        self.verticalHeader().setMinimumSectionSize(20)
         self.setCornerButtonEnabled(False)
 
 
@@ -118,20 +120,17 @@ class CustomTableViewWithMultiSelection(QTableView):
         # self.setSelectionModel(SingleMultiSelectionModel(self.model()))
         # self.setSelectionModel(SingleMultiSelectionModel(self))
         self.setStyleSheet('''
-            QHeaderView:section{
-                font: 700 10.5pt "Segoe UI";
+            QHeaderView:section:horizontal  {
+                font: 700 9pt "Segoe UI";
                 background-color: #dfdfdf;
-                padding-left: 10px;
-                padding-top:10px;
-                padding-right:10px;
+                padding-left: 5px;
+                padding-top:5px;
+                padding-right:5px;
                 selection-background-color: #7f7f7f;
-            }
-            QVerticalView:section{
-                min-height: 30;
             }
             QAbstractItemView{
                 alternate-background-color: #d3d3d3;
-                font: 10.5pt "Segoe UI";
+                font: 8pt "Segoe UI";
                 selection-background-color: rgba(198, 228, 254, 45);
                 selection-color: #324b4c;
             }
@@ -143,7 +142,6 @@ class CustomTableViewWithMultiSelection(QTableView):
             QAbstractItemView::item:selected{
                 background-color: rgba(198, 228, 254, 45);
             }
-
         ''')
 
     def setEditTriggers(self, triggers):

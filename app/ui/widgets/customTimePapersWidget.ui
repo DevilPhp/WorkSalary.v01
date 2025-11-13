@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1128</width>
-    <height>915</height>
+    <width>895</width>
+    <height>613</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>900</width>
-    <height>800</height>
+    <width>800</width>
+    <height>580</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -22,7 +22,7 @@
   <property name="styleSheet">
    <string notr="true">*{
 	background-color: #dfdfdf;
-	font: 600 11pt &quot;Segoe UI&quot;;
+	font: 600 9pt &quot;Segoe UI&quot;;
 	color: #324b4c;
 }
 
@@ -40,7 +40,7 @@ QPushButton {
 	border: none;
 	border-radius: 10px;
 	padding: 5px;
-	font-size: 12pt;
+	font-size: 9pt;
 }
 
 QPushButton:hover{
@@ -48,7 +48,7 @@ QPushButton:hover{
 }
 
 #addNewTimePaperBtn {
-	font-size: 11pt;
+	font-size: 9pt;
 }
 
 #operationsGroupsCheckBox {
@@ -62,7 +62,7 @@ QDateEdit::up-button, QDateEdit::down-button{
 
 QLineEdit, QDateEdit{
 	border: none;
-	font-size: 10pt;
+	font-size: 8pt;
 	border-bottom: 1px solid #7c9399;
 }
 
@@ -73,6 +73,7 @@ QMenu {
 
 QMenu::item {
 	padding: 5px;
+	font-size: 8pt;
 }
 
 QMenu::item:disabled {
@@ -87,15 +88,16 @@ QMenu::item:selected {
 #clearWorkerNameBtn {
 	padding: 0;
 	background-color: #dfdfdf;
-	font-size: 11pt;
-	font-weght: 900;
+	font-size: 9pt;
+	font-weght: 700;
 }
 
 #statusBar {
 	border: 1px solid #7c9399;
 }
 #statusBar *{
-	font-size: 9pt;
+	font-size: 8pt;
+	font-weight: 500;
 }
 
 #avrTimePerPiece, #totalSelectedPieces, #totalSelectedTime, #totalSelectedRows, #totalViewRows, #totalWorkingMins,
@@ -104,7 +106,7 @@ QMenu::item:selected {
 }
 
 #modelHolder QLabel, #newModelInfoHolder * , #widget_11 *{
-	font-size: 10pt;
+	font-size: 9pt;
 }
 
 #overtimeWarning {
@@ -117,7 +119,7 @@ QMenu::item:selected {
 }
 
 #pageTitle {
-	font: 700 13pt &quot;Segoe UI&quot;;
+	font: 700 11pt &quot;Segoe UI&quot;;
 }
 
 #calendarBtn {
@@ -139,7 +141,7 @@ QMenu::item:selected {
 }
 
 #usernameLabel {
-	font-size: 11pt;
+	font-size: 10pt;
 }
 
 #workerPlaceLineEdit, #workerPositionLineEdit {
@@ -147,12 +149,12 @@ QMenu::item:selected {
 }
 
 #widget_3 * {
-	font-size: 10pt;
+	font-size: 9pt;
 }
 
 #showAllCheckBox {
 	font-weight: 600;
-	font-size: 10pt;
+	font-size: 9pt;
 }
 
 QComboBox{
@@ -163,25 +165,25 @@ QComboBox{
 
 QComboBox::drop-down{
 	image: url(':/icons/app/assets/icons/Alt-Arrow-Down--Streamline-Solar-Broken.svg');
-	width: 18px;
-	height: 18px;
+	width: 16px;
+	height: 16px;
 }
 
 QComboBox:hover{
 	color: #2b2b2c;
-	font: 720 10.5pt &quot;Segoe UI&quot;;
+	font: 700 9pt &quot;Segoe UI&quot;;
 	border-radius: 0px;
 	alternate-background-color: #2c313c;
 }
 QComboBox::item:selected{
 	color: #2b2b2c;
-	font: 900 10.5pt &quot;Segoe UI&quot;;
+	font: 700 9pt &quot;Segoe UI&quot;;
 	border-radius: 0px;
 }
 QComboBox::item{
 	color: #324b4c;
-	font: 700 10pt &quot;Segoe UI&quot;;
-	height: 11px;  
+	font: 600 9pt &quot;Segoe UI&quot;;
+	height: 9px;  
 	border: 4px solid transparent;
 	padding: 0px 8px 0px 8px;
 }
@@ -209,7 +211,7 @@ QComboBox:header{
     <widget class="QWidget" name="widget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <property name="spacing">
-       <number>10</number>
+       <number>5</number>
       </property>
       <property name="leftMargin">
        <number>0</number>
@@ -273,7 +275,7 @@ QComboBox:header{
           <widget class="QWidget" name="userHolder" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <property name="spacing">
-             <number>10</number>
+             <number>3</number>
             </property>
             <property name="leftMargin">
              <number>0</number>
@@ -298,8 +300,8 @@ QComboBox:header{
               </property>
               <property name="iconSize">
                <size>
-                <width>24</width>
-                <height>24</height>
+                <width>18</width>
+                <height>18</height>
                </size>
               </property>
              </widget>
@@ -318,8 +320,8 @@ QComboBox:header{
               </property>
               <property name="iconSize">
                <size>
-                <width>24</width>
-                <height>24</height>
+                <width>18</width>
+                <height>18</height>
                </size>
               </property>
              </widget>
@@ -353,7 +355,7 @@ QComboBox:header{
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_5">
          <property name="spacing">
-          <number>35</number>
+          <number>10</number>
          </property>
          <property name="leftMargin">
           <number>0</number>
@@ -371,8 +373,14 @@ QComboBox:header{
           <widget class="QWidget" name="workerHolder" native="true">
            <property name="minimumSize">
             <size>
-             <width>320</width>
+             <width>280</width>
              <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
             </size>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -405,11 +413,38 @@ QComboBox:header{
             </item>
             <item>
              <widget class="QWidget" name="widget_7" native="true">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>16777215</height>
+               </size>
+              </property>
               <layout class="QVBoxLayout" name="verticalLayout_7">
+               <property name="spacing">
+                <number>0</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
                <item>
                 <layout class="QFormLayout" name="modeLayout">
                  <property name="horizontalSpacing">
-                  <number>10</number>
+                  <number>5</number>
                  </property>
                  <property name="verticalSpacing">
                   <number>10</number>
@@ -475,6 +510,12 @@ QComboBox:header{
                     </property>
                     <item>
                      <widget class="QLineEdit" name="workerNameLineEdit">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
                       <property name="text">
                        <string/>
                       </property>
@@ -781,7 +822,7 @@ QComboBox:header{
                     <item row="2" column="2">
                      <widget class="QLabel" name="label_3">
                       <property name="text">
-                       <string>Начало:</string>
+                       <string>Старт:</string>
                       </property>
                      </widget>
                     </item>
@@ -795,7 +836,7 @@ QComboBox:header{
                     <item row="1" column="0">
                      <widget class="QLabel" name="label_9">
                       <property name="text">
-                       <string>Почасова Раб.:</string>
+                       <string>Почас. Раб.:</string>
                       </property>
                      </widget>
                     </item>
@@ -847,7 +888,7 @@ QComboBox:header{
                     <item row="0" column="2">
                      <widget class="QLabel" name="label_7">
                       <property name="text">
-                       <string>Начало:</string>
+                       <string>Старт:</string>
                       </property>
                      </widget>
                     </item>
@@ -875,7 +916,7 @@ QComboBox:header{
                     <item row="1" column="2">
                      <widget class="QLabel" name="label_8">
                       <property name="text">
-                       <string>Начало:</string>
+                       <string>Старт:</string>
                       </property>
                      </widget>
                     </item>
@@ -1011,7 +1052,7 @@ QComboBox:header{
                     <item row="2" column="0">
                      <widget class="QLabel" name="label_6">
                       <property name="text">
-                       <string>Извънредна Раб.:</string>
+                       <string>Извън. Раб.:</string>
                       </property>
                      </widget>
                     </item>
@@ -1060,8 +1101,8 @@ QComboBox:header{
                       </property>
                       <property name="iconSize">
                        <size>
-                        <width>18</width>
-                        <height>18</height>
+                        <width>16</width>
+                        <height>16</height>
                        </size>
                       </property>
                      </widget>
@@ -1070,7 +1111,7 @@ QComboBox:header{
                      <widget class="QComboBox" name="shiftNameLineEdit">
                       <property name="minimumSize">
                        <size>
-                        <width>120</width>
+                        <width>70</width>
                         <height>0</height>
                        </size>
                       </property>
@@ -1130,8 +1171,8 @@ QComboBox:header{
                          </property>
                          <property name="iconSize">
                           <size>
-                           <width>20</width>
-                           <height>20</height>
+                           <width>16</width>
+                           <height>16</height>
                           </size>
                          </property>
                         </widget>
@@ -1162,6 +1203,21 @@ QComboBox:header{
          </sizepolicy>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
+         <property name="spacing">
+          <number>5</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
          <item>
           <widget class="QFrame" name="optionsHolder">
            <property name="frameShape">
@@ -1172,7 +1228,7 @@ QComboBox:header{
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_4">
             <property name="spacing">
-             <number>10</number>
+             <number>5</number>
             </property>
             <property name="leftMargin">
              <number>0</number>
@@ -1184,7 +1240,7 @@ QComboBox:header{
              <number>0</number>
             </property>
             <property name="bottomMargin">
-             <number>10</number>
+             <number>5</number>
             </property>
            </layout>
           </widget>
@@ -1253,7 +1309,7 @@ QComboBox:header{
                    <second>0</second>
                    <year>1990</year>
                    <month>8</month>
-                   <day>31</day>
+                   <day>28</day>
                   </datetime>
                  </property>
                  <property name="displayFormat">
@@ -1280,8 +1336,8 @@ QComboBox:header{
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>24</width>
-                   <height>24</height>
+                   <width>18</width>
+                   <height>18</height>
                   </size>
                  </property>
                 </widget>
@@ -1320,7 +1376,7 @@ QComboBox:header{
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_3">
                <property name="spacing">
-                <number>5</number>
+                <number>3</number>
                </property>
                <property name="leftMargin">
                 <number>2</number>
@@ -1344,7 +1400,7 @@ QComboBox:header{
                  </property>
                  <layout class="QHBoxLayout" name="horizontalLayout_30">
                   <property name="spacing">
-                   <number>10</number>
+                   <number>5</number>
                   </property>
                   <property name="leftMargin">
                    <number>0</number>
@@ -1395,7 +1451,7 @@ QComboBox:header{
                    <widget class="QComboBox" name="operationsGroupComboBox">
                     <property name="minimumSize">
                      <size>
-                      <width>350</width>
+                      <width>280</width>
                       <height>0</height>
                      </size>
                     </property>
@@ -1424,8 +1480,8 @@ QComboBox:header{
                     </property>
                     <property name="iconSize">
                      <size>
-                      <width>18</width>
-                      <height>18</height>
+                      <width>15</width>
+                      <height>15</height>
                      </size>
                     </property>
                    </widget>
@@ -1464,7 +1520,7 @@ QComboBox:header{
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>80</width>
+                     <width>60</width>
                      <height>16777215</height>
                     </size>
                    </property>
@@ -1477,7 +1533,7 @@ QComboBox:header{
                   <widget class="QLineEdit" name="clientModelsLineEdit">
                    <property name="minimumSize">
                     <size>
-                     <width>260</width>
+                     <width>200</width>
                      <height>0</height>
                     </size>
                    </property>
@@ -1507,7 +1563,7 @@ QComboBox:header{
                   <widget class="QLineEdit" name="piecesTimeLineEdit">
                    <property name="maximumSize">
                     <size>
-                     <width>80</width>
+                     <width>60</width>
                      <height>16777215</height>
                     </size>
                    </property>
@@ -1549,8 +1605,8 @@ QComboBox:header{
                    </property>
                    <property name="iconSize">
                     <size>
-                     <width>24</width>
-                     <height>24</height>
+                     <width>18</width>
+                     <height>18</height>
                     </size>
                    </property>
                   </widget>
@@ -1636,7 +1692,7 @@ QComboBox:header{
                         <widget class="QLineEdit" name="piecesForProdLineEdit">
                          <property name="maximumSize">
                           <size>
-                           <width>50</width>
+                           <width>60</width>
                            <height>16777215</height>
                           </size>
                          </property>
@@ -1683,7 +1739,7 @@ QComboBox:header{
                         <widget class="QLineEdit" name="piecesProducedLineEdit">
                          <property name="maximumSize">
                           <size>
-                           <width>50</width>
+                           <width>60</width>
                            <height>16777215</height>
                           </size>
                          </property>
@@ -1728,7 +1784,7 @@ QComboBox:header{
                   <widget class="QLineEdit" name="modelTotalPiecesLineEdit">
                    <property name="maximumSize">
                     <size>
-                     <width>80</width>
+                     <width>60</width>
                      <height>16777215</height>
                     </size>
                    </property>
@@ -1798,8 +1854,8 @@ QComboBox:header{
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>1116</width>
-        <height>459</height>
+        <width>883</width>
+        <height>229</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -1926,7 +1982,7 @@ QComboBox:header{
           <widget class="QWidget" name="widget_17" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_25">
             <property name="spacing">
-             <number>5</number>
+             <number>3</number>
             </property>
             <property name="leftMargin">
              <number>0</number>
@@ -1982,7 +2038,7 @@ QComboBox:header{
           <widget class="QWidget" name="totalWorkingMinsHolder" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_27">
             <property name="spacing">
-             <number>5</number>
+             <number>3</number>
             </property>
             <property name="leftMargin">
              <number>0</number>
@@ -2021,8 +2077,8 @@ QComboBox:header{
               </property>
               <property name="iconSize">
                <size>
-                <width>22</width>
-                <height>22</height>
+                <width>18</width>
+                <height>18</height>
                </size>
               </property>
              </widget>
@@ -2034,7 +2090,7 @@ QComboBox:header{
           <widget class="QWidget" name="totalProdPiecesHolder" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_19">
             <property name="spacing">
-             <number>5</number>
+             <number>3</number>
             </property>
             <property name="leftMargin">
              <number>0</number>
@@ -2078,7 +2134,7 @@ QComboBox:header{
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_20">
          <property name="spacing">
-          <number>15</number>
+          <number>5</number>
          </property>
          <property name="leftMargin">
           <number>0</number>
@@ -2096,7 +2152,7 @@ QComboBox:header{
           <widget class="QWidget" name="widget_16" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_24">
             <property name="spacing">
-             <number>5</number>
+             <number>3</number>
             </property>
             <property name="leftMargin">
              <number>0</number>
@@ -2131,7 +2187,7 @@ QComboBox:header{
           <widget class="QWidget" name="widget_10" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_22">
             <property name="spacing">
-             <number>5</number>
+             <number>3</number>
             </property>
             <property name="leftMargin">
              <number>0</number>
@@ -2172,7 +2228,7 @@ QComboBox:header{
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_23">
             <property name="spacing">
-             <number>5</number>
+             <number>3</number>
             </property>
             <property name="leftMargin">
              <number>0</number>
@@ -2213,7 +2269,7 @@ QComboBox:header{
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_26">
             <property name="spacing">
-             <number>5</number>
+             <number>3</number>
             </property>
             <property name="leftMargin">
              <number>0</number>

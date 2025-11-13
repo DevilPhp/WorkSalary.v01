@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>133</width>
-    <height>43</height>
+    <width>100</width>
+    <height>39</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -28,7 +28,7 @@
   <property name="styleSheet">
    <string notr="true">*{
 	background-color: #dfdfdf;
-	font: 500 11pt &quot;Segoe UI&quot;;
+	font: 500 9pt &quot;Segoe UI&quot;;
 	color: #324b4c;
 }
 
@@ -39,7 +39,7 @@ customSortingMenuWidget{
 
 QLineEdit{
 	border: none;
-	font-size: 11pt;
+	font-size: 9pt;
 	border-bottom: 1px solid #7c9399;
 }
 
@@ -181,7 +181,7 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>101</width>
+              <width>68</width>
               <height>16</height>
              </rect>
             </property>

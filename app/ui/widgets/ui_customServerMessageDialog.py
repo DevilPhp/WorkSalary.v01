@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customYesNowDialogzvREJD.ui'
+## Form generated from reading UI file 'customServerMessageDialogLDAuGa.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -20,19 +20,19 @@ from PySide6.QtWidgets import (QApplication, QDialog, QHBoxLayout, QLabel,
     QWidget)
 import resources_rc
 
-class Ui_CustomYesNoDialog(object):
-    def setupUi(self, CustomYesNoDialog):
-        if not CustomYesNoDialog.objectName():
-            CustomYesNoDialog.setObjectName(u"CustomYesNoDialog")
-        CustomYesNoDialog.resize(380, 603)
+class Ui_customServerMessageDialog(object):
+    def setupUi(self, customServerMessageDialog):
+        if not customServerMessageDialog.objectName():
+            customServerMessageDialog.setObjectName(u"customServerMessageDialog")
+        customServerMessageDialog.resize(380, 603)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(CustomYesNoDialog.sizePolicy().hasHeightForWidth())
-        CustomYesNoDialog.setSizePolicy(sizePolicy)
-        CustomYesNoDialog.setMinimumSize(QSize(0, 0))
-        CustomYesNoDialog.setMouseTracking(True)
-        CustomYesNoDialog.setStyleSheet(u"*{\n"
+        sizePolicy.setHeightForWidth(customServerMessageDialog.sizePolicy().hasHeightForWidth())
+        customServerMessageDialog.setSizePolicy(sizePolicy)
+        customServerMessageDialog.setMinimumSize(QSize(0, 0))
+        customServerMessageDialog.setMouseTracking(True)
+        customServerMessageDialog.setStyleSheet(u"*{\n"
 "	font: 600 9pt \"Segoe UI\";\n"
 "	border: none;\n"
 "	background-color: #dfdfdf;\n"
@@ -41,9 +41,6 @@ class Ui_CustomYesNoDialog(object):
 "	color: #324b4c;\n"
 "}\n"
 "\n"
-"QPushButton:hover {\n"
-"	padding: 0px;\n"
-"}\n"
 "\n"
 "QDialog{\n"
 "	background-color: rgba(255, 255, 255, 0);\n"
@@ -58,35 +55,21 @@ class Ui_CustomYesNoDialog(object):
 "	padding-bottom: 8px;\n"
 "}\n"
 "\n"
-"#nameTextLabel {\n"
-"	font: 700 9pt \"Segoe UI\";\n"
-"}\n"
-"\n"
 "#questionTextLabel {\n"
-"	font: 500 8pt \"Segoe UI\";\n"
-"}\n"
-"\n"
-"#noBtn:hover{\n"
-"	icon: url(:/icons/app/assets/icons/Close-Square--Streamline-Solar-Broken-#c75f59.svg);\n"
-"	color: #c75f59;\n"
-"}\n"
-"\n"
-"#yesBtn:hover{\n"
-"	icon: url(:/icons/app/assets/icons/Check-Square--Streamline-Solar-Broken-#008b69.svg);\n"
-"	color: #008b69;\n"
+"	font: 600 9pt \"Segoe UI\";\n"
 "}")
-        self.verticalLayout_2 = QVBoxLayout(CustomYesNoDialog)
+        self.verticalLayout_2 = QVBoxLayout(customServerMessageDialog)
         self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.mainWidget = QWidget(CustomYesNoDialog)
+        self.mainWidget = QWidget(customServerMessageDialog)
         self.mainWidget.setObjectName(u"mainWidget")
         sizePolicy1 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Expanding)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.mainWidget.sizePolicy().hasHeightForWidth())
         self.mainWidget.setSizePolicy(sizePolicy1)
-        self.mainWidget.setMinimumSize(QSize(300, 130))
+        self.mainWidget.setMinimumSize(QSize(250, 120))
         self.mainWidget.setMaximumSize(QSize(380, 16777215))
         self.verticalLayout = QVBoxLayout(self.mainWidget)
         self.verticalLayout.setSpacing(0)
@@ -99,21 +82,12 @@ class Ui_CustomYesNoDialog(object):
         self.horizontalLayout_3.setSpacing(0)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.normalIcon = QPushButton(self.widget)
-        self.normalIcon.setObjectName(u"normalIcon")
-        icon = QIcon()
-        icon.addFile(u":/icons/app/assets/icons/Question-Square--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.normalIcon.setIcon(icon)
-        self.normalIcon.setIconSize(QSize(24, 24))
-
-        self.horizontalLayout_3.addWidget(self.normalIcon, 0, Qt.AlignHCenter|Qt.AlignVCenter)
-
         self.warningIcon = QPushButton(self.widget)
         self.warningIcon.setObjectName(u"warningIcon")
-        icon1 = QIcon()
-        icon1.addFile(u":/icons/app/assets/icons/Danger-Triangle--Streamline-Solar-Broken-#C75f59.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.warningIcon.setIcon(icon1)
-        self.warningIcon.setIconSize(QSize(24, 24))
+        icon = QIcon()
+        icon.addFile(u":/icons/app/assets/icons/Danger-Triangle--Streamline-Solar-Broken-#C75f59.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.warningIcon.setIcon(icon)
+        self.warningIcon.setIconSize(QSize(28, 28))
 
         self.horizontalLayout_3.addWidget(self.warningIcon)
 
@@ -160,8 +134,8 @@ class Ui_CustomYesNoDialog(object):
         self.questionTextLabel.setSizePolicy(sizePolicy)
         font1 = QFont()
         font1.setFamilies([u"Segoe UI"])
-        font1.setPointSize(8)
-        font1.setBold(False)
+        font1.setPointSize(9)
+        font1.setBold(True)
         font1.setItalic(False)
         self.questionTextLabel.setFont(font1)
         self.questionTextLabel.setStyleSheet(u"")
@@ -169,19 +143,6 @@ class Ui_CustomYesNoDialog(object):
         self.questionTextLabel.setWordWrap(True)
 
         self.verticalLayout_3.addWidget(self.questionTextLabel)
-
-        self.nameTextLabel = QLabel(self.iconAndTextWidget)
-        self.nameTextLabel.setObjectName(u"nameTextLabel")
-        font2 = QFont()
-        font2.setFamilies([u"Segoe UI"])
-        font2.setPointSize(9)
-        font2.setBold(True)
-        font2.setItalic(False)
-        self.nameTextLabel.setFont(font2)
-        self.nameTextLabel.setStyleSheet(u"")
-        self.nameTextLabel.setAlignment(Qt.AlignCenter)
-
-        self.verticalLayout_3.addWidget(self.nameTextLabel)
 
 
         self.horizontalLayout.addLayout(self.verticalLayout_3)
@@ -193,33 +154,23 @@ class Ui_CustomYesNoDialog(object):
         self.buttonsWidget.setObjectName(u"buttonsWidget")
         sizePolicy.setHeightForWidth(self.buttonsWidget.sizePolicy().hasHeightForWidth())
         self.buttonsWidget.setSizePolicy(sizePolicy)
-        self.buttonsWidget.setFont(font2)
+        self.buttonsWidget.setFont(font1)
         self.horizontalLayout_2 = QHBoxLayout(self.buttonsWidget)
         self.horizontalLayout_2.setSpacing(45)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.horizontalLayout_2.setContentsMargins(0, 10, 0, 0)
+        self.horizontalLayout_2.setContentsMargins(0, 5, 0, 0)
         self.yesBtn = QPushButton(self.buttonsWidget)
         self.yesBtn.setObjectName(u"yesBtn")
-        self.yesBtn.setFont(font2)
-        icon2 = QIcon()
-        icon2.addFile(u":/icons/app/assets/icons/Check-Square--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.yesBtn.setIcon(icon2)
+        self.yesBtn.setFont(font1)
+        icon1 = QIcon()
+        icon1.addFile(u":/icons/app/assets/icons/Log-Out--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.yesBtn.setIcon(icon1)
         self.yesBtn.setIconSize(QSize(18, 18))
 
         self.horizontalLayout_2.addWidget(self.yesBtn)
 
-        self.noBtn = QPushButton(self.buttonsWidget)
-        self.noBtn.setObjectName(u"noBtn")
-        self.noBtn.setFont(font2)
-        icon3 = QIcon()
-        icon3.addFile(u":/icons/app/assets/icons/Close-Square--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.noBtn.setIcon(icon3)
-        self.noBtn.setIconSize(QSize(18, 18))
 
-        self.horizontalLayout_2.addWidget(self.noBtn, 0, Qt.AlignTop)
-
-
-        self.verticalLayout_4.addWidget(self.buttonsWidget, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+        self.verticalLayout_4.addWidget(self.buttonsWidget, 0, Qt.AlignHCenter|Qt.AlignBottom)
 
 
         self.horizontalLayout_3.addWidget(self.widget_2)
@@ -231,19 +182,16 @@ class Ui_CustomYesNoDialog(object):
         self.verticalLayout_2.addWidget(self.mainWidget, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
 
-        self.retranslateUi(CustomYesNoDialog)
+        self.retranslateUi(customServerMessageDialog)
 
-        QMetaObject.connectSlotsByName(CustomYesNoDialog)
+        QMetaObject.connectSlotsByName(customServerMessageDialog)
     # setupUi
 
-    def retranslateUi(self, CustomYesNoDialog):
-        CustomYesNoDialog.setWindowTitle(QCoreApplication.translate("CustomYesNoDialog", u"CustomYesNoDialog", None))
-        self.normalIcon.setText("")
+    def retranslateUi(self, customServerMessageDialog):
+        customServerMessageDialog.setWindowTitle(QCoreApplication.translate("customServerMessageDialog", u"CustomYesNoDialog", None))
         self.warningIcon.setText("")
-        self.mainTextLabel.setText(QCoreApplication.translate("CustomYesNoDialog", u"\u041f\u0420\u0415\u041c\u0410\u0425\u0412\u0410\u041d\u0415", None))
-        self.questionTextLabel.setText(QCoreApplication.translate("CustomYesNoDialog", u"\u0421\u0438\u0433\u0443\u0440\u043d\u0438 \u043b\u0438 \u0441\u0442\u0435, \u0447\u0435 \u0438\u0441\u043a\u0430\u0442\u0435 \u0434\u0430 \u043f\u0440\u0435\u043c\u0430\u0445\u043d\u0435\u0442\u0435: ", None))
-        self.nameTextLabel.setText(QCoreApplication.translate("CustomYesNoDialog", u"Name", None))
-        self.yesBtn.setText(QCoreApplication.translate("CustomYesNoDialog", u"\u0414\u0410", None))
-        self.noBtn.setText(QCoreApplication.translate("CustomYesNoDialog", u"\u041d\u0415", None))
+        self.mainTextLabel.setText(QCoreApplication.translate("customServerMessageDialog", u"\u0413\u0420\u0415\u0428\u041a\u0410", None))
+        self.questionTextLabel.setText(QCoreApplication.translate("customServerMessageDialog", u"\u041d\u044f\u043c\u0430 \u0432\u0440\u044a\u0437\u043a\u0430 \u0441\u044a\u0441 \u0441\u044a\u0440\u0432\u044a\u0440\u0430!", None))
+        self.yesBtn.setText(QCoreApplication.translate("customServerMessageDialog", u"\u0418\u0437\u0445\u043e\u0434", None))
     # retranslateUi
 

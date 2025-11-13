@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customParametersWidgetQHLpCE.ui'
+## Form generated from reading UI file 'customParametersWidgetPcavAD.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -24,11 +24,11 @@ class Ui_customParametersWidget(object):
     def setupUi(self, customParametersWidget):
         if not customParametersWidget.objectName():
             customParametersWidget.setObjectName(u"customParametersWidget")
-        customParametersWidget.resize(900, 800)
-        customParametersWidget.setMinimumSize(QSize(900, 800))
+        customParametersWidget.resize(800, 580)
+        customParametersWidget.setMinimumSize(QSize(800, 580))
         customParametersWidget.setStyleSheet(u"*{\n"
 "	background-color: #dfdfdf;\n"
-"	font: 600 12pt \"Segoe UI\";\n"
+"	font: 600 9pt \"Segoe UI\";\n"
 "	color: #324b4c;\n"
 "}\n"
 "\n"
@@ -46,7 +46,7 @@ class Ui_customParametersWidget(object):
 "	border: none;\n"
 "	border-radius: 10px;\n"
 "	padding: 5px;\n"
-"	font-size: 10pt;\n"
+"	font-size: 9pt;\n"
 "}\n"
 "\n"
 "QPushButton:hover{\n"
@@ -60,7 +60,7 @@ class Ui_customParametersWidget(object):
 "\n"
 "QLineEdit, QDateEdit{\n"
 "	border: none;\n"
-"	font-size: 11pt;\n"
+"	font-size: 9pt;\n"
 "	border-bottom: 1px solid #7c9399;\n"
 "}\n"
 "\n"
@@ -71,6 +71,7 @@ class Ui_customParametersWidget(object):
 "\n"
 "QMenu::item {\n"
 "	padding: 5px;\n"
+"	font-size: 8pt;\n"
 "}\n"
 "\n"
 "QMenu::item:selected {\n"
@@ -79,16 +80,16 @@ class Ui_customParametersWidget(object):
 "}\n"
 "\n"
 "yearsBtnsHolder QPushButton:clicked {\n"
-"	background-color: black;\n"
+"	background-co"
+                        "lor: black;\n"
 "}\n"
-""
-                        "\n"
+"\n"
 "#optionsHolder, #optionsHolder_2 {\n"
 "	border-bottom: 2px dashed #7c9399;\n"
 "}\n"
 "\n"
 "#pageTitle {\n"
-"	font: 700 13pt \"Segoe UI\";\n"
+"	font: 700 11pt \"Segoe UI\";\n"
 "}\n"
 "\n"
 "#userIcon, #logoutBtn{\n"
@@ -102,15 +103,15 @@ class Ui_customParametersWidget(object):
 "\n"
 "\n"
 "#usernameLabel {\n"
-"	font-size: 11pt;\n"
+"	font-size: 10pt;\n"
 "}\n"
 "\n"
 "#workerPlaceLineEdit, #workerPositionLineEdit {\n"
-"	font-weight: 700;\n"
+"	font-weight: 600;\n"
 "}\n"
 "\n"
 "#widget_3 * {\n"
-"	font-size: 11pt;\n"
+"	font-size: 10pt;\n"
 "}")
         self.verticalLayout = QVBoxLayout(customParametersWidget)
         self.verticalLayout.setSpacing(10)
@@ -145,7 +146,7 @@ class Ui_customParametersWidget(object):
         self.userHolder = QWidget(self.headerHolder)
         self.userHolder.setObjectName(u"userHolder")
         self.horizontalLayout_3 = QHBoxLayout(self.userHolder)
-        self.horizontalLayout_3.setSpacing(10)
+        self.horizontalLayout_3.setSpacing(3)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 5, 0)
         self.logoutBtn = QPushButton(self.userHolder)
@@ -153,7 +154,7 @@ class Ui_customParametersWidget(object):
         icon = QIcon()
         icon.addFile(u":/icons/app/assets/icons/Log-Out--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.logoutBtn.setIcon(icon)
-        self.logoutBtn.setIconSize(QSize(24, 24))
+        self.logoutBtn.setIconSize(QSize(18, 18))
 
         self.horizontalLayout_3.addWidget(self.logoutBtn)
 
@@ -163,7 +164,7 @@ class Ui_customParametersWidget(object):
         icon1 = QIcon()
         icon1.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.userIcon.setIcon(icon1)
-        self.userIcon.setIconSize(QSize(24, 24))
+        self.userIcon.setIconSize(QSize(18, 18))
 
         self.horizontalLayout_3.addWidget(self.userIcon)
 
@@ -260,7 +261,7 @@ class Ui_customParametersWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 888, 673))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 788, 435))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -274,16 +275,16 @@ class Ui_customParametersWidget(object):
         self.parametersTableView = QTableView(self.parametersTableHolder)
         self.parametersTableView.setObjectName(u"parametersTableView")
         self.parametersTableView.setStyleSheet(u"QHeaderView:section{\n"
-"	font: 700 10.5pt \"Segoe UI\";\n"
+"	font: 700 9pt \"Segoe UI\";\n"
 "	background-color: #dfdfdf;\n"
-"	padding: 5px;\n"
+"	padding: 3px;\n"
 "}\n"
-"QVerticalView:section{\n"
-"	min-height: 30;\n"
+"QHeaderView:section:vertical {\n"
+"	min-height: 15px;\n"
 "}\n"
 "QAbstractItemView{\n"
 "	alternate-background-color: #d3d3d3;\n"
-"	font: 10.5pt \"Segoe UI\";\n"
+"	font: 8pt \"Segoe UI\";\n"
 "	selection-background-color: rgba(198, 228, 254, 45);\n"
 "	selection-color: #324b4c;\n"
 "	focus: none;\n"
@@ -301,6 +302,8 @@ class Ui_customParametersWidget(object):
         self.parametersTableView.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.parametersTableView.setCornerButtonEnabled(False)
         self.parametersTableView.verticalHeader().setVisible(False)
+        self.parametersTableView.verticalHeader().setMinimumSectionSize(20)
+        self.parametersTableView.verticalHeader().setDefaultSectionSize(20)
 
         self.verticalLayout_11.addWidget(self.parametersTableView)
 
@@ -310,6 +313,26 @@ class Ui_customParametersWidget(object):
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
         self.verticalLayout.addWidget(self.scrollArea)
+
+        self.widget_2 = QWidget(customParametersWidget)
+        self.widget_2.setObjectName(u"widget_2")
+        self.horizontalLayout_6 = QHBoxLayout(self.widget_2)
+        self.horizontalLayout_6.setSpacing(0)
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.footerLabel = QLabel(self.widget_2)
+        self.footerLabel.setObjectName(u"footerLabel")
+        font = QFont()
+        font.setFamilies([u"Segoe UI"])
+        font.setPointSize(9)
+        font.setBold(True)
+        font.setItalic(False)
+        self.footerLabel.setFont(font)
+
+        self.horizontalLayout_6.addWidget(self.footerLabel)
+
+
+        self.verticalLayout.addWidget(self.widget_2, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
 
         self.retranslateUi(customParametersWidget)
@@ -331,5 +354,6 @@ class Ui_customParametersWidget(object):
         self.yarnsBtn.setText(QCoreApplication.translate("customParametersWidget", u"\u041f\u0440\u0435\u0436\u0434\u0438", None))
         self.usersBtn.setText(QCoreApplication.translate("customParametersWidget", u"\u041f\u043e\u0442\u0440\u0435\u0431\u0438\u0442\u0435\u043b\u0438", None))
         self.addNewEntryBtn.setText(QCoreApplication.translate("customParametersWidget", u"\u0414\u043e\u0431\u0430\u0432\u044f\u043d\u0435", None))
+        self.footerLabel.setText(QCoreApplication.translate("customParametersWidget", u"Author: Filip Chaushev   Dev v0.1.030", None))
     # retranslateUi
 

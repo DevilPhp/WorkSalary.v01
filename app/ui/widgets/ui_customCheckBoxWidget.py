@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customCheckBoxWidgetMkXbAB.ui'
+## Form generated from reading UI file 'customCheckBoxWidgetVraGnv.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -23,7 +23,7 @@ class Ui_customCheckBoxWidget(object):
     def setupUi(self, customCheckBoxWidget):
         if not customCheckBoxWidget.objectName():
             customCheckBoxWidget.setObjectName(u"customCheckBoxWidget")
-        customCheckBoxWidget.resize(351, 22)
+        customCheckBoxWidget.resize(326, 19)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -32,7 +32,7 @@ class Ui_customCheckBoxWidget(object):
         customCheckBoxWidget.setMinimumSize(QSize(0, 0))
         customCheckBoxWidget.setStyleSheet(u"*{\n"
 "	background-color: #dfdfdf;\n"
-"	font: 600 10pt \"Segoe UI\";\n"
+"	font: 600 8pt \"Segoe UI\";\n"
 "	color: #324b4c;\n"
 "}\n"
 "\n"
@@ -47,7 +47,7 @@ class Ui_customCheckBoxWidget(object):
 "\n"
 "QMenu::item:selected {\n"
 "	background-color: #aeaeae;\n"
-"	padding-left: 7px;\n"
+"	padding-left: 5px;\n"
 "}\n"
 "\n"
 "QPushButton:hover {\n"
@@ -89,7 +89,7 @@ class Ui_customCheckBoxWidget(object):
         self.checkBox.setObjectName(u"checkBox")
         sizePolicy.setHeightForWidth(self.checkBox.sizePolicy().hasHeightForWidth())
         self.checkBox.setSizePolicy(sizePolicy)
-        self.checkBox.setMinimumSize(QSize(260, 0))
+        self.checkBox.setMinimumSize(QSize(240, 0))
         self.checkBox.setMaximumSize(QSize(260, 16777215))
         self.checkBox.setFocusPolicy(Qt.NoFocus)
 

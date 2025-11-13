@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customWorkersWidgetgVBgTS.ui'
+## Form generated from reading UI file 'customWorkersWidgetNAzbsJ.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -25,11 +25,11 @@ class Ui_customWorkersEditWidget(object):
     def setupUi(self, customWorkersEditWidget):
         if not customWorkersEditWidget.objectName():
             customWorkersEditWidget.setObjectName(u"customWorkersEditWidget")
-        customWorkersEditWidget.resize(1280, 800)
-        customWorkersEditWidget.setMinimumSize(QSize(900, 800))
+        customWorkersEditWidget.resize(800, 580)
+        customWorkersEditWidget.setMinimumSize(QSize(800, 580))
         customWorkersEditWidget.setStyleSheet(u"*{\n"
 "	background-color: #dfdfdf;\n"
-"	font: 600 11pt \"Segoe UI\";\n"
+"	font: 600 9pt \"Segoe UI\";\n"
 "	color: #324b4c;\n"
 "}\n"
 "\n"
@@ -47,7 +47,7 @@ class Ui_customWorkersEditWidget(object):
 "	border: none;\n"
 "	border-radius: 10px;\n"
 "	padding: 5px;\n"
-"	font-size: 12pt;\n"
+"	font-size: 9pt;\n"
 "}\n"
 "\n"
 "QPushButton:hover{\n"
@@ -61,15 +61,16 @@ class Ui_customWorkersEditWidget(object):
 "\n"
 "QMenu::item {\n"
 "	padding: 5px;\n"
+"	font: 8pt;\n"
 "}\n"
 "\n"
 "QMenu::item:selected {\n"
 "	background-color: #aeaeae;\n"
-"	padding-left: 7px;\n"
+"	padding-left: 5px;\n"
 "}\n"
 "\n"
 "#addNewTimePaperBtn {\n"
-"	font-size: 11pt;\n"
+"	font-size: 9pt;\n"
 "}\n"
 "\n"
 "QDateEdit::up-button, QDateEdit::down-button{\n"
@@ -79,12 +80,16 @@ class Ui_customWorkersEditWidget(object):
 "\n"
 "QLineEdit, QDateEdit{\n"
 "	border: none;\n"
-"	font-size: 10pt;\n"
+"	font-size: 9pt;\n"
 "	border-bottom: 1px solid #7c9399;\n"
 "}\n"
 "\n"
-"#calStartBtn, #"
-                        "calLeavingBtn {\n"
+"#se"
+                        "archLineEdit {\n"
+"	font-size: 8pt;\n"
+"}\n"
+"\n"
+"#calStartBtn, #calLeavingBtn {\n"
 "	background-color: #dfdfdf;\n"
 "	padding: 0px;\n"
 "}\n"
@@ -94,7 +99,7 @@ class Ui_customWorkersEditWidget(object):
 "}\n"
 "\n"
 "#pageTitle {\n"
-"	font: 700 13pt \"Segoe UI\";\n"
+"	font: 700 11pt \"Segoe UI\";\n"
 "}\n"
 "\n"
 "#calendarBtn {\n"
@@ -111,7 +116,7 @@ class Ui_customWorkersEditWidget(object):
 "}\n"
 "\n"
 "#usernameLabel {\n"
-"	font-size: 11pt;\n"
+"	font-size: 10pt;\n"
 "}\n"
 "\n"
 "#workerPlaceLineEdit, #workerPositionLineEdit {\n"
@@ -119,39 +124,8 @@ class Ui_customWorkersEditWidget(object):
 "}\n"
 "\n"
 "#widget_3 * {\n"
-"	font-size: 10pt;\n"
-"}\n"
-"\n"
-"QComboBox{\n"
-"	background-color: #dfdfdf;\n"
-"	border-bottom: 1px solid #7c9399;\n"
-"	border-radius: 3px;\n"
-"}\n"
-"\n"
-"QComboBox::drop-down{\n"
-"	image: url(':/icons/app/assets/icons/Alt-Arrow-Down--Streamline-Solar-Broken.svg');\n"
-"	width: 18px;\n"
-"	height: 18px;\n"
-"}\n"
-"\n"
-"QComboBox:hover{\n"
-"	color: #2b2b2c;\n"
-"	font: "
-                        "720 10.5pt \"Segoe UI\";\n"
-"	border-radius: 0px;\n"
-"	alternate-background-color: #2c313c;\n"
-"}\n"
-"QComboBox::item:selected{\n"
-"	color: #2b2b2c;\n"
-"	font: 900 10.5pt \"Segoe UI\";\n"
-"	border-radius: 0px;\n"
-"}\n"
-"QComboBox::item{\n"
-"	color: #324b4c;\n"
-"	font: 700 10pt \"Segoe UI\";\n"
-"	height: 11px;  \n"
-"	border: 4px solid transparent;\n"
-"	padding: 0px 8px 0px 8px;\n"
+"	font-size: 8pt;\n"
+"	font-weight: 500;\n"
 "}")
         self.verticalLayout = QVBoxLayout(customWorkersEditWidget)
         self.verticalLayout.setSpacing(10)
@@ -168,7 +142,7 @@ class Ui_customWorkersEditWidget(object):
         self.horizontalLayout = QHBoxLayout(self.headerHolder)
         self.horizontalLayout.setSpacing(20)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 3)
         self.widget_4 = QWidget(self.headerHolder)
         self.widget_4.setObjectName(u"widget_4")
         self.horizontalLayout_2 = QHBoxLayout(self.widget_4)
@@ -186,7 +160,7 @@ class Ui_customWorkersEditWidget(object):
         self.userHolder = QWidget(self.headerHolder)
         self.userHolder.setObjectName(u"userHolder")
         self.horizontalLayout_3 = QHBoxLayout(self.userHolder)
-        self.horizontalLayout_3.setSpacing(10)
+        self.horizontalLayout_3.setSpacing(3)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 5, 0)
         self.logoutBtn = QPushButton(self.userHolder)
@@ -194,7 +168,7 @@ class Ui_customWorkersEditWidget(object):
         icon = QIcon()
         icon.addFile(u":/icons/app/assets/icons/Log-Out--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.logoutBtn.setIcon(icon)
-        self.logoutBtn.setIconSize(QSize(24, 24))
+        self.logoutBtn.setIconSize(QSize(18, 18))
 
         self.horizontalLayout_3.addWidget(self.logoutBtn)
 
@@ -204,7 +178,7 @@ class Ui_customWorkersEditWidget(object):
         icon1 = QIcon()
         icon1.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.userIcon.setIcon(icon1)
-        self.userIcon.setIconSize(QSize(24, 24))
+        self.userIcon.setIconSize(QSize(18, 18))
 
         self.horizontalLayout_3.addWidget(self.userIcon)
 
@@ -226,9 +200,9 @@ class Ui_customWorkersEditWidget(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.workerInfoHolder.sizePolicy().hasHeightForWidth())
         self.workerInfoHolder.setSizePolicy(sizePolicy)
-        self.workerInfoHolder.setMinimumSize(QSize(750, 0))
+        self.workerInfoHolder.setMinimumSize(QSize(300, 0))
         self.verticalLayout_2 = QVBoxLayout(self.workerInfoHolder)
-        self.verticalLayout_2.setSpacing(10)
+        self.verticalLayout_2.setSpacing(5)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.widget_2 = QWidget(self.workerInfoHolder)
@@ -317,7 +291,7 @@ class Ui_customWorkersEditWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1268, 569))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 788, 380))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -335,22 +309,24 @@ class Ui_customWorkersEditWidget(object):
         self.workersTableView.setObjectName(u"workersTableView")
         self.workersTableView.setFocusPolicy(Qt.NoFocus)
         self.workersTableView.setStyleSheet(u"QHeaderView:section{\n"
-"	font: 700 10.5pt \"Segoe UI\";\n"
+"	font: 700 9pt \"Segoe UI\";\n"
 "	background-color: #dfdfdf;\n"
-"	padding: 5px;\n"
+"	padding: 3px;\n"
 "}\n"
 "QVerticalView:section{\n"
-"	min-height: 30;\n"
+"	min-height: 20px;\n"
 "}\n"
 "QAbstractItemView{\n"
 "	alternate-background-color: #d3d3d3;\n"
-"	font: 10.5pt \"Segoe UI\";\n"
+"	font: 8pt \"Segoe UI\";\n"
 "	selection-background-color: rgba(198, 228, 254, 45);\n"
 "	selection-color: #324b4c;\n"
+"	focus: none;\n"
 "}\n"
 "QAbstractItemView:item{\n"
 "	selection-background-color: rgba(198, 228, 254, 45);\n"
 "	selection-color: #324b4c;\n"
+"	focus: none;\n"
 "}\n"
 "QAbstractItemView::item:selected{\n"
 "	background-color: rgba(198, 228, 254, 45);\n"
@@ -363,6 +339,8 @@ class Ui_customWorkersEditWidget(object):
         self.workersTableView.setShowGrid(True)
         self.workersTableView.setCornerButtonEnabled(False)
         self.workersTableView.verticalHeader().setVisible(False)
+        self.workersTableView.verticalHeader().setMinimumSectionSize(20)
+        self.workersTableView.verticalHeader().setDefaultSectionSize(20)
 
         self.horizontalLayout_5.addWidget(self.workersTableView)
 

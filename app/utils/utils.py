@@ -1,11 +1,58 @@
 from datetime import datetime, date, time, timedelta
+import sys
+import traceback
 
 from PySide6.QtGui import QStandardItemModel, QStandardItem, QCursor
 from PySide6.QtWidgets import QCompleter, QLineEdit, QApplication, QTableView
-from PySide6.QtCore import Qt, QStringListModel, QTime
+from PySide6.QtCore import Qt, QStringListModel, QTime, QObject, Signal, QRunnable, Slot
 
 
 class Utils:
+
+    @staticmethod
+    def calculatePaymentForWorker(data, mainPaymentRation, paymentInLv,
+                         paymentInEuro, nightPayInLeva, nightPayInEuro):
+        totalPaymentInLev = 0
+        totalPaymentInEuro = 0
+        totalNightTime = 0
+        totalTime = 0
+
+        for pay in data:
+            efficient = pay[0]
+            ratio = pay[1]
+            nightMins = pay[3]
+
+            totalPaymentInLev += Utils.calculatePayment(efficient - nightMins, ratio,
+                                                        mainPaymentRation, paymentInLv)
+            totalPaymentInEuro += Utils.calculatePayment(efficient - nightMins, ratio,
+                                                         mainPaymentRation, paymentInEuro)
+            if nightMins > 0:
+                totalNightTime += nightMins
+                totalPaymentInLev += Utils.calculatePayment(nightMins, ratio,
+                                                            mainPaymentRation, nightPayInLeva)
+                totalPaymentInEuro += Utils.calculatePayment(nightMins, ratio,
+                                                             mainPaymentRation, nightPayInEuro)
+            totalTime += efficient
+
+        return totalPaymentInLev, totalPaymentInEuro, totalNightTime, totalTime
+
+    @staticmethod
+    def calculatePaymentNoRepeat(data, mainPaymentRation, paymentInLv,
+                                 paymentInEuro, nightPayInLeva, nightPayInEuro):
+        totalPayLv = 0
+        totalPayEuro = 0
+        totalPayLv += Utils.calculatePayment((data[0] - data[3]),
+                                             data[1], mainPaymentRation, paymentInLv)
+        totalPayEuro += Utils.calculatePayment((data[0] - data[3]),
+                                               data[1], mainPaymentRation, paymentInEuro)
+
+        if data[3] > 0:
+            totalPayLv += Utils.calculatePayment(data[3], data[1],
+                                                 mainPaymentRation, nightPayInLeva)
+            totalPayEuro += Utils.calculatePayment(data[3], data[1],
+                                                   mainPaymentRation, nightPayInEuro)
+        return totalPayLv, totalPayEuro
+
 
     @staticmethod
     def calculatePayment(efficient, ratio, paymentRatio, payment):
@@ -52,6 +99,7 @@ class Utils:
     @staticmethod
     def setupCompleter(listNames, widget):
         completer = QCompleter(listNames, widget)
+        completer.popup().setStyleSheet("font-size: 8pt;")
         completer.setCompletionColumn(0)
         completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
         completer.setFilterMode(Qt.MatchFlag.MatchContains)
@@ -185,4 +233,65 @@ class CustomCompleter(QCompleter):
 
     def pathFromIndex(self, index):
         return index.sibling(index.row(), 0).data()
+
+
+class WorkerSignals(QObject):
+    '''
+    Defines the signals available from a running worker thread.
+
+    Supported signals are:
+
+    finished
+        No data
+
+    error
+        `tuple` (exctype, value, traceback.format_exc())
+
+    result
+        `object` data returned from processing, anything
+
+    '''
+    finished = Signal()
+    error = Signal(tuple)
+    result = Signal(object)
+
+
+class Worker(QRunnable):
+    '''
+    Worker thread
+
+    Inherits from QRunnable to handler worker thread setup, signals and wrap-up.
+
+    :param callback: The function callback to run on this worker thread. Supplied args and
+                     kwargs will be passed through to the runner.
+    :type callback: function
+    :param args: Arguments to pass to the callback function
+    :param kwargs: Keywords to pass to the callback function
+
+    '''
+
+    def __init__(self, fn, *args, **kwargs):
+        super(Worker, self).__init__()
+        # Store constructor arguments (re-used for processing)
+        self.fn = fn
+        self.args = args
+        self.kwargs = kwargs
+        self.signals = WorkerSignals()
+
+    @Slot()
+    def run(self):
+        '''
+        Initialise the runner function with passed args, kwargs.
+        '''
+        # Retrieve args/kwargs here; and fire processing using them
+        try:
+            result = self.fn(*self.args, **self.kwargs)
+        except:
+            traceback.print_exc()
+            exctype, value = sys.exc_info()[:2]
+            self.signals.error.emit((exctype, value, traceback.format_exc()))
+        else:
+            self.signals.result.emit(result)  # Return the result of the processing
+        finally:
+            self.signals.finished.emit()  # Done
 

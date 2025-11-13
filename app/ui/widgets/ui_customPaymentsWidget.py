@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customPaymentsWidgetJCsGHV.ui'
+## Form generated from reading UI file 'customPaymentsWidgetBXgSfu.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -25,11 +25,11 @@ class Ui_customPaymentsWidget(object):
     def setupUi(self, customPaymentsWidget):
         if not customPaymentsWidget.objectName():
             customPaymentsWidget.setObjectName(u"customPaymentsWidget")
-        customPaymentsWidget.resize(1173, 901)
-        customPaymentsWidget.setMinimumSize(QSize(900, 800))
+        customPaymentsWidget.resize(1092, 580)
+        customPaymentsWidget.setMinimumSize(QSize(800, 580))
         customPaymentsWidget.setStyleSheet(u"*{\n"
 "	background-color: #dfdfdf;\n"
-"	font: 600 12pt \"Segoe UI\";\n"
+"	font: 600 9pt \"Segoe UI\";\n"
 "	color: #324b4c;\n"
 "}\n"
 "\n"
@@ -47,7 +47,7 @@ class Ui_customPaymentsWidget(object):
 "	border: none;\n"
 "	border-radius: 10px;\n"
 "	padding: 5px;\n"
-"	font-size: 12pt;\n"
+"	font-size: 9pt;\n"
 "}\n"
 "\n"
 "QPushButton:hover{\n"
@@ -61,7 +61,7 @@ class Ui_customPaymentsWidget(object):
 "\n"
 "QLineEdit, QDateEdit{\n"
 "	border: none;\n"
-"	font-size: 11pt;\n"
+"	font-size: 9pt;\n"
 "	border-bottom: 1px solid #7c9399;\n"
 "}\n"
 "\n"
@@ -69,16 +69,17 @@ class Ui_customPaymentsWidget(object):
 "	border: 1px solid #7c9399;\n"
 "}\n"
 "#statusBar *{\n"
-"	font-size: 9pt;\n"
+"	font-size: 8pt;\n"
+"	font-weight: 500;\n"
 "}\n"
 "\n"
 "#avrEuroLabel, #avrLevaLabel, #totalLevaLabel, #totalSelectedRows, #totalEuroLabel, #totalViewRows {\n"
 "	font-weight: 700;\n"
 "}\n"
 "\n"
-"#modelHolder QLabel, #newModelInfoHolder *{\n"
-"	fon"
-                        "t-size: 10pt;\n"
+"#modelHolder QLabel, #newModelIn"
+                        "foHolder *{\n"
+"	font-size: 9pt;\n"
 "}\n"
 "\n"
 "#optionsHolder, #optionsHolder_2 {\n"
@@ -86,7 +87,7 @@ class Ui_customPaymentsWidget(object):
 "}\n"
 "\n"
 "#pageTitle {\n"
-"	font: 700 13pt \"Segoe UI\";\n"
+"	font: 700 11pt \"Segoe UI\";\n"
 "}\n"
 "\n"
 "#fromCalendarBtn, #toCalendarBtn {\n"
@@ -108,7 +109,7 @@ class Ui_customPaymentsWidget(object):
 "}\n"
 "\n"
 "#usernameLabel {\n"
-"	font-size: 11pt;\n"
+"	font-size: 10pt;\n"
 "}\n"
 "\n"
 "#workerPlaceLineEdit, #workerPositionLineEdit {\n"
@@ -116,8 +117,9 @@ class Ui_customPaymentsWidget(object):
 "}\n"
 "\n"
 "#widget_3 QCheckBox {\n"
-"	font-size: 10pt;\n"
+"	font-size: 8pt;\n"
 "	padding: 0px;\n"
+"	font-weight: 500;\n"
 "}\n"
 "\n"
 "QComboBox{\n"
@@ -127,29 +129,29 @@ class Ui_customPaymentsWidget(object):
 "}\n"
 "\n"
 "QComboBox::drop-down{\n"
-"	image: url(':/icons/app/assets/icons/Alt-Arrow-Down--Streamline-Solar-Broken.svg');\n"
-"	width: 18px;\n"
-""
-                        "	height: 18px;\n"
+"	image: url(':/icons/app/assets/icons/Alt-Arrow-Down--Streamline-"
+                        "Solar-Broken.svg');\n"
+"	width: 16px;\n"
+"	height: 16px;\n"
 "}\n"
 "\n"
 "QComboBox:hover{\n"
 "	color: #2b2b2c;\n"
-"	font: 720 10.5pt \"Segoe UI\";\n"
+"	font: 700 9pt \"Segoe UI\";\n"
 "	border-radius: 0px;\n"
 "	alternate-background-color: #2c313c;\n"
 "}\n"
 "QComboBox::item:selected{\n"
 "	color: #2b2b2c;\n"
-"	font: 900 10.5pt \"Segoe UI\";\n"
+"	font: 700 9pt \"Segoe UI\";\n"
 "	border-radius: 0px;\n"
 "}\n"
 "QComboBox::item{\n"
 "	color: #324b4c;\n"
-"	font: 700 10pt \"Segoe UI\";\n"
-"	height: 11px;  \n"
+"	font: 600 9pt \"Segoe UI\";\n"
+"	height: 10px;  \n"
 "	border: 4px solid transparent;\n"
-"	padding: 0px 8px 0px 8px;\n"
+"	padding: 0px 4px 0px 4px;\n"
 "}")
         self.verticalLayout = QVBoxLayout(customPaymentsWidget)
         self.verticalLayout.setSpacing(10)
@@ -184,7 +186,7 @@ class Ui_customPaymentsWidget(object):
         self.userHolder = QWidget(self.headerHolder)
         self.userHolder.setObjectName(u"userHolder")
         self.horizontalLayout_3 = QHBoxLayout(self.userHolder)
-        self.horizontalLayout_3.setSpacing(10)
+        self.horizontalLayout_3.setSpacing(3)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 5, 0)
         self.logoutBtn = QPushButton(self.userHolder)
@@ -192,9 +194,9 @@ class Ui_customPaymentsWidget(object):
         icon = QIcon()
         icon.addFile(u":/icons/app/assets/icons/Log-Out--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.logoutBtn.setIcon(icon)
-        self.logoutBtn.setIconSize(QSize(24, 24))
+        self.logoutBtn.setIconSize(QSize(18, 18))
 
-        self.horizontalLayout_3.addWidget(self.logoutBtn)
+        self.horizontalLayout_3.addWidget(self.logoutBtn, 0, Qt.AlignRight)
 
         self.userIcon = QPushButton(self.userHolder)
         self.userIcon.setObjectName(u"userIcon")
@@ -202,9 +204,9 @@ class Ui_customPaymentsWidget(object):
         icon1 = QIcon()
         icon1.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.userIcon.setIcon(icon1)
-        self.userIcon.setIconSize(QSize(24, 24))
+        self.userIcon.setIconSize(QSize(18, 18))
 
-        self.horizontalLayout_3.addWidget(self.userIcon)
+        self.horizontalLayout_3.addWidget(self.userIcon, 0, Qt.AlignRight)
 
         self.usernameLabel = QLabel(self.userHolder)
         self.usernameLabel.setObjectName(u"usernameLabel")
@@ -231,7 +233,7 @@ class Ui_customPaymentsWidget(object):
         self.widget_5 = QWidget(self.operationsHolder)
         self.widget_5.setObjectName(u"widget_5")
         self.horizontalLayout_8 = QHBoxLayout(self.widget_5)
-        self.horizontalLayout_8.setSpacing(45)
+        self.horizontalLayout_8.setSpacing(15)
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
         self.horizontalLayout_8.setContentsMargins(0, 0, 0, 0)
         self.widget_12 = QWidget(self.widget_5)
@@ -240,22 +242,45 @@ class Ui_customPaymentsWidget(object):
         self.horizontalLayout_7.setSpacing(5)
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
         self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
-        self.label_25 = QLabel(self.widget_12)
+        self.widget_6 = QWidget(self.widget_12)
+        self.widget_6.setObjectName(u"widget_6")
+        self.horizontalLayout_5 = QHBoxLayout(self.widget_6)
+        self.horizontalLayout_5.setSpacing(0)
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
+        self.horizontalLayout_5.setContentsMargins(0, 0, 10, 0)
+        self.label_25 = QLabel(self.widget_6)
         self.label_25.setObjectName(u"label_25")
 
-        self.horizontalLayout_7.addWidget(self.label_25)
+        self.horizontalLayout_5.addWidget(self.label_25)
 
-        self.fromDateEdit = QDateEdit(self.widget_12)
+
+        self.horizontalLayout_7.addWidget(self.widget_6, 0, Qt.AlignLeft)
+
+        self.widget_7 = QWidget(self.widget_12)
+        self.widget_7.setObjectName(u"widget_7")
+        self.widget_7.setMinimumSize(QSize(0, 0))
+        self.horizontalLayout_6 = QHBoxLayout(self.widget_7)
+        self.horizontalLayout_6.setSpacing(0)
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.widget_13 = QWidget(self.widget_7)
+        self.widget_13.setObjectName(u"widget_13")
+        self.horizontalLayout_9 = QHBoxLayout(self.widget_13)
+        self.horizontalLayout_9.setSpacing(3)
+        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
+        self.horizontalLayout_9.setContentsMargins(0, 0, 0, 0)
+        self.fromDateEdit = QDateEdit(self.widget_13)
         self.fromDateEdit.setObjectName(u"fromDateEdit")
+        self.fromDateEdit.setMaximumSize(QSize(70, 16777215))
         self.fromDateEdit.setFocusPolicy(Qt.WheelFocus)
         self.fromDateEdit.setFrame(False)
         self.fromDateEdit.setAlignment(Qt.AlignCenter)
         self.fromDateEdit.setCorrectionMode(QAbstractSpinBox.CorrectToNearestValue)
-        self.fromDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 9, 2), QTime(0, 0, 0)))
+        self.fromDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 8, 26), QTime(0, 0, 0)))
 
-        self.horizontalLayout_7.addWidget(self.fromDateEdit)
+        self.horizontalLayout_9.addWidget(self.fromDateEdit)
 
-        self.fromCalendarBtn = QPushButton(self.widget_12)
+        self.fromCalendarBtn = QPushButton(self.widget_13)
         self.fromCalendarBtn.setObjectName(u"fromCalendarBtn")
         self.fromCalendarBtn.setFocusPolicy(Qt.NoFocus)
         self.fromCalendarBtn.setStyleSheet(u"*{\n"
@@ -264,47 +289,55 @@ class Ui_customPaymentsWidget(object):
         icon2 = QIcon()
         icon2.addFile(u":/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.fromCalendarBtn.setIcon(icon2)
-        self.fromCalendarBtn.setIconSize(QSize(24, 24))
+        self.fromCalendarBtn.setIconSize(QSize(18, 18))
 
-        self.horizontalLayout_7.addWidget(self.fromCalendarBtn)
+        self.horizontalLayout_9.addWidget(self.fromCalendarBtn)
 
 
-        self.horizontalLayout_8.addWidget(self.widget_12)
+        self.horizontalLayout_6.addWidget(self.widget_13)
 
-        self.widget_11 = QWidget(self.widget_5)
-        self.widget_11.setObjectName(u"widget_11")
-        self.horizontalLayout_6 = QHBoxLayout(self.widget_11)
-        self.horizontalLayout_6.setSpacing(5)
-        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
-        self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
-        self.label_26 = QLabel(self.widget_11)
-        self.label_26.setObjectName(u"label_26")
+        self.label = QLabel(self.widget_7)
+        self.label.setObjectName(u"label")
+        self.label.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
-        self.horizontalLayout_6.addWidget(self.label_26)
+        self.horizontalLayout_6.addWidget(self.label)
 
-        self.toDateEdit = QDateEdit(self.widget_11)
+        self.widget_20 = QWidget(self.widget_7)
+        self.widget_20.setObjectName(u"widget_20")
+        self.horizontalLayout_11 = QHBoxLayout(self.widget_20)
+        self.horizontalLayout_11.setSpacing(3)
+        self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
+        self.horizontalLayout_11.setContentsMargins(0, 0, 0, 0)
+        self.toDateEdit = QDateEdit(self.widget_20)
         self.toDateEdit.setObjectName(u"toDateEdit")
+        self.toDateEdit.setMaximumSize(QSize(70, 16777215))
         self.toDateEdit.setFocusPolicy(Qt.WheelFocus)
         self.toDateEdit.setFrame(False)
         self.toDateEdit.setAlignment(Qt.AlignCenter)
         self.toDateEdit.setCorrectionMode(QAbstractSpinBox.CorrectToNearestValue)
-        self.toDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 9, 3), QTime(0, 0, 0)))
+        self.toDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 8, 28), QTime(0, 0, 0)))
 
-        self.horizontalLayout_6.addWidget(self.toDateEdit)
+        self.horizontalLayout_11.addWidget(self.toDateEdit)
 
-        self.toCalendarBtn = QPushButton(self.widget_11)
+        self.toCalendarBtn = QPushButton(self.widget_20)
         self.toCalendarBtn.setObjectName(u"toCalendarBtn")
         self.toCalendarBtn.setFocusPolicy(Qt.NoFocus)
         self.toCalendarBtn.setStyleSheet(u"*{\n"
 "	padding: 0px;\n"
 "}")
         self.toCalendarBtn.setIcon(icon2)
-        self.toCalendarBtn.setIconSize(QSize(24, 24))
+        self.toCalendarBtn.setIconSize(QSize(18, 18))
 
-        self.horizontalLayout_6.addWidget(self.toCalendarBtn)
+        self.horizontalLayout_11.addWidget(self.toCalendarBtn)
 
 
-        self.horizontalLayout_8.addWidget(self.widget_11)
+        self.horizontalLayout_6.addWidget(self.widget_20)
+
+
+        self.horizontalLayout_7.addWidget(self.widget_7, 0, Qt.AlignLeft)
+
+
+        self.horizontalLayout_8.addWidget(self.widget_12, 0, Qt.AlignLeft)
 
         self.searchBtn = QPushButton(self.widget_5)
         self.searchBtn.setObjectName(u"searchBtn")
@@ -327,11 +360,6 @@ class Ui_customPaymentsWidget(object):
         self.gridLayout.setObjectName(u"gridLayout")
         self.gridLayout.setHorizontalSpacing(10)
         self.gridLayout.setVerticalSpacing(2)
-        self.nightTimeCheckBox = QCheckBox(self.widget_3)
-        self.nightTimeCheckBox.setObjectName(u"nightTimeCheckBox")
-
-        self.gridLayout.addWidget(self.nightTimeCheckBox, 3, 0, 1, 1)
-
         self.selectAllCheckBox = QCheckBox(self.widget_3)
         self.selectAllCheckBox.setObjectName(u"selectAllCheckBox")
 
@@ -347,15 +375,20 @@ class Ui_customPaymentsWidget(object):
 
         self.gridLayout.addWidget(self.hourlyCheckBox, 2, 0, 1, 1)
 
-        self.weekendDaysCheckBox = QCheckBox(self.widget_3)
-        self.weekendDaysCheckBox.setObjectName(u"weekendDaysCheckBox")
-
-        self.gridLayout.addWidget(self.weekendDaysCheckBox, 0, 1, 1, 1)
-
         self.holidaysCheckBox = QCheckBox(self.widget_3)
         self.holidaysCheckBox.setObjectName(u"holidaysCheckBox")
 
-        self.gridLayout.addWidget(self.holidaysCheckBox, 1, 1, 1, 1)
+        self.gridLayout.addWidget(self.holidaysCheckBox, 2, 1, 1, 1)
+
+        self.weekendDaysCheckBox = QCheckBox(self.widget_3)
+        self.weekendDaysCheckBox.setObjectName(u"weekendDaysCheckBox")
+
+        self.gridLayout.addWidget(self.weekendDaysCheckBox, 1, 1, 1, 1)
+
+        self.nightTimeCheckBox = QCheckBox(self.widget_3)
+        self.nightTimeCheckBox.setObjectName(u"nightTimeCheckBox")
+
+        self.gridLayout.addWidget(self.nightTimeCheckBox, 0, 1, 1, 1)
 
 
         self.verticalLayout_3.addLayout(self.gridLayout)
@@ -378,7 +411,7 @@ class Ui_customPaymentsWidget(object):
         self.verticalLayout_2.addWidget(self.optionsHolder_2)
 
 
-        self.verticalLayout_4.addWidget(self.operationsHolder)
+        self.verticalLayout_4.addWidget(self.operationsHolder, 0, Qt.AlignLeft)
 
 
         self.verticalLayout.addWidget(self.widget, 0, Qt.AlignTop)
@@ -388,7 +421,7 @@ class Ui_customPaymentsWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1161, 707))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1080, 420))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -408,17 +441,17 @@ class Ui_customPaymentsWidget(object):
 
         self.statusBar = QWidget(customPaymentsWidget)
         self.statusBar.setObjectName(u"statusBar")
-        self.statusBar.setMinimumSize(QSize(0, 0))
+        self.statusBar.setMinimumSize(QSize(0, 25))
         self.horizontalLayout_18 = QHBoxLayout(self.statusBar)
-        self.horizontalLayout_18.setSpacing(10)
+        self.horizontalLayout_18.setSpacing(5)
         self.horizontalLayout_18.setObjectName(u"horizontalLayout_18")
-        self.horizontalLayout_18.setContentsMargins(5, 5, 5, 5)
+        self.horizontalLayout_18.setContentsMargins(5, 0, 5, 5)
         self.widget_2 = QWidget(self.statusBar)
         self.widget_2.setObjectName(u"widget_2")
         self.horizontalLayout_21 = QHBoxLayout(self.widget_2)
-        self.horizontalLayout_21.setSpacing(20)
+        self.horizontalLayout_21.setSpacing(0)
         self.horizontalLayout_21.setObjectName(u"horizontalLayout_21")
-        self.horizontalLayout_21.setContentsMargins(20, 0, 0, 0)
+        self.horizontalLayout_21.setContentsMargins(10, 0, 0, 0)
         self.widget_17 = QWidget(self.widget_2)
         self.widget_17.setObjectName(u"widget_17")
         self.horizontalLayout_25 = QHBoxLayout(self.widget_17)
@@ -439,7 +472,7 @@ class Ui_customPaymentsWidget(object):
         self.horizontalLayout_21.addWidget(self.widget_17, 0, Qt.AlignLeft)
 
 
-        self.horizontalLayout_18.addWidget(self.widget_2)
+        self.horizontalLayout_18.addWidget(self.widget_2, 0, Qt.AlignBottom)
 
         self.widget_8 = QWidget(self.statusBar)
         self.widget_8.setObjectName(u"widget_8")
@@ -454,13 +487,13 @@ class Ui_customPaymentsWidget(object):
         self.widget_9.setObjectName(u"widget_9")
         self.widget_9.setMinimumSize(QSize(0, 0))
         self.horizontalLayout_4 = QHBoxLayout(self.widget_9)
-        self.horizontalLayout_4.setSpacing(10)
+        self.horizontalLayout_4.setSpacing(5)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.widget_16 = QWidget(self.widget_9)
         self.widget_16.setObjectName(u"widget_16")
         self.horizontalLayout_24 = QHBoxLayout(self.widget_16)
-        self.horizontalLayout_24.setSpacing(5)
+        self.horizontalLayout_24.setSpacing(3)
         self.horizontalLayout_24.setObjectName(u"horizontalLayout_24")
         self.horizontalLayout_24.setContentsMargins(0, 0, 0, 0)
         self.label_36 = QLabel(self.widget_16)
@@ -479,7 +512,7 @@ class Ui_customPaymentsWidget(object):
         self.widget_10 = QWidget(self.widget_9)
         self.widget_10.setObjectName(u"widget_10")
         self.horizontalLayout_22 = QHBoxLayout(self.widget_10)
-        self.horizontalLayout_22.setSpacing(5)
+        self.horizontalLayout_22.setSpacing(3)
         self.horizontalLayout_22.setObjectName(u"horizontalLayout_22")
         self.horizontalLayout_22.setContentsMargins(0, 0, 0, 0)
         self.label_38 = QLabel(self.widget_10)
@@ -499,7 +532,7 @@ class Ui_customPaymentsWidget(object):
         self.widget_15.setObjectName(u"widget_15")
         self.widget_15.setMinimumSize(QSize(0, 0))
         self.horizontalLayout_23 = QHBoxLayout(self.widget_15)
-        self.horizontalLayout_23.setSpacing(5)
+        self.horizontalLayout_23.setSpacing(3)
         self.horizontalLayout_23.setObjectName(u"horizontalLayout_23")
         self.horizontalLayout_23.setContentsMargins(0, 0, 0, 0)
         self.label_37 = QLabel(self.widget_15)
@@ -519,7 +552,7 @@ class Ui_customPaymentsWidget(object):
         self.widget_18.setObjectName(u"widget_18")
         self.widget_18.setMinimumSize(QSize(0, 0))
         self.horizontalLayout_26 = QHBoxLayout(self.widget_18)
-        self.horizontalLayout_26.setSpacing(5)
+        self.horizontalLayout_26.setSpacing(3)
         self.horizontalLayout_26.setObjectName(u"horizontalLayout_26")
         self.horizontalLayout_26.setContentsMargins(0, 0, 0, 0)
         self.label_39 = QLabel(self.widget_18)
@@ -539,7 +572,7 @@ class Ui_customPaymentsWidget(object):
         self.widget_19.setObjectName(u"widget_19")
         self.widget_19.setMinimumSize(QSize(0, 0))
         self.horizontalLayout_27 = QHBoxLayout(self.widget_19)
-        self.horizontalLayout_27.setSpacing(5)
+        self.horizontalLayout_27.setSpacing(3)
         self.horizontalLayout_27.setObjectName(u"horizontalLayout_27")
         self.horizontalLayout_27.setContentsMargins(0, 0, 0, 0)
         self.label_40 = QLabel(self.widget_19)
@@ -556,7 +589,7 @@ class Ui_customPaymentsWidget(object):
         self.horizontalLayout_4.addWidget(self.widget_19)
 
 
-        self.horizontalLayout_18.addWidget(self.widget_9, 0, Qt.AlignRight)
+        self.horizontalLayout_18.addWidget(self.widget_9, 0, Qt.AlignRight|Qt.AlignBottom)
 
 
         self.verticalLayout.addWidget(self.statusBar)
@@ -573,20 +606,20 @@ class Ui_customPaymentsWidget(object):
         self.logoutBtn.setText("")
         self.userIcon.setText("")
         self.usernameLabel.setText(QCoreApplication.translate("customPaymentsWidget", u"admin", None))
-        self.label_25.setText(QCoreApplication.translate("customPaymentsWidget", u"\u041e\u0442 \u0414\u0430\u0442\u0430: ", None))
+        self.label_25.setText(QCoreApplication.translate("customPaymentsWidget", u"\u041e\u0442/\u0414\u043e \u0414\u0430\u0442\u0430: ", None))
         self.fromDateEdit.setDisplayFormat(QCoreApplication.translate("customPaymentsWidget", u"dd.MM.yy '\u0433.'", None))
         self.fromCalendarBtn.setText("")
-        self.label_26.setText(QCoreApplication.translate("customPaymentsWidget", u"\u0414\u043e \u0414\u0430\u0442\u0430: ", None))
+        self.label.setText(QCoreApplication.translate("customPaymentsWidget", u"  /  ", None))
         self.toDateEdit.setDisplayFormat(QCoreApplication.translate("customPaymentsWidget", u"dd.MM.yy '\u0433.'", None))
         self.toCalendarBtn.setText("")
         self.searchBtn.setText(QCoreApplication.translate("customPaymentsWidget", u"\u0422\u044a\u0440\u0441\u0435\u043d\u0435", None))
         self.exportToExcelBtn.setText(QCoreApplication.translate("customPaymentsWidget", u"Excel", None))
-        self.nightTimeCheckBox.setText(QCoreApplication.translate("customPaymentsWidget", u"\u041d\u043e\u0449\u0435\u043d", None))
         self.selectAllCheckBox.setText(QCoreApplication.translate("customPaymentsWidget", u"\u0412\u0441\u0438\u0447\u043a\u0438", None))
         self.overtimeCheckBox.setText(QCoreApplication.translate("customPaymentsWidget", u"\u0418\u0437\u0432\u044a\u043d\u0440\u0435\u0434\u0435\u043d", None))
         self.hourlyCheckBox.setText(QCoreApplication.translate("customPaymentsWidget", u"\u041f\u043e\u0447\u0430\u0441\u043e\u0432\u043e", None))
-        self.weekendDaysCheckBox.setText(QCoreApplication.translate("customPaymentsWidget", u"\u041f\u043e\u0447\u0438\u0432\u043d\u0438 \u0434\u043d\u0438", None))
         self.holidaysCheckBox.setText(QCoreApplication.translate("customPaymentsWidget", u"\u041f\u0440\u0430\u0437\u043d\u0438\u0447\u043d\u0438 \u0434\u043d\u0438", None))
+        self.weekendDaysCheckBox.setText(QCoreApplication.translate("customPaymentsWidget", u"\u041f\u043e\u0447\u0438\u0432\u043d\u0438 \u0434\u043d\u0438", None))
+        self.nightTimeCheckBox.setText(QCoreApplication.translate("customPaymentsWidget", u"\u041d\u043e\u0449\u0435\u043d", None))
         self.label_42.setText(QCoreApplication.translate("customPaymentsWidget", u"\u041e\u0431\u0449\u043e \u0440\u0435\u0434\u043e\u0432\u0435:", None))
         self.totalViewRows.setText(QCoreApplication.translate("customPaymentsWidget", u"0", None))
         self.label_36.setText(QCoreApplication.translate("customPaymentsWidget", u"\u0420\u0435\u0434\u043e\u0432\u0435:", None))

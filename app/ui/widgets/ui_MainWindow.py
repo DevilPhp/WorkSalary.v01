@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'MainWindowfPMsOy.ui'
+## Form generated from reading UI file 'MainWindowlTdYyq.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -24,17 +24,17 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1284, 958)
+        MainWindow.resize(1037, 684)
         MainWindow.setMinimumSize(QSize(756, 670))
         font = QFont()
         font.setFamilies([u"Segoe UI"])
-        font.setPointSize(12)
+        font.setPointSize(9)
         font.setBold(True)
         font.setItalic(False)
         MainWindow.setFont(font)
         MainWindow.setStyleSheet(u"*{\n"
 "	background-color: #dfdfdf;\n"
-"	font: 700 12pt \"Segoe UI\";\n"
+"	font: 600 9pt \"Segoe UI\";\n"
 "	color: #324b4c;\n"
 "}\n"
 "\n"
@@ -55,23 +55,30 @@ class Ui_MainWindow(object):
 "	background-color: #aeaeae;\n"
 "}\n"
 "\n"
+"#logoIcon, #logoIcon_2 {\n"
+"	background-color: #dfdfdf;\n"
+"	padding: 0px;\n"
+"	border: none;\n"
+"}\n"
+"\n"
 "#userLogoLabel, #userPassVisBtn {\n"
 "	background-color: #dfdfdf;\n"
 "	border: none;\n"
 "}\n"
 "\n"
 "#mainMenuWidget QLabel {\n"
-"	font: 900 16pt \"Segoe UI\";\n"
-"	max-height: 30px;\n"
-"	padding: 5px;\n"
+"	font: 700 10pt \"Segoe UI\";\n"
+"	max-height: 20px;\n"
+"	padding: 3px;\n"
 "}\n"
 "\n"
 "#mainMenuWidget QPushButton {\n"
 "	padding: 5px;\n"
+"	font-size: 10pt;\n"
 "}\n"
 "\n"
 "#label, #label_8 {\n"
-"	padding-top: 50px;\n"
+"	padding-top: 30px;\n"
 "}\n"
 "\n"
 "#userIcon, #logoutBtn{\n"
@@ -79,11 +86,12 @@ class Ui_MainWindow(object):
 "}\n"
 "\n"
 "#logoutBtn:hover{\n"
-"	icon: url(:/icons/app/assets/icons/Log-Out--Streamline-Feather_#192626.svg);\n"
+"	icon: url(:/icons/app/assets/icons/Log-Out--Streamline-Fea"
+                        "ther_#192626.svg);\n"
 "}\n"
 "\n"
 "#usernameLabel {\n"
-"	font-size: 11pt;\n"
+"	font-size: 10pt;\n"
 "}\n"
 "\n"
 "")
@@ -111,35 +119,38 @@ class Ui_MainWindow(object):
         self.widget_2.setObjectName(u"widget_2")
         self.widget_2.setMinimumSize(QSize(0, 160))
         self.widget_2.setMaximumSize(QSize(16777215, 160))
-        self.horizontalLayout = QHBoxLayout(self.widget_2)
-        self.horizontalLayout.setSpacing(0)
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
-        self.label = QLabel(self.widget_2)
-        self.label.setObjectName(u"label")
-        self.label.setMinimumSize(QSize(0, 0))
-        self.label.setPixmap(QPixmap(u":/logo/app/assets/logo/KnitexLogo3.png"))
+        self.verticalLayout_11 = QVBoxLayout(self.widget_2)
+        self.verticalLayout_11.setSpacing(0)
+        self.verticalLayout_11.setObjectName(u"verticalLayout_11")
+        self.verticalLayout_11.setContentsMargins(0, 0, 0, 0)
+        self.logoIcon = QPushButton(self.widget_2)
+        self.logoIcon.setObjectName(u"logoIcon")
+        self.logoIcon.setFocusPolicy(Qt.NoFocus)
+        icon = QIcon()
+        icon.addFile(u":/logo/app/assets/logo/KnitexLogo3.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.logoIcon.setIcon(icon)
+        self.logoIcon.setIconSize(QSize(320, 280))
 
-        self.horizontalLayout.addWidget(self.label, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+        self.verticalLayout_11.addWidget(self.logoIcon)
 
 
         self.verticalLayout.addWidget(self.widget_2, 0, Qt.AlignHCenter|Qt.AlignTop)
 
         self.logInHolder = QWidget(self.widget)
         self.logInHolder.setObjectName(u"logInHolder")
-        self.logInHolder.setMinimumSize(QSize(0, 300))
+        self.logInHolder.setMinimumSize(QSize(0, 0))
         self.verticalLayout_3 = QVBoxLayout(self.logInHolder)
-        self.verticalLayout_3.setSpacing(35)
+        self.verticalLayout_3.setSpacing(15)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.userLogoLabel = QPushButton(self.logInHolder)
         self.userLogoLabel.setObjectName(u"userLogoLabel")
         self.userLogoLabel.setFocusPolicy(Qt.NoFocus)
         self.userLogoLabel.setLayoutDirection(Qt.LeftToRight)
-        icon = QIcon()
-        icon.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.userLogoLabel.setIcon(icon)
-        self.userLogoLabel.setIconSize(QSize(80, 80))
+        icon1 = QIcon()
+        icon1.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.userLogoLabel.setIcon(icon1)
+        self.userLogoLabel.setIconSize(QSize(40, 40))
 
         self.verticalLayout_3.addWidget(self.userLogoLabel)
 
@@ -149,18 +160,20 @@ class Ui_MainWindow(object):
         self.verticalLayout_4 = QVBoxLayout(self.widget_3)
         self.verticalLayout_4.setSpacing(0)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_4.setContentsMargins(0, 0, 0, 15)
         self.gridLayout = QGridLayout()
         self.gridLayout.setObjectName(u"gridLayout")
         self.gridLayout.setHorizontalSpacing(10)
         self.gridLayout.setVerticalSpacing(20)
         self.label_4 = QLabel(self.widget_3)
         self.label_4.setObjectName(u"label_4")
+        self.label_4.setFont(font)
 
         self.gridLayout.addWidget(self.label_4, 0, 0, 1, 1)
 
         self.userNameField = QLineEdit(self.widget_3)
         self.userNameField.setObjectName(u"userNameField")
+        self.userNameField.setFont(font)
         self.userNameField.setFocusPolicy(Qt.StrongFocus)
         self.userNameField.setAlignment(Qt.AlignCenter)
 
@@ -182,11 +195,11 @@ class Ui_MainWindow(object):
         self.userPassVisBtn = QPushButton(self.widget_3)
         self.userPassVisBtn.setObjectName(u"userPassVisBtn")
         self.userPassVisBtn.setFocusPolicy(Qt.NoFocus)
-        icon1 = QIcon()
-        icon1.addFile(u":/icons/app/assets/icons/Eye-Off--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
-        icon1.addFile(u":/icons/app/assets/icons/Eye--Streamline-Feather.svg", QSize(), QIcon.Selected, QIcon.On)
-        self.userPassVisBtn.setIcon(icon1)
-        self.userPassVisBtn.setIconSize(QSize(22, 22))
+        icon2 = QIcon()
+        icon2.addFile(u":/icons/app/assets/icons/Eye-Off--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        icon2.addFile(u":/icons/app/assets/icons/Eye--Streamline-Feather.svg", QSize(), QIcon.Selected, QIcon.On)
+        self.userPassVisBtn.setIcon(icon2)
+        self.userPassVisBtn.setIconSize(QSize(16, 16))
 
         self.gridLayout.addWidget(self.userPassVisBtn, 1, 2, 1, 1)
 
@@ -208,12 +221,13 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.loginBtn.sizePolicy().hasHeightForWidth())
         self.loginBtn.setSizePolicy(sizePolicy)
         self.loginBtn.setMaximumSize(QSize(16777215, 26))
+        self.loginBtn.setFont(font)
         self.loginBtn.setFocusPolicy(Qt.NoFocus)
         self.loginBtn.setLayoutDirection(Qt.RightToLeft)
-        icon2 = QIcon()
-        icon2.addFile(u":/icons/app/assets/icons/Log-In--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.loginBtn.setIcon(icon2)
-        self.loginBtn.setIconSize(QSize(24, 24))
+        icon3 = QIcon()
+        icon3.addFile(u":/icons/app/assets/icons/Log-In--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.loginBtn.setIcon(icon3)
+        self.loginBtn.setIconSize(QSize(16, 16))
 
         self.verticalLayout_6.addWidget(self.loginBtn)
 
@@ -223,19 +237,20 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.logInHolder, 0, Qt.AlignHCenter|Qt.AlignTop)
 
-        self.widget_4 = QWidget(self.widget)
-        self.widget_4.setObjectName(u"widget_4")
-        self.widget_4.setMinimumSize(QSize(0, 0))
-        self.horizontalLayout_3 = QHBoxLayout(self.widget_4)
+        self.footerWidget = QWidget(self.widget)
+        self.footerWidget.setObjectName(u"footerWidget")
+        self.footerWidget.setMinimumSize(QSize(0, 0))
+        self.horizontalLayout_3 = QHBoxLayout(self.footerWidget)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.horizontalLayout_3.setContentsMargins(10, 10, 10, 10)
-        self.infoLabel = QLabel(self.widget_4)
-        self.infoLabel.setObjectName(u"infoLabel")
+        self.horizontalLayout_3.setContentsMargins(0, 0, 0, 5)
+        self.footerLabel = QLabel(self.footerWidget)
+        self.footerLabel.setObjectName(u"footerLabel")
+        self.footerLabel.setFont(font)
 
-        self.horizontalLayout_3.addWidget(self.infoLabel)
+        self.horizontalLayout_3.addWidget(self.footerLabel)
 
 
-        self.verticalLayout.addWidget(self.widget_4, 0, Qt.AlignHCenter|Qt.AlignBottom)
+        self.verticalLayout.addWidget(self.footerWidget, 0, Qt.AlignHCenter|Qt.AlignBottom)
 
 
         self.verticalLayout_5.addWidget(self.widget)
@@ -268,16 +283,17 @@ class Ui_MainWindow(object):
         self.widget_12.setObjectName(u"widget_12")
         self.widget_12.setMinimumSize(QSize(0, 160))
         self.widget_12.setMaximumSize(QSize(16777215, 160))
-        self.horizontalLayout_5 = QHBoxLayout(self.widget_12)
-        self.horizontalLayout_5.setSpacing(0)
-        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
-        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
-        self.label_8 = QLabel(self.widget_12)
-        self.label_8.setObjectName(u"label_8")
-        self.label_8.setMinimumSize(QSize(0, 0))
-        self.label_8.setPixmap(QPixmap(u":/logo/app/assets/logo/KnitexLogo3.png"))
+        self.verticalLayout_12 = QVBoxLayout(self.widget_12)
+        self.verticalLayout_12.setSpacing(0)
+        self.verticalLayout_12.setObjectName(u"verticalLayout_12")
+        self.verticalLayout_12.setContentsMargins(0, 0, 0, 0)
+        self.logoIcon_2 = QPushButton(self.widget_12)
+        self.logoIcon_2.setObjectName(u"logoIcon_2")
+        self.logoIcon_2.setFocusPolicy(Qt.NoFocus)
+        self.logoIcon_2.setIcon(icon)
+        self.logoIcon_2.setIconSize(QSize(320, 280))
 
-        self.horizontalLayout_5.addWidget(self.label_8, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+        self.verticalLayout_12.addWidget(self.logoIcon_2)
 
 
         self.horizontalLayout_6.addWidget(self.widget_12, 0, Qt.AlignHCenter|Qt.AlignVCenter)
@@ -285,24 +301,24 @@ class Ui_MainWindow(object):
         self.widget_9 = QWidget(self.widget_10)
         self.widget_9.setObjectName(u"widget_9")
         self.horizontalLayout_8 = QHBoxLayout(self.widget_9)
-        self.horizontalLayout_8.setSpacing(10)
+        self.horizontalLayout_8.setSpacing(3)
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
         self.horizontalLayout_8.setContentsMargins(0, 0, 5, 0)
         self.logoutBtn = QPushButton(self.widget_9)
         self.logoutBtn.setObjectName(u"logoutBtn")
         self.logoutBtn.setFocusPolicy(Qt.NoFocus)
-        icon3 = QIcon()
-        icon3.addFile(u":/icons/app/assets/icons/Log-Out--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.logoutBtn.setIcon(icon3)
-        self.logoutBtn.setIconSize(QSize(24, 24))
+        icon4 = QIcon()
+        icon4.addFile(u":/icons/app/assets/icons/Log-Out--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.logoutBtn.setIcon(icon4)
+        self.logoutBtn.setIconSize(QSize(18, 18))
 
         self.horizontalLayout_8.addWidget(self.logoutBtn)
 
         self.userIcon = QPushButton(self.widget_9)
         self.userIcon.setObjectName(u"userIcon")
         self.userIcon.setFocusPolicy(Qt.NoFocus)
-        self.userIcon.setIcon(icon)
-        self.userIcon.setIconSize(QSize(24, 24))
+        self.userIcon.setIcon(icon1)
+        self.userIcon.setIconSize(QSize(18, 18))
 
         self.horizontalLayout_8.addWidget(self.userIcon)
 
@@ -346,6 +362,12 @@ class Ui_MainWindow(object):
 
         self.label_2 = QLabel(self.mainMenuWidget)
         self.label_2.setObjectName(u"label_2")
+        font1 = QFont()
+        font1.setFamilies([u"Segoe UI"])
+        font1.setPointSize(10)
+        font1.setBold(True)
+        font1.setItalic(False)
+        self.label_2.setFont(font1)
         self.label_2.setAlignment(Qt.AlignCenter)
 
         self.mainMenuLayout.addWidget(self.label_2, 0, 0, 1, 1)
@@ -410,18 +432,18 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_9.addWidget(self.mainMenuWidget, 0, Qt.AlignHCenter)
 
-        self.widget_11 = QWidget(self.widget_8)
-        self.widget_11.setObjectName(u"widget_11")
-        self.horizontalLayout_7 = QHBoxLayout(self.widget_11)
+        self.footerWidget_2 = QWidget(self.widget_8)
+        self.footerWidget_2.setObjectName(u"footerWidget_2")
+        self.horizontalLayout_7 = QHBoxLayout(self.footerWidget_2)
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
-        self.horizontalLayout_7.setContentsMargins(10, 10, 10, 10)
-        self.infoLabel_2 = QLabel(self.widget_11)
-        self.infoLabel_2.setObjectName(u"infoLabel_2")
+        self.horizontalLayout_7.setContentsMargins(0, 0, 0, 5)
+        self.footerLabel_2 = QLabel(self.footerWidget_2)
+        self.footerLabel_2.setObjectName(u"footerLabel_2")
 
-        self.horizontalLayout_7.addWidget(self.infoLabel_2)
+        self.horizontalLayout_7.addWidget(self.footerLabel_2)
 
 
-        self.verticalLayout_9.addWidget(self.widget_11, 0, Qt.AlignHCenter|Qt.AlignBottom)
+        self.verticalLayout_9.addWidget(self.footerWidget_2, 0, Qt.AlignHCenter|Qt.AlignBottom)
 
 
         self.horizontalLayout_2.addWidget(self.widget_8)
@@ -482,14 +504,14 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.label.setText("")
+        self.logoIcon.setText("")
         self.userLogoLabel.setText("")
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"\u041f\u043e\u0442\u0440\u0435\u0431\u0438\u0442\u0435\u043b", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"\u041f\u0430\u0440\u043e\u043b\u0430", None))
         self.userPassVisBtn.setText("")
         self.loginBtn.setText(QCoreApplication.translate("MainWindow", u" \u0412\u0425\u041e\u0414", None))
-        self.infoLabel.setText(QCoreApplication.translate("MainWindow", u"Dev v0.1.010", None))
-        self.label_8.setText("")
+        self.footerLabel.setText(QCoreApplication.translate("MainWindow", u"Author: Filip Chaushev   Dev v0.1.030", None))
+        self.logoIcon_2.setText("")
         self.logoutBtn.setText("")
         self.userIcon.setText("")
         self.usernameLabel.setText(QCoreApplication.translate("MainWindow", u"admin", None))
@@ -507,7 +529,7 @@ class Ui_MainWindow(object):
         self.workingShiftsPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u0420\u0430\u0431\u043e\u0442\u043d\u0438 \u0421\u043c\u0435\u043d\u0438", None))
         self.holidaysPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u041f\u0440\u0430\u0437\u043d\u0438\u0447\u043d\u0438 \u0414\u043d\u0438", None))
         self.parametersBtn.setText(QCoreApplication.translate("MainWindow", u"\u041d\u043e\u043c\u0435\u043d\u043a\u043b\u0430\u0442\u0443\u0440\u0438", None))
-        self.infoLabel_2.setText(QCoreApplication.translate("MainWindow", u"Dev v0.1.010", None))
+        self.footerLabel_2.setText(QCoreApplication.translate("MainWindow", u"Author: Filip Chaushev   Dev v0.1.030", None))
         self.pageBtn.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
     # retranslateUi
 

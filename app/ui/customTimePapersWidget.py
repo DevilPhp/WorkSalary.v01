@@ -125,7 +125,9 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.modelPiecesLineEdit.textChanged.connect(self.updateModelPieces)
         self.timeForPieceLineEdit.textChanged.connect(self.updateModelPieces)
         self.modelOperationLineEdit.editingFinished.connect(self.updateModelOperation)
-        # print('here')
+
+        self.workerNameLineEdit.selectAll()
+        self.workerNameLineEdit.setFocus()
 
         self.logoutBtn.clicked.connect(self.logout)
 
@@ -211,8 +213,6 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.pasteFromClipboard()
 
     def editTimePaper(self, pos):
-        # print(pos)
-        # print(self.timePapersForDayTableView.selectionModel().selectedRows(0))
         selectedRows = self.timePapersForDayTableView.selectionModel().selectedRows(0)[-1]
 
         if not selectedRows:
@@ -256,7 +256,6 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 raise ValueError('Pieces must be positive')
 
             operId = self.proxyModelWorkers.index(self.editedRowIndex, 0).data(Qt.ItemDataRole.UserRole)
-            # print(operId)
             timeIndex = self.proxyModelWorkers.index(self.editedRowIndex, 6)
             timePerPiece = float(timeIndex.data(Qt.ItemDataRole.DisplayRole)) / int(self.originalPiecesValue)
             newTime = newPieces * timePerPiece
@@ -283,24 +282,6 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.tableTimePapersModel.item(sourceIndex.row(), 5).setText(str(self.originalPiecesValue))
             MM.showOnWidget(self, f"Невалидна стойност", 'error')
 
-    # def eventFilter(self, obj, event):
-    #     print('hello')
-    #     if hasattr(self, 'isEditing') and self.isEditing and event.type() == QEvent.KeyPress:
-    #         if event.key() == Qt.Key.Key_Escape:
-    #             self.timePapersForDayTableView.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
-    #             self.timePapersForDayTableView.removeEventFilter(self)
-    #             self.isEditing = False
-    #
-    #             # Disconnect the data changed signal
-    #             try:
-    #                 self.proxyModelWorkers.dataChanged.disconnect(self.handleTimePaperEdit)
-    #             except RuntimeError:
-    #                 pass
-    #
-    #             return True
-    #
-    #     return super().eventFilter(obj, event)
-
     def pasteFromClipboard(self):
         """Paste previously copied rows from system clipboard"""
         clipboard = QApplication.clipboard()
@@ -318,8 +299,6 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
         # currentDate = self.timePaperDateEdit.date().toString('yyyy-MM-dd')
         self.addTimePaperOperation(True, copiedData)
-
-        # print(len(copiedData))
 
     def copySelectedRows(self):
         """Copy selected rows to system clipboard"""
@@ -395,7 +374,6 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
     def setOperationsGroups(self, modelId=None):
         self.operationsGroupComboBox.clear()
-        # print(self.operationsGroups)
         if len(self.operationsGroups) > 0:
             for group, value in self.operationsGroups.items():
                 name = f'{value["id"]}: {group}'
@@ -403,7 +381,6 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 self.operationsGroupComboBox.setCurrentIndex(-1)
         if modelId:
             self.operationsGroupsForModel = OpS.getGroupOperationsForModel(modelId)
-            # print(operationsGroupsForModel)
             self.operationsGroupComboBox.insertSeparator(self.operationsGroupComboBox.count())
             for group, value in self.operationsGroupsForModel.items():
                 name = f'{value["id"]}: {group}'
@@ -420,7 +397,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
     def checkForExistingShift(self):
         for key, value in self.workingShifts.items():
-            if value[1] == self.shiftStart.time() and value[2] == self.shiftEnd.time():
+            if (QTime.fromString(value[1], 'hh:mm') == self.shiftStart.time() and
+                    QTime.fromString(value[2], 'hh:mm') == self.shiftEnd.time()):
                 self.shiftNameLineEdit.setCurrentText(key)
                 break
             else:
@@ -482,8 +460,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.existingTimePapers.clear()
         self.initialCheckBoxes.clear()
         searchedDate = self.timePaperDateEdit.date().toString('yyyy-MM-dd')
-        formatedDate = datetime.strptime(searchedDate, '%Y-%m-%d').date()
-        data = WoS.getTimePapersForDate(formatedDate, workerId, showAll)
+        # formatedDate = datetime.strptime(searchedDate, '%Y-%m-%d').date()
+        data = WoS.getTimePapersForDate(searchedDate, workerId, showAll)
         self.tableTimePapersModel.setRowCount(0)
         self.totalViewRows.setText(str(len(data)))
         self.resetSelectedInfo()
@@ -538,8 +516,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 shift = WoS.getExistingTimePaperShift(timePaperId)
                 if shift:
                     self.shiftNameLineEdit.setCurrentText(shift[0])
-                    self.shiftStart.setTime(QTime(shift[1].hour, shift[1].minute))
-                    self.shiftEnd.setTime(QTime(shift[2].hour, shift[2].minute))
+                    self.shiftStart.setTime(QTime.fromString(shift[1], "hh:mm"))
+                    self.shiftEnd.setTime(QTime.fromString(shift[2], "hh:mm"))
                     self.addNewShiftBtn.setEnabled(False)
                     self.refreshShiftsBtn.setEnabled(False)
                     self.shiftNameLineEdit.setEnabled(False)
@@ -721,10 +699,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
             # Check if shift crosses midnight
             isOvernightShift = overtimeEnd <= overtimeStart
-            print(isOvernightShift)
 
             if isOvernightShift:
-                print('here')
 
                 # For overnight shifts (where overtime crosses midnight)
 
@@ -774,8 +750,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         shiftName = self.shiftNameLineEdit.currentText()
         if shiftName in self.workingShifts:
             shift = self.workingShifts[shiftName]
-            self.shiftStart.setTime(shift[1])
-            self.shiftEnd.setTime(shift[2])
+            self.shiftStart.setTime(QTime.fromString(shift[1], 'hh:mm'))
+            self.shiftEnd.setTime(QTime.fromString(shift[2], 'hh:mm'))
 
     def refreshShifts(self):
         self.workingShifts = WoS.getWorkingShifts()
@@ -813,7 +789,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
     def setupWorkerAndModelsCompleter(self):
         for worker in self.workers:
-            self.workersInfo.append(f"{worker[0].Име} {worker[0].Фамилия} - {worker[0].Номер}")
+            self.workersInfo.append(f"{worker[0]['Име']} {worker[0]['Фамилия']} - {worker[0]['Номер']}")
         Utils.setupCompleter(self.workersInfo, self.workerNameLineEdit)
 
         for client in self.models:
@@ -836,7 +812,6 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         if selectedText in self.clientModels.keys():
             modelId = self.clientModels[selectedText]
             self.setOperationsGroups(modelId)
-            # print(self.operationsGroupComboBox)
             if self.operationsGroupComboBox.count() > 1:
                 self.operationsGroupsHolder.setEnabled(True)
             self.modelOperations.clear()
@@ -948,7 +923,6 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
         if copy and copyData:
             count = len(copyData)
-        # print(copyData)
 
         for i in range(count):
             pieces = None
@@ -975,21 +949,20 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 orderId = int(copyData[i]['2']['userRole'])
                 modelOperationTime = float(copyData[i]['6']['display'])
                 pieces = int(copyData[i]['5']['display'])
-                # print(f'copyData: {modelOperationId}, {orderId}, {modelOperationTime}, {pieces}')
-                # return
             else:
                 modelOperationId = self.modelOperations[self.modelOperationLineEdit.text()][1]
                 modelOperationTime = float(self.piecesTimeLineEdit.text())
                 orderId = self.clientModels[self.clientModelsLineEdit.text()]
                 pieces = int(self.modelPiecesLineEdit.text())
 
-            overtime = [Utils.convertQtimeToTime(self.overtimeStart.time()),
-                        Utils.convertQtimeToTime(self.overtimeEnd.time()),
+            overtime = [self.overtimeStart.time().toString("hh:mm"),
+                        self.overtimeEnd.time().toString("hh:mm"),
                         float(self.overtimeTotalMins.text())] if self.isOvertimeWorking.isChecked() else None
 
-            hourlyPay = [Utils.convertQtimeToTime(self.hourlyStart.time()),
-                         Utils.convertQtimeToTime(self.hourlyEnd.time()),
+            hourlyPay = [self.hourlyStart.time().toString("hh:mm"),
+                         self.hourlyEnd.time().toString("hh:mm"),
                          float(self.hourlyTotalMins.text())] if self.isHourlyWorking.isChecked() else None
+
             nightMins = 0
             if overtime:
                 nightMins += Utils.checkNightShiftMins(self.overtimeStart.time(), self.overtimeEnd.time())
@@ -1005,13 +978,12 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             if nightMins > overMinsForBreak:
                 nightMins -= 60
 
-            # print(f'nightMins: {nightMins}')
-            # print(f'currentShiftNightMins: {currentShiftNightMins}')
 
             if int(self.workerNumberLineEdit.text()) not in self.existingTimePapers.keys():
-                date = datetime.strptime(self.timePaperDateEdit.date().toString('yyyy-MM-dd'), '%Y-%m-%d').date()
+                dateStr = self.timePaperDateEdit.date().toString('yyyy-MM-dd')
+                date = datetime.strptime(dateStr, '%Y-%m-%d').date()
                 timePaperData = {
-                    'Date': date,
+                    'Date': dateStr,
                     'WeekDay': date.isoweekday(),
                     'ShiftId': self.workingShifts[self.shiftNameLineEdit.currentText()][0],
                     'IsHourlyPaid': hourlyPay,
@@ -1028,9 +1000,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 timePaper = WoS.addNewTimePaperAndOperation(timePaperData)
                 if operationsGroupForAdd or copy:
                     self.existingTimePapers[int(self.workerNumberLineEdit.text())] = timePaper
-                # print(self.existingTimePapers)
             else:
-                # print(self.existingTimePapers[int(self.workerNumberLineEdit.text())])
                 timePaperData = {
                     'TimePaperId': self.existingTimePapers[int(self.workerNumberLineEdit.text())],
                     'OrderId': orderId,
@@ -1043,8 +1013,6 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                     'nightMins': nightMins,
                     'currentShiftNightMins': currentShiftNightMins,
                 }
-                # print(f'TimePaperData: {timePaperData}')
-                # return
                 timePaper = WoS.updateTimePaperAndOperation(timePaperData)
 
         if timePaper:
@@ -1056,17 +1024,6 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.refreshTimePapersForToday(int(self.workerNumberLineEdit.text()))
             self.clearOperationInfo(False)
             self.operationsGroupsCheckBox.setCheckState(Qt.CheckState.Unchecked)
-
-    # def checkIsHourlyWorking(self):
-    #     if self.isHourlyWorking.isChecked():
-    #         if self.hourlyStart.time() == self.shiftStart.time() and self.hourlyEnd.time() == self.shiftEnd.time():
-    #             print('FullHourlyWork')
-    #             return 'FullHourlyWork'
-    #         else:
-    #             print('HourlyWork')
-    #             return 'HourlyWork'
-    #     else:
-    #         return None
 
     def checkWorker(self):
         if not self.workerNameLineEdit.text() in self.workersInfo:
@@ -1094,7 +1051,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             workerPlace = None
             workerPosition = None
             for worker in self.workers:
-                if worker[0].Номер == int(workerId):
+                if worker[0]['Номер'] == int(workerId):
                     workerPlace = worker[1]
                     workerPosition = worker[2]
             self.modelAndOperationHolder.setVisible(True)

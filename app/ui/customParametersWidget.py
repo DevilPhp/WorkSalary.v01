@@ -1,3 +1,5 @@
+from functools import partial
+
 from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QMenu, QDialog
 
@@ -66,6 +68,8 @@ class CustomParametersWidget(QWidget, Ui_customParametersWidget):
                         headers[name] = [i, 'numeric']
                     elif i in self.dataColumns:
                         headers[name] = [i, 'date']
+                    elif name == 'Парола':
+                        headers[name] = [i, 'password']
                     else:
                         headers[name] = [i, 'str']
             # headers = [self.model.headerData(i, Qt.Orientation.Horizontal) for i in range(
@@ -140,10 +144,10 @@ class CustomParametersWidget(QWidget, Ui_customParametersWidget):
     def addNewOperationType(self, data):
         result = Ws.addNewOperationType(data, self.model.rowCount())
         if result:
-            MM.showOnWidget(self, f"Тип операция '{data['OperName']}' е добавен успешно!",'success')
+            MM.showOnWidget(self, f"Вид длъжност '{data['OperName']}' е добавен успешно!",'success')
             self.btnClicked('operationTypes', self.operTypesBtn)
         else:
-            MM.showOnWidget(self, f"Тип операция '{data['OperName']}' не може да бъде добавен!", 'error')
+            MM.showOnWidget(self, f"Вид длъжност '{data['OperName']}' не може да бъде добавен!", 'error')
 
     def addNewYarn(self, data):
         result = Ms.addNewYarn(data, self.model.rowCount())
@@ -185,8 +189,10 @@ class CustomParametersWidget(QWidget, Ui_customParametersWidget):
         self.model = TableModel(data)
 
         editableColumns = []
-        if tableName == 'cehove':
-            editableColumns = [1]
+        if tableName == 'users':
+            editableColumns = []
+        # if tableName == 'cehove':
+        #     editableColumns = [2, 3]
 
         self.model.setEditableColumns(editableColumns)
 
@@ -213,6 +219,10 @@ class CustomParametersWidget(QWidget, Ui_customParametersWidget):
     def showContextMenu(self, pos):
         menu = QMenu(self)
         deleteAction = menu.addAction("Изтрий")
+        if self.selectedTable == 'users':
+            editAction = menu.addAction("Редактиране")
+        else:
+            еditAction = None
         # editAction = menu.addAction("Редактиране")
         action = menu.exec_(self.parametersTableView.viewport().mapToGlobal(pos))
 
@@ -226,8 +236,40 @@ class CustomParametersWidget(QWidget, Ui_customParametersWidget):
                 dialog.setMessage(name='', message=message, mode='deleting')
                 result = dialog.exec()
                 if result == QDialog.Accepted:
-                    print(f"Изтриване на ред {selectedId}")
+                    # print(f"Изтриване на ред {selectedId}")
                     self.deleteRow(selectedId, selectedName)
+        elif self.selectedTable == 'users':
+            if action == editAction:
+                userId = self.parametersTableView.selectionModel().selectedRows(0)[0].data(Qt.ItemDataRole.DisplayRole)
+                username = self.parametersTableView.selectionModel().selectedRows(1)[0].data(Qt.ItemDataRole.DisplayRole)
+                userRole = self.parametersTableView.selectionModel().selectedRows(3)[0].data(Qt.ItemDataRole.DisplayRole)
+
+                # if username == self.user:
+                #     MM.showOnWidget(self, f"Не можете да изтриете текущия потребител!", 'error')
+                #     return
+
+                headers = {
+                    'Нова парола:': [0, 'password'],
+                    'Парола отново:': [1, 'password'],
+                    'Ниво': [2, 'str', userRole]
+                }
+                dialog = CustomAddParametersDialog(headers)
+                dialog.dialogTitle.setText(f"Редактиране на:  {username}")
+                dialog.newEntryInfo.connect(partial(self.editCurrentUser, userId))
+                dialog.exec_()
+
+    def editCurrentUser(self, userId, data):
+        user = Us.editUser(userId, data)
+        if user:
+            if user == self.user:
+                self.logout()
+                window = self.mainWindow
+            else:
+                self.loadTable('users')
+                window = self
+            MM.showOnWidget(window, f"Потребител '{user}' е редактиран успешно!", 'success', 1500)
+        else:
+            MM.showOnWidget(self, f"Потребител '{userId}' не може да бъде редактиран!", 'error')
 
     def deleteRow(self, rowId, name):
         if self.selectedTable == 'users':

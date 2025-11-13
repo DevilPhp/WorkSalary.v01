@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customPayPerTimeDialogJNmTvC.ui'
+## Form generated from reading UI file 'customPayPerTimeDialogYcqbXH.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -24,7 +24,7 @@ class Ui_CustomPayPerTimeDialog(object):
     def setupUi(self, CustomPayPerTimeDialog):
         if not CustomPayPerTimeDialog.objectName():
             CustomPayPerTimeDialog.setObjectName(u"CustomPayPerTimeDialog")
-        CustomPayPerTimeDialog.resize(433, 324)
+        CustomPayPerTimeDialog.resize(364, 250)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -33,7 +33,7 @@ class Ui_CustomPayPerTimeDialog(object):
         CustomPayPerTimeDialog.setMinimumSize(QSize(0, 0))
         CustomPayPerTimeDialog.setMouseTracking(True)
         CustomPayPerTimeDialog.setStyleSheet(u"*{\n"
-"	font: 600 11pt \"Segoe UI\";\n"
+"	font: 600 9pt \"Segoe UI\";\n"
 "	border: none;\n"
 "	background-color: #dfdfdf;\n"
 "	padding: 0;\n"
@@ -53,7 +53,7 @@ class Ui_CustomPayPerTimeDialog(object):
 "\n"
 "QLineEdit, QDateEdit{\n"
 "	border: none;\n"
-"	font-size: 10pt;\n"
+"	font-size: 9pt;\n"
 "	border-bottom: 1px solid #7c9399;\n"
 "}\n"
 "\n"
@@ -65,28 +65,28 @@ class Ui_CustomPayPerTimeDialog(object):
 "\n"
 "QComboBox::drop-down{\n"
 "	image: url(':/icons/app/assets/icons/Alt-Arrow-Down--Streamline-Solar-Broken.svg');\n"
-"	width: 18px;\n"
-"	height: 18px;\n"
+"	width: 16px;\n"
+"	height: 16px;\n"
 "}\n"
 "\n"
 "QComboBox:hover{\n"
 "	color: #2b2b2c;\n"
-"	font: 720 10.5pt \"Segoe UI\";\n"
+"	font: 700 9pt \"Segoe UI\";\n"
 "	border-radius: 0px;\n"
 "	alternate-background-color: #2c313c;\n"
 "}\n"
 "QComboBox::item:selected{\n"
 "	color: #2b2b2c;\n"
-"	font: 900 10.5pt \"Segoe UI\";\n"
+"	font: 700 9pt \"Segoe UI\";\n"
 "	border-radius: 0px;\n"
 "}\n"
 "QComboBox::item{\n"
 "	color: #324b4c;\n"
-""
-                        "	font: 700 10pt \"Segoe UI\";\n"
-"	height: 11px;  \n"
+"	fon"
+                        "t: 600 9pt \"Segoe UI\";\n"
+"	height: 10px;  \n"
 "	border: 4px solid transparent;\n"
-"	padding: 0px 8px 0px 8px;\n"
+"	padding: 0px 4px 0px 4px;\n"
 "}\n"
 "\n"
 "#calStartBtn, #calLeavingBtn {\n"
@@ -99,11 +99,11 @@ class Ui_CustomPayPerTimeDialog(object):
 "}\n"
 "\n"
 "#widget * {\n"
-"	font-size: 10pt;\n"
+"	font-size: 9pt;\n"
 "}\n"
 "\n"
 "#dialogTitle {\n"
-"	font-size: 12pt;\n"
+"	font-size: 10pt;\n"
 "	font-weight: 700;\n"
 "}\n"
 "#yesBtn {\n"
@@ -139,7 +139,7 @@ class Ui_CustomPayPerTimeDialog(object):
         self.mainWidget.setMinimumSize(QSize(0, 0))
         self.mainWidget.setMaximumSize(QSize(16777215, 16777215))
         self.verticalLayout = QVBoxLayout(self.mainWidget)
-        self.verticalLayout.setSpacing(10)
+        self.verticalLayout.setSpacing(5)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(10, 10, 10, 10)
         self.widget_2 = QWidget(self.mainWidget)
@@ -148,7 +148,7 @@ class Ui_CustomPayPerTimeDialog(object):
         self.horizontalLayout = QHBoxLayout(self.widget_2)
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.horizontalLayout.setContentsMargins(0, 5, 0, 10)
+        self.horizontalLayout.setContentsMargins(0, 5, 0, 5)
         self.dialogTitle = QLabel(self.widget_2)
         self.dialogTitle.setObjectName(u"dialogTitle")
 
@@ -159,15 +159,14 @@ class Ui_CustomPayPerTimeDialog(object):
 
         self.widget = QWidget(self.mainWidget)
         self.widget.setObjectName(u"widget")
-        self.widget.setMinimumSize(QSize(350, 0))
+        self.widget.setMinimumSize(QSize(290, 0))
         self.verticalLayout_3 = QVBoxLayout(self.widget)
         self.verticalLayout_3.setSpacing(0)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.gridLayout = QGridLayout()
+        self.gridLayout.setSpacing(5)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.gridLayout.setHorizontalSpacing(15)
-        self.gridLayout.setVerticalSpacing(10)
         self.label_10 = QLabel(self.widget)
         self.label_10.setObjectName(u"label_10")
 
@@ -196,7 +195,7 @@ class Ui_CustomPayPerTimeDialog(object):
         icon = QIcon()
         icon.addFile(u":/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.calBtn.setIcon(icon)
-        self.calBtn.setIconSize(QSize(20, 20))
+        self.calBtn.setIconSize(QSize(18, 18))
 
         self.horizontalLayout_5.addWidget(self.calBtn, 0, Qt.AlignLeft)
 
@@ -284,14 +283,14 @@ class Ui_CustomPayPerTimeDialog(object):
         self.buttonsWidget.setSizePolicy(sizePolicy)
         font = QFont()
         font.setFamilies([u"Segoe UI"])
-        font.setPointSize(11)
+        font.setPointSize(9)
         font.setBold(True)
         font.setItalic(False)
         self.buttonsWidget.setFont(font)
         self.horizontalLayout_2 = QHBoxLayout(self.buttonsWidget)
         self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.horizontalLayout_2.setContentsMargins(0, 10, 0, 0)
+        self.horizontalLayout_2.setContentsMargins(0, 5, 0, 0)
         self.yesBtn = QPushButton(self.buttonsWidget)
         self.yesBtn.setObjectName(u"yesBtn")
         self.yesBtn.setFont(font)
@@ -299,7 +298,7 @@ class Ui_CustomPayPerTimeDialog(object):
         icon1 = QIcon()
         icon1.addFile(u":/icons/app/assets/icons/Check-Square--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.yesBtn.setIcon(icon1)
-        self.yesBtn.setIconSize(QSize(32, 32))
+        self.yesBtn.setIconSize(QSize(22, 22))
 
         self.horizontalLayout_2.addWidget(self.yesBtn)
 

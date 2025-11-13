@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>900</width>
-    <height>800</height>
+    <width>800</width>
+    <height>580</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>900</width>
-    <height>800</height>
+    <width>800</width>
+    <height>580</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -22,7 +22,7 @@
   <property name="styleSheet">
    <string notr="true">*{
 	background-color: #dfdfdf;
-	font: 600 12pt &quot;Segoe UI&quot;;
+	font: 600 9pt &quot;Segoe UI&quot;;
 	color: #324b4c;
 }
 
@@ -40,7 +40,7 @@ QPushButton {
 	border: none;
 	border-radius: 10px;
 	padding: 5px;
-	font-size: 10pt;
+	font-size: 9pt;
 }
 
 QPushButton:hover{
@@ -54,7 +54,7 @@ QDateEdit::up-button, QDateEdit::down-button{
 
 QLineEdit, QDateEdit{
 	border: none;
-	font-size: 11pt;
+	font-size: 9pt;
 	border-bottom: 1px solid #7c9399;
 }
 
@@ -65,6 +65,7 @@ QMenu {
 
 QMenu::item {
 	padding: 5px;
+	font-size: 8pt;
 }
 
 QMenu::item:selected {
@@ -81,7 +82,7 @@ yearsBtnsHolder QPushButton:clicked {
 }
 
 #pageTitle {
-	font: 700 13pt &quot;Segoe UI&quot;;
+	font: 700 11pt &quot;Segoe UI&quot;;
 }
 
 #userIcon, #logoutBtn{
@@ -95,15 +96,15 @@ yearsBtnsHolder QPushButton:clicked {
 
 
 #usernameLabel {
-	font-size: 11pt;
+	font-size: 10pt;
 }
 
 #workerPlaceLineEdit, #workerPositionLineEdit {
-	font-weight: 700;
+	font-weight: 600;
 }
 
 #widget_3 * {
-	font-size: 11pt;
+	font-size: 10pt;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -190,7 +191,7 @@ yearsBtnsHolder QPushButton:clicked {
           <widget class="QWidget" name="userHolder" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <property name="spacing">
-             <number>10</number>
+             <number>3</number>
             </property>
             <property name="leftMargin">
              <number>0</number>
@@ -215,8 +216,8 @@ yearsBtnsHolder QPushButton:clicked {
               </property>
               <property name="iconSize">
                <size>
-                <width>24</width>
-                <height>24</height>
+                <width>18</width>
+                <height>18</height>
                </size>
               </property>
              </widget>
@@ -235,8 +236,8 @@ yearsBtnsHolder QPushButton:clicked {
               </property>
               <property name="iconSize">
                <size>
-                <width>24</width>
-                <height>24</height>
+                <width>18</width>
+                <height>18</height>
                </size>
               </property>
              </widget>
@@ -404,8 +405,8 @@ yearsBtnsHolder QPushButton:clicked {
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>888</width>
-        <height>673</height>
+        <width>788</width>
+        <height>435</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -446,16 +447,16 @@ yearsBtnsHolder QPushButton:clicked {
            <widget class="QTableView" name="parametersTableView">
             <property name="styleSheet">
              <string notr="true">QHeaderView:section{
-	font: 700 10.5pt &quot;Segoe UI&quot;;
+	font: 700 9pt &quot;Segoe UI&quot;;
 	background-color: #dfdfdf;
-	padding: 5px;
+	padding: 3px;
 }
-QVerticalView:section{
-	min-height: 30;
+QHeaderView:section:vertical {
+	min-height: 15px;
 }
 QAbstractItemView{
 	alternate-background-color: #d3d3d3;
-	font: 10.5pt &quot;Segoe UI&quot;;
+	font: 8pt &quot;Segoe UI&quot;;
 	selection-background-color: rgba(198, 228, 254, 45);
 	selection-color: #324b4c;
 	focus: none;
@@ -484,6 +485,12 @@ QAbstractItemView::item:selected{
             <attribute name="verticalHeaderVisible">
              <bool>false</bool>
             </attribute>
+            <attribute name="verticalHeaderMinimumSectionSize">
+             <number>20</number>
+            </attribute>
+            <attribute name="verticalHeaderDefaultSectionSize">
+             <number>20</number>
+            </attribute>
            </widget>
           </item>
          </layout>
@@ -491,6 +498,42 @@ QAbstractItemView::item:selected{
        </item>
       </layout>
      </widget>
+    </widget>
+   </item>
+   <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+    <widget class="QWidget" name="widget_2" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout_6">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="footerLabel">
+        <property name="font">
+         <font>
+          <family>Segoe UI</family>
+          <pointsize>9</pointsize>
+          <italic>false</italic>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Author: Filip Chaushev   Dev v0.1.030</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>

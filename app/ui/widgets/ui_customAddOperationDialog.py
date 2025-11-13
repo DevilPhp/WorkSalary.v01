@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customAddOperationDialogXqQADN.ui'
+## Form generated from reading UI file 'customAddOperationDialogrRcZNa.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -24,7 +24,7 @@ class Ui_customAddOperationDialog(object):
     def setupUi(self, customAddOperationDialog):
         if not customAddOperationDialog.objectName():
             customAddOperationDialog.setObjectName(u"customAddOperationDialog")
-        customAddOperationDialog.resize(410, 292)
+        customAddOperationDialog.resize(348, 207)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -33,7 +33,7 @@ class Ui_customAddOperationDialog(object):
         customAddOperationDialog.setMinimumSize(QSize(0, 0))
         customAddOperationDialog.setMouseTracking(True)
         customAddOperationDialog.setStyleSheet(u"*{\n"
-"	font: 600 11pt \"Segoe UI\";\n"
+"	font: 600 9pt \"Segoe UI\";\n"
 "	border: none;\n"
 "	background-color: #dfdfdf;\n"
 "	padding: 0;\n"
@@ -53,7 +53,7 @@ class Ui_customAddOperationDialog(object):
 "\n"
 "QLineEdit, QDateEdit{\n"
 "	border: none;\n"
-"	font-size: 10pt;\n"
+"	font-size: 9pt;\n"
 "	border-bottom: 1px solid #7c9399;\n"
 "}\n"
 "\n"
@@ -65,26 +65,26 @@ class Ui_customAddOperationDialog(object):
 "\n"
 "QComboBox::drop-down{\n"
 "	image: url(':/icons/app/assets/icons/Alt-Arrow-Down--Streamline-Solar-Broken.svg');\n"
-"	width: 18px;\n"
-"	height: 18px;\n"
+"	width: 16px;\n"
+"	height: 16px;\n"
 "}\n"
 "\n"
 "QComboBox:hover{\n"
 "	color: #2b2b2c;\n"
-"	font: 720 10.5pt \"Segoe UI\";\n"
+"	font: 600 9pt \"Segoe UI\";\n"
 "	border-radius: 0px;\n"
 "	alternate-background-color: #2c313c;\n"
 "}\n"
 "QComboBox::item:selected{\n"
 "	color: #2b2b2c;\n"
-"	font: 900 10.5pt \"Segoe UI\";\n"
+"	font: 700 9pt \"Segoe UI\";\n"
 "	border-radius: 0px;\n"
 "}\n"
 "QComboBox::item{\n"
 "	color: #324b4c;\n"
-""
-                        "	font: 700 10pt \"Segoe UI\";\n"
-"	height: 11px;  \n"
+"	fon"
+                        "t: 600 9pt \"Segoe UI\";\n"
+"	height: 10px;  \n"
 "	border: 4px solid transparent;\n"
 "	padding: 0px 8px 0px 8px;\n"
 "}\n"
@@ -99,11 +99,11 @@ class Ui_customAddOperationDialog(object):
 "}\n"
 "\n"
 "#widget * {\n"
-"	font-size: 10pt;\n"
+"	font-size: 9pt;\n"
 "}\n"
 "\n"
 "#dialogTitle {\n"
-"	font-size: 12pt;\n"
+"	font-size: 10pt;\n"
 "	font-weight: 700;\n"
 "}\n"
 "#yesBtn {\n"
@@ -180,7 +180,7 @@ class Ui_customAddOperationDialog(object):
 
         self.operationNameLineEdit = QLineEdit(self.widget)
         self.operationNameLineEdit.setObjectName(u"operationNameLineEdit")
-        self.operationNameLineEdit.setMinimumSize(QSize(200, 0))
+        self.operationNameLineEdit.setMinimumSize(QSize(180, 0))
 
         self.addOperationLayout.setWidget(0, QFormLayout.FieldRole, self.operationNameLineEdit)
 
@@ -201,7 +201,7 @@ class Ui_customAddOperationDialog(object):
         self.buttonsWidget.setSizePolicy(sizePolicy)
         font = QFont()
         font.setFamilies([u"Segoe UI"])
-        font.setPointSize(11)
+        font.setPointSize(9)
         font.setBold(True)
         font.setItalic(False)
         self.buttonsWidget.setFont(font)
@@ -216,7 +216,7 @@ class Ui_customAddOperationDialog(object):
         icon = QIcon()
         icon.addFile(u":/icons/app/assets/icons/Check-Square--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.yesBtn.setIcon(icon)
-        self.yesBtn.setIconSize(QSize(32, 32))
+        self.yesBtn.setIconSize(QSize(22, 22))
 
         self.horizontalLayout_2.addWidget(self.yesBtn)
 

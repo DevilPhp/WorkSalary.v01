@@ -30,20 +30,25 @@ class CustomAddParametersDialog(Ui_customAddParametersDialog, QDialog):
     def acceptNewEntry(self):
         newEntry = {}
         for i in range(self.addParametersLayout.rowCount()):
-            row = self.addParametersLayout.itemAt(i)
-            if row:
-                name = row.widget().nameLabel.text()
-                userInput = row.widget().inputLineEdit.text()
+            labelItem = self.addParametersLayout.itemAt(i, QFormLayout.LabelRole)
+            fieldItem = self.addParametersLayout.itemAt(i, QFormLayout.FieldRole)
+
+            if labelItem and fieldItem:
+                nameWidget = labelItem.widget()
+                inputWidget = fieldItem.widget()  # This is the CustomParametersRowWidget
+            # if row:
+                name = nameWidget.text()
+                userInput = inputWidget.inputLineEdit.text()
                 if name == "SupervisorNo":
-                    userInput = row.widget().inputComboBox.currentText()
+                    userInput = inputWidget.inputComboBox.currentText()
                     newEntry[name] = int(userInput.split(':  ')[0])
 
                 elif name == "ВидОперация":
-                    userInput = row.widget().inputComboBox.currentText()
+                    userInput = inputWidget.inputComboBox.currentText()
                     newEntry[name] = int(userInput.split(':  ')[0])
 
                 elif name == "Ниво":
-                    userInput = row.widget().inputComboBox.currentText()
+                    userInput = inputWidget.inputComboBox.currentText()
                     newEntry[name] = userInput
 
                 else:
@@ -66,19 +71,28 @@ class CustomAddParametersDialog(Ui_customAddParametersDialog, QDialog):
         if info[1] == "numeric":
             if param == "Коефициент":
                 info[1] = "float"
+        try:
+            userId = info[2]
+        except IndexError:
+            userId = None
         # print(param, info[1])
+        # print(userId)
         row = CustomParametersRowWidget(info[1])
+        nameLabel = QLabel(param)
+        nameLabel.setObjectName('nameLabel')
         if param == "SupervisorNo" or param == "ВидОперация" or param == "Ниво":
-            self.setComboBox(param, row)
+            self.setComboBox(param, row, userId)
             row.inputComboBox.setVisible(True)
             row.inputLineEdit.setVisible(False)
         else:
             row.inputComboBox.setVisible(False)
             row.inputLineEdit.setVisible(True)
-        row.nameLabel.setText(param)
-        self.addParametersLayout.addRow(row)
 
-    def setComboBox(self, param, row):
+        # row.nameLabel.setText(param)
+        self.addParametersLayout.addRow(nameLabel, row)
+
+    def setComboBox(self, param, row, userId):
+        # print(userId)
         if param == "SupervisorNo":
             workers = Ws.getWorkersForCehove()
             for worker in workers:
@@ -94,7 +108,11 @@ class CustomAddParametersDialog(Ui_customAddParametersDialog, QDialog):
             Utils.setupCompleter(operTypes, row.inputComboBox.lineEdit())
 
         elif param == "Ниво":
-            userRols = ["Guest", "User", "Admin"]
+            userRols = ["guest", "user", "admin"]
             for userRole in userRols:
                 row.inputComboBox.addItem(userRole)
-            row.inputComboBox.setCurrentIndex(0)
+            if userId:
+                # user = Ws.getUserById(userId)
+                row.inputComboBox.setCurrentIndex(userRols.index(userId))
+            else:
+                row.inputComboBox.setCurrentIndex(0)

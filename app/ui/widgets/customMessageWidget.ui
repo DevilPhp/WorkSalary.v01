@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>260</width>
-    <height>120</height>
+    <width>220</width>
+    <height>200</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
@@ -28,7 +34,7 @@
   <property name="styleSheet">
    <string notr="true">*{
 	background-color: rgba(255, 255, 255, 0);
-	font: 600 11pt &quot;Segoe UI&quot;;
+	font: 600 9pt &quot;Segoe UI&quot;;
 	color: #324b4c;
 }
 
@@ -43,13 +49,13 @@ QPushButton {
 }
 
 #titleWidget * {
-	font-size: 12pt;
+	font-size: 10pt;
 	font-weight: 700;
 }
 
 #textHolder {
-	font: 600 10pt &quot;Segoe UI&quot;;
-	padding: 5px;
+	font: 600 8pt &quot;Segoe UI&quot;;
+	padding: 4px;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -68,18 +74,24 @@ QPushButton {
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <item alignment="Qt::AlignHCenter">
+   <item alignment="Qt::AlignRight|Qt::AlignBottom">
     <widget class="QWidget" name="widget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="minimumSize">
       <size>
-       <width>260</width>
-       <height>120</height>
+       <width>190</width>
+       <height>90</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>260</width>
-       <height>120</height>
+       <width>220</width>
+       <height>200</height>
       </size>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -130,8 +142,8 @@ QPushButton {
            </property>
            <property name="iconSize">
             <size>
-             <width>30</width>
-             <height>30</height>
+             <width>23</width>
+             <height>23</height>
             </size>
            </property>
           </widget>
@@ -159,16 +171,16 @@ QPushButton {
           <number>0</number>
          </property>
          <property name="leftMargin">
-          <number>0</number>
+          <number>3</number>
          </property>
          <property name="topMargin">
-          <number>0</number>
+          <number>3</number>
          </property>
          <property name="rightMargin">
-          <number>0</number>
+          <number>3</number>
          </property>
          <property name="bottomMargin">
-          <number>0</number>
+          <number>3</number>
          </property>
          <item>
           <widget class="QLabel" name="textHolder">

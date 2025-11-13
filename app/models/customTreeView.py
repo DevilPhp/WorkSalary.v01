@@ -22,16 +22,16 @@ class CustomTreeView(QTreeView):
         self.setStyleSheet('''
         
                     QHeaderView:section{
-                        font: 700 10.5pt "Segoe UI";
+                        font: 700 9pt "Segoe UI";
                         background-color: #dfdfdf;
-                        padding-left: 10px;
-                        padding-top:10px;
-                        padding-right:10px;
+                        padding-left: 5px;
+                        padding-top:5px;
+                        padding-right:5px;
                         selection-background-color: #7f7f7f;
                     }
                     QAbstractItemView{
                         alternate-background-color: #d3d3d3;
-                        font: 10.5pt "Segoe UI";
+                        font: 8pt "Segoe UI";
                     }
                     QAbstractItemView:item{
                         border-bottom: 1px solid #aeaeae;

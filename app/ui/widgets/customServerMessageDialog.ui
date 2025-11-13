@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CustomYesNoDialog</class>
- <widget class="QDialog" name="CustomYesNoDialog">
+ <class>customServerMessageDialog</class>
+ <widget class="QDialog" name="customServerMessageDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>366</width>
-    <height>209</height>
+    <width>380</width>
+    <height>603</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -38,6 +38,7 @@
 	color: #324b4c;
 }
 
+
 QDialog{
 	background-color: rgba(255, 255, 255, 0);
 
@@ -48,27 +49,11 @@ QDialog{
 
 #mainTextLabel {
 	font: 700 10pt &quot;Segoe UI&quot;;
-	padding-bottom: 5px;
+	padding-bottom: 8px;
 }
 
-#nameTextLabel {
-	font: 700 9pt &quot;Segoe UI&quot;;
-}
-
-#noBtn:hover{
-	icon: url(:/icons/app/assets/icons/Close-Square--Streamline-Solar-Broken-#c75f59.svg);
-	color: #c75f59;
-}
-
-#yesBtn:hover{
-	icon: url(:/icons/app/assets/icons/Check-Square--Streamline-Solar-Broken-#008b69.svg);
-	color: #008b69;
-}
-
-QLineEdit{
-	border: none;
-	font-size: 9pt;
-	border-bottom: 1px solid #7c9399;
+#questionTextLabel {
+	font: 600 9pt &quot;Segoe UI&quot;;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -97,14 +82,14 @@ QLineEdit{
      </property>
      <property name="minimumSize">
       <size>
-       <width>300</width>
-       <height>0</height>
+       <width>250</width>
+       <height>120</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>350</width>
-       <height>200</height>
+       <width>380</width>
+       <height>16777215</height>
       </size>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
@@ -147,14 +132,14 @@ QLineEdit{
          <property name="bottomMargin">
           <number>0</number>
          </property>
-         <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
-          <widget class="QPushButton" name="pushButton">
+         <item>
+          <widget class="QPushButton" name="warningIcon">
            <property name="text">
             <string/>
            </property>
            <property name="icon">
             <iconset resource="../../../resources.qrc">
-             <normaloff>:/icons/app/assets/icons/Question-Square--Streamline-Solar-Broken.svg</normaloff>:/icons/app/assets/icons/Question-Square--Streamline-Solar-Broken.svg</iconset>
+             <normaloff>:/icons/app/assets/icons/Danger-Triangle--Streamline-Solar-Broken-#C75f59.svg</normaloff>:/icons/app/assets/icons/Danger-Triangle--Streamline-Solar-Broken-#C75f59.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -215,7 +200,7 @@ QLineEdit{
                <item>
                 <layout class="QVBoxLayout" name="verticalLayout_3">
                  <property name="spacing">
-                  <number>6</number>
+                  <number>5</number>
                  </property>
                  <property name="sizeConstraint">
                   <enum>QLayout::SetDefaultConstraint</enum>
@@ -240,7 +225,7 @@ QLineEdit{
                     <string notr="true"/>
                    </property>
                    <property name="text">
-                    <string>ПРЕМАХВАНЕ</string>
+                    <string>ГРЕШКА</string>
                    </property>
                    <property name="alignment">
                     <set>Qt::AlignCenter</set>
@@ -273,7 +258,7 @@ QLineEdit{
                     <string notr="true"/>
                    </property>
                    <property name="text">
-                    <string>Сигурни ли сте, че искате да премахнете: </string>
+                    <string>Няма връзка със сървъра!</string>
                    </property>
                    <property name="alignment">
                     <set>Qt::AlignCenter</set>
@@ -283,40 +268,12 @@ QLineEdit{
                    </property>
                   </widget>
                  </item>
-                 <item>
-                  <widget class="QLineEdit" name="inputLineEdit">
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="nameTextLabel">
-                   <property name="font">
-                    <font>
-                     <family>Segoe UI</family>
-                     <pointsize>9</pointsize>
-                     <italic>false</italic>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true"/>
-                   </property>
-                   <property name="text">
-                    <string>Name</string>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignCenter</set>
-                   </property>
-                  </widget>
-                 </item>
                 </layout>
                </item>
               </layout>
              </widget>
             </item>
-            <item alignment="Qt::AlignHCenter">
+            <item alignment="Qt::AlignHCenter|Qt::AlignBottom">
              <widget class="QWidget" name="buttonsWidget" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -340,7 +297,7 @@ QLineEdit{
                 <number>0</number>
                </property>
                <property name="topMargin">
-                <number>10</number>
+                <number>5</number>
                </property>
                <property name="rightMargin">
                 <number>0</number>
@@ -359,41 +316,16 @@ QLineEdit{
                   </font>
                  </property>
                  <property name="text">
-                  <string>ДА</string>
+                  <string>Изход</string>
                  </property>
                  <property name="icon">
                   <iconset resource="../../../resources.qrc">
-                   <normaloff>:/icons/app/assets/icons/Check-Square--Streamline-Solar-Broken.svg</normaloff>:/icons/app/assets/icons/Check-Square--Streamline-Solar-Broken.svg</iconset>
+                   <normaloff>:/icons/app/assets/icons/Log-Out--Streamline-Feather.svg</normaloff>:/icons/app/assets/icons/Log-Out--Streamline-Feather.svg</iconset>
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>22</width>
-                   <height>22</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item alignment="Qt::AlignTop">
-                <widget class="QPushButton" name="noBtn">
-                 <property name="font">
-                  <font>
-                   <family>Segoe UI</family>
-                   <pointsize>9</pointsize>
-                   <italic>false</italic>
-                   <bold>true</bold>
-                  </font>
-                 </property>
-                 <property name="text">
-                  <string>НЕ</string>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="../../../resources.qrc">
-                   <normaloff>:/icons/app/assets/icons/Close-Square--Streamline-Solar-Broken.svg</normaloff>:/icons/app/assets/icons/Close-Square--Streamline-Solar-Broken.svg</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>22</width>
-                   <height>22</height>
+                   <width>18</width>
+                   <height>18</height>
                   </size>
                  </property>
                 </widget>

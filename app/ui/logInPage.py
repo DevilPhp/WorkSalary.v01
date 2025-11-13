@@ -30,6 +30,8 @@ class LoginPage:
         self.mainWindow.ui.userPassField.setFocus()
 
     def login(self, name=None, passwordNew=None):
+        if not self.mainWindow.checkForServerConnection():
+            return
         userName = self.mainWindow.ui.userNameField.text()
         password = self.mainWindow.ui.userPassField.text()
         if name and passwordNew:

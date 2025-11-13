@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>900</width>
-    <height>800</height>
+    <width>800</width>
+    <height>580</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>900</width>
-    <height>800</height>
+    <width>800</width>
+    <height>580</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -22,7 +22,7 @@
   <property name="styleSheet">
    <string notr="true">*{
 	background-color: #dfdfdf;
-	font: 600 11pt &quot;Segoe UI&quot;;
+	font: 600 9pt &quot;Segoe UI&quot;;
 	color: #324b4c;
 }
 
@@ -40,7 +40,7 @@ QPushButton {
 	border: none;
 	border-radius: 10px;
 	padding: 5px;
-	font-size: 11pt;
+	font-size: 9pt;
 }
 
 QPushButton:hover{
@@ -49,7 +49,7 @@ QPushButton:hover{
 
 QLineEdit {
 	border: none;
-	font-size: 10pt;
+	font-size: 9pt;
 	border-bottom: 1px solid #7c9399;
 }
 
@@ -60,6 +60,7 @@ QMenu {
 
 QMenu::item {
 	padding: 5px;
+	font-size: 8pt;
 }
 
 QMenu::item:selected {
@@ -68,7 +69,7 @@ QMenu::item:selected {
 }
 
 #modelHolder QLabel, #newModelInfoHolder * , #widget_11 *{
-	font-size: 10pt;
+	font-size: 9pt;
 }
 
 #optionsHolder, #optionsHolder_2 {
@@ -76,7 +77,7 @@ QMenu::item:selected {
 }
 
 #pageTitle {
-	font: 700 13pt &quot;Segoe UI&quot;;
+	font: 700 11pt &quot;Segoe UI&quot;;
 }
 
 #userIcon, #logoutBtn{
@@ -90,15 +91,15 @@ QMenu::item:selected {
 
 
 #usernameLabel {
-	font-size: 11pt;
+	font-size: 10pt;
 }
 
 #workerPlaceLineEdit, #workerPositionLineEdit {
-	font-weight: 700;
+	font-weight: 600;
 }
 
 #widget_3 * {
-	font-size: 10pt;
+	font-size: 9pt;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -121,7 +122,7 @@ QMenu::item:selected {
     <widget class="QWidget" name="widget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <property name="spacing">
-       <number>10</number>
+       <number>5</number>
       </property>
       <property name="leftMargin">
        <number>0</number>
@@ -139,7 +140,7 @@ QMenu::item:selected {
        <widget class="QWidget" name="headerHolder" native="true">
         <layout class="QHBoxLayout" name="horizontalLayout">
          <property name="spacing">
-          <number>20</number>
+          <number>10</number>
          </property>
          <property name="leftMargin">
           <number>0</number>
@@ -185,7 +186,7 @@ QMenu::item:selected {
           <widget class="QWidget" name="userHolder" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <property name="spacing">
-             <number>10</number>
+             <number>3</number>
             </property>
             <property name="leftMargin">
              <number>0</number>
@@ -210,8 +211,8 @@ QMenu::item:selected {
               </property>
               <property name="iconSize">
                <size>
-                <width>24</width>
-                <height>24</height>
+                <width>18</width>
+                <height>18</height>
                </size>
               </property>
              </widget>
@@ -230,8 +231,8 @@ QMenu::item:selected {
               </property>
               <property name="iconSize">
                <size>
-                <width>24</width>
-                <height>24</height>
+                <width>18</width>
+                <height>18</height>
                </size>
               </property>
              </widget>
@@ -348,67 +349,46 @@ QMenu::item:selected {
                <item>
                 <widget class="QWidget" name="widget_6" native="true">
                  <layout class="QVBoxLayout" name="verticalLayout_3">
+                  <property name="spacing">
+                   <number>5</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
                   <item>
                    <layout class="QGridLayout" name="newModelLayout">
                     <property name="spacing">
                      <number>10</number>
                     </property>
-                    <item row="0" column="6">
-                     <widget class="QLabel" name="label_21">
+                    <item row="0" column="1">
+                     <widget class="QLineEdit" name="workingShiftsNameLineEdit"/>
+                    </item>
+                    <item row="0" column="2">
+                     <widget class="QLabel" name="label_7">
                       <property name="text">
-                       <string>Общо:</string>
+                       <string>Начало:</string>
                       </property>
                      </widget>
                     </item>
-                    <item row="0" column="5">
-                     <widget class="QWidget" name="shiftEndWidget" native="true">
-                      <layout class="QHBoxLayout" name="horizontalLayout_9">
-                       <property name="spacing">
-                        <number>5</number>
-                       </property>
-                       <property name="leftMargin">
-                        <number>0</number>
-                       </property>
-                       <property name="topMargin">
-                        <number>0</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>0</number>
-                       </property>
-                       <property name="bottomMargin">
-                        <number>0</number>
-                       </property>
-                       <item>
-                        <widget class="QTimeEdit" name="shiftEnd">
-                         <property name="time">
-                          <time>
-                           <hour>17</hour>
-                           <minute>0</minute>
-                           <second>0</second>
-                          </time>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QLabel" name="label_15">
-                         <property name="text">
-                          <string>ч.</string>
-                         </property>
-                        </widget>
-                       </item>
-                      </layout>
-                     </widget>
-                    </item>
-                    <item row="0" column="4">
+                    <item row="1" column="2">
                      <widget class="QLabel" name="label_10">
                       <property name="text">
                        <string>Край:</string>
                       </property>
                      </widget>
                     </item>
-                    <item row="5" column="3">
-                     <widget class="QWidget" name="hourlyStartWidget" native="true">
-                      <layout class="QHBoxLayout" name="horizontalLayout_10">
+                    <item row="1" column="1" alignment="Qt::AlignLeft">
+                     <widget class="QWidget" name="widget_3" native="true">
+                      <layout class="QHBoxLayout" name="horizontalLayout_6">
                        <property name="spacing">
                         <number>5</number>
                        </property>
@@ -424,7 +404,48 @@ QMenu::item:selected {
                        <property name="bottomMargin">
                         <number>0</number>
                        </property>
+                       <item alignment="Qt::AlignLeft">
+                        <widget class="QLineEdit" name="shiftBreakLineEdit">
+                         <property name="maximumSize">
+                          <size>
+                           <width>30</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="placeholderText">
+                          <string>60</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="label_2">
+                         <property name="text">
+                          <string>мин.</string>
+                         </property>
+                        </widget>
+                       </item>
                       </layout>
+                     </widget>
+                    </item>
+                    <item row="0" column="0">
+                     <widget class="QLabel" name="label_5">
+                      <property name="text">
+                       <string>Смяна:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="7">
+                     <widget class="QLabel" name="shiftTotalMins">
+                      <property name="text">
+                       <string>480</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="0">
+                     <widget class="QLabel" name="label">
+                      <property name="text">
+                       <string>Покивка:</string>
+                      </property>
                      </widget>
                     </item>
                     <item row="0" column="3">
@@ -469,17 +490,10 @@ QMenu::item:selected {
                       </layout>
                      </widget>
                     </item>
-                    <item row="0" column="0">
-                     <widget class="QLabel" name="label_5">
+                    <item row="0" column="6">
+                     <widget class="QLabel" name="label_21">
                       <property name="text">
-                       <string>Смяна:</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="0" column="7">
-                     <widget class="QLabel" name="shiftTotalMins">
-                      <property name="text">
-                       <string>480</string>
+                       <string>Общо:</string>
                       </property>
                      </widget>
                     </item>
@@ -490,23 +504,9 @@ QMenu::item:selected {
                       </property>
                      </widget>
                     </item>
-                    <item row="0" column="2">
-                     <widget class="QLabel" name="label_7">
-                      <property name="text">
-                       <string>Начало:</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="1" column="0">
-                     <widget class="QLabel" name="label">
-                      <property name="text">
-                       <string>Покивка:</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="1" column="1" alignment="Qt::AlignLeft">
-                     <widget class="QWidget" name="widget_3" native="true">
-                      <layout class="QHBoxLayout" name="horizontalLayout_6">
+                    <item row="1" column="3">
+                     <widget class="QWidget" name="shiftEndWidget" native="true">
+                      <layout class="QHBoxLayout" name="horizontalLayout_9">
                        <property name="spacing">
                         <number>5</number>
                        </property>
@@ -522,31 +522,26 @@ QMenu::item:selected {
                        <property name="bottomMargin">
                         <number>0</number>
                        </property>
-                       <item alignment="Qt::AlignLeft">
-                        <widget class="QLineEdit" name="shiftBreakLineEdit">
-                         <property name="maximumSize">
-                          <size>
-                           <width>45</width>
-                           <height>16777215</height>
-                          </size>
-                         </property>
-                         <property name="placeholderText">
-                          <string>60</string>
+                       <item>
+                        <widget class="QTimeEdit" name="shiftEnd">
+                         <property name="time">
+                          <time>
+                           <hour>17</hour>
+                           <minute>0</minute>
+                           <second>0</second>
+                          </time>
                          </property>
                         </widget>
                        </item>
                        <item>
-                        <widget class="QLabel" name="label_2">
+                        <widget class="QLabel" name="label_15">
                          <property name="text">
-                          <string>мин.</string>
+                          <string>ч.</string>
                          </property>
                         </widget>
                        </item>
                       </layout>
                      </widget>
-                    </item>
-                    <item row="0" column="1">
-                     <widget class="QLineEdit" name="workingShiftsNameLineEdit"/>
                     </item>
                    </layout>
                   </item>
@@ -597,6 +592,21 @@ QMenu::item:selected {
          </sizepolicy>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
          <item>
           <widget class="QFrame" name="optionsHolder">
            <property name="frameShape">
@@ -619,7 +629,7 @@ QMenu::item:selected {
              <number>0</number>
             </property>
             <property name="bottomMargin">
-             <number>10</number>
+             <number>5</number>
             </property>
            </layout>
           </widget>
@@ -640,8 +650,8 @@ QMenu::item:selected {
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>888</width>
-        <height>576</height>
+        <width>788</width>
+        <height>423</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_12">

@@ -143,9 +143,9 @@ class CustomWorkerDialog(QDialog, Ui_CustomWorkerDialog):
             if self.workerName.text() == '':
                 self.workerName.setFocus()
                 return
-            elif self.workerNumber.text() == '':
-                self.workerNumber.setFocus()
-                return
+            # elif self.workerNumber.text() == '':
+            #     self.workerNumber.setFocus()
+            #     return
 
             if not self.workerId and self.workerNumber.text() != '':
                 self.workerId = int(self.workerNumber.text())
@@ -154,27 +154,27 @@ class CustomWorkerDialog(QDialog, Ui_CustomWorkerDialog):
             #     self.workerId = None
             #     isNewWorker = True
 
-            startDate = datetime.strptime(self.startDateEdit.date().toString('yyyy-MM-dd'), '%Y-%m-%d') \
-                if self.startDateEdit.date().isValid() and self.startCheckBox.isChecked() else None
-            endDate = datetime.strptime(self.leaveDateEdit.date().toString('yyyy-MM-dd'), '%Y-%m-%d') \
-                if self.leaveDateEdit.date().isValid() and self.leavingCheckBox.isChecked() else None
+            startDate = self.startDateEdit.date().toString('yyyy-MM-dd')\
+                if self.startDateEdit.date().isValid() and self.startCheckBox.isChecked() else 'None'
+            endDate = self.leaveDateEdit.date().toString('yyyy-MM-dd') \
+                if self.leaveDateEdit.date().isValid() and self.leavingCheckBox.isChecked() else 'None'
 
             workerData = {
                 'isNew': isNewWorker,
-                'id': self.workerId,
+                'id': self.workerId if self.workerId != '' else 'auto',
                 'firstName': self.workerName.text(),
-                'middleName': self.workerSirname.text() if self.workerSirname.text() != '' else None,
-                'lastName': self.workerLastname.text() if self.workerLastname.text() != '' else None,
-                'cehId': self.cehoveComboBox.currentIndex() + 1 if self.cehoveComboBox.currentIndex() >= 0 else None,
+                'middleName': self.workerSirname.text() if self.workerSirname.text() != '' else 'None',
+                'lastName': self.workerLastname.text() if self.workerLastname.text() != '' else 'None',
+                'cehId': self.cehoveComboBox.currentIndex() + 1 if self.cehoveComboBox.currentIndex() >= 0 else 'None',
                 'positionId': self.positionComboBox.currentIndex() + 1
-                if self.positionComboBox.currentIndex() >= 0 else None,
-                'EGN': self.workerEGN.text() if self.workerEGN.text() != '' else None,
+                if self.positionComboBox.currentIndex() >= 0 else 'None',
+                'EGN': self.workerEGN.text() if self.workerEGN.text() != '' else 'None',
                 'paymentTypeId': self.paymentTypeComboBox.currentIndex(),
-                'workerPhone': self.workerTel.text() if self.workerTel.text() != '' else None,
+                'workerPhone': self.workerTel.text() if self.workerTel.text() != '' else 'None',
                 'startDate': startDate,
                 'endDate': endDate,
-                'town': self.workerTownAdress.text() if self.workerTownAdress.text() != '' else None,
-                'address': self.workerStreetAdress.text() if self.workerStreetAdress.text() != '' else None,
+                'town': self.workerTownAdress.text() if self.workerTownAdress.text() != '' else 'None',
+                'address': self.workerStreetAdress.text() if self.workerStreetAdress.text() != '' else 'None',
             }
 
             # self.workerInfo.emit(workerData)
@@ -201,29 +201,29 @@ class CustomWorkerDialog(QDialog, Ui_CustomWorkerDialog):
 
     def loadWorkerData(self):
         worker = WoS.getWorkerInfo(self.workerId)
-        self.workerName.setText(worker.Име if worker.Име else "")
-        self.workerSirname.setText(worker.Презиме if worker.Презиме else "")
-        self.workerLastname.setText(worker.Фамилия if worker.Фамилия else "")
-        self.workerNumber.setText(str(worker.Номер))
-        self.cehoveComboBox.setCurrentIndex(worker.Група - 1 if worker.Група else -1)
-        self.positionComboBox.setCurrentIndex(worker.Длъжност - 1 if worker.Длъжност else -1)
-        self.workerEGN.setText(worker.ЕГН)
-        self.startDateEdit.setDate(QDate.fromString(worker.ДатаНаПостъпване.strftime("%d.%m.%Y"), "dd.MM.yyyy")
-                                   if worker.ДатаНаПостъпване else QDate.currentDate())
-        self.leaveDateEdit.setDate(QDate.fromString(worker.ДатаНаНапускане.strftime("%d.%m.%Y"), "dd.MM.yyyy")
-                                   if worker.ДатаНаНапускане else QDate.currentDate())
+        self.workerName.setText(worker['Име'] if worker['Име'] != 'None' else "")
+        self.workerSirname.setText(worker['Презиме'] if worker['Презиме'] != 'None' else "")
+        self.workerLastname.setText(worker['Фамилия'] if worker['Фамилия'] != 'None' else "")
+        self.workerNumber.setText(str(worker['Номер']))
+        self.cehoveComboBox.setCurrentIndex(worker['Група'] - 1 if worker['Група'] else -1)
+        self.positionComboBox.setCurrentIndex(worker['Длъжност'] - 1 if worker['Длъжност'] else -1)
+        self.workerEGN.setText(worker['ЕГН'] if worker['ЕГН'] != 'None' else "")
+        self.startDateEdit.setDate(QDate.fromString(worker['ДатаНаПостъпване'], "dd.MM.yyyy")
+                                   if worker['ДатаНаПостъпване'] != 'None' else QDate.currentDate())
+        self.leaveDateEdit.setDate(QDate.fromString(worker['ДатаНаНапускане'], "dd.MM.yyyy")
+                                   if worker['ДатаНаНапускане'] != 'None' else QDate.currentDate())
 
-        self.paymentTypeComboBox.setCurrentIndex(worker.СистемаЗаплащане if worker.СистемаЗаплащане else 0)
-        self.workerTel.setText(worker.Телефон if worker.Телефон else "")
-        self.workerTownAdress.setText(worker.гр_с if worker.гр_с else "")
-        self.workerStreetAdress.setText(worker.Адрес if worker.Адрес else "")
+        self.paymentTypeComboBox.setCurrentIndex(worker['СистемаЗаплащане'] if worker['СистемаЗаплащане'] else 0)
+        self.workerTel.setText(worker['Телефон'] if worker['Телефон'] != 'None' else "")
+        self.workerTownAdress.setText(worker['гр_с'] if worker['гр_с'] != 'None' else "")
+        self.workerStreetAdress.setText(worker['Адрес'] if worker['Адрес'] != 'None' else "")
 
-        if not worker.ДатаНаПостъпване:
+        if worker['ДатаНаПостъпване'] == 'None':
             self.startCheckBox.setCheckState(Qt.CheckState.Unchecked)
         else:
             self.startCheckBox.setCheckState(Qt.CheckState.Checked)
 
-        if not worker.ДатаНаНапускане:
+        if worker['ДатаНаНапускане'] == 'None':
             self.leavingCheckBox.setCheckState(Qt.CheckState.Unchecked)
         else:
             self.leavingCheckBox.setCheckState(Qt.CheckState.Checked)
@@ -231,7 +231,7 @@ class CustomWorkerDialog(QDialog, Ui_CustomWorkerDialog):
         self.workerName.setFocus()
         self.workerName.selectAll()
         if self.workerId:
-            self.workerNumber.setReadOnly(True)
+            self.workerNumber.setDisabled(True)
 
     def toggleStartDate(self, state):
         self.startDateEdit.setEnabled(state)

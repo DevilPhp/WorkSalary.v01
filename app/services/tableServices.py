@@ -1,9 +1,8 @@
 import pandas as pd
 from app.database import engine
-from sqlalchemy.orm import joinedload
 from app.database import SessionLocal
-from app.database.workers import WorkerPosition, OperationType, Worker
-from app.database.operations import Operation, modelOperationsType
+from app.database.workers import WorkerPosition, Worker
+from app.database.operations import Operation
 
 
 def fetchDataFromDb(tableName):
@@ -13,19 +12,8 @@ def fetchDataFromDb(tableName):
     return df
 
 
-def fetchDataFromDbWithRelations(tableName, relationships=None):
+def fetchDataFromDbWithRelations(tableName):
     """ Fetches data from PostgreSQL table with related data """
-    # try:
-    #     df = pd.read_sql(f'SELECT w.*, op.* FROM "{tableName}" w LEFT JOIN "operationTypes" op'
-    #                      f' ON w.id = op."OperTypeID";', session.bind)
-    #     if relationships:
-    #         for relationship in relationships:
-    #             df = df.merge(getattr(session.class_, relationship[0]).join(getattr(session.class_, relationship[1])),
-    #                           on=relationship[0])
-    #     return df
-    # finally:
-    #     session.close()
-
     if tableName == 'workers':
         session = SessionLocal()
         try:
@@ -44,34 +32,6 @@ def fetchDataFromDbWithRelations(tableName, relationships=None):
         finally:
             session.close()
 
-    # elif tableName == 'test':
-    #     print('Here')
-    #     session = SessionLocal()
-    #     try:
-    #         result = session.query(OperationType).order_by(OperationType.OperTypeID.asc()).all()
-    #         data = []
-    #         for item in result:
-    #             # print(item.OperName)
-    #             op_type_names = []
-    #             for op_type in item.operations:
-    #                 if op_type.Операция:
-    #                     op_type_names.append(op_type.Операция)
-    #                 else:
-    #                     op_type_names.append('')
-    #             # print(op_type_names)
-    #             # return
-    #             data.append({
-    #                 'OperTypeID': item.OperTypeID,
-    #                 'OperName': item.OperName,
-    #                 'ОперацииТип': ', '.join(op_type_names) if op_type_names != [] else ''
-    #             })
-    #         df = pd.DataFrame(data)
-    #         return df
-    #     except Exception as e:
-    #         print(f"Error fetching data from database: {e}")
-    #         # return fetchDataFromDb(tableName)
-    #     finally:
-    #         session.close()
     elif tableName == 'operations':
         session = SessionLocal()
         try:
@@ -87,7 +47,6 @@ def fetchDataFromDbWithRelations(tableName, relationships=None):
             return df
         except Exception as e:
             print(f"Error fetching data from database: {e}")
-            # return fetchDataFromDb(tableName)
         finally:
             session.close()
 

@@ -1,60 +1,55 @@
 from app.logger import logger
-from app.database import getDatabase, setDatabase
-from app.database.users import User
-from passlib.hash import pbkdf2_sha256 as encrypt
+import requests
+from app.utils.appUtils import handle_api_connection
+from config import API_SERVER
 
 
 class UserServices:
 
     @staticmethod
+    @handle_api_connection
     def registerNewUser(data):
-        with setDatabase() as session:
-            username = data.get('Потребител')
-            password = data.get('Парола')
-            role = data.get('Ниво').lower() if data.get('Ниво') else 'guest'
-            hashedPassword = encrypt.hash(password)
-
-            if session.query(User).filter_by(username=username).first():
-                logger.error(f"User {username} already exists")
-                return -1
-            else:
-                user = User(username=username, passwordHash=hashedPassword, userRole=role)
-                session.add(user)
-                session.commit()
-                if user:
-                    logger.info(f"User {username} has been registered successfully")
-                    return 1
-                else:
-                    logger.error("Failed to register user")
-                    return 0
+        responde = requests.post(f'{API_SERVER}/user/register', json=data).json()
+        if responde['status'] == 'success':
+            result = int(responde['result'])
+            if result == 1:
+                logger.info(f"User: {data['Потребител']} has been registered successfully")
+            elif result == -1:
+                logger.error(f"Username {data['Потребител']} already exists")
+            return result
+        else:
+            logger.error(f"Failed to register user: {data['Потребител']}")
+            return 0
 
     @staticmethod
+    @handle_api_connection
+    def editUser(userId, data):
+        responde = requests.post(f'{API_SERVER}/user/edit', json={'id': userId, 'data': data}).json()
+        if responde['status'] =='success':
+            logger.info(f"User with ID {userId} - {responde['username']} has been edited successfully")
+            return responde['username']
+        else:
+            logger.error(f"Failed to edit user with ID {userId}")
+            return None
+
+    @staticmethod
+    @handle_api_connection
     def deleteUser(rowId):
-        with setDatabase() as session:
-            user = session.query(User).get(int(rowId))
-            if user:
-                session.delete(user)
-                session.commit()
-                logger.info(f"User with ID {user.id} - {user.username} has been deleted successfully")
-                return True
-            else:
-                logger.error(f"User with ID {user.id} - {user.username} does not exist")
-                return False
+        responde = requests.post(f'{API_SERVER}/user/delete', json={'id': rowId}).json()
+        if responde['status'] =='success':
+            logger.info(f"User with ID {responde['id']} - {responde['username']} has been deleted successfully")
+            return True
+        else:
+            logger.error(f"User with ID {responde['id']} - {responde['username']} does not exist")
+            return False
 
     @staticmethod
     def loginUser(username, password):
-        with getDatabase() as session:
-            user = session.query(User).filter_by(username=username).first()
-            if not user:
-                logger.error(f"User {username} does not exist")
-                return False
-            if encrypt.verify(password, user.passwordHash):
-                logger.info(f"User {username} has logged in successfully")
-                return True
-            else:
-                logger.error(f"Invalid username or password for user {username}")
-                return False
-
-    @staticmethod
-    def updateUser(username, new_password, rol):
-        pass
+        responde = requests.post(f'{API_SERVER}/user/login',
+                                 json={'username': username, 'password': password}).json()
+        if responde['status'] == 'success':
+            logger.info(f"User {username} has logged in successfully")
+            return True
+        else:
+            logger.error(f"Invalid username or password for user {username}")
+            return False

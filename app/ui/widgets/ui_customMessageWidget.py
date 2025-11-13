@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customMessageWidgetelexCb.ui'
+## Form generated from reading UI file 'customMessageWidgetXaZerz.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -23,12 +23,17 @@ class Ui_customMessageWidget(object):
     def setupUi(self, customMessageWidget):
         if not customMessageWidget.objectName():
             customMessageWidget.setObjectName(u"customMessageWidget")
-        customMessageWidget.resize(260, 120)
+        customMessageWidget.resize(220, 200)
+        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(customMessageWidget.sizePolicy().hasHeightForWidth())
+        customMessageWidget.setSizePolicy(sizePolicy)
         customMessageWidget.setMinimumSize(QSize(0, 0))
         customMessageWidget.setMaximumSize(QSize(16777215, 16777215))
         customMessageWidget.setStyleSheet(u"*{\n"
 "	background-color: rgba(255, 255, 255, 0);\n"
-"	font: 600 11pt \"Segoe UI\";\n"
+"	font: 600 9pt \"Segoe UI\";\n"
 "	color: #324b4c;\n"
 "}\n"
 "\n"
@@ -43,13 +48,13 @@ class Ui_customMessageWidget(object):
 "}\n"
 "\n"
 "#titleWidget * {\n"
-"	font-size: 12pt;\n"
+"	font-size: 10pt;\n"
 "	font-weight: 700;\n"
 "}\n"
 "\n"
 "#textHolder {\n"
-"	font: 600 10pt \"Segoe UI\";\n"
-"	padding: 5px;\n"
+"	font: 600 8pt \"Segoe UI\";\n"
+"	padding: 4px;\n"
 "}")
         self.verticalLayout = QVBoxLayout(customMessageWidget)
         self.verticalLayout.setSpacing(0)
@@ -57,8 +62,10 @@ class Ui_customMessageWidget(object):
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.widget = QWidget(customMessageWidget)
         self.widget.setObjectName(u"widget")
-        self.widget.setMinimumSize(QSize(260, 120))
-        self.widget.setMaximumSize(QSize(260, 120))
+        sizePolicy.setHeightForWidth(self.widget.sizePolicy().hasHeightForWidth())
+        self.widget.setSizePolicy(sizePolicy)
+        self.widget.setMinimumSize(QSize(190, 90))
+        self.widget.setMaximumSize(QSize(220, 200))
         self.verticalLayout_3 = QVBoxLayout(self.widget)
         self.verticalLayout_3.setSpacing(0)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
@@ -75,7 +82,7 @@ class Ui_customMessageWidget(object):
         icon = QIcon()
         icon.addFile(u":/icons/app/assets/icons/Question-Square--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.iconHolder.setIcon(icon)
-        self.iconHolder.setIconSize(QSize(30, 30))
+        self.iconHolder.setIconSize(QSize(23, 23))
 
         self.horizontalLayout.addWidget(self.iconHolder, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
@@ -89,15 +96,12 @@ class Ui_customMessageWidget(object):
 
         self.textWidget = QWidget(self.widget)
         self.textWidget.setObjectName(u"textWidget")
-        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.textWidget.sizePolicy().hasHeightForWidth())
         self.textWidget.setSizePolicy(sizePolicy)
         self.verticalLayout_2 = QVBoxLayout(self.textWidget)
         self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_2.setContentsMargins(3, 3, 3, 3)
         self.textHolder = QLabel(self.textWidget)
         self.textHolder.setObjectName(u"textHolder")
         self.textHolder.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
@@ -109,7 +113,7 @@ class Ui_customMessageWidget(object):
         self.verticalLayout_3.addWidget(self.textWidget)
 
 
-        self.verticalLayout.addWidget(self.widget, 0, Qt.AlignHCenter)
+        self.verticalLayout.addWidget(self.widget, 0, Qt.AlignRight|Qt.AlignBottom)
 
 
         self.retranslateUi(customMessageWidget)

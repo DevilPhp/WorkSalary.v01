@@ -13,6 +13,9 @@ class CustomParametersRowWidget(Ui_customParametersRowWidget, QWidget):
         locale = QLocale(QLocale.Language.English)
         self.floatValidator.setLocale(locale)
         self.type = type
+        self.passwordBtn.setVisible(False)
+        self.isPasswordVisible = False
+        # print(self.type)
         if self.type == "numeric":
             self.inputLineEdit.setValidator(self.intValidator)
         elif self.type == "float":
@@ -20,6 +23,19 @@ class CustomParametersRowWidget(Ui_customParametersRowWidget, QWidget):
             self.inputLineEdit.returnPressed.connect(self.checkFloatChange)
             self.inputLineEdit.editingFinished.connect(self.checkFloatChange)
             self.inputLineEdit.textChanged.connect(self.checkFloat)
+        elif self.type == "password":
+            self.inputLineEdit.setEchoMode(QLineEdit.EchoMode.Password)
+            self.passwordBtn.setVisible(True)
+            self.passwordBtn.clicked.connect(self.togglePasswordVisibility)
+
+    def togglePasswordVisibility(self):
+        self.isPasswordVisible = not self.isPasswordVisible
+        if self.isPasswordVisible:
+            self.inputLineEdit.setEchoMode(QLineEdit.EchoMode.Normal)
+            self.passwordBtn.setIcon(QIcon(":/icons/app/assets/icons/Eye--Streamline-Feather.svg"))
+        else:
+            self.inputLineEdit.setEchoMode(QLineEdit.EchoMode.Password)
+            self.passwordBtn.setIcon(QIcon(":/icons/app/assets/icons/Eye-Off--Streamline-Feather.svg"))
 
     def checkFloatChange(self):
         text = self.inputLineEdit.text()

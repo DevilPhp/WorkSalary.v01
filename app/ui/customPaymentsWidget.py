@@ -1,6 +1,6 @@
 from functools import partial
 
-from PySide6.QtCore import Signal
+from PySide6.QtCore import Signal, QThreadPool
 from PySide6.QtGui import QStandardItemModel, QStandardItem
 
 from app.ui.customSortingMenuWidget import CustomSortingMenuWidget
@@ -9,7 +9,7 @@ from app.models.tableModel import CustomTableViewWithMultiSelection
 from app.models.sortingModel import CaseInsensitiveProxyModel, FilterableHeaderView
 from app.ui.customCalendarWidget import CustomCalendarDialog
 from app.services.workerServices import WorkerServices as WoS
-from app.utils.utils import Utils
+from app.utils.utils import Utils, Worker
 
 
 class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
@@ -18,6 +18,7 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
     def __init__(self, mainWindow, user, parent=None):
         super().__init__(parent)
         self.setupUi(self)
+        self.threadPool = QThreadPool()
         self.mainWindow = mainWindow
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
         self.usernameLabel.setText(user)
@@ -317,153 +318,29 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
         self.paymentsTableView.setColumnWidth(10, 100)
 
     def refreshPaymentsTable(self):
-        self.tablePaymentsModel.setRowCount(0)
-        count = 0
-        # workerNumber = self.workerNameLineEdit.text()
         startDate = Utils.convertQDateToDate(self.fromDateEdit.date())
         endDate = Utils.convertQDateToDate(self.toDateEdit.date())
-        paymentsData = WoS.getInfoForPayments(startDate, endDate)
-        # for pay in paymentsData:
-        #     print(pay, paymentsData[pay])
-        #     return
-        paymentForMin = WoS.getPaymentForMin()
-        paymentForNightMin = WoS.getPaymentForNightMin()
-        paymentInLeva = paymentForMin.PaymentValue
-        paymentInEuro = paymentForMin.PaymentInEuro
-        nightPayInLeva = paymentForNightMin.NightPaymentValue + paymentInLeva
-        nightPayInEuro = paymentForNightMin.NightPaymentInEuro + paymentInEuro
-
-        for workerPayment in paymentsData:
-            count += 1
-            workerId = workerPayment.split(' : ')[0]
-            workerName = workerPayment.split(' : ')[1]
-            workingDays = len(paymentsData[workerPayment])
-            totalWeekEndWorkingDays = 0
-            totalHolidaysWorking = 0
-            totalPayInLev = 0
-            totalPayInEuro = 0
-
-            for timePaperPayment in paymentsData[workerPayment]:
-                totalHourlyMins = 0
-                totalOvertimeMins = 0
-                totalPieces = 0
-                totalTime = 0
-                totalNightMins = 0
-                currentPayment = 0
-                currentPaymentInEuro = 0
-                hourly = paymentsData[workerPayment][timePaperPayment]['hourly']
-                overtime = paymentsData[workerPayment][timePaperPayment]['overtime']
-                nightMins = paymentsData[workerPayment][timePaperPayment]['nightMins']
-                pieces = paymentsData[workerPayment][timePaperPayment]['totalPieces']
-                workingTime = paymentsData[workerPayment][timePaperPayment]['totalTime']
-                paymentRatio = paymentsData[workerPayment][timePaperPayment]['paymentRatio']
-
-                if paymentsData[workerPayment][timePaperPayment]['paymentRatio'] >= 1.75:
-                    totalWeekEndWorkingDays += 1
-
-                if paymentsData[workerPayment][timePaperPayment]['paymentRatio'] >= 2:
-                    totalHolidaysWorking += 1
-
-                if hourly:
-                    for hourlyPayment in hourly:
-                        hourlyEfficient = hourly[hourlyPayment][0]
-                        hourlyRatio = hourly[hourlyPayment][1]
-                        hourlyNightMins = hourly[hourlyPayment][2]
-                        totalHourlyMins += hourlyEfficient
-                        totalNightMins += hourlyNightMins
-                        currentPayment += Utils.calculatePayment(hourlyEfficient - hourlyNightMins,
-                                                                hourlyRatio, paymentRatio, paymentInLeva)
-                        currentPaymentInEuro += Utils.calculatePayment(hourlyEfficient - hourlyNightMins,
-                                                                      hourlyRatio, paymentRatio, paymentInEuro)
-                        # print(workerId, currentPayment)
-
-                        if hourlyNightMins > 0:
-                            currentPayment += Utils.calculatePayment(hourlyNightMins, hourlyRatio,
-                                                                    paymentRatio, nightPayInLeva)
-                            currentPaymentInEuro += Utils.calculatePayment(hourlyNightMins, hourlyRatio,
-                                                                          paymentRatio, nightPayInEuro)
-                        # print(workerId, currentPayment)
-
-                if overtime:
-                    for overtimePayment in overtime:
-                        overtimeEfficient = overtime[overtimePayment][0]
-                        overtimeRatio = overtime[overtimePayment][1]
-                        overtimeNightMins = overtime[overtimePayment][2]
-
-                        currentPayment += Utils.calculatePayment((overtimeEfficient - overtimeNightMins), overtimeRatio,
-                                                                paymentRatio, paymentInLeva)
-                        currentPaymentInEuro += Utils.calculatePayment((overtimeEfficient - overtimeNightMins),
-                                                                      overtimeRatio, paymentRatio, paymentInEuro)
-                        # print(workerId, currentPayment)
-
-                        if overtimeNightMins > 0:
-                            currentPayment += Utils.calculatePayment(overtimeNightMins, overtimeRatio,
-                                                                paymentRatio, nightPayInLeva)
-                            currentPaymentInEuro += Utils.calculatePayment(overtimeNightMins, overtimeRatio,
-                                                                          paymentRatio, nightPayInEuro)
-                        # print(workerId, currentPayment)
-                        totalOvertimeMins += overtimeEfficient
-                        totalNightMins += overtimeNightMins
-
-                if nightMins > 0:
-
-                    currentPayment += Utils.calculatePayment(nightMins, 1, paymentRatio, nightPayInLeva)
-                    currentPaymentInEuro += Utils.calculatePayment(nightMins, 1, paymentRatio, nightPayInEuro)
-                    # print(workerId, currentPayment)
-
-                currentPayment += Utils.calculatePayment(workingTime - nightMins, 1, paymentRatio, paymentInLeva)
-                currentPaymentInEuro += Utils.calculatePayment(workingTime - nightMins, 1, paymentRatio, paymentInEuro)
-                # print(workerId, currentPayment)
-
-                totalPieces += pieces
-                totalTime = round(totalTime + workingTime, 2)
-                totalNightMins = round(totalNightMins + nightMins, 2)
-
-                totalPayInLev += currentPayment
-                totalPayInEuro += currentPaymentInEuro
-            displayOperTime = '0'
-            displayHourlyTime = '0'
-            displayOverTime = '0'
-            displayNightTime = '0'
-            efficiency = 0
-            totalTime = round(totalTime, 2)
-            totalNightMins = round(totalNightMins, 2)
-            if totalPieces != 0 or totalTime != 0:
-                efficiency = round((totalTime / totalPieces), 2)
-                displayOperTime = Utils.makeDispalyMins(totalTime)
-
-            if totalOvertimeMins > 0:
-                displayOverTime = Utils.makeDispalyMins(totalOvertimeMins)
-
-            if totalHourlyMins > 0:
-                displayHourlyTime = Utils.makeDispalyMins(totalHourlyMins)
-
-            if totalNightMins > 0:
-                displayNightTime = Utils.makeDispalyMins(totalNightMins)
-
-            payInLeva = round(totalPayInLev, 2)
-            payInEuro = round(totalPayInEuro, 2)
-            # totalHours = QStandardItem(str(totalWeekEndWorkingDays))
-            # totalHours.setBackground(QColor(208, 170, 167))
-
-            row = [
-                QStandardItem(str(count)),
-                QStandardItem(str(workerId)),
-                QStandardItem(workerName),
-                QStandardItem(str(workingDays)),
-                QStandardItem(str(totalWeekEndWorkingDays)),
-                QStandardItem(str(totalHolidaysWorking)),
-                QStandardItem(str(totalPieces)),
-                QStandardItem(displayOperTime),
-                QStandardItem(displayHourlyTime),
-                QStandardItem(displayOverTime),
-                QStandardItem(displayNightTime),
-                QStandardItem(str(efficiency)),
-                QStandardItem(str(payInLeva)),
-                QStandardItem(str(payInEuro))
+        rows = WoS.getInfoForPayments(startDate, endDate)
+        self.tablePaymentsModel.setRowCount(0)
+        for row in rows:
+            rowToAdd = [
+                QStandardItem(row['count']),
+                QStandardItem(row['workerId']),
+                QStandardItem(row['workerName']),
+                QStandardItem(row['workingDays']),
+                QStandardItem(row['totalWeekEndWorkingDays']),
+                QStandardItem(row['totalHolidaysWorking']),
+                QStandardItem(row['totalPieces']),
+                QStandardItem(row['displayOperTime']),
+                QStandardItem(row['displayHourlyTime']),
+                QStandardItem(row['displayOverTime']),
+                QStandardItem(row['displayNightTime']),
+                QStandardItem(row['efficiency']),
+                QStandardItem(row['payInLeva']),
+                QStandardItem(row['payInEuro'])
             ]
-            self.tablePaymentsModel.appendRow(row)
-        self.totalViewRows.setText(str(count))
+            self.tablePaymentsModel.appendRow(rowToAdd)
+        self.totalViewRows.setText(str(len(rows)))
 
     def closeEvent(self, event):
         self.mainWindow.closeAllPaymentsDetails()

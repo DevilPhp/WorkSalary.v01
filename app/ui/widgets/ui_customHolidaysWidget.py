@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customHolidaysWidgetmVHuoi.ui'
+## Form generated from reading UI file 'customHolidaysWidgetLYJlhI.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -25,11 +25,11 @@ class Ui_customHolidaysWidget(object):
     def setupUi(self, customHolidaysWidget):
         if not customHolidaysWidget.objectName():
             customHolidaysWidget.setObjectName(u"customHolidaysWidget")
-        customHolidaysWidget.resize(900, 800)
-        customHolidaysWidget.setMinimumSize(QSize(900, 800))
+        customHolidaysWidget.resize(800, 580)
+        customHolidaysWidget.setMinimumSize(QSize(800, 580))
         customHolidaysWidget.setStyleSheet(u"*{\n"
 "	background-color: #dfdfdf;\n"
-"	font: 600 12pt \"Segoe UI\";\n"
+"	font: 600 9pt \"Segoe UI\";\n"
 "	color: #324b4c;\n"
 "}\n"
 "\n"
@@ -47,7 +47,7 @@ class Ui_customHolidaysWidget(object):
 "	border: none;\n"
 "	border-radius: 10px;\n"
 "	padding: 5px;\n"
-"	font-size: 12pt;\n"
+"	font-size: 9pt;\n"
 "}\n"
 "\n"
 "QPushButton:hover{\n"
@@ -61,7 +61,7 @@ class Ui_customHolidaysWidget(object):
 "\n"
 "QLineEdit, QDateEdit{\n"
 "	border: none;\n"
-"	font-size: 11pt;\n"
+"	font-size: 9pt;\n"
 "	border-bottom: 1px solid #7c9399;\n"
 "}\n"
 "\n"
@@ -72,24 +72,25 @@ class Ui_customHolidaysWidget(object):
 "\n"
 "QMenu::item {\n"
 "	padding: 5px;\n"
+"	font-size: 8pt;\n"
 "}\n"
 "\n"
 "QMenu::item:selected {\n"
 "	background-color: #aeaeae;\n"
-"	padding-left: 7px;\n"
+"	padding-left: 5px;\n"
 "}\n"
 "\n"
 "yearsBtnsHolder QPushButton:clicked {\n"
-"	background-color: black;\n"
+"	background-co"
+                        "lor: black;\n"
 "}\n"
-""
-                        "\n"
+"\n"
 "#optionsHolder, #optionsHolder_2 {\n"
 "	border-bottom: 2px dashed #7c9399;\n"
 "}\n"
 "\n"
 "#pageTitle {\n"
-"	font: 700 13pt \"Segoe UI\";\n"
+"	font: 700 11pt \"Segoe UI\";\n"
 "}\n"
 "\n"
 "#newHolidayCalBtn {\n"
@@ -107,7 +108,7 @@ class Ui_customHolidaysWidget(object):
 "\n"
 "\n"
 "#usernameLabel {\n"
-"	font-size: 11pt;\n"
+"	font-size: 10pt;\n"
 "}\n"
 "\n"
 "#workerPlaceLineEdit, #workerPositionLineEdit {\n"
@@ -115,7 +116,7 @@ class Ui_customHolidaysWidget(object):
 "}\n"
 "\n"
 "#widget_3 * {\n"
-"	font-size: 11pt;\n"
+"	font-size: 10pt;\n"
 "}")
         self.verticalLayout = QVBoxLayout(customHolidaysWidget)
         self.verticalLayout.setSpacing(10)
@@ -150,7 +151,7 @@ class Ui_customHolidaysWidget(object):
         self.userHolder = QWidget(self.headerHolder)
         self.userHolder.setObjectName(u"userHolder")
         self.horizontalLayout_3 = QHBoxLayout(self.userHolder)
-        self.horizontalLayout_3.setSpacing(10)
+        self.horizontalLayout_3.setSpacing(3)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 5, 0)
         self.logoutBtn = QPushButton(self.userHolder)
@@ -158,7 +159,7 @@ class Ui_customHolidaysWidget(object):
         icon = QIcon()
         icon.addFile(u":/icons/app/assets/icons/Log-Out--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.logoutBtn.setIcon(icon)
-        self.logoutBtn.setIconSize(QSize(24, 24))
+        self.logoutBtn.setIconSize(QSize(18, 18))
 
         self.horizontalLayout_3.addWidget(self.logoutBtn)
 
@@ -168,7 +169,7 @@ class Ui_customHolidaysWidget(object):
         icon1 = QIcon()
         icon1.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.userIcon.setIcon(icon1)
-        self.userIcon.setIconSize(QSize(24, 24))
+        self.userIcon.setIconSize(QSize(18, 18))
 
         self.horizontalLayout_3.addWidget(self.userIcon)
 
@@ -245,7 +246,7 @@ class Ui_customHolidaysWidget(object):
         self.newHolidayDate.setFrame(False)
         self.newHolidayDate.setAlignment(Qt.AlignCenter)
         self.newHolidayDate.setCorrectionMode(QAbstractSpinBox.CorrectToNearestValue)
-        self.newHolidayDate.setMinimumDateTime(QDateTime(QDate(1990, 9, 3), QTime(0, 0, 0)))
+        self.newHolidayDate.setMinimumDateTime(QDateTime(QDate(1990, 8, 31), QTime(0, 0, 0)))
 
         self.horizontalLayout_9.addWidget(self.newHolidayDate)
 
@@ -258,7 +259,7 @@ class Ui_customHolidaysWidget(object):
         icon2 = QIcon()
         icon2.addFile(u":/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.newHolidayCalBtn.setIcon(icon2)
-        self.newHolidayCalBtn.setIconSize(QSize(24, 24))
+        self.newHolidayCalBtn.setIconSize(QSize(18, 18))
 
         self.horizontalLayout_9.addWidget(self.newHolidayCalBtn, 0, Qt.AlignLeft)
 
@@ -347,7 +348,7 @@ class Ui_customHolidaysWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 888, 513))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 788, 314))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -361,16 +362,16 @@ class Ui_customHolidaysWidget(object):
         self.holidaysTableView = QTableView(self.holidaysTableHolder)
         self.holidaysTableView.setObjectName(u"holidaysTableView")
         self.holidaysTableView.setStyleSheet(u"QHeaderView:section{\n"
-"	font: 700 10.5pt \"Segoe UI\";\n"
+"	font: 700 9pt \"Segoe UI\";\n"
 "	background-color: #dfdfdf;\n"
-"	padding: 5px;\n"
+"	padding: 3px;\n"
 "}\n"
 "QVerticalView:section{\n"
-"	min-height: 30;\n"
+"	min-height: 25px;\n"
 "}\n"
 "QAbstractItemView{\n"
 "	alternate-background-color: #d3d3d3;\n"
-"	font: 10.5pt \"Segoe UI\";\n"
+"	font: 8pt \"Segoe UI\";\n"
 "	selection-background-color: rgba(198, 228, 254, 45);\n"
 "	selection-color: #324b4c;\n"
 "	focus: none;\n"
@@ -387,6 +388,8 @@ class Ui_customHolidaysWidget(object):
         self.holidaysTableView.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.holidaysTableView.setCornerButtonEnabled(False)
         self.holidaysTableView.verticalHeader().setVisible(False)
+        self.holidaysTableView.verticalHeader().setMinimumSectionSize(20)
+        self.holidaysTableView.verticalHeader().setDefaultSectionSize(20)
 
         self.verticalLayout_11.addWidget(self.holidaysTableView)
 

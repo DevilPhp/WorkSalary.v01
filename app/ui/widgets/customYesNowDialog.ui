@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>641</width>
-    <height>726</height>
+    <width>380</width>
+    <height>603</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -30,7 +30,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">*{
-	font: 600 11pt &quot;Segoe UI&quot;;
+	font: 600 9pt &quot;Segoe UI&quot;;
 	border: none;
 	background-color: #dfdfdf;
 	padding: 0;
@@ -51,12 +51,16 @@ QDialog{
 }
 
 #mainTextLabel {
-	font: 900 12pt &quot;Segoe UI&quot;;
-	padding-bottom: 10px;
+	font: 700 10pt &quot;Segoe UI&quot;;
+	padding-bottom: 8px;
 }
 
 #nameTextLabel {
-	font: 700 11pt &quot;Segoe UI&quot;;
+	font: 700 9pt &quot;Segoe UI&quot;;
+}
+
+#questionTextLabel {
+	font: 500 8pt &quot;Segoe UI&quot;;
 }
 
 #noBtn:hover{
@@ -95,8 +99,8 @@ QDialog{
      </property>
      <property name="minimumSize">
       <size>
-       <width>350</width>
-       <height>150</height>
+       <width>300</width>
+       <height>130</height>
       </size>
      </property>
      <property name="maximumSize">
@@ -156,8 +160,8 @@ QDialog{
            </property>
            <property name="iconSize">
             <size>
-             <width>38</width>
-             <height>38</height>
+             <width>24</width>
+             <height>24</height>
             </size>
            </property>
           </widget>
@@ -173,8 +177,8 @@ QDialog{
            </property>
            <property name="iconSize">
             <size>
-             <width>38</width>
-             <height>38</height>
+             <width>24</width>
+             <height>24</height>
             </size>
            </property>
           </widget>
@@ -246,7 +250,7 @@ QDialog{
                    <property name="font">
                     <font>
                      <family>Segoe UI</family>
-                     <pointsize>12</pointsize>
+                     <pointsize>10</pointsize>
                      <italic>false</italic>
                      <bold>true</bold>
                     </font>
@@ -279,9 +283,9 @@ QDialog{
                    <property name="font">
                     <font>
                      <family>Segoe UI</family>
-                     <pointsize>11</pointsize>
+                     <pointsize>8</pointsize>
                      <italic>false</italic>
-                     <bold>true</bold>
+                     <bold>false</bold>
                     </font>
                    </property>
                    <property name="styleSheet">
@@ -303,7 +307,7 @@ QDialog{
                    <property name="font">
                     <font>
                      <family>Segoe UI</family>
-                     <pointsize>11</pointsize>
+                     <pointsize>9</pointsize>
                      <italic>false</italic>
                      <bold>true</bold>
                     </font>
@@ -324,7 +328,7 @@ QDialog{
               </layout>
              </widget>
             </item>
-            <item alignment="Qt::AlignHCenter">
+            <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
              <widget class="QWidget" name="buttonsWidget" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -335,7 +339,7 @@ QDialog{
               <property name="font">
                <font>
                 <family>Segoe UI</family>
-                <pointsize>11</pointsize>
+                <pointsize>9</pointsize>
                 <italic>false</italic>
                 <bold>true</bold>
                </font>
@@ -361,7 +365,7 @@ QDialog{
                  <property name="font">
                   <font>
                    <family>Segoe UI</family>
-                   <pointsize>11</pointsize>
+                   <pointsize>9</pointsize>
                    <italic>false</italic>
                    <bold>true</bold>
                   </font>
@@ -375,8 +379,8 @@ QDialog{
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>32</width>
-                   <height>32</height>
+                   <width>18</width>
+                   <height>18</height>
                   </size>
                  </property>
                 </widget>
@@ -386,7 +390,7 @@ QDialog{
                  <property name="font">
                   <font>
                    <family>Segoe UI</family>
-                   <pointsize>11</pointsize>
+                   <pointsize>9</pointsize>
                    <italic>false</italic>
                    <bold>true</bold>
                   </font>
@@ -400,8 +404,8 @@ QDialog{
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>32</width>
-                   <height>32</height>
+                   <width>18</width>
+                   <height>18</height>
                   </size>
                  </property>
                 </widget>

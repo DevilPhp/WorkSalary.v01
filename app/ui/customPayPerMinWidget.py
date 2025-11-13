@@ -41,7 +41,7 @@ class CustomPayPerMinWidget(QWidget, Ui_customPayPerMinWidget):
         self.payPerMinTableView.setModel(self.proxyModelPayPerMin)
         self.payPerMinTableView.setSortingEnabled(True)
         self.payPerMinTableView.horizontalHeader().setStretchLastSection(True)
-        self.payPerMinTableView.horizontalHeader().setMinimumWidth(120)
+        self.payPerMinTableView.horizontalHeader().setMinimumWidth(80)
         self.payPerMinTableView.setColumnWidth(0, 50)
         self.payPerMinTableView.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.payPerMinTableView.customContextMenuRequested.connect(self.showCustomContextMenu)
@@ -59,7 +59,7 @@ class CustomPayPerMinWidget(QWidget, Ui_customPayPerMinWidget):
     def refreshPayPerMinTable(self, data):
         self.payPerMinModel.setRowCount(0)
         count = 1
-        row = []
+        # row = []
         for payPerMin in data:
             idCell = QStandardItem(str(count))
             idCell.setData(payPerMin['id'], Qt.ItemDataRole.UserRole)
@@ -83,8 +83,8 @@ class CustomPayPerMinWidget(QWidget, Ui_customPayPerMinWidget):
                 QStandardItem(str(round(payPerMin['valueEUR'], 4))),
                 QStandardItem(str(round(payPerMin['levaPerEuro'], 4))),
                 activeCell,
-                QStandardItem(datetime.strftime(payPerMin['dateActive'], '%d.%m.%Y')),
-                QStandardItem(datetime.strftime(payPerMin['lastUpdated'], '%d.%m.%Y')),
+                QStandardItem(payPerMin['dateActive']),
+                QStandardItem(payPerMin['lastUpdated']),
                 QStandardItem(payPerMin['updatedBy']),
                 QStandardItem(payPerMin['comment'])
             ]
@@ -105,48 +105,33 @@ class CustomPayPerMinWidget(QWidget, Ui_customPayPerMinWidget):
                 modelIndex = self.payPerMinModel.index(self.checkedItemRow, 4)
                 self.payPerMinTableView.update(self.proxyModelPayPerMin.mapFromSource(modelIndex))
 
-        # self.payPerMinModel.blockSignals(False)
 
     def onCheckboxChanged(self, item):
-        # print(item.checkState())
         if item.column() == 4:
             if item.checkState() == Qt.CheckState.Checked:
                 if self.checkedItemRow != item.row():
                     currentItemId = self.payPerMinModel.item(
                         self.checkedItemRow, 4).data(Qt.ItemDataRole.UserRole)
-                    # self.clearCheckedPayPerMinCheckbox()
-                    # self.checkedItemRow = item.row()
-                    # item.setCheckState(Qt.CheckState.Checked)
-                    # item.setData('Активно', Qt.ItemDataRole.DisplayRole)
-                    # # self.checkedItemRow = item.row()
                     itemId = item.data(Qt.ItemDataRole.UserRole)
+
                     if self.payPerMinNightCheckBox.isChecked():
-                        print(itemId, currentItemId)
-                        # print(f'Checked item row NIGHT: {self.checkedItemRow}')
-                        Ps.updatePayPerMinNight(itemId, currentItemId, self.user)
+                        Ps.updatePayPerMin(itemId, currentItemId, self.user, False)
                         self.payPerMinNight = Ps.getPayPerMin(False)
                         self.refreshPayPerMinTable(self.payPerMinNight)
-                        MM.showOnWidget(self, f'Активен платеж за Мин. за нощен труд!', 'success')
+                        MM.showOnWidget(self, f'Активен коеф. за Мин. за нощен труд!', 'success')
+
                     else:
-                        # print(f'Checked item row DAY: {self.checkedItemRow}')
-                        Ps.updatePayPerMin(itemId, currentItemId, self.user)
+                        Ps.updatePayPerMin(itemId, currentItemId, self.user, True)
                         self.payPerMin = Ps.getPayPerMin()
                         self.refreshPayPerMinTable(self.payPerMin)
-                        MM.showOnWidget(self, f'Активен платеж за Мин.', 'success')
-                    # print(self.checkedItemRow)
-                # print(f'Checked item row: {self.checkedItemRow}')
+                        MM.showOnWidget(self, f'Активен коеф. за Мин.', 'success')
+
             elif item.checkState() == Qt.CheckState.Unchecked:
                 if self.checkedItemRow == item.row():
                     self.payPerMinModel.blockSignals(True)
                     item.setCheckState(Qt.CheckState.Checked)
                     item.setData('Активно', Qt.ItemDataRole.DisplayRole)
                     self.payPerMinModel.blockSignals(False)
-
-        # print(item.checkState())
-        # if item.column() == 3 and item.checkState() == Qt.CheckState.Unchecked:
-        #     print(item.data(Qt.ItemDataRole.UserRole))
-        # elif item.column() == 3:
-        #     item.setCheckState(Qt.CheckState.Checked)
 
     def showPayPerMinNight(self):
         if self.payPerMinNightCheckBox.isChecked():
@@ -184,6 +169,10 @@ class CustomPayPerMinWidget(QWidget, Ui_customPayPerMinWidget):
         if action == deleteAction:
             selectedRow = self.payPerMinTableView.selectionModel().selectedRows()
             if selectedRow:
+                if self.proxyModelPayPerMin.data(selectedRow[0].siblingAtColumn(4),
+                                                 Qt.ItemDataRole.CheckStateRole) == 2:
+                    MM.showOnWidget(self, 'Не можете да изтриете активен коеф. за Мин.', 'warning')
+                    return
                 selectedId = self.proxyModelPayPerMin.data(selectedRow[0].siblingAtColumn(0), Qt.ItemDataRole.UserRole)
                 selectedName = self.proxyModelPayPerMin.data(selectedRow[0].siblingAtColumn(0),
                                                              Qt.ItemDataRole.DisplayRole)
