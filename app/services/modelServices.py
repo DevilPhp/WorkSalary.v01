@@ -1,16 +1,18 @@
+import requests
 from sqlalchemy import func
 
 from app.logger import logger
 from app.database import getDatabase, setDatabase
 from app.database.models import VidObleklo, Client, ProductionModel, Machine, Yarn, ProducedPiecesForModel
 from app.database.operations import DefaultOperForVidObleklo, ProductionModelOperations
-import requests
+from app.utils.appUtils import handle_api_connection
 from config import API_SERVER
 
 
 class ModelService:
 
     @staticmethod
+    @handle_api_connection
     def addNewClient(data, rows):
         if data:
             response = requests.post(f'{API_SERVER}/model/add_client',
@@ -30,6 +32,7 @@ class ModelService:
             return 0
 
     @staticmethod
+    @handle_api_connection
     def deleteClient(rowId, name):
         response = requests.post(f'{API_SERVER}/model/delete_client', json={'rowId': rowId, 'name': name}).json()
         if response['status'] =='success':
@@ -47,6 +50,7 @@ class ModelService:
             return 0
 
     @staticmethod
+    @handle_api_connection
     def addNewMachine(data, rows):
         if data:
             response = requests.post(f'{API_SERVER}/model/add_machine_type',
@@ -62,6 +66,7 @@ class ModelService:
             return False
 
     @staticmethod
+    @handle_api_connection
     def deleteSelectedMachine(rowId):
         response = requests.post(f'{API_SERVER}/model/delete_machine_type', json={'rowId': rowId}).json()
         if response['status'] == 'success':
@@ -79,6 +84,7 @@ class ModelService:
             return 0
 
     @staticmethod
+    @handle_api_connection
     def addNewYarn(data, rows):
         if data:
             response = requests.post(f'{API_SERVER}/model/add_yarn',
@@ -94,6 +100,7 @@ class ModelService:
             return False
 
     @staticmethod
+    @handle_api_connection
     def deleteSelectedYarn(rowId):
         response = requests.post(f'{API_SERVER}/model/delete_yarn', json={'rowId': rowId}).json()
         if response['status'] == 'success':
@@ -112,20 +119,29 @@ class ModelService:
 
     @staticmethod
     def deleteDefaultModelType(modelTypeId):
-        with setDatabase() as session:
-            modelType = session.query(VidObleklo).filter_by(OblekloVid=modelTypeId).first()
-            if modelType and not modelType.productionModel:
-                if modelType.defaultOperForVidOblekla:
-                    for operation in modelType.defaultOperForVidOblekla:
-                        session.delete(operation)
-                        logger.info(f"Default operation {operation.id} deleted successfully.")
-                session.delete(modelType)
-                session.commit()
-                logger.info(f"Default model type {modelTypeId} - {modelType.OblekloName} deleted successfully.")
-                return True
-            else:
-                logger.error(f"Failed to delete default model type {modelTypeId}.")
-                return False
+        response = requests.post(f'{API_SERVER}/model/delete_default_model_type',
+                                 json={'modelTypeId': modelTypeId}).json()
+        if response['status'] =='success':
+            logger.info(f"Default model type {modelTypeId} - {response['OblekloName']} deleted successfully.")
+            return True
+        else:
+            logger.error(f"Failed to delete default model type {modelTypeId}.")
+            return False
+
+        # with setDatabase() as session:
+        #     modelType = session.query(VidObleklo).filter_by(OblekloVid=modelTypeId).first()
+        #     if modelType and not modelType.productionModel:
+        #         if modelType.defaultOperForVidOblekla:
+        #             for operation in modelType.defaultOperForVidOblekla:
+        #                 session.delete(operation)
+        #                 logger.info(f"Default operation {operation.id} deleted successfully.")
+        #         session.delete(modelType)
+        #         session.commit()
+        #         logger.info(f"Default model type {modelTypeId} - {modelType.OblekloName} deleted successfully.")
+        #         return True
+        #     else:
+        #         logger.error(f"Failed to delete default model type {modelTypeId}.")
+        #         return False
 
     @staticmethod
     def addNewDefaultModelType(name):

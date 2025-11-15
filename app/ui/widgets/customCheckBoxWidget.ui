@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>326</width>
-    <height>19</height>
+    <width>296</width>
+    <height>18</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -50,8 +50,29 @@ QPushButton:hover {
 	background-color: #aeaeae;
 }
 
+QCheckBox::indicator {
+	width: 16px;
+    height: 16px;
+}
+
+QCheckBox::indicator:unchecked {
+	image: url(:/icons/app/assets/icons/Stop--Streamline-Solar-Broken.svg);
+}
+
+QCheckBox::indicator:hover {
+	image: url(:/icons/app/assets/icons/Stop--Streamline-Solar-Broken_#070808.svg);
+}
+
+QCheckBox::indicator:checked {
+	image: url(:/icons/app/assets/icons/Check-Square--Streamline-Solar-Broken-#008b69.svg);
+}
+
 QCheckBox:checked {
 	color: #008b69;
+}
+
+QCheckBox {
+	padding: 0px;
 }
 
 QCheckBox:disable {
@@ -86,7 +107,7 @@ QCheckBox::label {
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <item alignment="Qt::AlignLeft|Qt::AlignTop">
+   <item alignment="Qt::AlignLeft|Qt::AlignVCenter">
     <widget class="QWidget" name="widget" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -120,7 +141,7 @@ QCheckBox::label {
         </property>
         <property name="minimumSize">
          <size>
-          <width>240</width>
+          <width>220</width>
           <height>0</height>
          </size>
         </property>
@@ -135,6 +156,12 @@ QCheckBox::label {
         </property>
         <property name="text">
          <string>asdasdasdasds asdasds asdasdsad asd </string>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>14</width>
+          <height>14</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -166,7 +193,7 @@ QCheckBox::label {
            </property>
            <property name="minimumSize">
             <size>
-             <width>50</width>
+             <width>40</width>
              <height>0</height>
             </size>
            </property>

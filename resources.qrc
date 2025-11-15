@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="icons">
+    <file>app/assets/icons/Stop--Streamline-Solar-Broken_#070808.svg</file>
+    <file>app/assets/icons/Stop--Streamline-Solar-Broken_#192626.svg</file>
+    <file>app/assets/icons/Stop--Streamline-Solar-Broken.svg</file>
     <file>app/assets/icons/Log-Out--Streamline-Feather_#192626.svg</file>
     <file>app/assets/icons/Trash-Bin-Trash--Streamline-Solar-Broken.svg</file>
     <file>app/assets/icons/List-Down-Minimalistic--Streamline-Solar-Broken.svg</file>

@@ -312,14 +312,14 @@ class WorkerServices:
 
     @staticmethod
     @handle_api_connection
-    def updateTimePaperAndOperation(timePaperData):
+    def updateTimePaperAndOperation(timePapersData):
         response = requests.post(f'{API_SERVER}/worker/update_time_paper_and_operation',
-                                 json={'timePaperData': timePaperData}).json()
+                                 json={'timePapersData': timePapersData}).json()
         if response['status'] =='success':
-            logger.info(f"Time paper updated: {timePaperData}")
+            logger.info(f"Time paper updated: {timePapersData}")
             return True
         else:
-            logger.error(f"Unable to update time paper: {timePaperData}")
+            logger.error(f"Unable to update time paper: {timePapersData}")
             return False
 
     @staticmethod

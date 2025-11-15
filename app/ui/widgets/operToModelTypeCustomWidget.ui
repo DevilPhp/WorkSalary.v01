@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1448</width>
-    <height>995</height>
+    <width>995</width>
+    <height>760</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>900</width>
-    <height>800</height>
+    <width>800</width>
+    <height>580</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -22,7 +22,7 @@
   <property name="styleSheet">
    <string notr="true">*{
 	background-color: #dfdfdf;
-	font: 600 11pt &quot;Segoe UI&quot;;
+	font: 600 9pt &quot;Segoe UI&quot;;
 	color: #324b4c;
 }
 
@@ -31,7 +31,7 @@ QPushButton {
 	border: none;
 	border-radius: 10px;
 	padding: 5px;
-	font-size: 11pt;
+	font-size: 8pt;
 }
 
 QPushButton:hover{
@@ -44,16 +44,16 @@ QPushButton:hover{
 
 QLineEdit {
 	border: none;
-	font-size: 10pt;
+	font-size: 8pt;
 	border-bottom: 1px solid #7c9399;
 }
 
 #modelHolder QLabel, #newModelInfoHolder *, #operationsGroupsHolder *, #widget_3 * {
-	font-size: 10pt;
+	font-size: 8pt;
 }
 
 #widget_4 *, #saveOpertaionsGroupsBtn, #saveNewModel {
-	font-size: 10pt;
+	font-size: 8pt;
 	font-weight: 700;
 }
 
@@ -66,7 +66,7 @@ QLineEdit {
 }
 
 #pageTitle {
-	font: 700 13pt &quot;Segoe UI&quot;;
+	font: 700 11pt &quot;Segoe UI&quot;;
 }
 
 #userIcon, #logoutBtn{
@@ -80,7 +80,38 @@ QLineEdit {
 
 
 #usernameLabel {
-	font-size: 11pt;
+	font-size: 10pt;
+}
+
+QComboBox{
+	background-color: #dfdfdf;
+	border-bottom: 2px solid #7c9399;
+	border-radius: 3px;
+}
+
+QComboBox::drop-down{
+	image: url(':/icons/app/assets/icons/Alt-Arrow-Down--Streamline-Solar-Broken.svg');
+	width: 16px;
+	height: 16px;
+}
+
+QComboBox:hover{
+	color: #2b2b2c;
+	font: 700 8pt &quot;Segoe UI&quot;;
+	border-radius: 0px;
+	alternate-background-color: #2c313c;
+}
+QComboBox::item:selected{
+	color: #2b2b2c;
+	font: 700 8pt &quot;Segoe UI&quot;;
+	border-radius: 0px;
+}
+QComboBox::item{
+	color: #324b4c;
+	font: 600 8pt &quot;Segoe UI&quot;;
+	height: 10px;  
+	border: 4px solid transparent;
+	padding: 0px 4px 0px 4px;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -138,6 +169,21 @@ QLineEdit {
          <item alignment="Qt::AlignLeft">
           <widget class="QWidget" name="widget_4" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <property name="spacing">
+             <number>10</number>
+            </property>
+            <property name="leftMargin">
+             <number>5</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>5</number>
+            </property>
             <item>
              <widget class="QPushButton" name="operationsGroupViewBtn">
               <property name="text">
@@ -176,7 +222,7 @@ QLineEdit {
           <widget class="QWidget" name="userHolder" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <property name="spacing">
-             <number>10</number>
+             <number>3</number>
             </property>
             <property name="leftMargin">
              <number>0</number>
@@ -201,8 +247,8 @@ QLineEdit {
               </property>
               <property name="iconSize">
                <size>
-                <width>24</width>
-                <height>24</height>
+                <width>18</width>
+                <height>18</height>
                </size>
               </property>
              </widget>
@@ -221,8 +267,8 @@ QLineEdit {
               </property>
               <property name="iconSize">
                <size>
-                <width>24</width>
-                <height>24</height>
+                <width>18</width>
+                <height>18</height>
                </size>
               </property>
              </widget>
@@ -258,7 +304,7 @@ QLineEdit {
          <property name="bottomMargin">
           <number>0</number>
          </property>
-         <item alignment="Qt::AlignTop">
+         <item alignment="Qt::AlignLeft|Qt::AlignTop">
           <widget class="QWidget" name="modelInfoHolder" native="true">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -274,7 +320,7 @@ QLineEdit {
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_5">
             <property name="spacing">
-             <number>35</number>
+             <number>15</number>
             </property>
             <property name="leftMargin">
              <number>0</number>
@@ -292,7 +338,7 @@ QLineEdit {
              <widget class="QWidget" name="modelHolder" native="true">
               <property name="minimumSize">
                <size>
-                <width>320</width>
+                <width>240</width>
                 <height>0</height>
                </size>
               </property>
@@ -314,9 +360,17 @@ QLineEdit {
                </property>
                <item alignment="Qt::AlignHCenter|Qt::AlignTop">
                 <widget class="QLabel" name="label">
+                 <property name="font">
+                  <font>
+                   <family>Segoe UI</family>
+                   <pointsize>10</pointsize>
+                   <italic>false</italic>
+                   <bold>true</bold>
+                  </font>
+                 </property>
                  <property name="styleSheet">
                   <string notr="true">* {
-	font-size: 11pt;
+	font-size: 10pt;
 }</string>
                  </property>
                  <property name="text">
@@ -384,8 +438,14 @@ QLineEdit {
               </layout>
              </widget>
             </item>
-            <item alignment="Qt::AlignTop">
+            <item alignment="Qt::AlignLeft|Qt::AlignTop">
              <widget class="QWidget" name="newModelHolder" native="true">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
               <layout class="QVBoxLayout" name="verticalLayout_6">
                <property name="spacing">
                 <number>10</number>
@@ -526,7 +586,14 @@ QLineEdit {
                      </widget>
                     </item>
                     <item row="0" column="1">
-                     <widget class="QLineEdit" name="newModelLineEdit"/>
+                     <widget class="QLineEdit" name="newModelLineEdit">
+                      <property name="maximumSize">
+                       <size>
+                        <width>150</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                     </widget>
                     </item>
                     <item row="1" column="2">
                      <widget class="QLabel" name="label_8">
@@ -539,7 +606,7 @@ QLineEdit {
                      <widget class="QComboBox" name="yarnComboBox">
                       <property name="maximumSize">
                        <size>
-                        <width>200</width>
+                        <width>150</width>
                         <height>16777215</height>
                        </size>
                       </property>
@@ -560,6 +627,12 @@ QLineEdit {
                     </item>
                     <item row="0" column="3">
                      <widget class="QComboBox" name="modelTypeComboBox">
+                      <property name="maximumSize">
+                       <size>
+                        <width>150</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
                       <property name="focusPolicy">
                        <enum>Qt::NoFocus</enum>
                       </property>
@@ -577,6 +650,12 @@ QLineEdit {
                     </item>
                     <item row="2" column="1">
                      <widget class="QComboBox" name="machineComboBox">
+                      <property name="maximumSize">
+                       <size>
+                        <width>150</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
                       <property name="focusPolicy">
                        <enum>Qt::NoFocus</enum>
                       </property>
@@ -594,6 +673,12 @@ QLineEdit {
                     </item>
                     <item row="1" column="1">
                      <widget class="QLineEdit" name="piecesLineEdit">
+                      <property name="maximumSize">
+                       <size>
+                        <width>150</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
                       <property name="placeholderText">
                        <string>0</string>
                       </property>
@@ -607,7 +692,14 @@ QLineEdit {
                      </widget>
                     </item>
                     <item row="2" column="3">
-                     <widget class="QLineEdit" name="machineGaugeLineEdit"/>
+                     <widget class="QLineEdit" name="machineGaugeLineEdit">
+                      <property name="maximumSize">
+                       <size>
+                        <width>150</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                     </widget>
                     </item>
                     <item row="0" column="4">
                      <widget class="QLabel" name="label_10">
@@ -617,7 +709,14 @@ QLineEdit {
                      </widget>
                     </item>
                     <item row="0" column="5">
-                     <widget class="QLineEdit" name="descrLineEdit"/>
+                     <widget class="QLineEdit" name="descrLineEdit">
+                      <property name="maximumSize">
+                       <size>
+                        <width>200</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                     </widget>
                     </item>
                     <item row="1" column="5" alignment="Qt::AlignVCenter">
                      <widget class="QCheckBox" name="actualCheckBox">
@@ -703,7 +802,7 @@ QLineEdit {
                <widget class="QLineEdit" name="operationGroupLineEdit">
                 <property name="minimumSize">
                  <size>
-                  <width>250</width>
+                  <width>180</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -796,7 +895,7 @@ QLineEdit {
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_4">
             <property name="spacing">
-             <number>10</number>
+             <number>5</number>
             </property>
             <property name="leftMargin">
              <number>0</number>

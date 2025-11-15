@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customCheckBoxWidgetVraGnv.ui'
+## Form generated from reading UI file 'customCheckBoxWidgetRkdJsH.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -23,7 +23,7 @@ class Ui_customCheckBoxWidget(object):
     def setupUi(self, customCheckBoxWidget):
         if not customCheckBoxWidget.objectName():
             customCheckBoxWidget.setObjectName(u"customCheckBoxWidget")
-        customCheckBoxWidget.resize(326, 19)
+        customCheckBoxWidget.resize(296, 18)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -54,15 +54,37 @@ class Ui_customCheckBoxWidget(object):
 "	background-color: #aeaeae;\n"
 "}\n"
 "\n"
+"QCheckBox::indicator {\n"
+"	width: 16px;\n"
+"    height: 16px;\n"
+"}\n"
+"\n"
+"QCheckBox::indicator:unchecked {\n"
+"	image: url(:/icons/app/assets/icons/Stop--Streamline-Solar-Broken.svg);\n"
+"}\n"
+"\n"
+"QCheckBox::indicator:hover {\n"
+"	image: url(:/icons/app/assets/icons/Stop--Streamline-Solar-Broken_#070808.svg);\n"
+"}\n"
+"\n"
+"QCheckBox::indicator:checked {\n"
+"	image: url(:/icons/app/assets/icons/Check-Square--Streamline-Solar-Broken-#008b69.svg);\n"
+"}\n"
+"\n"
 "QCheckBox:checked {\n"
 "	color: #008b69;\n"
+"}\n"
+"\n"
+"QCheckBox {\n"
+"	padding: 0px;\n"
 "}\n"
 "\n"
 "QCheckBox:disable {\n"
 "	color: black;\n"
 "}\n"
 "\n"
-"QLineEdit {\n"
+"QLine"
+                        "Edit {\n"
 "	border-bottom: 1px solid #7c9399;\n"
 "}\n"
 "\n"
@@ -89,9 +111,10 @@ class Ui_customCheckBoxWidget(object):
         self.checkBox.setObjectName(u"checkBox")
         sizePolicy.setHeightForWidth(self.checkBox.sizePolicy().hasHeightForWidth())
         self.checkBox.setSizePolicy(sizePolicy)
-        self.checkBox.setMinimumSize(QSize(240, 0))
+        self.checkBox.setMinimumSize(QSize(220, 0))
         self.checkBox.setMaximumSize(QSize(260, 16777215))
         self.checkBox.setFocusPolicy(Qt.NoFocus)
+        self.checkBox.setIconSize(QSize(14, 14))
 
         self.horizontalLayout.addWidget(self.checkBox, 0, Qt.AlignLeft)
 
@@ -108,7 +131,7 @@ class Ui_customCheckBoxWidget(object):
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.lineEdit.sizePolicy().hasHeightForWidth())
         self.lineEdit.setSizePolicy(sizePolicy1)
-        self.lineEdit.setMinimumSize(QSize(50, 0))
+        self.lineEdit.setMinimumSize(QSize(40, 0))
         self.lineEdit.setMaximumSize(QSize(40, 16777215))
         self.lineEdit.setFocusPolicy(Qt.StrongFocus)
         self.lineEdit.setInputMethodHints(Qt.ImhDigitsOnly)
@@ -126,7 +149,7 @@ class Ui_customCheckBoxWidget(object):
         self.horizontalLayout.addWidget(self.labelHolder, 0, Qt.AlignRight)
 
 
-        self.verticalLayout.addWidget(self.widget, 0, Qt.AlignLeft|Qt.AlignTop)
+        self.verticalLayout.addWidget(self.widget, 0, Qt.AlignLeft|Qt.AlignVCenter)
 
 
         self.retranslateUi(customCheckBoxWidget)

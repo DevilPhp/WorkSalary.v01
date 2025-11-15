@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1037</width>
-    <height>684</height>
+    <width>800</width>
+    <height>580</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>756</width>
-    <height>670</height>
+    <width>800</width>
+    <height>580</height>
    </size>
   </property>
   <property name="font">

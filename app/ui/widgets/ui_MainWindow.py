@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'MainWindowlTdYyq.ui'
+## Form generated from reading UI file 'MainWindowrfzHkN.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -24,8 +24,8 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1037, 684)
-        MainWindow.setMinimumSize(QSize(756, 670))
+        MainWindow.resize(800, 580)
+        MainWindow.setMinimumSize(QSize(800, 580))
         font = QFont()
         font.setFamilies([u"Segoe UI"])
         font.setPointSize(9)

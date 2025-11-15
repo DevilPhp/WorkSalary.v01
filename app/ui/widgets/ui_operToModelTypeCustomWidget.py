@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'operToModelTypeCustomWidgetRHPMVm.ui'
+## Form generated from reading UI file 'operToModelTypeCustomWidgetTbBPFx.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -25,11 +25,11 @@ class Ui_customWidgetForModelOper(object):
     def setupUi(self, customWidgetForModelOper):
         if not customWidgetForModelOper.objectName():
             customWidgetForModelOper.setObjectName(u"customWidgetForModelOper")
-        customWidgetForModelOper.resize(1448, 995)
-        customWidgetForModelOper.setMinimumSize(QSize(900, 800))
+        customWidgetForModelOper.resize(995, 760)
+        customWidgetForModelOper.setMinimumSize(QSize(800, 580))
         customWidgetForModelOper.setStyleSheet(u"*{\n"
 "	background-color: #dfdfdf;\n"
-"	font: 600 11pt \"Segoe UI\";\n"
+"	font: 600 9pt \"Segoe UI\";\n"
 "	color: #324b4c;\n"
 "}\n"
 "\n"
@@ -38,7 +38,7 @@ class Ui_customWidgetForModelOper(object):
 "	border: none;\n"
 "	border-radius: 10px;\n"
 "	padding: 5px;\n"
-"	font-size: 11pt;\n"
+"	font-size: 8pt;\n"
 "}\n"
 "\n"
 "QPushButton:hover{\n"
@@ -51,16 +51,16 @@ class Ui_customWidgetForModelOper(object):
 "\n"
 "QLineEdit {\n"
 "	border: none;\n"
-"	font-size: 10pt;\n"
+"	font-size: 8pt;\n"
 "	border-bottom: 1px solid #7c9399;\n"
 "}\n"
 "\n"
 "#modelHolder QLabel, #newModelInfoHolder *, #operationsGroupsHolder *, #widget_3 * {\n"
-"	font-size: 10pt;\n"
+"	font-size: 8pt;\n"
 "}\n"
 "\n"
 "#widget_4 *, #saveOpertaionsGroupsBtn, #saveNewModel {\n"
-"	font-size: 10pt;\n"
+"	font-size: 8pt;\n"
 "	font-weight: 700;\n"
 "}\n"
 "\n"
@@ -73,13 +73,13 @@ class Ui_customWidgetForModelOper(object):
 "}\n"
 "\n"
 "#pageTitle {\n"
-"	font: 700 13pt \"Segoe UI\";\n"
+"	font: 700 11pt \"Segoe UI\";\n"
 "}\n"
 "\n"
 "#userIcon, #logoutBtn{\n"
 "	background-color: #dfdfdf;\n"
-"	padding:"
-                        " 0px;\n"
+"	padding: 0px;"
+                        "\n"
 "}\n"
 "\n"
 "#logoutBtn:hover{\n"
@@ -88,7 +88,38 @@ class Ui_customWidgetForModelOper(object):
 "\n"
 "\n"
 "#usernameLabel {\n"
-"	font-size: 11pt;\n"
+"	font-size: 10pt;\n"
+"}\n"
+"\n"
+"QComboBox{\n"
+"	background-color: #dfdfdf;\n"
+"	border-bottom: 2px solid #7c9399;\n"
+"	border-radius: 3px;\n"
+"}\n"
+"\n"
+"QComboBox::drop-down{\n"
+"	image: url(':/icons/app/assets/icons/Alt-Arrow-Down--Streamline-Solar-Broken.svg');\n"
+"	width: 16px;\n"
+"	height: 16px;\n"
+"}\n"
+"\n"
+"QComboBox:hover{\n"
+"	color: #2b2b2c;\n"
+"	font: 700 8pt \"Segoe UI\";\n"
+"	border-radius: 0px;\n"
+"	alternate-background-color: #2c313c;\n"
+"}\n"
+"QComboBox::item:selected{\n"
+"	color: #2b2b2c;\n"
+"	font: 700 8pt \"Segoe UI\";\n"
+"	border-radius: 0px;\n"
+"}\n"
+"QComboBox::item{\n"
+"	color: #324b4c;\n"
+"	font: 600 8pt \"Segoe UI\";\n"
+"	height: 10px;  \n"
+"	border: 4px solid transparent;\n"
+"	padding: 0px 4px 0px 4px;\n"
 "}")
         self.verticalLayout = QVBoxLayout(customWidgetForModelOper)
         self.verticalLayout.setSpacing(10)
@@ -109,7 +140,9 @@ class Ui_customWidgetForModelOper(object):
         self.widget_4 = QWidget(self.headerHolder)
         self.widget_4.setObjectName(u"widget_4")
         self.horizontalLayout_2 = QHBoxLayout(self.widget_4)
+        self.horizontalLayout_2.setSpacing(10)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.horizontalLayout_2.setContentsMargins(5, 0, 0, 5)
         self.operationsGroupViewBtn = QPushButton(self.widget_4)
         self.operationsGroupViewBtn.setObjectName(u"operationsGroupViewBtn")
 
@@ -135,7 +168,7 @@ class Ui_customWidgetForModelOper(object):
         self.userHolder = QWidget(self.headerHolder)
         self.userHolder.setObjectName(u"userHolder")
         self.horizontalLayout_3 = QHBoxLayout(self.userHolder)
-        self.horizontalLayout_3.setSpacing(10)
+        self.horizontalLayout_3.setSpacing(3)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 5, 0)
         self.logoutBtn = QPushButton(self.userHolder)
@@ -143,7 +176,7 @@ class Ui_customWidgetForModelOper(object):
         icon1 = QIcon()
         icon1.addFile(u":/icons/app/assets/icons/Log-Out--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.logoutBtn.setIcon(icon1)
-        self.logoutBtn.setIconSize(QSize(24, 24))
+        self.logoutBtn.setIconSize(QSize(18, 18))
 
         self.horizontalLayout_3.addWidget(self.logoutBtn)
 
@@ -153,7 +186,7 @@ class Ui_customWidgetForModelOper(object):
         icon2 = QIcon()
         icon2.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.userIcon.setIcon(icon2)
-        self.userIcon.setIconSize(QSize(24, 24))
+        self.userIcon.setIconSize(QSize(18, 18))
 
         self.horizontalLayout_3.addWidget(self.userIcon)
 
@@ -183,20 +216,26 @@ class Ui_customWidgetForModelOper(object):
         self.modelInfoHolder.setSizePolicy(sizePolicy)
         self.modelInfoHolder.setMinimumSize(QSize(0, 0))
         self.horizontalLayout_5 = QHBoxLayout(self.modelInfoHolder)
-        self.horizontalLayout_5.setSpacing(35)
+        self.horizontalLayout_5.setSpacing(15)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.horizontalLayout_5.setContentsMargins(0, 0, 0, 5)
         self.modelHolder = QWidget(self.modelInfoHolder)
         self.modelHolder.setObjectName(u"modelHolder")
-        self.modelHolder.setMinimumSize(QSize(320, 0))
+        self.modelHolder.setMinimumSize(QSize(240, 0))
         self.verticalLayout_5 = QVBoxLayout(self.modelHolder)
         self.verticalLayout_5.setSpacing(5)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.label = QLabel(self.modelHolder)
         self.label.setObjectName(u"label")
+        font = QFont()
+        font.setFamilies([u"Segoe UI"])
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setItalic(False)
+        self.label.setFont(font)
         self.label.setStyleSheet(u"* {\n"
-"	font-size: 11pt;\n"
+"	font-size: 10pt;\n"
 "}")
 
         self.verticalLayout_5.addWidget(self.label, 0, Qt.AlignHCenter|Qt.AlignTop)
@@ -250,6 +289,7 @@ class Ui_customWidgetForModelOper(object):
 
         self.newModelHolder = QWidget(self.modelInfoHolder)
         self.newModelHolder.setObjectName(u"newModelHolder")
+        self.newModelHolder.setMinimumSize(QSize(0, 0))
         self.verticalLayout_6 = QVBoxLayout(self.newModelHolder)
         self.verticalLayout_6.setSpacing(10)
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
@@ -309,6 +349,7 @@ class Ui_customWidgetForModelOper(object):
 
         self.newModelLineEdit = QLineEdit(self.newModelInfoHolder)
         self.newModelLineEdit.setObjectName(u"newModelLineEdit")
+        self.newModelLineEdit.setMaximumSize(QSize(150, 16777215))
 
         self.newModelLayout.addWidget(self.newModelLineEdit, 0, 1, 1, 1)
 
@@ -319,7 +360,7 @@ class Ui_customWidgetForModelOper(object):
 
         self.yarnComboBox = QComboBox(self.newModelInfoHolder)
         self.yarnComboBox.setObjectName(u"yarnComboBox")
-        self.yarnComboBox.setMaximumSize(QSize(200, 16777215))
+        self.yarnComboBox.setMaximumSize(QSize(150, 16777215))
         self.yarnComboBox.setFocusPolicy(Qt.NoFocus)
         self.yarnComboBox.setDuplicatesEnabled(True)
 
@@ -332,6 +373,7 @@ class Ui_customWidgetForModelOper(object):
 
         self.modelTypeComboBox = QComboBox(self.newModelInfoHolder)
         self.modelTypeComboBox.setObjectName(u"modelTypeComboBox")
+        self.modelTypeComboBox.setMaximumSize(QSize(150, 16777215))
         self.modelTypeComboBox.setFocusPolicy(Qt.NoFocus)
         self.modelTypeComboBox.setDuplicatesEnabled(True)
 
@@ -344,6 +386,7 @@ class Ui_customWidgetForModelOper(object):
 
         self.machineComboBox = QComboBox(self.newModelInfoHolder)
         self.machineComboBox.setObjectName(u"machineComboBox")
+        self.machineComboBox.setMaximumSize(QSize(150, 16777215))
         self.machineComboBox.setFocusPolicy(Qt.NoFocus)
         self.machineComboBox.setDuplicatesEnabled(True)
 
@@ -356,6 +399,7 @@ class Ui_customWidgetForModelOper(object):
 
         self.piecesLineEdit = QLineEdit(self.newModelInfoHolder)
         self.piecesLineEdit.setObjectName(u"piecesLineEdit")
+        self.piecesLineEdit.setMaximumSize(QSize(150, 16777215))
 
         self.newModelLayout.addWidget(self.piecesLineEdit, 1, 1, 1, 1)
 
@@ -366,6 +410,7 @@ class Ui_customWidgetForModelOper(object):
 
         self.machineGaugeLineEdit = QLineEdit(self.newModelInfoHolder)
         self.machineGaugeLineEdit.setObjectName(u"machineGaugeLineEdit")
+        self.machineGaugeLineEdit.setMaximumSize(QSize(150, 16777215))
 
         self.newModelLayout.addWidget(self.machineGaugeLineEdit, 2, 3, 1, 1)
 
@@ -376,6 +421,7 @@ class Ui_customWidgetForModelOper(object):
 
         self.descrLineEdit = QLineEdit(self.newModelInfoHolder)
         self.descrLineEdit.setObjectName(u"descrLineEdit")
+        self.descrLineEdit.setMaximumSize(QSize(200, 16777215))
 
         self.newModelLayout.addWidget(self.descrLineEdit, 0, 5, 1, 1)
 
@@ -404,10 +450,10 @@ class Ui_customWidgetForModelOper(object):
         self.verticalLayout_6.addWidget(self.newModelInfoHolder)
 
 
-        self.horizontalLayout_5.addWidget(self.newModelHolder, 0, Qt.AlignTop)
+        self.horizontalLayout_5.addWidget(self.newModelHolder, 0, Qt.AlignLeft|Qt.AlignTop)
 
 
-        self.horizontalLayout_7.addWidget(self.modelInfoHolder, 0, Qt.AlignTop)
+        self.horizontalLayout_7.addWidget(self.modelInfoHolder, 0, Qt.AlignLeft|Qt.AlignTop)
 
         self.operationsGroupsHolder = QWidget(self.widget_2)
         self.operationsGroupsHolder.setObjectName(u"operationsGroupsHolder")
@@ -426,7 +472,7 @@ class Ui_customWidgetForModelOper(object):
 
         self.operationGroupLineEdit = QLineEdit(self.operationsGroupsHolder)
         self.operationGroupLineEdit.setObjectName(u"operationGroupLineEdit")
-        self.operationGroupLineEdit.setMinimumSize(QSize(250, 0))
+        self.operationGroupLineEdit.setMinimumSize(QSize(180, 0))
 
         self.gridLayout.addWidget(self.operationGroupLineEdit, 0, 1, 1, 1)
 
@@ -481,7 +527,7 @@ class Ui_customWidgetForModelOper(object):
         self.optionsHolder.setFrameShape(QFrame.StyledPanel)
         self.optionsHolder.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_4 = QHBoxLayout(self.optionsHolder)
-        self.horizontalLayout_4.setSpacing(10)
+        self.horizontalLayout_4.setSpacing(5)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 10)
         self.selectAllCheckbox = QCheckBox(self.optionsHolder)

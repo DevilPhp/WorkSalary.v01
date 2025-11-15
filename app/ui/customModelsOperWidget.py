@@ -300,7 +300,9 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             self.groupOperationsForModel = OpS.getGroupOperationsForModel(selectedText.split(' - ')[0])
             Utils.setupCompleter(self.groupOperationsForModel.keys(), self.operationGroupLineEdit)
 
-            operationsNumbers = {operation.ОперацияNo: operation for operation in operationsForModel}
+            operationsNumbers = [operation['ОперацияNo'] for operation in operationsForModel]
+
+            print(operationsNumbers)
 
             for opId, widgets in self.comboBoxItems.items():
                 checkbox = widgets[0]
@@ -321,10 +323,10 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
                     label.setEnabled(True)
 
             for operation in operationsForModel:
-                self.comboBoxItems[operation.ОперацияNo][0].setText(
-                    f'{operation.ОперацияNo}:  {operation.Операция}'
+                self.comboBoxItems[operation['ОперацияNo']][0].setText(
+                    f'{operation["ОперацияNo"]}:  {operation["Операция"]}'
                 )
-                self.comboBoxItems[operation.ОперацияNo][1].setText('')
+                self.comboBoxItems[operation['ОперацияNo']][1].setText('')
                 # self.comboBoxItems[operation.ОперацияNo][1].setText(str(round(operation.TimeForOper, 2)))
             # self.operationGroupLineEdit.clear()
             self.operationGroupLineEdit.setFocus()
@@ -592,14 +594,16 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             self.setModelInfoIfExists()
 
         self.setEditModelVisible(True)
+        # print(self.comboBoxItems)
         for operation in operationsForModel:
-            self.modelExistingOperations.append(operation.ОперацияNo)
-            if not int(self.comboBoxItems[operation.ОперацияNo][0].objectName()) in self.newModelOperations:
-                self.comboBoxItems[operation.ОперацияNo][0].setChecked(True)
-                self.comboBoxItems[operation.ОперацияNo][0].setText(
-                    f'{operation.ОперацияNo}:  {operation.Операция}'
+            self.modelExistingOperations.append(operation['ОперацияNo'])
+            print(f'Existing operation: {operation["ОперацияNo"]}')
+            if not int(self.comboBoxItems[operation['ОперацияNo']][0].objectName()) in self.newModelOperations:
+                self.comboBoxItems[operation['ОперацияNo']][0].setChecked(True)
+                self.comboBoxItems[operation['ОперацияNo']][0].setText(
+                    f'{operation["ОперацияNo"]}:  {operation["Операция"]}'
                 )
-                self.comboBoxItems[operation.ОперацияNo][1].setText(str(round(operation.TimeForOper, 2)))
+                self.comboBoxItems[operation['ОперацияNo']][1].setText(str(round(operation['TimeForOper'], 2)))
         if selectedText in self.modelNames:
             self.isOperationsReseted = False
 
@@ -710,6 +714,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
                                              newCustomComboBoxItem.lineEdit,
                                              newCustomComboBoxItem.label]
             newCustomComboBoxItem.checkBox.stateChanged.connect(self.updateSelectAllBtn)
+            # print(self.comboBoxItems)
 
     def updateNewModelOperations(self):
         if isinstance(self.sender(), QCheckBox):

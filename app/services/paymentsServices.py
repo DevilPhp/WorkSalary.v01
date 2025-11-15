@@ -1,6 +1,4 @@
-from app.database import getDatabase, setDatabase
 from app.logger import logger
-from app.database.payment import HolidaysPerYear, Holiday, PaymentPerMinute, NightPaymentPerMinute
 from app.utils.appUtils import handle_api_connection
 import requests
 from config import API_SERVER
@@ -99,29 +97,25 @@ class PaymentServices:
         else:
             logger.error("Failed to delete holiday")
             return False
-        #
-        # with setDatabase() as session:
-        #     holiday = session.query(Holiday).filter_by(id=holidayId).first()
-        #     if holiday:
-        #         year = session.query(HolidaysPerYear).filter_by(Year=year).first()
-        #         session.delete(holiday)
-        #         year.HolidaysCount -= 1
-        #         session.commit()
-        #         logger.info(f'Deleted holiday: {holiday.HolidayName} on {holiday.HolidayDate} by {user}')
-        #         return True
 
     @staticmethod
+    @handle_api_connection
     def getHolidaysYears():
-        # returnedYears = []
-        with getDatabase() as session:
-            years = session.query(HolidaysPerYear.Year).order_by(HolidaysPerYear.Year).all()
-            returnedYears = [year[0] for year in years]
-            return returnedYears
+        response = requests.get(f"{API_SERVER}/payment/get_holidays_years").json()
+        if response['status'] =='success':
+            return response['data']
+        else:
+            logger.error("Failed to get holidays years")
+            return []
 
     @staticmethod
+    @handle_api_connection
     def addHolidaysYear(year, user):
-        with setDatabase() as session:
-            newHolidaysYear = HolidaysPerYear(Year=year, HolidaysCount=0, UpdatedBy=user)
-            session.add(newHolidaysYear)
-            session.commit()
+        response = requests.post(f"{API_SERVER}/payment/add_holidays_year",
+                                 json={'year': year, 'user': user}).json()
+        if response['status'] =='success':
             logger.info(f'Added new holidays year: {year} by {user}')
+            return True
+        else:
+            logger.error("Failed to add holidays year")
+            return False

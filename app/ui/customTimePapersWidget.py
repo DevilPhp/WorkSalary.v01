@@ -319,6 +319,11 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 displayData = modelIndex.data(Qt.ItemDataRole.DisplayRole)
                 userData = modelIndex.data(Qt.ItemDataRole.UserRole)
 
+                if col == 2:
+                    if displayData == 'Почасова работа' or displayData == 'Извънредна работа':
+                        MM.showOnWidget(self, f"Не се поддържа {displayData} за копиране", 'warning')
+                        return
+
                 # Convert to string if needed
                 if displayData is not None:
                     displayData = str(displayData)
@@ -923,13 +928,15 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
         if copy and copyData:
             count = len(copyData)
-
+        dataToAdd = []
         for i in range(count):
+
             pieces = None
             if operationsGroupForAdd:
                 modelOperationId = list(operationsGroupForAdd.keys())[i]
+                pieces = int(self.modelPiecesLineEdit.text())
                 modelOperationTime = round(
-                    operationsGroupForAdd[modelOperationId] * int(self.modelPiecesLineEdit.text()), 2
+                    operationsGroupForAdd[modelOperationId] * pieces, 2
                 )
                 orderId = self.clientModels[self.clientModelsLineEdit.text()]
             elif ((self.modelOperationLineEdit.text() == '' or
@@ -945,10 +952,16 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 modelOperationTime = 0
                 orderId = None
             elif copy and copyData[i]:
-                modelOperationId = int(copyData[i]['3']['userRole'])
-                orderId = int(copyData[i]['2']['userRole'])
-                modelOperationTime = float(copyData[i]['6']['display'])
-                pieces = int(copyData[i]['5']['display'])
+                if copyData[i]['3']['userRole'] and copyData[i]['2']['userRole']:
+                    modelOperationId = int(copyData[i]['3']['userRole'])
+                    orderId = int(copyData[i]['2']['userRole'])
+                    modelOperationTime = float(copyData[i]['6']['display'])
+                    pieces = int(copyData[i]['5']['display'])
+                else:
+                    modelOperationId = None
+                    orderId = None
+                    modelOperationTime = 0
+                    pieces = 0
             else:
                 modelOperationId = self.modelOperations[self.modelOperationLineEdit.text()][1]
                 modelOperationTime = float(self.piecesTimeLineEdit.text())
@@ -977,7 +990,6 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
             if nightMins > overMinsForBreak:
                 nightMins -= 60
-
 
             if int(self.workerNumberLineEdit.text()) not in self.existingTimePapers.keys():
                 dateStr = self.timePaperDateEdit.date().toString('yyyy-MM-dd')
@@ -1013,7 +1025,9 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                     'nightMins': nightMins,
                     'currentShiftNightMins': currentShiftNightMins,
                 }
-                timePaper = WoS.updateTimePaperAndOperation(timePaperData)
+                dataToAdd.append(timePaperData)
+        if dataToAdd:
+            timePaper = WoS.updateTimePaperAndOperation(dataToAdd)
 
         if timePaper:
             if operationsGroupForAdd:
@@ -1076,22 +1090,6 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.workerNameLineEdit.clear()
             self.workerNameLineEdit.setFocus()
             self.clearWorker()
-
-        # if self.existingTimePapers:
-        #     timePaperId = self.existingTimePapers[int(workerId)]
-        #     shift = WoS.getExistingTimePaperShift(timePaperId)
-        #     if shift:
-        #         self.shiftNameLineEdit.setCurrentText(shift[0])
-        #         self.shiftStart.setTime(QTime(shift[1].hour, shift[1].minute))
-        #         self.shiftEnd.setTime(QTime(shift[2].hour, shift[2].minute))
-        #         self.shiftNameLineEdit.setEnabled(False)
-        #         self.shiftStart.setEnabled(False)
-        #         self.shiftEnd.setEnabled(False)
-        # else:
-        #     self.shiftNameLineEdit.setCurrentIndex(0)
-        #     self.shiftNameLineEdit.setEnabled(True)
-        #     self.shiftStart.setEnabled(True)
-        #     self.shiftEnd.setEnabled(True)
 
     def clearWorker(self):
         self.workerShiftsHolder.setEnabled(False)

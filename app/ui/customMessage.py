@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QGraphicsOpacityEffect, QGraphicsDropShadowEffect
 
 from app.ui.widgets.ui_customMessageWidget import *
 
+
 class CustomMessageBox(QWidget, Ui_customMessageWidget):
     INFO = "info"
     SUCCESS = "success"

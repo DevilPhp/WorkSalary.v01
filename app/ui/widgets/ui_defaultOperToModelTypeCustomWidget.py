@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'defaultOperToModelTypeCustomWidgetvMHrqW.ui'
+## Form generated from reading UI file 'defaultOperToModelTypeCustomWidgetdjRYKG.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -24,11 +24,11 @@ class Ui_customWidgetForDefaultOper(object):
     def setupUi(self, customWidgetForDefaultOper):
         if not customWidgetForDefaultOper.objectName():
             customWidgetForDefaultOper.setObjectName(u"customWidgetForDefaultOper")
-        customWidgetForDefaultOper.resize(1184, 893)
-        customWidgetForDefaultOper.setMinimumSize(QSize(800, 700))
+        customWidgetForDefaultOper.resize(996, 671)
+        customWidgetForDefaultOper.setMinimumSize(QSize(800, 580))
         customWidgetForDefaultOper.setStyleSheet(u"*{\n"
 "	background-color: #dfdfdf;\n"
-"	font: 600 11pt \"Segoe UI\";\n"
+"	font: 600 8pt \"Segoe UI\";\n"
 "	color: #324b4c;\n"
 "}\n"
 "\n"
@@ -37,7 +37,7 @@ class Ui_customWidgetForDefaultOper(object):
 "	border: none;\n"
 "	border-radius: 10px;\n"
 "	padding: 5px;\n"
-"	font-size: 10.5pt;\n"
+"	font-size: 8pt;\n"
 "	font-weight: 700;\n"
 "}\n"
 "\n"
@@ -55,7 +55,7 @@ class Ui_customWidgetForDefaultOper(object):
 "}\n"
 "\n"
 "#pageTitle {\n"
-"	font: 700 13pt \"Segoe UI\";\n"
+"	font: 700 11pt \"Segoe UI\";\n"
 "}\n"
 "\n"
 "#userIcon, #logoutBtn{\n"
@@ -68,7 +68,39 @@ class Ui_customWidgetForDefaultOper(object):
 "}\n"
 "\n"
 "#usernameLabel {\n"
-"	font-size: 11pt;\n"
+"	font-size: 10pt;\n"
+"}\n"
+"\n"
+"QComboBox{\n"
+"	background-color: #dfdfdf;\n"
+"	border-bottom: 2px solid #7c9399;\n"
+"	border-radius: 3px;\n"
+"}\n"
+"\n"
+"QComboBox::drop-down{\n"
+"	image: url(':/icons/app/assets/icons/Alt-Arrow-Down--Streamline-Solar-"
+                        "Broken.svg');\n"
+"	width: 16px;\n"
+"	height: 16px;\n"
+"}\n"
+"\n"
+"QComboBox:hover{\n"
+"	color: #2b2b2c;\n"
+"	font: 700 8pt \"Segoe UI\";\n"
+"	border-radius: 0px;\n"
+"	alternate-background-color: #2c313c;\n"
+"}\n"
+"QComboBox::item:selected{\n"
+"	color: #2b2b2c;\n"
+"	font: 700 8pt \"Segoe UI\";\n"
+"	border-radius: 0px;\n"
+"}\n"
+"QComboBox::item{\n"
+"	color: #324b4c;\n"
+"	font: 600 8pt \"Segoe UI\";\n"
+"	height: 10px;  \n"
+"	border: 4px solid transparent;\n"
+"	padding: 0px 4px 0px 4px;\n"
 "}\n"
 "\n"
 "#delDefModelTypeBtn {\n"
@@ -123,7 +155,7 @@ class Ui_customWidgetForDefaultOper(object):
         self.widget_3 = QWidget(self.widget_2)
         self.widget_3.setObjectName(u"widget_3")
         self.horizontalLayout_3 = QHBoxLayout(self.widget_3)
-        self.horizontalLayout_3.setSpacing(10)
+        self.horizontalLayout_3.setSpacing(3)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 5, 0)
         self.logoutBtn = QPushButton(self.widget_3)
@@ -131,7 +163,7 @@ class Ui_customWidgetForDefaultOper(object):
         icon = QIcon()
         icon.addFile(u":/icons/app/assets/icons/Log-Out--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.logoutBtn.setIcon(icon)
-        self.logoutBtn.setIconSize(QSize(24, 24))
+        self.logoutBtn.setIconSize(QSize(18, 18))
 
         self.horizontalLayout_3.addWidget(self.logoutBtn)
 
@@ -141,7 +173,7 @@ class Ui_customWidgetForDefaultOper(object):
         icon1 = QIcon()
         icon1.addFile(u":/icons/app/assets/icons/User--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.userIcon.setIcon(icon1)
-        self.userIcon.setIconSize(QSize(24, 24))
+        self.userIcon.setIconSize(QSize(18, 18))
 
         self.horizontalLayout_3.addWidget(self.userIcon)
 
@@ -193,7 +225,7 @@ class Ui_customWidgetForDefaultOper(object):
         icon2 = QIcon()
         icon2.addFile(u":/icons/app/assets/icons/Trash-Bin-Trash--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.delDefModelTypeBtn.setIcon(icon2)
-        self.delDefModelTypeBtn.setIconSize(QSize(22, 22))
+        self.delDefModelTypeBtn.setIconSize(QSize(18, 18))
 
         self.horizontalLayout_4.addWidget(self.delDefModelTypeBtn, 0, Qt.AlignRight)
 

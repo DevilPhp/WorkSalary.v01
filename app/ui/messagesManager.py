@@ -25,6 +25,9 @@ class MessageManager:
         if widget:
             # Create a temporary notification for this widget
             notification = CustomMessageBox(widget)
+            if notification_type == 'error' or notification_type == 'warning':
+                if timeout < 3000:
+                    timeout = 3000
             notification.showМessage(message, notification_type, timeout)
         else:
             logger.warning("Cannot show notification: Invalid widget")
