@@ -44,9 +44,11 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
 
         self.paymentsDetailsTableHolder.layout().addWidget(self.workerDetalsTreeView)
         self.tablePaymentDetailsModel = QStandardItemModel()
-        self.tablePaymentDetailsNames = ['ID', 'Дата', 'Смяна', 'Поръчки', 'Опер.',
-                                         'Вр. мин.', 'Поч./Празн. дни', 'Поч. Раб.', 'Изв. Раб.', 'Нощен труд',
-                                         'Бр.', 'Ефект.', 'Нач. лв.', 'Нач. €']
+        self.tablePaymentDetailsNames = ['ID', 'Дата', 'Смяна', 'Поръчки', 'Опер.', 'Вр. мин.',
+                                         'Поч. дни', 'Поч. дни Лв.', 'Поч. дни €', 'Праз. дни', 'Праз. дни Лв.',
+                                         'Праз. дни €', 'Поч. Раб.', 'Изв. Раб.', 'Изв. Раб. Лв.', 'Изв. Раб. €',
+                                         'Нощен труд', 'Нощен труд Лв.', 'Нощен труд €', 'Бр.', 'Ефект.',
+                                         'Нач. лв.', 'Нач. €', 'Тотал лв.', 'Тотал €']
         for i, tableHeaderName in enumerate(self.tablePaymentDetailsNames):
             self.tablePaymentDetailsModel.setHorizontalHeaderItem(i, QStandardItem(tableHeaderName))
             self.tablePaymentDetailsModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignLeft)
@@ -255,6 +257,12 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
         self.workerDetalsTreeView.setColumnWidth(8, 72)
         self.workerDetalsTreeView.setColumnWidth(9, 42)
         self.workerDetalsTreeView.setColumnWidth(10, 60)
+
+    # ['ID'0, 'Дата'1, 'Смяна'2, 'Поръчки'3, 'Опер.'4, 'Вр. мин.'5,
+    #  'Поч. дни'6, 'Поч. дни Лв.'7, 'Поч. дни €'8, 'Праз. дни'9, 'Праз. дни Лв.'10,
+    #  'Праз. дни €'11, 'Поч. Раб.'12, 'Изв. Раб.'13, 'Изв. Раб. Лв.'14, 'Изв. Раб. €'15,
+    #  'Нощен труд'16, 'Нощен труд Лв.'17, 'Нощен труд €'18, 'Бр.', 'Ефект.'19,
+    #  'Нач. лв.'20, 'Нач. €'21, 'Тотал лв.'22, 'Тотал €'23]
 
     def setInitialColumns(self):
         self.workerDetalsTreeView.setColumnHidden(6, True)

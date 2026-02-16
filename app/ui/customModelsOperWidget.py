@@ -304,8 +304,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             Utils.setupCompleter(self.groupOperationsForModel.keys(), self.operationGroupLineEdit)
 
             operationsNumbers = [operation['ОперацияNo'] for operation in operationsForModel]
-
-            print(operationsNumbers)
+            # print(operationsNumbers)
 
             for opId, widgets in self.comboBoxItems.items():
                 checkbox = widgets[0]
@@ -489,7 +488,10 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
 
     def checkOperations(self):
         print(self.modelExistingOperations)
-        operations = Ms.checkIfOperationsCanBeDeleted(self.newModel, self.addOperationsForNewModel)
+        print(self.addOperationsForNewModel)
+        operations = Ms.checkIfOperationsCanBeDeleted(self.newModel,
+                                                      self.addOperationsForNewModel,
+                                                      self.removedOperations)
         print(operations)
         if operations:
             newDialog = CustomYesNowDialog(isNormalIcon=False)
@@ -497,6 +499,8 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             newDialog.setMessage(name='', message=message, mode='warning')
             result = newDialog.exec()
             if result == QDialog.Accepted:
+                return False
+            else:
                 return False
         else:
             return True
@@ -574,7 +578,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         # if not self.isOperationsReseted:
         # self.resetAllOperations(True)
         self.modelExistingOperations.clear()
-
+        self.removedOperations.clear()
         if self.modelsLineEdit.text() != '':
             completer = self.modelsLineEdit.completer()
             self.modelsLineEdit.setText(Utils.setReturnBtnForCompleter(completer))
@@ -609,6 +613,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
                     f'{operation["ОперацияNo"]}:  {operation["Операция"]}'
                 )
                 self.comboBoxItems[operation['ОперацияNo']][1].setText(str(round(operation['TimeForOper'], 2)))
+                self.newModelOperations.append(int(operation['ОперацияNo']))
         if selectedText in self.modelNames:
             self.isOperationsReseted = False
 
@@ -725,12 +730,24 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         if isinstance(self.sender(), QCheckBox):
             if (self.sender().checkState() == Qt.CheckState.Checked and
                     int(self.sender().objectName()) not in self.newModelOperations and
+                    not self.operationsGroupsHolder.isVisible() and self.editModelCheckBox.isChecked()):
+                self.newModelOperations.append(int(self.sender().objectName()))
+                if int(self.sender().objectName()) in self.removedOperations:
+                    self.removedOperations.remove(int(self.sender().objectName()))
+            elif (self.sender().checkState() == Qt.CheckState.Checked and
+                    int(self.sender().objectName()) not in self.newModelOperations and
                     not self.operationsGroupsHolder.isVisible()):
                 self.newModelOperations.append(int(self.sender().objectName()))
+            elif (self.sender().checkState() == Qt.CheckState.Unchecked and
+                  int(self.sender().objectName()) in self.newModelOperations and not
+                    self.operationsGroupsHolder.isVisible() and self.editModelCheckBox.isChecked()):
+                self.newModelOperations.remove(int(self.sender().objectName()))
+                self.removedOperations.append(int(self.sender().objectName()))
             elif (self.sender().checkState() == Qt.CheckState.Unchecked and
                   int(self.sender().objectName()) in self.newModelOperations and
                   not self.operationsGroupsHolder.isVisible()):
                 self.newModelOperations.remove(int(self.sender().objectName()))
+
             if (self.sender().checkState() == Qt.CheckState.Checked and
                     self.operationsGroupsHolder.isVisible()):
                 self.selectedOperForGroup.append(int(self.sender().objectName()))
@@ -738,6 +755,8 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
                   self.operationsGroupsHolder.isVisible()):
                 self.selectedOperForGroup.remove(int(self.sender().objectName()))
             print(self.selectedOperForGroup)
+            print(self.newModelOperations)
+            print(self.removedOperations)
 
     def selectAllOperations(self):
         # self.selectAllCheckbox.blockSignals(True)

@@ -27,19 +27,24 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
         self.paymentsTableView = CustomTableViewWithMultiSelection()
         self.paymentsTableHolder.layout().addWidget(self.paymentsTableView)
         self.tablePaymentsModel = QStandardItemModel()
-        self.tablePaymentsNames = ['ID', '№', 'Име', 'Зар. дни', 'В поч. дни', 'В Празници', 'Бр.',
-                                   'Вр. Опер. в ч.', 'Почас. в ч.', 'Извънр. в ч.', 'Нощен в ч.', 'Бр./час', 'Лв.', '€']
+        self.tablePaymentsNames = ['ID', '№', 'Име', 'Длъжност', 'Цех', 'Зар. дни', 'В Поч. дни', 'В Поч. дни Лв.',
+                                   'В Поч. дни €', 'В Празници', 'В Празници Лв.', 'В Празници €', 'Бр.',
+                                   'Вр. Опер.', 'Почас.', 'Извънр.', 'Извънр. Лв.', 'Извънр. €', 'Нощен', 'Нощен в Лв.',
+                                   'Нощен в €', 'Ефек. в %', 'Зар. Лв.', 'Зар. €', 'Тотал Лв.', 'Тотал €']
         for i, tableHeaderName in enumerate(self.tablePaymentsNames):
             self.tablePaymentsModel.setHorizontalHeaderItem(i, QStandardItem(tableHeaderName))
             self.tablePaymentsModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignLeft)
             self.tablePaymentsModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignVCenter)
-        self.proxyModelPaymentsTable = CaseInsensitiveProxyModel(numericColumns=[0, 1, 3, 4, 5, 6, 11, 12, 13],
-                                                                    parent=self)
+        self.proxyModelPaymentsTable = CaseInsensitiveProxyModel(numericColumns=[0, 1, 5, 6, 7, 8, 9, 10, 11, 12,
+                                                                                 13, 14, 15, 16, 17, 18, 19, 20,
+                                                                                 21, 22, 23, 24, 25], parent=self)
         self.setProxyModel(self.proxyModelPaymentsTable, self.tablePaymentsModel, self.paymentsTableView)
         # self.timePapersForDayTableView.setModel(self.tablePaymentsModel)
         self.paymentsTableView.horizontalHeader().setDefaultSectionSize(80)
         self.paymentsTableView.horizontalHeader().setStretchLastSection(True)
         self.setColumnWidths()
+
+        self.setCurrentPayments()
 
         self.paymentsTableView.selectedRows.connect(self.showPaymentDetails)
         self.paymentsTableView.clearCurrentSelection.connect(self.resetSelectedInfo)
@@ -50,11 +55,14 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
         self.checkBoxFiltering = {}
         self.initialCheckBoxes = {}
 
+        self.levaCheckBox.stateChanged.connect(self.onLevaStateChanged)
         self.weekendDaysCheckBox.stateChanged.connect(self.onWeekendStateChanged)
         self.holidaysCheckBox.stateChanged.connect(self.onHolidaysStateChanged)
         self.hourlyCheckBox.stateChanged.connect(self.onHourlyStateChanged)
         self.overtimeCheckBox.stateChanged.connect(self.onOvertimeStateChanged)
         self.nightTimeCheckBox.stateChanged.connect(self.onNightTimeStateChanged)
+        self.positionCheckBox.stateChanged.connect(self.onPositionStateChanged)
+        self.placeCheckBox.stateChanged.connect(self.onPlaceStateChanged)
         self.selectAllCheckBox.stateChanged.connect(self.onSelectAllStateChanged)
 
         self.exportToExcelBtn.clicked.connect(self.exportToExcel)
@@ -78,6 +86,19 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
     # def setPayPerMinComboBox(self):
     #     paymentsPerMin = WoS.getPaymentsForMin()
     #     self.payPerMinComboBox.clear()
+
+    def setCurrentPayments(self):
+        currentPayments = WoS.getCurrentPayments()
+        if currentPayments:
+            self.levaPerMinDayLabel.setText(currentPayments['dayInLeva'])
+            self.euroPerMinDayLabel.setText(currentPayments['dayInEuro'])
+            self.levaPerMinNightLabel.setText(currentPayments['nightInLeva'])
+            self.euroPerMinNightLabel.setText(currentPayments['nightInEuro'])
+        else:
+            self.levaPerMinDayLabel.setText("--")
+            self.euroPerMinDayLabel.setText("--")
+            self.levaPerMinNightLabel.setText("--")
+            self.euroPerMinNightLabel.setText("--")
 
     def exportToExcel(self):
         """Export the current table view data to Excel file"""
@@ -203,18 +224,33 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
             MM.showOnWidget(self, f"Грешка при записване: {str(e)}", "error")
 
     def setInitialColumns(self):
+        self.paymentsTableView.setColumnHidden(3, True)
         self.paymentsTableView.setColumnHidden(4, True)
-        self.paymentsTableView.setColumnHidden(5, True)
+        self.paymentsTableView.setColumnHidden(6, True)
+        self.paymentsTableView.setColumnHidden(7, True)
         self.paymentsTableView.setColumnHidden(8, True)
         self.paymentsTableView.setColumnHidden(9, True)
         self.paymentsTableView.setColumnHidden(10, True)
+        self.paymentsTableView.setColumnHidden(11, True)
+        self.paymentsTableView.setColumnHidden(14, True)
+        self.paymentsTableView.setColumnHidden(15, True)
+        self.paymentsTableView.setColumnHidden(16, True)
+        self.paymentsTableView.setColumnHidden(17, True)
+        self.paymentsTableView.setColumnHidden(18, True)
+        self.paymentsTableView.setColumnHidden(19, True)
+        self.paymentsTableView.setColumnHidden(20, True)
+        self.paymentsTableView.setColumnHidden(22, True)
+        self.paymentsTableView.setColumnHidden(24, True)
 
     def checkAllstate(self):
         if (self.hourlyCheckBox.isChecked() and
                 self.overtimeCheckBox.isChecked() and
                 self.nightTimeCheckBox.isChecked() and
                 self.weekendDaysCheckBox.isChecked() and
-                self.holidaysCheckBox.isChecked()):
+                self.holidaysCheckBox.isChecked() and
+                self.levaCheckBox.isChecked() and
+                self.positionCheckBox.isChecked() and
+                self.placeCheckBox.isChecked()):
             self.selectAllCheckBox.setChecked(True)
         else:
             self.selectAllCheckBox.blockSignals(True)
@@ -227,26 +263,86 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
         self.nightTimeCheckBox.setChecked(state)
         self.weekendDaysCheckBox.setChecked(state)
         self.holidaysCheckBox.setChecked(state)
+        self.levaCheckBox.setChecked(state)
+        self.positionCheckBox.setChecked(state)
+        self.placeCheckBox.setChecked(state)
+
+    def onLevaStateChanged(self, state):
+        self.paymentsTableView.setColumnHidden(22, not state)
+        self.paymentsTableView.setColumnHidden(24, not state)
+
+        if self.overtimeCheckBox.isChecked():
+            self.paymentsTableView.setColumnHidden(16, not state)
+
+        if self.nightTimeCheckBox.isChecked():
+            self.paymentsTableView.setColumnHidden(19, not state)
+
+        if self.holidaysCheckBox.isChecked():
+            self.paymentsTableView.setColumnHidden(10, not state)
+
+        if self.weekendDaysCheckBox.isChecked():
+            self.paymentsTableView.setColumnHidden(7, not state)
+
+        self.checkAllstate()
 
     def onHourlyStateChanged(self, state):
-        self.paymentsTableView.setColumnHidden(8, not state)
+        self.paymentsTableView.setColumnHidden(14, not state)
         self.checkAllstate()
 
     def onOvertimeStateChanged(self, state):
-        self.paymentsTableView.setColumnHidden(9, not state)
+        self.paymentsTableView.setColumnHidden(15, not state)
+        self.paymentsTableView.setColumnHidden(17, not state)
+        if self.levaCheckBox.isChecked():
+            self.paymentsTableView.setColumnHidden(16, False)
+
+        if not self.overtimeCheckBox.isChecked():
+            self.paymentsTableView.setColumnHidden(16, True)
         self.checkAllstate()
 
     def onNightTimeStateChanged(self, state):
-        self.paymentsTableView.setColumnHidden(10, not state)
+        self.paymentsTableView.setColumnHidden(18, not state)
+        self.paymentsTableView.setColumnHidden(20, not state)
+
+        if self.levaCheckBox.isChecked():
+            self.paymentsTableView.setColumnHidden(19, False)
+
+        if not self.nightTimeCheckBox.isChecked():
+            self.paymentsTableView.setColumnHidden(19, True)
+
         self.checkAllstate()
 
     def onWeekendStateChanged(self, state):
-        self.paymentsTableView.setColumnHidden(4, not state)
+        self.paymentsTableView.setColumnHidden(6, not state)
+        self.paymentsTableView.setColumnHidden(8, not state)
+
+        if self.levaCheckBox.isChecked():
+            self.paymentsTableView.setColumnHidden(7, False)
+
+        if not self.weekendDaysCheckBox.isChecked():
+            self.paymentsTableView.setColumnHidden(7, True)
+
         self.checkAllstate()
 
     def onHolidaysStateChanged(self, state):
-        self.paymentsTableView.setColumnHidden(5, not state)
+        self.paymentsTableView.setColumnHidden(9, not state)
+        self.paymentsTableView.setColumnHidden(11, not state)
+
+        if self.levaCheckBox.isChecked():
+            self.paymentsTableView.setColumnHidden(10, False)
+
+        if not self.holidaysCheckBox.isChecked():
+            self.paymentsTableView.setColumnHidden(10, True)
+
         self.checkAllstate()
+
+    def onPositionStateChanged(self, state):
+        self.paymentsTableView.setColumnHidden(3, not state)
+        self.checkAllstate()
+
+    def onPlaceStateChanged(self, state):
+        self.paymentsTableView.setColumnHidden(4, not state)
+        self.checkAllstate()
+
 
     def showCalendarDialog(self):
         calendarDialog = CustomCalendarDialog()
@@ -309,13 +405,8 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
         self.paymentsTableView.setColumnWidth(0, 20)
         self.paymentsTableView.setColumnWidth(1, 40)
         self.paymentsTableView.setColumnWidth(2, 180)
-        self.paymentsTableView.setColumnWidth(4, 100)
-        self.paymentsTableView.setColumnWidth(5, 100)
-        self.paymentsTableView.setColumnWidth(6, 40)
-        self.paymentsTableView.setColumnWidth(7, 100)
-        self.paymentsTableView.setColumnWidth(8, 100)
-        self.paymentsTableView.setColumnWidth(9, 100)
-        self.paymentsTableView.setColumnWidth(10, 100)
+        self.paymentsTableView.setColumnWidth(3, 100)
+        self.paymentsTableView.setColumnWidth(12, 60)
 
     def refreshPaymentsTable(self):
         startDate = Utils.convertQDateToDate(self.fromDateEdit.date())
@@ -323,22 +414,39 @@ class CustomPaymentsWidget(QWidget, Ui_customPaymentsWidget):
         rows = WoS.getInfoForPayments(startDate, endDate)
         self.tablePaymentsModel.setRowCount(0)
         for row in rows:
+            # ['ID'0, '№'1, 'Име'2, 'Длъжност'3, 'Цех'4, 'Зар. дни'5, 'В Поч. дни'6, 'В Поч. дни Лв.'7,
+            # 'В Поч. дни €'8, 'В Празници'9, 'В Празници Лв.'10, 'В Празници €'11, 'Бр.'12,
+            # 'Вр. Опер.'13, 'Почас.'14, 'Извънр.'15, 'Извънр. Лв.'16, 'Извънр. €'17, 'Нощен'18, 'Нощен в Лв.'19,
+            # 'Нощен в €'20, 'Ефек. в %'21, 'Зар. Лв.'22, 'Зар. €'23, 'Тотал Лв.'24, 'Тотал €'25]
             rowToAdd = [
                 QStandardItem(row['count']),
                 QStandardItem(row['workerId']),
                 QStandardItem(row['workerName']),
+                QStandardItem(row['workerPosition']),
+                QStandardItem(row['workerPlace']),
                 QStandardItem(row['workingDays']),
                 QStandardItem(row['totalWeekEndWorkingDays']),
+                QStandardItem(row['totalWeekendPayInLeva']),
+                QStandardItem(row['totalWeekendPayInEuro']),
                 QStandardItem(row['totalHolidaysWorking']),
+                QStandardItem(row['totalHolidaysPayInLeva']),
+                QStandardItem(row['totalHolidaysPayInEuro']),
                 QStandardItem(row['totalPieces']),
                 QStandardItem(row['displayOperTime']),
                 QStandardItem(row['displayHourlyTime']),
                 QStandardItem(row['displayOverTime']),
+                QStandardItem(row['overtimePayInLeva']),
+                QStandardItem(row['overtimePayInEuro']),
                 QStandardItem(row['displayNightTime']),
+                QStandardItem(row['nightPayInLeva']),
+                QStandardItem(row['nightPayInEuro']),
                 QStandardItem(row['efficiency']),
                 QStandardItem(row['payInLeva']),
-                QStandardItem(row['payInEuro'])
+                QStandardItem(row['payInEuro']),
+                QStandardItem(row['totalPayInLeva']),
+                QStandardItem(row['totalPayInEuro'])
             ]
+
             self.tablePaymentsModel.appendRow(rowToAdd)
         self.totalViewRows.setText(str(len(rows)))
 

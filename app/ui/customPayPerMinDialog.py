@@ -33,7 +33,7 @@ class CustomPayPerTimeDialog(QDialog, Ui_CustomPayPerTimeDialog):
         self.percentageLineEdit.setEnabled(False)
         self.percentageCheckBox.stateChanged.connect(self.percentageCheckBoxChange)
 
-        validator = QDoubleValidator(0.0, float('inf'), 4)
+        validator = QDoubleValidator(0.0, float('inf'), 5)
         validator.setNotation(QDoubleValidator.Notation.StandardNotation)
         locale = QLocale(QLocale.Language.English)
         validator.setLocale(locale)
@@ -130,12 +130,10 @@ class CustomPayPerTimeDialog(QDialog, Ui_CustomPayPerTimeDialog):
             text = text.split(',')[0]
             text = text + '.'
         self.sender().setText(text)
-        print(self.sender().text())
         if self.levaPerMinUpdated:
             self.levaPerMinUpdated = False
 
     def updateText(self):
-        print(self.sender())
         text = float(self.sender().text())
         self.sender().setText(str(text))
 

@@ -218,7 +218,7 @@ class ModelService:
 
     @staticmethod
     # @handle_api_connection
-    def checkIfOperationsCanBeDeleted(model, operations):
+    def checkIfOperationsCanBeDeleted(model, operations, removedOperations):
         print(operations)
     #     response = requests.post(f'{API_SERVER}/model/check_if_operations_can_be_deleted',
     #                              json={'modelId': model['orderNo'], 'operations': operations}).json()
@@ -232,7 +232,7 @@ class ModelService:
         with getDatabase() as session:
             dbOperation = session.query(ProductionModelOperations).filter_by(OrderId=model['orderNo']).all()
             for operation in dbOperation:
-                if operation.ОперацияNo not in operations.keys() and operation.timePaperOperations:
+                if operation.ОперацияNo in removedOperations and operation.timePaperOperations:
                     updatedOperations.append(str(operation.ОперацияNo))
             return updatedOperations
 
@@ -349,7 +349,7 @@ class ModelService:
             modelMachine = f'{model.MachineId}: {model.machine.MachineType} :  {model.machine.MachineFine}E' \
                 if model.machine else None
             modelYarn = f'{model.YarnType}: {model.yarn.ПреждаТип} :  {model.yarn.Състав}' if model.yarn else None
-            modelObleklo = f'{model.WearType}: {model.vidOblekla.OblekloName}'
+            modelObleklo = f'{model.WearType}: {model.vidOblekla.OblekloName}' if model.vidOblekla else None
             modelPieces = model.Броя if model else 0
             modelActual = model.Actual if model else False
             return [modelFine, modelMachine, modelYarn, modelObleklo, modelPieces, modelActual]

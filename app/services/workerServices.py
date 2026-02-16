@@ -226,6 +226,13 @@ class WorkerServices:
 
     @staticmethod
     @handle_api_connection
+    def getCurrentPayments():
+        response = requests.get(f'{API_SERVER}/worker/get_current_pay_per_min').json()
+        if response['status'] =='success':
+            return response['data']
+
+    @staticmethod
+    @handle_api_connection
     def getInfoForPayments(startDate, endDate):
         strStartDate = startDate.strftime('%Y-%m-%d')
         strEndDate = endDate.strftime('%Y-%m-%d')

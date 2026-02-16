@@ -114,6 +114,11 @@ QLineEdit, QDateEdit{
 	font-weight: 500;
 }
 
+#widget_11 *{
+	font-size: 8pt;
+	padding: 0px;
+}
+
 QComboBox{
 	background-color: #dfdfdf;
 	border-bottom: 2px solid #7c9399;
@@ -450,7 +455,7 @@ QComboBox::item{
                          <second>0</second>
                          <year>1990</year>
                          <month>8</month>
-                         <day>26</day>
+                         <day>25</day>
                         </datetime>
                        </property>
                        <property name="displayFormat">
@@ -541,7 +546,7 @@ QComboBox::item{
                          <second>0</second>
                          <year>1990</year>
                          <month>8</month>
-                         <day>28</day>
+                         <day>27</day>
                         </datetime>
                        </property>
                        <property name="displayFormat">
@@ -629,17 +634,17 @@ QComboBox::item{
                  <property name="verticalSpacing">
                   <number>2</number>
                  </property>
-                 <item row="0" column="0">
-                  <widget class="QCheckBox" name="selectAllCheckBox">
-                   <property name="text">
-                    <string>Всички</string>
-                   </property>
-                  </widget>
-                 </item>
                  <item row="1" column="0">
                   <widget class="QCheckBox" name="overtimeCheckBox">
                    <property name="text">
                     <string>Извънреден</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QCheckBox" name="weekendDaysCheckBox">
+                   <property name="text">
+                    <string>Почивни дни</string>
                    </property>
                   </widget>
                  </item>
@@ -650,24 +655,45 @@ QComboBox::item{
                    </property>
                   </widget>
                  </item>
-                 <item row="2" column="1">
+                 <item row="1" column="1">
                   <widget class="QCheckBox" name="holidaysCheckBox">
                    <property name="text">
                     <string>Празнични дни</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="1" column="1">
-                  <widget class="QCheckBox" name="weekendDaysCheckBox">
-                   <property name="text">
-                    <string>Почивни дни</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="1">
+                 <item row="3" column="0">
                   <widget class="QCheckBox" name="nightTimeCheckBox">
                    <property name="text">
                     <string>Нощен</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="1">
+                  <widget class="QCheckBox" name="placeCheckBox">
+                   <property name="text">
+                    <string>Цех</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QCheckBox" name="selectAllCheckBox">
+                   <property name="text">
+                    <string>Всички</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="QCheckBox" name="positionCheckBox">
+                   <property name="text">
+                    <string>Длъжност</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="2">
+                  <widget class="QCheckBox" name="levaCheckBox">
+                   <property name="text">
+                    <string>Лв</string>
                    </property>
                   </widget>
                  </item>
@@ -675,6 +701,111 @@ QComboBox::item{
                </item>
               </layout>
              </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item alignment="Qt::AlignLeft">
+          <widget class="QWidget" name="widget_11" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_10">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>5</number>
+            </property>
+            <property name="topMargin">
+             <number>5</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>5</number>
+            </property>
+            <item>
+             <layout class="QGridLayout" name="gridLayout_2">
+              <item row="1" column="3">
+               <widget class="QLabel" name="euroPerMinNightLabel">
+                <property name="text">
+                 <string>0</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLabel" name="euroPerMinDayLabel">
+                <property name="text">
+                 <string>0</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QLabel" name="levaPerMinDayLabel">
+                <property name="minimumSize">
+                 <size>
+                  <width>60</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>0.1081</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_9">
+                <property name="text">
+                 <string>€/мин. Ден</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="3">
+               <widget class="QLabel" name="levaPerMinNightLabel">
+                <property name="minimumSize">
+                 <size>
+                  <width>60</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>0.1081</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_7">
+                <property name="minimumSize">
+                 <size>
+                  <width>90</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>лв/мин. Ден</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QLabel" name="label_35">
+                <property name="minimumSize">
+                 <size>
+                  <width>90</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>лв/мин. Нощ</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QLabel" name="label_41">
+                <property name="text">
+                 <string>€/мин. Нощ</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
            </layout>
           </widget>
@@ -723,7 +854,7 @@ QComboBox::item{
         <x>0</x>
         <y>0</y>
         <width>1080</width>
-        <height>420</height>
+        <height>345</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_12">

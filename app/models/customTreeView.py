@@ -79,7 +79,7 @@ class CustomTreeView(QTreeView):
                 selectedItems['payInEuro'] = self.selectionModel().selectedRows(13)
                 self.selectedRows.emit(selectedItems)
 
-        print(selectedItems)
+        # print(selectedItems)
 
     def mouseReleaseEvent(self, event):
         parrentName = self.parent().objectName()
@@ -93,7 +93,7 @@ class CustomTreeView(QTreeView):
                     # selectedItems = self.checkSender(parrentName)
                     selectedItems['payInLeva'] = self.selectionModel().selectedRows(12)
                     selectedItems['payInEuro'] = self.selectionModel().selectedRows(13)
-                    print(selectedItems)
+                    # print(selectedItems)
                     self.selectedRows.emit(selectedItems)
 
             else:
