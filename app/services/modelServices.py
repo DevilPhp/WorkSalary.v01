@@ -118,6 +118,7 @@ class ModelService:
             return 0
 
     @staticmethod
+    @handle_api_connection
     def deleteDefaultModelType(modelTypeId):
         response = requests.post(f'{API_SERVER}/model/delete_default_model_type',
                                  json={'modelTypeId': modelTypeId}).json()
@@ -128,76 +129,105 @@ class ModelService:
             logger.error(f"Failed to delete default model type {modelTypeId}.")
             return False
 
-        # with setDatabase() as session:
-        #     modelType = session.query(VidObleklo).filter_by(OblekloVid=modelTypeId).first()
-        #     if modelType and not modelType.productionModel:
-        #         if modelType.defaultOperForVidOblekla:
-        #             for operation in modelType.defaultOperForVidOblekla:
-        #                 session.delete(operation)
-        #                 logger.info(f"Default operation {operation.id} deleted successfully.")
-        #         session.delete(modelType)
-        #         session.commit()
-        #         logger.info(f"Default model type {modelTypeId} - {modelType.OblekloName} deleted successfully.")
-        #         return True
-        #     else:
-        #         logger.error(f"Failed to delete default model type {modelTypeId}.")
-        #         return False
-
     @staticmethod
+    @handle_api_connection
     def addNewDefaultModelType(name):
-        with setDatabase() as session:
-            maxId = session.query(func.max(VidObleklo.OblekloVid)).scalar() or 0
-            newModelType = VidObleklo(
-                OblekloVid=maxId + 1,
-                OblekloName=name
-            )
-            session.add(newModelType)
-            session.commit()
-            if newModelType:
-                logger.info(f"New default model type {newModelType.OblekloVid} - {name} added successfully.")
-                return True
-            else:
-                logger.error(f"Failed to add new default model type '{name}'.")
-                return False
+        responce = requests.post(f'{API_SERVER}/model/add_default_model_type',
+                                 json={'name': name}).json()
+        if responce['status'] =='success':
+            logger.info(f"New default model type {name} added successfully.")
+            return True
+        else:
+            logger.error(f"Failed to add new default model type '{name}'.")
+            return False
 
     @staticmethod
+    @handle_api_connection
     def getModelOperations(modelId):
-        with getDatabase() as session:
-            model = session.query(ProductionModel).filter_by(id=modelId).first()
-            return model.productionModelOperations, model.Броя
+        response = requests.get(f'{API_SERVER}/model/get_model_operations/{modelId}').json()
+        if response['status'] =='success':
+            # print(response['data'])
+            return response['data']
+        else:
+            logger.error(f'Failed to get model {modelId} operations')
+            return None
 
     @staticmethod
+    @handle_api_connection
     def getClientsAndModels():
-        with getDatabase() as session:
-            return session.query(Client, ProductionModel).join(ProductionModel).filter(ProductionModel.Actual == 'true').all()
+        response = requests.get(f'{API_SERVER}/model/get_clients_and_models').json()
+        if response['status'] =='success':
+            return response['data']
+        else:
+            logger.error('Failed to get clients and models')
+            return None
+
 
     @staticmethod
+    @handle_api_connection
     def getDfaultOperations(vidOblekloId):
-        with getDatabase() as session:
-            return session.query(VidObleklo).filter_by(OblekloVid=vidOblekloId).first().defaultOperForVidOblekla
+        response = requests.get(f'{API_SERVER}/model/get_default_operations/{vidOblekloId}').json()
+        if response['status'] =='success':
+            return response['data']
+        else:
+            logger.error(f'Failed to get default operations for {vidOblekloId}')
+            return None
 
     @staticmethod
+    @handle_api_connection
     def getClients():
-        with getDatabase() as session:
-            return session.query(Client).all()
+        response = requests.get(f'{API_SERVER}/model/get_clients').json()
+        if response['status'] =='success':
+            return response['data']
+        else:
+            logger.error('Failed to get clients')
+            return None
+
+        # with getDatabase() as session:
+        #     return session.query(Client).all()
+
+    # @staticmethod
+    # @handle_api_connection
+    # def getAllModels():
+    #     response = requests.get(f'{API_SERVER}/model/get_all_models').json()
+    #     if response['status'] =='success':
+    #         return response['data']
+    #     else:
+    #         logger.error('Failed to get all models')
+    #         return None
+        #
+        # with getDatabase() as session:
+        #     return session.query(ProductionModel).all()
 
     @staticmethod
-    def getAllModels():
-        with getDatabase() as session:
-            return session.query(ProductionModel).all()
-
-    @staticmethod
+    @handle_api_connection
     def getForModelsGroups():
-        with getDatabase() as session:
-            models = session.query(ProductionModel).all()
-            modelsDict = []
-            for model in models:
-                if model.Actual:
-                    modelsDict.append(f"{model.id} - {model.ПоръчкаNo}")
-            return modelsDict
+        response = requests.get(f'{API_SERVER}/model/get_for_models_groups').json()
+        if response['status'] == 'success':
+            return response['modelsDict']
+        else:
+            logger.error('Failed to get models groups')
+            return None
+        # with getDatabase() as session:
+        #     models = session.query(ProductionModel).all()
+        #     modelsDict = []
+        #     for model in models:
+        #         if model.Actual:
+        #             modelsDict.append(f"{model.id} - {model.ПоръчкаNo}")
+        #     return modelsDict
 
     @staticmethod
+    # @handle_api_connection
     def checkIfOperationsCanBeDeleted(model, operations):
+        print(operations)
+    #     response = requests.post(f'{API_SERVER}/model/check_if_operations_can_be_deleted',
+    #                              json={'modelId': model['orderNo'], 'operations': operations}).json()
+    #     if response['status'] =='success':
+    #         return response['updatedOperations']
+    #     else:
+    #         logger.error(f'Failed to check if operations can be deleted for {model["orderNo"]}')
+    #         return None
+
         updatedOperations = []
         with getDatabase() as session:
             dbOperation = session.query(ProductionModelOperations).filter_by(OrderId=model['orderNo']).all()
@@ -207,56 +237,66 @@ class ModelService:
             return updatedOperations
 
     @staticmethod
+    @handle_api_connection
     def updateModel(model, operations):
-        with setDatabase() as session:
-            operationsDict = {}
-            modelToUpdate = session.query(ProductionModel).filter_by(id=model['orderNo']).first()
-            if modelToUpdate:
-                modelToUpdate.Descr = model['descr']
-                modelToUpdate.MachineId = model['machineId']
-                modelToUpdate.Fain = model['fain']
-                modelToUpdate.WearType = model['wearType']
-                modelToUpdate.YarnType = model['yarnId']
-                modelToUpdate.Броя = model['pieces']
-                modelToUpdate.Actual = model['actual']
-
-                existingOperations = session.query(ProductionModelOperations).filter_by(OrderId=model['orderNo']).all()
-
-                for existingOperation in existingOperations:
-                    operationsDict[existingOperation.ОперацияNo] = existingOperation
-                    if existingOperation.ОперацияNo not in operations.keys():
-                        if not existingOperation.timePaperOperations:
-                            session.delete(existingOperation)
-                            logger.info(f"Operation {existingOperation.ОперацияNo} deleted from {model['orderNo']}.")
-
-                for operation, values in operations.items():
-                    if operation in operationsDict.keys():
-                        operationsDict[operation].Операция = values[0]
-                        operationsDict[operation].TimeForOper = values[1]
-                    else:
-                        session.add(ProductionModelOperations(
-                            OrderId=modelToUpdate.id,
-                            ПоръчкаNo=modelToUpdate.ПоръчкаNo,
-                            ОперацияNo=operation,
-                            Операция=values[0],
-                            TimeForOper=values[1],
-                            ProducedPieces=0,
-                            Razcenka=0,  # Here will be added price for operation,
-                            LastUpdated=model['dateCreated'],
-                            UpdatedBy=model['userCreated']
-                        ))
-
-                session.commit()
-                logger.info(f"Model {modelToUpdate.id} updated successfully.")
-                return True
-            else:
-                logger.error(f"Failed to update model {model['orderNo']}.")
-                return False
+        response = requests.post(f'{API_SERVER}/model/update_model',
+                                 json={'modelId': model, 'operations': operations}).json()
+        if response['status'] =='success':
+            logger.info(f'Model {model["orderNo"]} updated successfully')
+            return True
+        else:
+            logger.error(f'Failed to update model {model["orderNo"]}')
+            return False
+        #
+        # with setDatabase() as session:
+        #     operationsDict = {}
+        #     modelToUpdate = session.query(ProductionModel).filter_by(id=model['orderNo']).first()
+        #     if modelToUpdate:
+        #         modelToUpdate.Descr = model['descr']
+        #         modelToUpdate.MachineId = model['machineId']
+        #         modelToUpdate.Fain = model['fain']
+        #         modelToUpdate.WearType = model['wearType']
+        #         modelToUpdate.YarnType = model['yarnId']
+        #         modelToUpdate.Броя = model['pieces']
+        #         modelToUpdate.Actual = model['actual']
+        #
+        #         existingOperations = session.query(ProductionModelOperations).filter_by(OrderId=model['orderNo']).all()
+        #
+        #         for existingOperation in existingOperations:
+        #             operationsDict[existingOperation.ОперацияNo] = existingOperation
+        #             if existingOperation.ОперацияNo not in operations.keys():
+        #                 if not existingOperation.timePaperOperations:
+        #                     session.delete(existingOperation)
+        #                     logger.info(f"Operation {existingOperation.ОперацияNo} deleted from {model['orderNo']}.")
+        #
+        #         for operation, values in operations.items():
+        #             if operation in operationsDict.keys():
+        #                 operationsDict[operation].Операция = values[0]
+        #                 operationsDict[operation].TimeForOper = values[1]
+        #             else:
+        #                 session.add(ProductionModelOperations(
+        #                     OrderId=modelToUpdate.id,
+        #                     ПоръчкаNo=modelToUpdate.ПоръчкаNo,
+        #                     ОперацияNo=operation,
+        #                     Операция=values[0],
+        #                     TimeForOper=values[1],
+        #                     ProducedPieces=0,
+        #                     Razcenka=0,  # Here will be added price for operation,
+        #                     LastUpdated=model['dateCreated'],
+        #                     UpdatedBy=model['userCreated']
+        #                 ))
+        #
+        #         session.commit()
+        #         logger.info(f"Model {modelToUpdate.id} updated successfully.")
+        #         return True
+        #     else:
+        #         logger.error(f"Failed to update model {model['orderNo']}.")
+        #         return False
 
 
     @staticmethod
     def addNewModel(newModel, operations):
-        print('here')
+        # print('here')
         with setDatabase() as session:
             newModelToAdd = ProductionModel(
                 ПоръчкаNo=newModel['orderNo'],

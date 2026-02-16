@@ -48,6 +48,22 @@ class PaymentServices:
 
     @staticmethod
     @handle_api_connection
+    def editPayPerMin(user, newEntry, day):
+        response = requests.post(f"{API_SERVER}/payment/edit_pay_per_min",
+                                 json={'user': user, 'newEntry': newEntry, 'day': day}).json()
+        if response['status'] =='success':
+            if day:
+                message = 'Payment '
+            else:
+                message = 'Night payment '
+            logger.info(f"Edited {message}per minute: {newEntry['selectedId']} - by {user}")
+            return True
+        else:
+            logger.error("Failed to edit payment per minute")
+            return False
+
+    @staticmethod
+    @handle_api_connection
     def deletePayPerMin(user, selectedId, day=True):
         response = requests.post(f"{API_SERVER}/payment/delete_pay_per_min",
                                  json={'user': user, 'id': selectedId, 'day': day}).json()

@@ -14,7 +14,7 @@ from app.database.models import ProductionModel
 import time as t
 from app.utils.utils import Utils
 
-ACCESS_DB_PATH = r"E:\fedbase\ts4rep_new.accdb"
+ACCESS_DB_PATH = r"E:\fedbase\ts4rep1.mdb"
 
 # Create connection string (for Access 2016 or later, use "Microsoft.ACE.OLEDB.12.0")
 conn_str = (
@@ -44,11 +44,11 @@ def fetch_access_data(table_name):
         df = pd.read_sql(f"SELECT * FROM {table_name} ORDER BY {'Група'}", conn)
     elif table_name == "Модел и оперции":
         df = pd.read_sql(f'''SELECT * FROM "{table_name}"''', conn)
-        df = df[(df['ВремеЗаОп-я'] != 0) & (df['LastModified'] >= '2020-01-01 00:00:00')]
+        df = df[(df['ВремеЗаОп-я'] != 0)]
         # & (df['LastModified'] >= '2025-01-01 00:00:00')
     elif table_name == "Обща" or table_name == "Дневник за часове":
         df = pd.read_sql(f'''SELECT * FROM "{table_name}" ORDER BY {"WorkDayID"}''', conn)
-        df = df[df['Дата'] >= '2024-10-01 00:00:00']
+        df = df[df['Дата'] >= '2025-12-01 00:00:00']
     else:
         df = pd.read_sql(f'''SELECT * FROM "{table_name}"''', conn)
 
@@ -455,6 +455,8 @@ def addTimePaper(timePaperData):
 
                             newTimePaperOperation.productionModelOperations.ProducedPieces += int(operPieces)
 
+            hourlyNightMins = 0
+
             if data['HourlyPaid']:
                 hourlyNightMins = createHourlyPaid(data['HourlyPaid'][0],
                                                   data['HourlyPaid'][1], newTimePaper.id,
@@ -466,7 +468,7 @@ def addTimePaper(timePaperData):
         session.commit()
         existOpers = len(timePaperData.keys()) - zeroCount
         print(f"{existOpers} records successful and {zeroCount} records created")
-        print(check)
+        # print(check)
     except Exception as e:
         print(f"An error occurred: {e}")
         session.rollback()

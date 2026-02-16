@@ -88,7 +88,7 @@ class OperationsServices:
             return response['result']
         else:
             logger.error('Error getting Operation Groups')
-            return []
+            return {}
 
     @staticmethod
     @handle_api_connection

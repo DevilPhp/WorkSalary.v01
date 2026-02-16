@@ -49,6 +49,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.modelNames = {}
         self.comboBoxItems = {}
         self.modelExistingOperations = []
+        self.removedOperations = []
         self.newModelOperations = []
         self.groupOperations = OpS.getOperationsGroups()
         self.groupOperationsForModel = {}
@@ -233,6 +234,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.operationsHolder.setEnabled(True)
         self.forModelCheckBox.setChecked(False)
         self.forModelLineEdit.setReadOnly(True)
+        self.selectAllCheckbox.setVisible(False)
         self.setModelsLineEditForGroups()
         self.setCompleterForGroups()
 
@@ -264,6 +266,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
 
     def returnToModelOpersView(self):
         self.operationsGroupsHolder.setVisible(False)
+        self.selectAllCheckbox.setVisible(True)
         self.modelInfoHolder.setVisible(True)
         self.operationsHolder.setEnabled(False)
         if not self.isOperationsReseted:
@@ -378,8 +381,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
                     checkbox[1].selectAll()
                     return
                 self.addOperationsForNewModel[int(checkbox[0].objectName())] = [checkbox[0].text().split(':  ')[1],
-                                                                                float(checkbox[1].text())
-                                                                                if checkbox[1].text() != '' else 0]
+                                                                                float(checkbox[1].text())]
 
         if not self.addOperationsForNewModel:
             MessageManager.showOnWidget(self, 'Моля изберете поне една операция', 'error')
@@ -436,6 +438,8 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             if self.machineComboBox.currentText() != '':
                 fain = self.machines[self.machineComboBox.currentText().split(' :  ')[0]][1]
 
+        targetDate = datetime.datetime.now() + datetime.timedelta(days=30)
+
         self.newModel = {
             'isNew': self.isNewModel,
             'orderNo': orderNo,
@@ -447,8 +451,8 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             'wearType': vidObleklo,
             'yarnId': yarnId,
             'pieces': orderPieces,
-            'dateCreated': datetime.datetime.now(),
-            'targetDate': datetime.datetime.now() + datetime.timedelta(days=30),
+            'dateCreated': datetime.datetime.now().strftime('%Y-%m-%d'),
+            'targetDate': targetDate.strftime('%Y-%m-%d'),
             'userCreated': self.user,
             'descr': self.descrLineEdit.text()
         }
@@ -458,6 +462,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             if self.checkOperations():
                 newModelAdded = Ms.updateModel(self.newModel, self.addOperationsForNewModel)
             else:
+                self.selectModel()
                 return
         if newModelAdded:
             if self.isNewModel:
@@ -483,15 +488,15 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             return
 
     def checkOperations(self):
+        print(self.modelExistingOperations)
         operations = Ms.checkIfOperationsCanBeDeleted(self.newModel, self.addOperationsForNewModel)
+        print(operations)
         if operations:
             newDialog = CustomYesNowDialog(isNormalIcon=False)
             message = 'Не можете да изтриете следните операции:\n' + '\n'.join(operations)
             newDialog.setMessage(name='', message=message, mode='warning')
             result = newDialog.exec()
             if result == QDialog.Accepted:
-                return True
-            else:
                 return False
         else:
             return True
@@ -506,9 +511,9 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             # print(int(self.vidOblekla[self.modelTypeComboBox.currentText()]))
             modelTypeOper = Ms.getDfaultOperations(int(self.vidOblekla[self.modelTypeComboBox.currentText()]))
             for operation in modelTypeOper:
-                if not self.comboBoxItems[operation.ОперацияNo][0].isChecked():
-                    self.comboBoxItems[operation.ОперацияNo][0].setCheckState(Qt.CheckState.Checked)
-                    self.comboBoxItems[operation.ОперацияNo][1].setText(str(operation.defaultTime))
+                if not self.comboBoxItems[operation[0]][0].isChecked():
+                    self.comboBoxItems[operation[0]][0].setCheckState(Qt.CheckState.Checked)
+                    self.comboBoxItems[operation[0]][1].setText(str(operation[1]))
 
     def setupNewModelInfo(self):
         for machine in self.machines.keys():
@@ -523,8 +528,8 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.yarnComboBox.setCurrentIndex(-1)
 
     def setupClientAndModelLineEdit(self):
-        for client in self.clients:
-            self.clientNames[client.Клиент] = client.ClientID
+        for clientId, client in self.clients.items():
+            self.clientNames[client] = int(clientId)
         Utils.setupCompleter(self.clientNames.keys(), self.clientsLineEdit)
 
     def selectClient(self):
@@ -597,7 +602,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         # print(self.comboBoxItems)
         for operation in operationsForModel:
             self.modelExistingOperations.append(operation['ОперацияNo'])
-            print(f'Existing operation: {operation["ОперацияNo"]}')
+            # print(f'Existing operation: {operation["ОперацияNo"]}')
             if not int(self.comboBoxItems[operation['ОперацияNo']][0].objectName()) in self.newModelOperations:
                 self.comboBoxItems[operation['ОперацияNo']][0].setChecked(True)
                 self.comboBoxItems[operation['ОперацияNo']][0].setText(

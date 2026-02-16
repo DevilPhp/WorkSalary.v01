@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'operToModelTypeCustomWidgetTbBPFx.ui'
+## Form generated from reading UI file 'operToModelTypeCustomWidgetpVBmAa.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -218,7 +218,7 @@ class Ui_customWidgetForModelOper(object):
         self.horizontalLayout_5 = QHBoxLayout(self.modelInfoHolder)
         self.horizontalLayout_5.setSpacing(15)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
-        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 5)
+        self.horizontalLayout_5.setContentsMargins(5, 0, 0, 5)
         self.modelHolder = QWidget(self.modelInfoHolder)
         self.modelHolder.setObjectName(u"modelHolder")
         self.modelHolder.setMinimumSize(QSize(240, 0))
@@ -461,7 +461,7 @@ class Ui_customWidgetForModelOper(object):
         self.verticalLayout_9 = QVBoxLayout(self.operationsGroupsHolder)
         self.verticalLayout_9.setSpacing(5)
         self.verticalLayout_9.setObjectName(u"verticalLayout_9")
-        self.verticalLayout_9.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_9.setContentsMargins(15, 0, 0, 0)
         self.gridLayout = QGridLayout()
         self.gridLayout.setObjectName(u"gridLayout")
         self.gridLayout.setContentsMargins(-1, 10, -1, 10)

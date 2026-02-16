@@ -798,7 +798,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         Utils.setupCompleter(self.workersInfo, self.workerNameLineEdit)
 
         for client in self.models:
-            self.clientModels[f'{client[1].ПоръчкаNo} : {client[0].Клиент}'] = client[1].id
+            self.clientModels[f'{client[0]} : {client[1]}'] = client[2]
         Utils.setupCompleter(self.clientModels.keys(), self.clientModelsLineEdit)
 
     def checkModel(self):
@@ -824,8 +824,9 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.modelTotalPiecesLineEdit.setText(str(modelData[1]) if modelData[1] else '0')
             operations = modelData[0]
             for operation in operations:
-                self.modelOperations[f'{operation.ОперацияNo} : {operation.Операция}'] = [
-                    round(operation.TimeForOper, 2), operation.id, operation.ProducedPieces
+                # print(operation)
+                self.modelOperations[f'{operation[0]} : {operation[1]}'] = [
+                    round(operation[2], 2), operation[3], operation[4]
                 ]
             Utils.setupCompleter(self.modelOperations.keys(), self.modelOperationLineEdit)
             self.modelOperationLineEdit.setReadOnly(False)

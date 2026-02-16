@@ -167,43 +167,80 @@ class CustomPayPerMinWidget(QWidget, Ui_customPayPerMinWidget):
         action = menu.exec_(self.payPerMinTableView.mapToGlobal(position))
 
         if action == deleteAction:
-            selectedRow = self.payPerMinTableView.selectionModel().selectedRows()
-            if selectedRow:
-                if self.proxyModelPayPerMin.data(selectedRow[0].siblingAtColumn(4),
-                                                 Qt.ItemDataRole.CheckStateRole) == 2:
-                    MM.showOnWidget(self, 'Не можете да изтриете активен коеф. за Мин.', 'warning')
-                    return
-                selectedId = self.proxyModelPayPerMin.data(selectedRow[0].siblingAtColumn(0), Qt.ItemDataRole.UserRole)
-                selectedName = self.proxyModelPayPerMin.data(selectedRow[0].siblingAtColumn(0),
-                                                             Qt.ItemDataRole.DisplayRole)
-                selectedLeva = self.proxyModelPayPerMin.data(selectedRow[0].siblingAtColumn(1),
-                                                             Qt.ItemDataRole.DisplayRole)
-                selectedEuro = self.proxyModelPayPerMin.data(selectedRow[0].siblingAtColumn(2),
-                                                             Qt.ItemDataRole.DisplayRole)
-                dialog = CustomYesNowDialog()
-                message = f'Изтриване на: {selectedName} - лв{selectedLeva} / €{selectedEuro}'
-                dialog.setMessage(name='', message=message, mode='deleting')
-                result = dialog.exec()
-                if result == QDialog.Accepted:
-                    if self.payPerMinNightCheckBox.isChecked():
-                        if Ps.deletePayPerMin(self.user, selectedId, False):
-                            self.payPerMinNight = Ps.getPayPerMin(False)
-                            self.refreshPayPerMinTable(self.payPerMinNight)
-                            MM.showOnWidget(self, 'Изтриването е успешно!', 'success')
-                        else:
-                            MM.showOnWidget(self, 'Изтриването не е успешно!', 'error')
-                            return
-                    else:
-                        if Ps.deletePayPerMin(self.user, selectedId):
-                            self.payPerMin = Ps.getPayPerMin()
-                            self.refreshPayPerMinTable(self.payPerMin)
-                            MM.showOnWidget(self, 'Изтриването е успешно!', 'success')
-                        else:
-                            MM.showOnWidget(self, 'Изтриването не е успешно!', 'error')
-                            return
+            self.deleteSelectedPayPerMin()
+
 
         elif action == editAction:
-            print('Edit entry')
+            self.editSelectedPayPerMin()
+
+    def editSelectedPayPerMin(self):
+        selectedRow = self.payPerMinTableView.selectionModel().selectedRows()
+        if selectedRow:
+            selectedId = self.proxyModelPayPerMin.data(selectedRow[0].siblingAtColumn(0), Qt.ItemDataRole.UserRole)
+            selectedName = self.proxyModelPayPerMin.data(selectedRow[0].siblingAtColumn(0),
+                                                         Qt.ItemDataRole.DisplayRole)
+            selectedLeva = self.proxyModelPayPerMin.data(selectedRow[0].siblingAtColumn(1),
+                                                         Qt.ItemDataRole.DisplayRole)
+            selectedEuro = self.proxyModelPayPerMin.data(selectedRow[0].siblingAtColumn(2),
+                                                         Qt.ItemDataRole.DisplayRole)
+
+            dialog = CustomPayPerTimeDialog(float(selectedLeva), float(selectedEuro), selectedId)
+            dialog.newEntryInfo.connect(self.aceptEditPayPerMinEntry)
+            dialog.exec_()
+
+    def aceptEditPayPerMinEntry(self, newEntry):
+        if self.payPerMinNightCheckBox.isChecked():
+            result = Ps.editPayPerMin(self.user, newEntry, False)
+            if result:
+                self.payPerMinNight = Ps.getPayPerMin(False)
+                self.refreshPayPerMinTable(self.payPerMinNight)
+                MM.showOnWidget(self, f'Успешно редактиран коеф. за Мин.', 'success')
+            else:
+                MM.showOnWidget(self, f'Грешка при редактиране на коеф. за Мин.', 'error')
+        else:
+            result = Ps.editPayPerMin(self.user, newEntry, True)
+            if result:
+                self.payPerMin = Ps.getPayPerMin()
+                self.refreshPayPerMinTable(self.payPerMin)
+                MM.showOnWidget(self, f'Успешно редактиран коеф. за Мин.', 'success')
+            else:
+                MM.showOnWidget(self, f'Грешка при редактиране на коеф. за Мин.', 'error')
+
+    def deleteSelectedPayPerMin(self):
+        selectedRow = self.payPerMinTableView.selectionModel().selectedRows()
+        if selectedRow:
+            if self.proxyModelPayPerMin.data(selectedRow[0].siblingAtColumn(4),
+                                             Qt.ItemDataRole.CheckStateRole) == 2:
+                MM.showOnWidget(self, 'Не можете да изтриете активен коеф. за Мин.', 'warning')
+                return
+            selectedId = self.proxyModelPayPerMin.data(selectedRow[0].siblingAtColumn(0), Qt.ItemDataRole.UserRole)
+            selectedName = self.proxyModelPayPerMin.data(selectedRow[0].siblingAtColumn(0),
+                                                         Qt.ItemDataRole.DisplayRole)
+            selectedLeva = self.proxyModelPayPerMin.data(selectedRow[0].siblingAtColumn(1),
+                                                         Qt.ItemDataRole.DisplayRole)
+            selectedEuro = self.proxyModelPayPerMin.data(selectedRow[0].siblingAtColumn(2),
+                                                         Qt.ItemDataRole.DisplayRole)
+            dialog = CustomYesNowDialog()
+            message = f'Изтриване на: {selectedName} - {selectedLeva} лв. / €{selectedEuro}'
+            dialog.setMessage(name='', message=message, mode='deleting')
+            result = dialog.exec()
+            if result == QDialog.Accepted:
+                if self.payPerMinNightCheckBox.isChecked():
+                    if Ps.deletePayPerMin(self.user, selectedId, False):
+                        self.payPerMinNight = Ps.getPayPerMin(False)
+                        self.refreshPayPerMinTable(self.payPerMinNight)
+                        MM.showOnWidget(self, 'Изтриването е успешно!', 'success')
+                    else:
+                        MM.showOnWidget(self, 'Изтриването не е успешно!', 'error')
+                        return
+                else:
+                    if Ps.deletePayPerMin(self.user, selectedId):
+                        self.payPerMin = Ps.getPayPerMin()
+                        self.refreshPayPerMinTable(self.payPerMin)
+                        MM.showOnWidget(self, 'Изтриването е успешно!', 'success')
+                    else:
+                        MM.showOnWidget(self, 'Изтриването не е успешно!', 'error')
+                        return
 
     def logout(self):
         self.logoutSignal.emit(True)

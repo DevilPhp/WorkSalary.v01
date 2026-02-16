@@ -323,7 +323,7 @@ QComboBox::item{
              <number>15</number>
             </property>
             <property name="leftMargin">
-             <number>0</number>
+             <number>5</number>
             </property>
             <property name="topMargin">
              <number>0</number>
@@ -772,7 +772,7 @@ QComboBox::item{
              <number>5</number>
             </property>
             <property name="leftMargin">
-             <number>0</number>
+             <number>15</number>
             </property>
             <property name="topMargin">
              <number>0</number>

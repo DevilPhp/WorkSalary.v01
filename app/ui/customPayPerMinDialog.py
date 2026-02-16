@@ -13,7 +13,7 @@ from PySide6.QtWidgets import QGraphicsDropShadowEffect
 class CustomPayPerTimeDialog(QDialog, Ui_CustomPayPerTimeDialog):
     newEntryInfo = Signal(dict)
 
-    def __init__(self, currentLev, currentEuro, parent=None):
+    def __init__(self, currentLev, currentEuro, selectedId=None, parent=None):
         super().__init__(parent)
         self.setupUi(self)
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
@@ -27,11 +27,13 @@ class CustomPayPerTimeDialog(QDialog, Ui_CustomPayPerTimeDialog):
         # self.slot = slot
         self.levaPerMinLineEdit.setText(str(currentLev))
         self.euroPerMinLineEdit.setText(str(currentEuro))
+        if selectedId:
+            self.selectedId = selectedId
         self.levaForEuro = float(self.euroPerLevaLineEdit.text())
         self.percentageLineEdit.setEnabled(False)
         self.percentageCheckBox.stateChanged.connect(self.percentageCheckBoxChange)
 
-        validator = QDoubleValidator(0.1, float('inf'), 4)
+        validator = QDoubleValidator(0.0, float('inf'), 4)
         validator.setNotation(QDoubleValidator.Notation.StandardNotation)
         locale = QLocale(QLocale.Language.English)
         validator.setLocale(locale)
@@ -58,7 +60,8 @@ class CustomPayPerTimeDialog(QDialog, Ui_CustomPayPerTimeDialog):
         self.calBtn.clicked.connect(self.openCalendar)
         self.percentageLineEdit.editingFinished.connect(self.updateValuesPerMin)
 
-        self.levaPerMinLineEdit.setFocus()
+        # self.levaPerMinLineEdit.setFocus()
+        self.euroPerMinLineEdit.setFocus()
 
     def updateValuesPerMin(self):
         percentage = float(self.percentageLineEdit.text()) / 100
@@ -97,7 +100,12 @@ class CustomPayPerTimeDialog(QDialog, Ui_CustomPayPerTimeDialog):
         levaPerEuro = float(self.euroPerLevaLineEdit.text())
         dateActive = self.activedDateDateEdit.date().toString('dd.MM.yyyy')
         comment = self.commentLineEdit.text()
+        if self.selectedId:
+            selectedId = self.selectedId
+        else:
+            selectedId = ''
         returnedDict = {
+            'selectedId': selectedId,
             'levaPerMin': levaPerMin,
             'euroPerMin': euroPerMin,
             'levaPerEuro': levaPerEuro,
@@ -122,11 +130,12 @@ class CustomPayPerTimeDialog(QDialog, Ui_CustomPayPerTimeDialog):
             text = text.split(',')[0]
             text = text + '.'
         self.sender().setText(text)
-
+        print(self.sender().text())
         if self.levaPerMinUpdated:
             self.levaPerMinUpdated = False
 
     def updateText(self):
+        print(self.sender())
         text = float(self.sender().text())
         self.sender().setText(str(text))
 
