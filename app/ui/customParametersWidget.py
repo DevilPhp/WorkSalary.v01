@@ -54,6 +54,7 @@ class CustomParametersWidget(QWidget, Ui_customParametersWidget):
         self.parametersTableView.customContextMenuRequested.connect(self.showContextMenu)
         self.parametersTableView.doubleClicked.connect(self.tableDoubleClicked)
 
+        self.closeBtn.clicked.connect(self.close)
         self.logoutBtn.clicked.connect(self.logout)
 
         self.btnClicked('clients', self.clientsBtn)

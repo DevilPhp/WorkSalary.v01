@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>895</width>
-    <height>613</height>
+    <height>615</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -135,7 +135,7 @@ QMenu::item:selected {
 	icon: url(:/icons/app/assets/icons/Log-Out--Streamline-Feather_#192626.svg);
 }
 
-#refreshShiftsBtn, #refreshOpersGroupBtn {
+#addShiftsBtn, #refreshOpersGroupBtn {
 	padding: 0px;
 	background-color: #dfdfdf;
 }
@@ -272,10 +272,10 @@ QComboBox:header{
           </widget>
          </item>
          <item alignment="Qt::AlignRight">
-          <widget class="QWidget" name="userHolder" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <widget class="QWidget" name="widget_26" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_37">
             <property name="spacing">
-             <number>3</number>
+             <number>5</number>
             </property>
             <property name="leftMargin">
              <number>0</number>
@@ -284,53 +284,117 @@ QComboBox:header{
              <number>0</number>
             </property>
             <property name="rightMargin">
-             <number>5</number>
+             <number>0</number>
             </property>
             <property name="bottomMargin">
              <number>0</number>
             </property>
             <item>
-             <widget class="QPushButton" name="logoutBtn">
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset resource="../../../resources.qrc">
-                <normaloff>:/icons/app/assets/icons/Log-Out--Streamline-Feather.svg</normaloff>:/icons/app/assets/icons/Log-Out--Streamline-Feather.svg</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>18</width>
-                <height>18</height>
-               </size>
-              </property>
+             <widget class="QWidget" name="widget_27" native="true">
+              <layout class="QHBoxLayout" name="horizontalLayout_38">
+               <property name="spacing">
+                <number>0</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QPushButton" name="closeBtn">
+                 <property name="styleSheet">
+                  <string notr="true">* {
+	padding: 3px;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Зтвори</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../../../resources.qrc">
+                   <normaloff>:/icons/app/assets/icons/Close-Square--Streamline-Solar-Broken.svg</normaloff>:/icons/app/assets/icons/Close-Square--Streamline-Solar-Broken.svg</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>20</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="userIcon">
-              <property name="focusPolicy">
-               <enum>Qt::NoFocus</enum>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset resource="../../../resources.qrc">
-                <normaloff>:/icons/app/assets/icons/User--Streamline-Feather.svg</normaloff>:/icons/app/assets/icons/User--Streamline-Feather.svg</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>18</width>
-                <height>18</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="usernameLabel">
-              <property name="text">
-               <string>admin</string>
-              </property>
+             <widget class="QWidget" name="userHolder" native="true">
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <property name="spacing">
+                <number>3</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>5</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QPushButton" name="userIcon">
+                 <property name="focusPolicy">
+                  <enum>Qt::NoFocus</enum>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../../../resources.qrc">
+                   <normaloff>:/icons/app/assets/icons/User--Streamline-Feather.svg</normaloff>:/icons/app/assets/icons/User--Streamline-Feather.svg</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>18</width>
+                   <height>18</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="usernameLabel">
+                 <property name="text">
+                  <string>admin</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="logoutBtn">
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../../../resources.qrc">
+                   <normaloff>:/icons/app/assets/icons/Log-Out--Streamline-Feather.svg</normaloff>:/icons/app/assets/icons/Log-Out--Streamline-Feather.svg</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>18</width>
+                   <height>18</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </widget>
             </item>
            </layout>
@@ -508,25 +572,6 @@ QComboBox:header{
                     <property name="bottomMargin">
                      <number>0</number>
                     </property>
-                    <item>
-                     <widget class="QLineEdit" name="workerNameLineEdit">
-                      <property name="maximumSize">
-                       <size>
-                        <width>16777215</width>
-                        <height>16777215</height>
-                       </size>
-                      </property>
-                      <property name="text">
-                       <string/>
-                      </property>
-                      <property name="placeholderText">
-                       <string/>
-                      </property>
-                      <property name="clearButtonEnabled">
-                       <bool>false</bool>
-                      </property>
-                     </widget>
-                    </item>
                     <item>
                      <widget class="QPushButton" name="clearWorkerNameBtn">
                       <property name="text">
@@ -755,9 +800,6 @@ QComboBox:header{
                         <number>0</number>
                        </property>
                        <item>
-                        <widget class="QTimeEdit" name="overtimeStart"/>
-                       </item>
-                       <item>
                         <widget class="QLabel" name="label_19">
                          <property name="text">
                           <string>ч.</string>
@@ -806,9 +848,6 @@ QComboBox:header{
                        <property name="bottomMargin">
                         <number>0</number>
                        </property>
-                       <item>
-                        <widget class="QTimeEdit" name="hourlyStart"/>
-                       </item>
                        <item>
                         <widget class="QLabel" name="label_16">
                          <property name="text">
@@ -868,13 +907,6 @@ QComboBox:header{
                        <property name="bottomMargin">
                         <number>0</number>
                        </property>
-                       <item>
-                        <widget class="QTimeEdit" name="overtimeEnd">
-                         <property name="cursor">
-                          <cursorShape>ArrowCursor</cursorShape>
-                         </property>
-                        </widget>
-                       </item>
                        <item>
                         <widget class="QLabel" name="label_20">
                          <property name="text">
@@ -980,17 +1012,6 @@ QComboBox:header{
                         <number>0</number>
                        </property>
                        <item>
-                        <widget class="QTimeEdit" name="shiftEnd">
-                         <property name="time">
-                          <time>
-                           <hour>17</hour>
-                           <minute>0</minute>
-                           <second>0</second>
-                          </time>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
                         <widget class="QLabel" name="label_15">
                          <property name="text">
                           <string>ч.</string>
@@ -1018,20 +1039,6 @@ QComboBox:header{
                        <property name="bottomMargin">
                         <number>0</number>
                        </property>
-                       <item>
-                        <widget class="QTimeEdit" name="shiftStart">
-                         <property name="calendarPopup">
-                          <bool>false</bool>
-                         </property>
-                         <property name="time">
-                          <time>
-                           <hour>8</hour>
-                           <minute>0</minute>
-                           <second>0</second>
-                          </time>
-                         </property>
-                        </widget>
-                       </item>
                        <item>
                         <widget class="QLabel" name="label_14">
                          <property name="text">
@@ -1074,9 +1081,6 @@ QComboBox:header{
                        <property name="bottomMargin">
                         <number>0</number>
                        </property>
-                       <item>
-                        <widget class="QTimeEdit" name="hourlyEnd"/>
-                       </item>
                        <item>
                         <widget class="QLabel" name="label_17">
                          <property name="text">
@@ -1158,7 +1162,7 @@ QComboBox:header{
                         </widget>
                        </item>
                        <item>
-                        <widget class="QPushButton" name="refreshShiftsBtn">
+                        <widget class="QPushButton" name="addShiftsBtn">
                          <property name="focusPolicy">
                           <enum>Qt::NoFocus</enum>
                          </property>
@@ -1167,12 +1171,12 @@ QComboBox:header{
                          </property>
                          <property name="icon">
                           <iconset resource="../../../resources.qrc">
-                           <normaloff>:/icons/app/assets/icons/Restart--Streamline-Solar-Broken.svg</normaloff>:/icons/app/assets/icons/Restart--Streamline-Solar-Broken.svg</iconset>
+                           <normaloff>:/icons/app/assets/icons/Add-Square--Streamline-Solar-Broken.svg</normaloff>:/icons/app/assets/icons/Add-Square--Streamline-Solar-Broken.svg</iconset>
                          </property>
                          <property name="iconSize">
                           <size>
-                           <width>16</width>
-                           <height>16</height>
+                           <width>20</width>
+                           <height>20</height>
                           </size>
                          </property>
                         </widget>
@@ -1309,7 +1313,7 @@ QComboBox:header{
                    <second>0</second>
                    <year>1990</year>
                    <month>8</month>
-                   <day>28</day>
+                   <day>26</day>
                   </datetime>
                  </property>
                  <property name="displayFormat">
@@ -1510,6 +1514,41 @@ QComboBox:header{
                    </property>
                   </widget>
                  </item>
+                 <item row="1" column="2">
+                  <widget class="QLabel" name="label_32">
+                   <property name="text">
+                    <string>Бройки</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="2">
+                  <widget class="QLabel" name="label_33">
+                   <property name="text">
+                    <string>Време</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_30">
+                   <property name="text">
+                    <string>Модел:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="4">
+                  <widget class="QLabel" name="label_35">
+                   <property name="text">
+                    <string>Време за бр.</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="4">
+                  <widget class="QLabel" name="label_34">
+                   <property name="text">
+                    <string>ВремеПоПод.</string>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="1" column="3">
                   <widget class="QLineEdit" name="modelPiecesLineEdit">
                    <property name="minimumSize">
@@ -1529,113 +1568,10 @@ QComboBox:header{
                    </property>
                   </widget>
                  </item>
-                 <item row="1" column="1">
-                  <widget class="QLineEdit" name="clientModelsLineEdit">
-                   <property name="minimumSize">
-                    <size>
-                     <width>200</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="1">
-                  <widget class="QLineEdit" name="modelOperationLineEdit">
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>16777215</height>
-                    </size>
-                   </property>
-                   <property name="readOnly">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="2">
-                  <widget class="QLabel" name="label_33">
-                   <property name="text">
-                    <string>Време</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="3">
-                  <widget class="QLineEdit" name="piecesTimeLineEdit">
-                   <property name="maximumSize">
-                    <size>
-                     <width>60</width>
-                     <height>16777215</height>
-                    </size>
-                   </property>
-                   <property name="focusPolicy">
-                    <enum>Qt::NoFocus</enum>
-                   </property>
-                   <property name="text">
-                    <string>0</string>
-                   </property>
-                   <property name="readOnly">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
                  <item row="3" column="2">
                   <widget class="QLabel" name="label_45">
                    <property name="text">
                     <string>Бр. Модел</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="3" column="5" alignment="Qt::AlignLeft">
-                  <widget class="QPushButton" name="addNewTimePaperBtn">
-                   <property name="focusPolicy">
-                    <enum>Qt::NoFocus</enum>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">*{
-	padding: 0px;
-	background-color: #dfdfdf;
-}</string>
-                   </property>
-                   <property name="text">
-                    <string>Запис</string>
-                   </property>
-                   <property name="icon">
-                    <iconset resource="../../../resources.qrc">
-                     <normaloff>:/icons/app/assets/icons/Check-Square--Streamline-Solar-Broken-#008b69.svg</normaloff>:/icons/app/assets/icons/Check-Square--Streamline-Solar-Broken-#008b69.svg</iconset>
-                   </property>
-                   <property name="iconSize">
-                    <size>
-                     <width>18</width>
-                     <height>18</height>
-                    </size>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="4">
-                  <widget class="QLabel" name="label_35">
-                   <property name="text">
-                    <string>Време за бр.</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="0">
-                  <widget class="QLabel" name="label_30">
-                   <property name="text">
-                    <string>Модел:</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="4">
-                  <widget class="QLabel" name="label_34">
-                   <property name="text">
-                    <string>ВремеПоПод.</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="2">
-                  <widget class="QLabel" name="label_32">
-                   <property name="text">
-                    <string>Бройки</string>
                    </property>
                   </widget>
                  </item>
@@ -1757,6 +1693,72 @@ QComboBox:header{
                    </layout>
                   </widget>
                  </item>
+                 <item row="3" column="0">
+                  <widget class="QLabel" name="label_40">
+                   <property name="text">
+                    <string>Бройки Оп.</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QWidget" name="widget_25" native="true">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_36">
+                    <property name="spacing">
+                     <number>0</number>
+                    </property>
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="QLineEdit" name="modelOperationLineEdit">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="readOnly">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="3">
+                  <widget class="QLineEdit" name="piecesTimeLineEdit">
+                   <property name="maximumSize">
+                    <size>
+                     <width>60</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                   </property>
+                   <property name="text">
+                    <string>0</string>
+                   </property>
+                   <property name="readOnly">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="2" column="5">
                   <widget class="QLineEdit" name="timeForPieceLineEdit">
                    <property name="maximumSize">
@@ -1773,10 +1775,29 @@ QComboBox:header{
                    </property>
                   </widget>
                  </item>
-                 <item row="3" column="0">
-                  <widget class="QLabel" name="label_40">
+                 <item row="3" column="5" alignment="Qt::AlignLeft">
+                  <widget class="QPushButton" name="addNewTimePaperBtn">
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">*{
+	padding: 0px;
+	background-color: #dfdfdf;
+}</string>
+                   </property>
                    <property name="text">
-                    <string>Бройки Оп.</string>
+                    <string>Запис</string>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../../../resources.qrc">
+                     <normaloff>:/icons/app/assets/icons/Check-Square--Streamline-Solar-Broken-#008b69.svg</normaloff>:/icons/app/assets/icons/Check-Square--Streamline-Solar-Broken-#008b69.svg</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>18</width>
+                     <height>18</height>
+                    </size>
                    </property>
                   </widget>
                  </item>
@@ -1800,6 +1821,13 @@ QComboBox:header{
                   <widget class="QLabel" name="label_31">
                    <property name="text">
                     <string>Операция</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="6">
+                  <widget class="QPushButton" name="effectOperTimesBtn">
+                   <property name="text">
+                    <string>Промяна времена</string>
                    </property>
                   </widget>
                  </item>
@@ -1855,7 +1883,7 @@ QComboBox:header{
         <x>0</x>
         <y>0</y>
         <width>883</width>
-        <height>229</height>
+        <height>225</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_12">

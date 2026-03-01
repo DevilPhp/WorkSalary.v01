@@ -76,6 +76,7 @@ class MainWindow(QMainWindow):
         self.ui.payPerMinBtn.clicked.connect(self.setPayPerMinPage)
         self.ui.parametersBtn.clicked.connect(self.setParametersPage)
 
+        self.ui.closeBtn.clicked.connect(self.close)
         self.ui.logoutBtn.clicked.connect(lambda: self.logout(True))
         api_signal_emitter.server_disconnected.connect(self.handle_server_disconnection)
 
@@ -221,14 +222,10 @@ class MainWindow(QMainWindow):
         else:
             self.paymentsPage.activateWindow()
 
-    def setWorkingShiftsPage(self, initialData=None):
+    def setWorkingShiftsPage(self, initialData=None, isCalling=False):
         if self.workingShiftsPage is None:
             if self.checkForServerConnection():
                 self.workingShiftsPage = CustomShiftsEditWidget(self, self.user)
-                if initialData:
-                    self.workingShiftsPage.workingShiftsNameLineEdit.setText(initialData[0])
-                    self.workingShiftsPage.shiftStart.setTime(initialData[1])
-                    self.workingShiftsPage.shiftEnd.setTime(initialData[2])
                 self.workingShiftsPage.show()
                 self.workingShiftsPage.destroyed.connect(self.resetWorkingShiftsPage)
                 self.workingShiftsPage.logoutSignal.connect(self.logout)
@@ -236,6 +233,13 @@ class MainWindow(QMainWindow):
                 self.logout(True)
         else:
             self.workingShiftsPage.activateWindow()
+
+        if initialData:
+            self.workingShiftsPage.setShiftFromCalling(initialData, isCalling)
+            # self.workingShiftsPage.workingShiftsNameLineEdit.setText(initialData[0])
+            # self.workingShiftsPage.shiftStart.setText(initialData[1])
+            # self.workingShiftsPage.shiftEnd.setText(initialData[2])
+            # self.workingShiftsPage.shiftTotalMins.setText(initialData[3])
 
     def setTimePapersPage(self):
         if self.timePapersPage is None:
@@ -274,6 +278,14 @@ class MainWindow(QMainWindow):
                 self.logout(True)
         else:
             self.modelOperPage.activateWindow()
+
+    def setModelOperPageForTimePapersCall(self, clientName, modelName, modelId, currentMonth):
+        if self.modelOperPage:
+            self.modelOperPage.close()
+        self.modelOperPage = CustomWidgetForModelOper(self, self.user, isCalling=True)
+        self.modelOperPage.show()
+        self.modelOperPage.destroyed.connect(self.resetModelOperPage)
+        self.modelOperPage.setWindowForTimePapersReturn(clientName, modelName, modelId, currentMonth)
 
     def logout(self, signal):
         if signal:

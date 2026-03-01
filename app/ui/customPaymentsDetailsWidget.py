@@ -44,22 +44,25 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
 
         self.paymentsDetailsTableHolder.layout().addWidget(self.workerDetalsTreeView)
         self.tablePaymentDetailsModel = QStandardItemModel()
-        self.tablePaymentDetailsNames = ['ID', 'Дата', 'Смяна', 'Поръчки', 'Опер.', 'Вр. мин.',
-                                         'Поч. дни', 'Поч. дни Лв.', 'Поч. дни €', 'Праз. дни', 'Праз. дни Лв.',
-                                         'Праз. дни €', 'Поч. Раб.', 'Изв. Раб.', 'Изв. Раб. Лв.', 'Изв. Раб. €',
-                                         'Нощен труд', 'Нощен труд Лв.', 'Нощен труд €', 'Бр.', 'Ефект.',
-                                         'Нач. лв.', 'Нач. €', 'Тотал лв.', 'Тотал €']
+        self.tablePaymentDetailsNames = ['ID', 'Дата', 'Смяна', 'Прис. Вр.', 'Поръчки', 'Опер.', 'Вр. мин.',
+                                         'Поч. дни', 'Поч. дни Лв.', 'Поч. дни €', 'В Празници', 'В Празници Лв.',
+                                         'В Празници €', 'Почас.', 'Извънр.', 'Извънр. Лв.', 'Извънр. €', 'Нощен',
+                                         'Нощен Лв.', 'Нощен €', 'Бр.', 'Ефект.', 'Извънр. Тотал', 'Извънр. Тотал Лв.',
+                                         'Извънр. Тотал €', 'Зар. Лв.', 'Зар. €', 'Тотал лв.', 'Тотал €']
+
         for i, tableHeaderName in enumerate(self.tablePaymentDetailsNames):
             self.tablePaymentDetailsModel.setHorizontalHeaderItem(i, QStandardItem(tableHeaderName))
             self.tablePaymentDetailsModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignLeft)
             self.tablePaymentDetailsModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignVCenter)
-        self.proxyModelPaymentsDetailsTree = CaseInsensitiveProxyModel(numericColumns=[0, 4, 5, 7, 8, 9,
-                                                                                       10, 11, 12, 13],
+        self.proxyModelPaymentsDetailsTree = CaseInsensitiveProxyModel(numericColumns=[0, 3, 5, 6, 7, 8, 9, 10, 11, 12,
+                                                                                       13, 14, 15, 16, 17, 18, 19, 20,
+                                                                                       21, 22, 23, 24, 25, 26, 27, 28],
                                                                        dateColumns=[1],
                                                                        parent=self)
+
         self.setProxyModel(self.proxyModelPaymentsDetailsTree, self.tablePaymentDetailsModel, self.workerDetalsTreeView)
         # self.timePapersForDayTableView.setModel(self.tablePaymentsModel)
-        self.workerDetalsTreeView.header().setDefaultSectionSize(80)
+        self.workerDetalsTreeView.header().setDefaultSectionSize(70)
         self.workerDetalsTreeView.header().setStretchLastSection(True)
         self.setColumnWidths()
         self.refreshPaymentsDetailsTreeView()
@@ -68,13 +71,16 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
         self.workerDetalsTreeView.selectedRows.connect(self.showPaymentDetails)
         self.workerDetalsTreeView.clearCurrentSelection.connect(self.resetSelectedInfo)
 
+        self.levaCheckBox.stateChanged.connect(self.onLevaStateChanged)
         self.hourlyCheckBox.stateChanged.connect(self.onHourlyStateChanged)
         self.overtimeCheckBox.stateChanged.connect(self.onOvertimeStateChanged)
         self.nightTimeCheckBox.stateChanged.connect(self.onNightTimeStateChanged)
         self.selectAllCheckBox.stateChanged.connect(self.onSelectAllStateChanged)
-        self.weekendHolidaysCheckBox.stateChanged.connect(self.onWeekendHolidaysStateChanged)
+        self.weekendCheckBox.stateChanged.connect(self.onWeekendStateChanged)
+        self.holidaysCheckBox.stateChanged.connect(self.onHolidaysStateChanged)
         self.excelBtn.clicked.connect(self.exportToExcel)
 
+        self.closeBtn.clicked.connect(self.close)
         self.logoutBtn.clicked.connect(self.logout)
 
     def exportToExcel(self):
@@ -113,17 +119,58 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
         header_fill = PatternFill(start_color="9FABB3", end_color="9FABB3", fill_type="solid")
 
         columnHeaders = self.tablePaymentDetailsNames.copy()
-        if not self.weekendHolidaysCheckBox.isChecked():
-            columnHeaders.remove('Поч./Празн. дни')
+
+        if not self.holidaysCheckBox.isChecked():
+            columnHeaders.remove('В Празници')
+            columnHeaders.remove('В Празници €')
+            columnHeaders.remove('В Празници Лв.')
+
+        if self.holidaysCheckBox.isChecked() and not self.levaCheckBox.isChecked():
+            columnHeaders.remove('В Празници Лв.')
+
+        if not self.weekendCheckBox.isChecked():
+            columnHeaders.remove('Поч. дни')
+            columnHeaders.remove('Поч. дни Лв.')
+            columnHeaders.remove('Поч. дни €')
+
+        if self.weekendCheckBox.isChecked() and not self.levaCheckBox.isChecked():
+            columnHeaders.remove('Поч. дни Лв.')
 
         if not self.overtimeCheckBox.isChecked():
-            columnHeaders.remove('Изв. Раб.')
+            columnHeaders.remove('Извънр.')
+            columnHeaders.remove('Извънр. Лв.')
+            columnHeaders.remove('Извънр. €')
+
+        if self.overtimeCheckBox.isChecked() and not self.levaCheckBox.isChecked():
+            columnHeaders.remove('Извънр. Лв.')
 
         if not self.nightTimeCheckBox.isChecked():
-            columnHeaders.remove('Нощен труд')
+            columnHeaders.remove('Нощен')
+            columnHeaders.remove('Нощен Лв.')
+            columnHeaders.remove('Нощен €')
+
+        if self.nightTimeCheckBox.isChecked() and not self.levaCheckBox.isChecked():
+            columnHeaders.remove('Нощен Лв.')
 
         if not self.hourlyCheckBox.isChecked():
-            columnHeaders.remove('Поч. Раб.')
+            columnHeaders.remove('Почас.')
+
+        if not self.levaCheckBox.isChecked():
+            columnHeaders.remove('Зар. Лв.')
+            columnHeaders.remove('Тотал лв.')
+            columnHeaders.remove('Извънр. Тотал Лв.')
+
+        # if not self.weekendHolidaysCheckBox.isChecked():
+        #     columnHeaders.remove('Поч./Празн. дни')
+        #
+        # if not self.overtimeCheckBox.isChecked():
+        #     columnHeaders.remove('Изв. Раб.')
+        #
+        # if not self.nightTimeCheckBox.isChecked():
+        #     columnHeaders.remove('Нощен труд')
+        #
+        # if not self.hourlyCheckBox.isChecked():
+        #     columnHeaders.remove('Поч. Раб.')
 
         for col_idx, header_text in enumerate(columnHeaders):
             col_letter = get_column_letter(col_idx + 1)
@@ -194,12 +241,13 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
                 value = model.data(index, Qt.ItemDataRole.DisplayRole)
 
                 # Convert to appropriate type
-                if col in [0, 1, 3, 4, 5, 6]:  # Integer columns
+                if col in [0, 5, 20, 21]:  # Integer columns
                     try:
                         value = int(value) if value else 0
                     except (ValueError, TypeError):
                         pass
-                elif col in [11, 12, 13]:  # Float columns
+                elif col in [3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+                             16, 17, 18, 19, 22, 23, 24, 25, 26, 27, 28]:  # Float columns
                     try:
                         value = float(value) if value else 0.0
                     except (ValueError, TypeError):
@@ -250,31 +298,34 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
     def setColumnWidths(self):
         self.workerDetalsTreeView.setColumnWidth(1, 85)
         self.workerDetalsTreeView.setColumnWidth(3, 85)
-        self.workerDetalsTreeView.setColumnWidth(4, 52)
-        self.workerDetalsTreeView.setColumnWidth(5, 68)
-        self.workerDetalsTreeView.setColumnWidth(6, 85)
-        self.workerDetalsTreeView.setColumnWidth(7, 72)
-        self.workerDetalsTreeView.setColumnWidth(8, 72)
-        self.workerDetalsTreeView.setColumnWidth(9, 42)
-        self.workerDetalsTreeView.setColumnWidth(10, 60)
+        # self.workerDetalsTreeView.setColumnWidth(4, 52)
+        # self.workerDetalsTreeView.setColumnWidth(5, 68)
+        # self.workerDetalsTreeView.setColumnWidth(6, 85)
+        # self.workerDetalsTreeView.setColumnWidth(7, 72)
+        # self.workerDetalsTreeView.setColumnWidth(8, 72)
+        # self.workerDetalsTreeView.setColumnWidth(9, 42)
+        # self.workerDetalsTreeView.setColumnWidth(10, 60)
 
-    # ['ID'0, 'Дата'1, 'Смяна'2, 'Поръчки'3, 'Опер.'4, 'Вр. мин.'5,
-    #  'Поч. дни'6, 'Поч. дни Лв.'7, 'Поч. дни €'8, 'Праз. дни'9, 'Праз. дни Лв.'10,
-    #  'Праз. дни €'11, 'Поч. Раб.'12, 'Изв. Раб.'13, 'Изв. Раб. Лв.'14, 'Изв. Раб. €'15,
-    #  'Нощен труд'16, 'Нощен труд Лв.'17, 'Нощен труд €'18, 'Бр.', 'Ефект.'19,
-    #  'Нач. лв.'20, 'Нач. €'21, 'Тотал лв.'22, 'Тотал €'23]
+    # ['ID'0, 'Дата'1, 'Смяна'2, 'Прис. Вр.'3, 'Поръчки'4, 'Опер.'5, 'Вр. мин.'6,
+    #  'Поч. дни'7, 'Поч. дни Лв.'8, 'Поч. дни €'9, 'В Празници'10, 'В Празници Лв.'11,
+    #  'В Празници €'12, 'Почас.'13, 'Извънр.'14, 'Извънр. Лв.'15, 'Извънр. €'16, 'Нощен'17,
+    #  'Нощен Лв.'18, 'Нощен €'19, 'Бр.'20, 'Ефект.'21, 'Извънр. Тотал'22, 'Извънр. Тотал Лв.'23,
+    #  'Извънр. Тотал €'24, 'Зар. Лв.'25, 'Зар. €'26, 'Тотал лв.'27, 'Тотал €'28]
 
     def setInitialColumns(self):
-        self.workerDetalsTreeView.setColumnHidden(6, True)
-        self.workerDetalsTreeView.setColumnHidden(7, True)
-        self.workerDetalsTreeView.setColumnHidden(8, True)
-        self.workerDetalsTreeView.setColumnHidden(9, True)
+        for i in range(len(self.tablePaymentDetailsNames)):
+            if i in [0, 1, 2, 3, 4, 5, 6, 20, 21, 22, 24, 26, 28]:
+                pass
+            else:
+                self.workerDetalsTreeView.setColumnHidden(i, True)
 
     def checkAllstate(self):
         if (self.hourlyCheckBox.isChecked() and
                 self.overtimeCheckBox.isChecked() and
                 self.nightTimeCheckBox.isChecked() and
-                self.weekendHolidaysCheckBox.isChecked()):
+                self.weekendCheckBox.isChecked() and
+                self.holidaysCheckBox.isChecked() and
+                self.levaCheckBox.isChecked()):
             self.selectAllCheckBox.setChecked(True)
         else:
             self.selectAllCheckBox.blockSignals(True)
@@ -285,22 +336,77 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
         self.hourlyCheckBox.setChecked(state)
         self.overtimeCheckBox.setChecked(state)
         self.nightTimeCheckBox.setChecked(state)
-        self.weekendHolidaysCheckBox.setChecked(state)
+        self.weekendCheckBox.setChecked(state)
+        self.holidaysCheckBox.setChecked(state)
+        self.levaCheckBox.setChecked(state)
 
-    def onWeekendHolidaysStateChanged(self, state):
-        self.workerDetalsTreeView.setColumnHidden(6, not state)
+    def onLevaStateChanged(self, state):
+        self.workerDetalsTreeView.setColumnHidden(23, not state)
+        self.workerDetalsTreeView.setColumnHidden(25, not state)
+        self.workerDetalsTreeView.setColumnHidden(27, not state)
+
+        if self.weekendCheckBox.isChecked():
+            self.workerDetalsTreeView.setColumnHidden(8, not state)
+
+        if self.holidaysCheckBox.isChecked():
+            self.workerDetalsTreeView.setColumnHidden(11, not state)
+
+        if self.overtimeCheckBox.isChecked():
+            self.workerDetalsTreeView.setColumnHidden(15, not state)
+
+        if self.nightTimeCheckBox.isChecked():
+            self.workerDetalsTreeView.setColumnHidden(18, not state)
+
+        self.checkAllstate()
+
+    def onHolidaysStateChanged(self, state):
+        self.workerDetalsTreeView.setColumnHidden(10, not state)
+        self.workerDetalsTreeView.setColumnHidden(12, not state)
+
+        if self.levaCheckBox.isChecked():
+            self.workerDetalsTreeView.setColumnHidden(11, False)
+
+        if not self.holidaysCheckBox.isChecked():
+            self.workerDetalsTreeView.setColumnHidden(11, True)
+
+    def onWeekendStateChanged(self, state):
+        self.workerDetalsTreeView.setColumnHidden(7, not state)
+        self.workerDetalsTreeView.setColumnHidden(9, not state)
+
+        if self.levaCheckBox.isChecked():
+            self.workerDetalsTreeView.setColumnHidden(8, False)
+
+        if not self.weekendCheckBox.isChecked():
+            self.workerDetalsTreeView.setColumnHidden(8, True)
+
         self.checkAllstate()
 
     def onHourlyStateChanged(self, state):
-        self.workerDetalsTreeView.setColumnHidden(7, not state)
+        self.workerDetalsTreeView.setColumnHidden(13, not state)
         self.checkAllstate()
 
     def onOvertimeStateChanged(self, state):
-        self.workerDetalsTreeView.setColumnHidden(8, not state)
+        self.workerDetalsTreeView.setColumnHidden(14, not state)
+        self.workerDetalsTreeView.setColumnHidden(16, not state)
+
+        if self.levaCheckBox.isChecked():
+            self.workerDetalsTreeView.setColumnHidden(15, False)
+
+        if not self.overtimeCheckBox.isChecked():
+            self.workerDetalsTreeView.setColumnHidden(15, True)
+
         self.checkAllstate()
 
     def onNightTimeStateChanged(self, state):
-        self.workerDetalsTreeView.setColumnHidden(9, not state)
+        self.workerDetalsTreeView.setColumnHidden(17, not state)
+        self.workerDetalsTreeView.setColumnHidden(19, not state)
+
+        if self.levaCheckBox.isChecked():
+            self.workerDetalsTreeView.setColumnHidden(18, False)
+
+        if not self.nightTimeCheckBox.isChecked():
+            self.workerDetalsTreeView.setColumnHidden(18, True)
+
         self.checkAllstate()
 
     def refreshPaymentsDetailsTreeView(self):
@@ -325,21 +431,50 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
                     currentParent = row['row'].split('_')[1]
                     parrentRowToAdd = QStandardItem(str(row['payment']))
                     parentRow = parrentRowToAdd
+
+                    # ['ID'0, 'Дата'1, 'Смяна'2, 'Прис. Вр.'3, 'Поръчки'4, 'Опер.'5, 'Вр. мин.'6,
+                    #  'Поч. дни'7, 'Поч. дни Лв.'8, 'Поч. дни €'9, 'В Празници'10, 'В Празници Лв.'11,
+                    #  'В Празници €'12, 'Почас.'13, 'Извънр.'14, 'Извънр. Лв.'15, 'Извънр. €'16, 'Нощен'17,
+                    #  'Нощен Лв.'18, 'Нощен €'19, 'Бр.'20, 'Ефект.'21, 'Извънр. Тотал'22, 'Извънр. Тотал Лв.'23,
+                    #  'Извънр. Тотал €'24, 'Зар. Лв.'25, 'Зар. €'26, 'Тотал лв.'27, 'Тотал €'28]
+
+                    # (row, payment, date, shift, shiftTime, ordersCount, operationsCount, totalTime, weekends,
+                    #  weekendsLeva, weekendsEuro, holidays, holidaysLeva, hildaysEuro, totalHourlyTime,
+                    #  totalOvertime,
+                    #  overtimeLeva, overtimeEuro, totalNightTime, nightTimeLeva, nightTimeEuro, totalPieces,
+                    #  efficency, totalOvertimeMins, totalOvertimeMinsLeva, totalOvertimeMinsEuro,
+                    #  workingLeva, workingEuro, totalPaymentInLev, totalPaymentInEuro):
+
                     parrentRowForAppend = [
                         parrentRowToAdd,
                         QStandardItem(row['date']),
                         QStandardItem(row['shift']),
-                        QStandardItem(str(row['ordersCount'])),
-                        QStandardItem(str(row['operationsCount'])),
-                        QStandardItem(str(row['totalTime'])),
-                        QStandardItem(row['weekendHolidays']),
-                        QStandardItem(str(row['totalHourlyTime'])),
-                        QStandardItem(str(row['totalOvertime'])),
-                        QStandardItem(str(row['totalNightTime'])),
-                        QStandardItem(str(row['totalPieces'])),
-                        QStandardItem(str(row['efficency'])),
-                        QStandardItem(str(row['totalPaymentInLev'])),
-                        QStandardItem(str(row['totalPaymentInEuro']))
+                        QStandardItem(row['shiftTime']),
+                        QStandardItem(row['ordersCount']),
+                        QStandardItem(row['operationsCount']),
+                        QStandardItem(row['totalTime']),
+                        QStandardItem(row['weekends']),
+                        QStandardItem(row['weekendsLeva']),
+                        QStandardItem(row['weekendsEuro']),
+                        QStandardItem(row['holidays']),
+                        QStandardItem(row['holidaysLeva']),
+                        QStandardItem(row['holidaysEuro']),
+                        QStandardItem(row['totalHourlyTime']),
+                        QStandardItem(row['totalOvertime']),
+                        QStandardItem(row['overtimeLeva']),
+                        QStandardItem(row['overtimeEuro']),
+                        QStandardItem(row['totalNightTime']),
+                        QStandardItem(row['nightTimeLeva']),
+                        QStandardItem(row['nightTimeEuro']),
+                        QStandardItem(row['totalPieces']),
+                        QStandardItem(row['efficency']),
+                        QStandardItem(row['totalOvertimeMins']),
+                        QStandardItem(row['totalOvertimeMinsLeva']),
+                        QStandardItem(row['totalOvertimeMinsEuro']),
+                        QStandardItem(row['workingLeva']),
+                        QStandardItem(row['workingEuro']),
+                        QStandardItem(row['totalPaymentInLev']),
+                        QStandardItem(row['totalPaymentInEuro'])
                     ]
                     totalRows += 1
                     self.tablePaymentDetailsModel.appendRow(parrentRowForAppend)
@@ -349,17 +484,32 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
                         QStandardItem(str(row['payment'])),
                         QStandardItem(row['date']),
                         QStandardItem(row['shift']),
-                        QStandardItem(str(row['ordersCount'])),
-                        QStandardItem(str(row['operationsCount'])),
-                        QStandardItem(str(row['totalTime'])),
-                        QStandardItem(row['weekendHolidays']),
-                        QStandardItem(str(row['totalHourlyTime'])),
-                        QStandardItem(str(row['totalOvertime'])),
-                        QStandardItem(str(row['totalNightTime'])),
-                        QStandardItem(str(row['totalPieces'])),
-                        QStandardItem(str(row['efficency'])),
-                        QStandardItem(str(row['totalPaymentInLev'])),
-                        QStandardItem(str(row['totalPaymentInEuro']))
+                        QStandardItem(row['shiftTime']),
+                        QStandardItem(row['ordersCount']),
+                        QStandardItem(row['operationsCount']),
+                        QStandardItem(row['totalTime']),
+                        QStandardItem(row['weekends']),
+                        QStandardItem(row['weekendsLeva']),
+                        QStandardItem(row['weekendsEuro']),
+                        QStandardItem(row['holidays']),
+                        QStandardItem(row['holidaysLeva']),
+                        QStandardItem(row['holidaysEuro']),
+                        QStandardItem(row['totalHourlyTime']),
+                        QStandardItem(row['totalOvertime']),
+                        QStandardItem(row['overtimeLeva']),
+                        QStandardItem(row['overtimeEuro']),
+                        QStandardItem(row['totalNightTime']),
+                        QStandardItem(row['nightTimeLeva']),
+                        QStandardItem(row['nightTimeEuro']),
+                        QStandardItem(row['totalPieces']),
+                        QStandardItem(row['efficency']),
+                        QStandardItem(row['totalOvertimeMins']),
+                        QStandardItem(row['totalOvertimeMinsLeva']),
+                        QStandardItem(row['totalOvertimeMinsEuro']),
+                        QStandardItem(row['workingLeva']),
+                        QStandardItem(row['workingEuro']),
+                        QStandardItem(row['totalPaymentInLev']),
+                        QStandardItem(row['totalPaymentInEuro'])
                     ]
                     parentRow.appendRow(childRowForAppend)
 

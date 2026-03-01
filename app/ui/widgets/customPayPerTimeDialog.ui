@@ -389,7 +389,7 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
                  <locale language="English" country="UnitedStates"/>
                 </property>
                 <property name="text">
-                 <string>1.9558</string>
+                 <string>1.95583</string>
                 </property>
                </widget>
               </item>

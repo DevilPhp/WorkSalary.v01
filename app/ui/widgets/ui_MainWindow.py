@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'MainWindowrfzHkN.ui'
+## Form generated from reading UI file 'MainWindowottzOJ.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -298,22 +298,39 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_6.addWidget(self.widget_12, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
-        self.widget_9 = QWidget(self.widget_10)
+        self.widget_4 = QWidget(self.widget_10)
+        self.widget_4.setObjectName(u"widget_4")
+        self.horizontalLayout_5 = QHBoxLayout(self.widget_4)
+        self.horizontalLayout_5.setSpacing(5)
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
+        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.widget_11 = QWidget(self.widget_4)
+        self.widget_11.setObjectName(u"widget_11")
+        self.horizontalLayout = QHBoxLayout(self.widget_11)
+        self.horizontalLayout.setSpacing(0)
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.closeBtn = QPushButton(self.widget_11)
+        self.closeBtn.setObjectName(u"closeBtn")
+        self.closeBtn.setStyleSheet(u"* {\n"
+"	padding: 3px;\n"
+"}")
+        icon4 = QIcon()
+        icon4.addFile(u":/icons/app/assets/icons/Close-Square--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.closeBtn.setIcon(icon4)
+        self.closeBtn.setIconSize(QSize(20, 20))
+
+        self.horizontalLayout.addWidget(self.closeBtn)
+
+
+        self.horizontalLayout_5.addWidget(self.widget_11)
+
+        self.widget_9 = QWidget(self.widget_4)
         self.widget_9.setObjectName(u"widget_9")
         self.horizontalLayout_8 = QHBoxLayout(self.widget_9)
         self.horizontalLayout_8.setSpacing(3)
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
         self.horizontalLayout_8.setContentsMargins(0, 0, 5, 0)
-        self.logoutBtn = QPushButton(self.widget_9)
-        self.logoutBtn.setObjectName(u"logoutBtn")
-        self.logoutBtn.setFocusPolicy(Qt.NoFocus)
-        icon4 = QIcon()
-        icon4.addFile(u":/icons/app/assets/icons/Log-Out--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.logoutBtn.setIcon(icon4)
-        self.logoutBtn.setIconSize(QSize(18, 18))
-
-        self.horizontalLayout_8.addWidget(self.logoutBtn)
-
         self.userIcon = QPushButton(self.widget_9)
         self.userIcon.setObjectName(u"userIcon")
         self.userIcon.setFocusPolicy(Qt.NoFocus)
@@ -327,8 +344,21 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_8.addWidget(self.usernameLabel)
 
+        self.logoutBtn = QPushButton(self.widget_9)
+        self.logoutBtn.setObjectName(u"logoutBtn")
+        self.logoutBtn.setFocusPolicy(Qt.NoFocus)
+        icon5 = QIcon()
+        icon5.addFile(u":/icons/app/assets/icons/Log-Out--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.logoutBtn.setIcon(icon5)
+        self.logoutBtn.setIconSize(QSize(18, 18))
 
-        self.horizontalLayout_6.addWidget(self.widget_9, 0, Qt.AlignRight|Qt.AlignTop)
+        self.horizontalLayout_8.addWidget(self.logoutBtn)
+
+
+        self.horizontalLayout_5.addWidget(self.widget_9)
+
+
+        self.horizontalLayout_6.addWidget(self.widget_4, 0, Qt.AlignRight|Qt.AlignTop)
 
 
         self.verticalLayout_9.addWidget(self.widget_10, 0, Qt.AlignTop)
@@ -394,12 +424,12 @@ class Ui_MainWindow(object):
 
         self.mainMenuLayout.addWidget(self.paymentsPageBtn, 2, 1, 1, 1)
 
-        self.pushButton = QPushButton(self.mainMenuWidget)
-        self.pushButton.setObjectName(u"pushButton")
-        sizePolicy.setHeightForWidth(self.pushButton.sizePolicy().hasHeightForWidth())
-        self.pushButton.setSizePolicy(sizePolicy)
+        self.referencesPageBtn = QPushButton(self.mainMenuWidget)
+        self.referencesPageBtn.setObjectName(u"referencesPageBtn")
+        sizePolicy.setHeightForWidth(self.referencesPageBtn.sizePolicy().hasHeightForWidth())
+        self.referencesPageBtn.setSizePolicy(sizePolicy)
 
-        self.mainMenuLayout.addWidget(self.pushButton, 2, 0, 1, 1)
+        self.mainMenuLayout.addWidget(self.referencesPageBtn, 2, 0, 1, 1)
 
         self.timePapersBtn = QPushButton(self.mainMenuWidget)
         self.timePapersBtn.setObjectName(u"timePapersBtn")
@@ -512,9 +542,10 @@ class Ui_MainWindow(object):
         self.loginBtn.setText(QCoreApplication.translate("MainWindow", u" \u0412\u0425\u041e\u0414", None))
         self.footerLabel.setText(QCoreApplication.translate("MainWindow", u"Author: Filip Chaushev   Dev v0.1.030", None))
         self.logoIcon_2.setText("")
-        self.logoutBtn.setText("")
+        self.closeBtn.setText(QCoreApplication.translate("MainWindow", u"\u0417\u0442\u0432\u043e\u0440\u0438", None))
         self.userIcon.setText("")
         self.usernameLabel.setText(QCoreApplication.translate("MainWindow", u"admin", None))
+        self.logoutBtn.setText("")
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"\u041c\u043e\u0434\u0435\u043b\u0438", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"\u041f\u0435\u0440\u0441\u043e\u043d\u0430\u043b", None))
@@ -523,7 +554,7 @@ class Ui_MainWindow(object):
         self.setDefaultOperBtn.setText(QCoreApplication.translate("MainWindow", u"\u041e\u043f\u0435\u0440\u0430\u0446\u0438\u0439 \u043f\u043e \u043f\u043e\u0434\u0440\u0430\u0437\u0431\u0438\u0440\u0430\u043d\u0435", None))
         self.setModelsOperBtn.setText(QCoreApplication.translate("MainWindow", u"\u041c\u043e\u0434\u0435\u043b\u0438 \u0438 \u041e\u043f\u0435\u0440\u0430\u0446\u0438\u0438", None))
         self.paymentsPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0447\u0438\u0441\u043b\u0435\u043d\u0438\u044f", None))
-        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
+        self.referencesPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u0421\u043f\u0440\u0430\u0432\u043a\u0438", None))
         self.timePapersBtn.setText(QCoreApplication.translate("MainWindow", u"\u041b\u0438\u0441\u0442\u043e\u0432\u0435 \u0437\u0430 \u0432\u0440\u0435\u043c\u0435", None))
         self.workersPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u041f\u0435\u0440\u0441\u043e\u043d\u0430\u043b", None))
         self.workingShiftsPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u0420\u0430\u0431\u043e\u0442\u043d\u0438 \u0421\u043c\u0435\u043d\u0438", None))

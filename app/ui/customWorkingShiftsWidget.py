@@ -3,6 +3,7 @@ from PySide6.QtGui import QStandardItemModel, QStandardItem, QDoubleValidator
 from PySide6.QtWidgets import QMenu, QDialog
 
 from app.models.tableModel import CustomTableViewWithMultiSelection
+from app.models.customLineEditWidget import CustomLineEdit
 from app.ui.widgets.ui_customShiftsEditWidget import *
 from app.services.workerServices import WorkerServices as WoS
 from app.utils.utils import Utils
@@ -14,7 +15,7 @@ from datetime import datetime
 
 class CustomShiftsEditWidget(QWidget, Ui_customWorkingShiftsWidget):
     logoutSignal = Signal(bool)
-
+    closeSignal = Signal(bool)
     def __init__(self, mainWindow, user, parent=None):
         super().__init__(parent)
         self.setupUi(self)
@@ -22,11 +23,28 @@ class CustomShiftsEditWidget(QWidget, Ui_customWorkingShiftsWidget):
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
         self.usernameLabel.setText(user)
         self.user = user
+        self.isCalling = False
+
+        self.shiftStart = CustomLineEdit(self)
+        self.shiftEnd = CustomLineEdit(self)
+
+        self.shiftStart.setMaximumWidth(34)
+        self.shiftStart.setMinimumWidth(34)
+        self.shiftEnd.setMaximumWidth(34)
+        self.shiftEnd.setMinimumWidth(34)
+
+        self.shiftStart.setText("08:00")
+        self.shiftEnd.setText("17:00")
+
+        self.shiftStartEditWidget.layout().insertWidget(0, self.shiftStart)
+        self.shiftEndEditWidget.layout().insertWidget(0, self.shiftEnd)
 
         self.workingShifts = None
         self.workingShiftsNames = {}
-        validatorInt = QDoubleValidator(0, 999999, 0)
+        validatorInt = QDoubleValidator(0, 9999, 0)
         self.shiftBreakLineEdit.setValidator(validatorInt)
+        self.shiftStart.setValidator(validatorInt)
+        self.shiftEnd.setValidator(validatorInt)
 
         self.workingShiftsTableView = CustomTableViewWithMultiSelection(singleSelection=True)
         self.workingShiftsTable.layout().addWidget(self.workingShiftsTableView)
@@ -48,15 +66,29 @@ class CustomShiftsEditWidget(QWidget, Ui_customWorkingShiftsWidget):
 
         self.workingShiftsTableView.selectionModel().selectionChanged.connect(self.selectionChanged)
         self.workingShiftsTableView.customContextMenuRequested.connect(self.showCustomContextMenu)
-        self.shiftStart.timeChanged.connect(self.updateShiftDuration)
-        self.shiftEnd.timeChanged.connect(self.updateShiftDuration)
+        self.shiftStart.editingFinished.connect(self.updateShiftDuration)
+        self.shiftEnd.editingFinished.connect(self.updateShiftDuration)
+        self.shiftStart.textChanged.connect(self.updateDuration)
+        self.shiftEnd.textChanged.connect(self.updateDuration)
         self.shiftBreakLineEdit.textChanged.connect(self.updateShiftDuration)
         self.acceptWorkingShiftsBtn.clicked.connect(self.acceptWorkingShifts)
 
+        self.closeBtn.clicked.connect(self.close)
         self.logoutBtn.clicked.connect(self.logout)
 
         self.workingShiftsNameLineEdit.setFocus()
 
+    def close(self):
+        if self.isCalling:
+            self.closeSignal.emit(True)
+        super().close()
+
+    def setShiftFromCalling(self, initialData, isCalling):
+        self.isCalling = isCalling
+        self.workingShiftsNameLineEdit.setText(initialData[0])
+        self.shiftStart.setText(initialData[1])
+        self.shiftEnd.setText(initialData[2])
+        self.shiftTotalMins.setText(initialData[3])
 
     def showCustomContextMenu(self, position):
         menu = QMenu(self)
@@ -71,14 +103,14 @@ class CustomShiftsEditWidget(QWidget, Ui_customWorkingShiftsWidget):
         if not index.isValid():
             MM.showOnWidget(self, 'Не е избрана смяна за изтриване', 'warning')
             return
-        shiftId = index.siblingAtColumn(0)
+        shiftId = index.siblingAtColumn(0).data(Qt.ItemDataRole.UserRole)
         shiftName = index.siblingAtColumn(1).data()
         yesNoDialog = CustomYesNowDialog()
         message = 'Искате ли да премахнете:'
         yesNoDialog.setMessage(name=shiftName, message=message, mode='deleting')
         result = yesNoDialog.exec()
         if result == QDialog.Accepted:
-            success = WoS.deleteWorkingShift(shiftId.data())
+            success = WoS.deleteWorkingShift(shiftId)
             if success:
                 MM.showOnWidget(self, f'Успешно премахната смяна: {shiftName}',
                                     'success')
@@ -97,18 +129,37 @@ class CustomShiftsEditWidget(QWidget, Ui_customWorkingShiftsWidget):
     def acceptWorkingShifts(self):
         shiftName = self.workingShiftsNameLineEdit.text()
         if shiftName != '':
-            if self.workingShiftsTableView.currentIndex().isValid():
-                # print(self.workingShiftsTableView.currentIndex())
-                selectedShiftId = self.workingShiftsTableView.selectedIndexes()[0].data()
-                startShiftTime = self.shiftStart.time().toString('hh:mm')
-                endShiftTime = self.shiftEnd.time().toString('hh:mm')
+            if shiftName not in self.workingShiftsNames:
+                startShiftTime = self.shiftStart.text()
+                endShiftTime = self.shiftEnd.text()
+                newShift = [
+                    shiftName,
+                    startShiftTime,
+                    endShiftTime,
+                    int(self.shiftBreakLineEdit.text()) if self.shiftBreakLineEdit.text() else 60,
+                    float(self.shiftTotalMins.text()),
+                    self.user
+                ]
+                success = WoS.addWorkingShift(newShift)
+                if success:
+                    MM.showOnWidget(self, f'Успешно добавена смяна {shiftName}', 'success')
+                    self.refreshWorkingShiftsTable()
+                    self.resetShiftInfo()
+            elif self.workingShiftsTableView.currentIndex().isValid():
+                selectedShiftId = self.workingShiftsTableView.selectedIndexes()[0].data(Qt.ItemDataRole.UserRole)
+                # print(selectedShiftId)
+                # return
+                startShiftTime = self.shiftStart.text()
+                endShiftTime = self.shiftEnd.text()
                 updatedShift = [
                     shiftName,
                     startShiftTime,
                     endShiftTime,
                     int(self.shiftBreakLineEdit.text()) if self.shiftBreakLineEdit.text() else 60,
-                    float(self.shiftTotalMins.text())
+                    float(self.shiftTotalMins.text()),
+                    self.user
                 ]
+                # print(updatedShift)
                 success = WoS.updateWorkingShift(selectedShiftId, updatedShift)
                 if success:
                     MM.showOnWidget(self, f'Успешна промяна на {shiftName}',
@@ -116,39 +167,41 @@ class CustomShiftsEditWidget(QWidget, Ui_customWorkingShiftsWidget):
                     self.refreshWorkingShiftsTable()
                     self.resetShiftInfo()
             else:
-                if shiftName not in self.workingShiftsNames:
-                    startShiftTime = self.shiftStart.time().toString('hh:mm')
-                    endShiftTime = self.shiftEnd.time().toString('hh:mm')
-                    newShift = [
-                        shiftName,
-                        startShiftTime,
-                        endShiftTime,
-                        int(self.shiftBreakLineEdit.text()) if self.shiftBreakLineEdit.text() else 60,
-                        float(self.shiftTotalMins.text()),
-                        self.user
-                    ]
-                    success = WoS.addWorkingShift(newShift)
-                    if success:
-                        MM.showOnWidget(self, f'Успешно добавена смяна {shiftName}', 'success')
-                        self.refreshWorkingShiftsTable()
-                        self.resetShiftInfo()
-                else:
-                    MM.showOnWidget(self, f'Име за смяна {shiftName} вече съществува!', 'warning')
-                    self.workingShiftsNameLineEdit.setFocus()
-                    self.workingShiftsNameLineEdit.selectAll()
+                MM.showOnWidget(self, f'Име за смяна {shiftName} вече съществува!', 'warning')
+                self.workingShiftsNameLineEdit.setFocus()
+                self.workingShiftsNameLineEdit.selectAll()
+            # print(self.workingShiftsTableView.currentIndex())
         else:
             MM.showOnWidget(self, f'Моля въведете име.', 'warning')
 
     def resetShiftInfo(self):
         self.workingShiftsNameLineEdit.clear()
-        self.shiftStart.setTime(QTime(8, 0))
-        self.shiftEnd.setTime(QTime(17, 0))
+        self.shiftStart.setText('08:00')
+        self.shiftEnd.setText('17:00')
         self.shiftBreakLineEdit.clear()
         self.workingShiftsTableView.selectionModel().clearSelection()
 
+    def updateDuration(self):
+        timeText = self.sender().text()
+        if len(timeText) == 2:
+            if int(timeText[0]) >= 2:
+                if int(timeText[1]) > 3:
+                    self.sender().setText('2' + '3')
+                else:
+                    self.sender().setText('2' + timeText[1])
+
+        if len(timeText) == 3:
+            if int(timeText[2]) > 5:
+                # timeText[2] = '6'
+                self.sender().setText(timeText[0] + timeText[1] + '5')
+
     def updateShiftDuration(self):
+        startTime = Utils.convertStringToTime(self.shiftStart.text())
+        endTime = Utils.convertStringToTime(self.shiftEnd.text())
+        self.shiftStart.setText(startTime[0])
+        self.shiftEnd.setText(endTime[0])
         breakTime = int(self.shiftBreakLineEdit.text()) if self.shiftBreakLineEdit.text() != '' else 60
-        duration = Utils.calculateMinutes(self.shiftStart, self.shiftEnd, breakTime)
+        duration = Utils.calculateMinutes(startTime[1], endTime[1], breakTime)
         self.shiftTotalMins.setText(str(duration))
 
     def selectionChanged(self, selection):
@@ -158,8 +211,8 @@ class CustomShiftsEditWidget(QWidget, Ui_customWorkingShiftsWidget):
             endTime = selection.indexes()[3].data()
             breakTime = selection.indexes()[4].data()
             self.workingShiftsNameLineEdit.setText(name)
-            self.shiftStart.setTime(QTime.fromString(startTime, 'hh:mm'))
-            self.shiftEnd.setTime(QTime.fromString(endTime, 'hh:mm'))
+            self.shiftStart.setText(startTime)
+            self.shiftEnd.setText(endTime)
             self.shiftBreakLineEdit.setText(str(breakTime))
         else:
             self.resetShiftInfo()
@@ -168,9 +221,12 @@ class CustomShiftsEditWidget(QWidget, Ui_customWorkingShiftsWidget):
         self.workingShiftsModel.setRowCount(0)
         self.workingShiftsNames = {}
         self.workingShifts = WoS.getWorkingShiftsForEdit()
+        count = 1
         for shift in self.workingShifts:
+            idColumn = QStandardItem(str(count))
+            idColumn.setData(shift['id'], Qt.ItemDataRole.UserRole)
             row = [
-                QStandardItem(str(shift['id'])),
+                idColumn,
                 QStandardItem(shift['ShiftName']),
                 QStandardItem(shift['StartTime']),
                 QStandardItem(shift['EndTime']),
@@ -180,6 +236,7 @@ class CustomShiftsEditWidget(QWidget, Ui_customWorkingShiftsWidget):
             ]
             self.workingShiftsNames[shift['ShiftName']] = shift['id']
             self.workingShiftsModel.appendRow(row)
+            count += 1
 
     def logout(self):
         self.logoutSignal.emit(True)

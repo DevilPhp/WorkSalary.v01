@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customCheckBoxWidgetRkdJsH.ui'
+## Form generated from reading UI file 'customCheckBoxWidgetiPIFnC.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -16,7 +16,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QCheckBox, QHBoxLayout, QLabel,
-    QLineEdit, QSizePolicy, QVBoxLayout, QWidget)
+    QSizePolicy, QVBoxLayout, QWidget)
 import resources_rc
 
 class Ui_customCheckBoxWidget(object):
@@ -124,26 +124,15 @@ class Ui_customCheckBoxWidget(object):
         self.horizontalLayout_2.setSpacing(2)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.lineEdit = QLineEdit(self.labelHolder)
-        self.lineEdit.setObjectName(u"lineEdit")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.lineEdit.sizePolicy().hasHeightForWidth())
-        self.lineEdit.setSizePolicy(sizePolicy1)
-        self.lineEdit.setMinimumSize(QSize(40, 0))
-        self.lineEdit.setMaximumSize(QSize(40, 16777215))
-        self.lineEdit.setFocusPolicy(Qt.StrongFocus)
-        self.lineEdit.setInputMethodHints(Qt.ImhDigitsOnly)
-        self.lineEdit.setMaxLength(7)
-        self.lineEdit.setFrame(False)
-
-        self.horizontalLayout_2.addWidget(self.lineEdit)
-
         self.label = QLabel(self.labelHolder)
         self.label.setObjectName(u"label")
 
         self.horizontalLayout_2.addWidget(self.label)
+
+        self.currentOperTime = QLabel(self.labelHolder)
+        self.currentOperTime.setObjectName(u"currentOperTime")
+
+        self.horizontalLayout_2.addWidget(self.currentOperTime)
 
 
         self.horizontalLayout.addWidget(self.labelHolder, 0, Qt.AlignRight)
@@ -160,8 +149,7 @@ class Ui_customCheckBoxWidget(object):
     def retranslateUi(self, customCheckBoxWidget):
         customCheckBoxWidget.setWindowTitle(QCoreApplication.translate("customCheckBoxWidget", u"Form", None))
         self.checkBox.setText(QCoreApplication.translate("customCheckBoxWidget", u"asdasdasdasds asdasds asdasdsad asd ", None))
-        self.lineEdit.setText("")
-        self.lineEdit.setPlaceholderText(QCoreApplication.translate("customCheckBoxWidget", u"0", None))
         self.label.setText(QCoreApplication.translate("customCheckBoxWidget", u"\u043c\u0438\u043d.", None))
+        self.currentOperTime.setText(QCoreApplication.translate("customCheckBoxWidget", u"TextLabel", None))
     # retranslateUi
 

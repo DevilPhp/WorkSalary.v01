@@ -74,8 +74,10 @@ class ProductionModel(Base):
     vidOblekla = relationship("VidObleklo", back_populates="productionModel")
     yarn = relationship("Yarn", back_populates="productionModel")
     machine = relationship("Machine", back_populates="productionModel")
-    productionModelOperations = relationship('ProductionModelOperations', back_populates='productionModel')
+    productionModelOperations = relationship('ProductionModelOperations', back_populates='productionModel',
+                                             cascade='all, delete, delete-orphan')
     producedPiecesForModels = relationship('ProducedPiecesForModel', back_populates='productionModel')
     timePaperOperations = relationship('TimePaperOperation', back_populates='productionModels')
-    operationsGroupForModel = relationship('OperationsGroupForModel', back_populates='productionModel')
+    operationsGroupForModel = relationship('OperationsGroupForModel', back_populates='productionModel',
+                                           cascade='all, delete, delete-orphan')
 

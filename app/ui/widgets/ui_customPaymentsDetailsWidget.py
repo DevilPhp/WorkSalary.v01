@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customPaymentsDetailsWidgetuRkIny.ui'
+## Form generated from reading UI file 'customPaymentsDetailsWidgetzJNFXj.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -140,21 +140,39 @@ class Ui_customPaymentsDetailsWidget(object):
 
         self.horizontalLayout.addWidget(self.pageTitle, 0, Qt.AlignHCenter)
 
-        self.userHolder = QWidget(self.headerHolder)
+        self.widget_12 = QWidget(self.headerHolder)
+        self.widget_12.setObjectName(u"widget_12")
+        self.horizontalLayout_7 = QHBoxLayout(self.widget_12)
+        self.horizontalLayout_7.setSpacing(5)
+        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
+        self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
+        self.widget_13 = QWidget(self.widget_12)
+        self.widget_13.setObjectName(u"widget_13")
+        self.horizontalLayout_10 = QHBoxLayout(self.widget_13)
+        self.horizontalLayout_10.setSpacing(0)
+        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
+        self.horizontalLayout_10.setContentsMargins(0, 0, 0, 0)
+        self.closeBtn = QPushButton(self.widget_13)
+        self.closeBtn.setObjectName(u"closeBtn")
+        self.closeBtn.setStyleSheet(u"* {\n"
+"	padding: 3px;\n"
+"}")
+        icon = QIcon()
+        icon.addFile(u":/icons/app/assets/icons/Close-Square--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.closeBtn.setIcon(icon)
+        self.closeBtn.setIconSize(QSize(20, 20))
+
+        self.horizontalLayout_10.addWidget(self.closeBtn)
+
+
+        self.horizontalLayout_7.addWidget(self.widget_13)
+
+        self.userHolder = QWidget(self.widget_12)
         self.userHolder.setObjectName(u"userHolder")
         self.horizontalLayout_3 = QHBoxLayout(self.userHolder)
         self.horizontalLayout_3.setSpacing(3)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 5, 0)
-        self.logoutBtn = QPushButton(self.userHolder)
-        self.logoutBtn.setObjectName(u"logoutBtn")
-        icon = QIcon()
-        icon.addFile(u":/icons/app/assets/icons/Log-Out--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.logoutBtn.setIcon(icon)
-        self.logoutBtn.setIconSize(QSize(18, 18))
-
-        self.horizontalLayout_3.addWidget(self.logoutBtn)
-
         self.userIcon = QPushButton(self.userHolder)
         self.userIcon.setObjectName(u"userIcon")
         self.userIcon.setFocusPolicy(Qt.NoFocus)
@@ -170,8 +188,20 @@ class Ui_customPaymentsDetailsWidget(object):
 
         self.horizontalLayout_3.addWidget(self.usernameLabel)
 
+        self.logoutBtn = QPushButton(self.userHolder)
+        self.logoutBtn.setObjectName(u"logoutBtn")
+        icon2 = QIcon()
+        icon2.addFile(u":/icons/app/assets/icons/Log-Out--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.logoutBtn.setIcon(icon2)
+        self.logoutBtn.setIconSize(QSize(18, 18))
 
-        self.horizontalLayout.addWidget(self.userHolder, 0, Qt.AlignRight)
+        self.horizontalLayout_3.addWidget(self.logoutBtn)
+
+
+        self.horizontalLayout_7.addWidget(self.userHolder)
+
+
+        self.horizontalLayout.addWidget(self.widget_12, 0, Qt.AlignRight)
 
 
         self.verticalLayout_4.addWidget(self.headerHolder)
@@ -201,7 +231,7 @@ class Ui_customPaymentsDetailsWidget(object):
 
         self.includeSubrowCheckBox = QCheckBox(self.widget_7)
         self.includeSubrowCheckBox.setObjectName(u"includeSubrowCheckBox")
-        self.includeSubrowCheckBox.setChecked(True)
+        self.includeSubrowCheckBox.setChecked(False)
 
         self.horizontalLayout_5.addWidget(self.includeSubrowCheckBox)
 
@@ -328,20 +358,20 @@ class Ui_customPaymentsDetailsWidget(object):
         self.gridLayout_3 = QGridLayout()
         self.gridLayout_3.setSpacing(3)
         self.gridLayout_3.setObjectName(u"gridLayout_3")
-        self.weekendHolidaysCheckBox = QCheckBox(self.widget_6)
-        self.weekendHolidaysCheckBox.setObjectName(u"weekendHolidaysCheckBox")
+        self.weekendCheckBox = QCheckBox(self.widget_6)
+        self.weekendCheckBox.setObjectName(u"weekendCheckBox")
 
-        self.gridLayout_3.addWidget(self.weekendHolidaysCheckBox, 2, 1, 1, 1)
+        self.gridLayout_3.addWidget(self.weekendCheckBox, 2, 1, 1, 1)
 
         self.overtimeCheckBox = QCheckBox(self.widget_6)
         self.overtimeCheckBox.setObjectName(u"overtimeCheckBox")
 
         self.gridLayout_3.addWidget(self.overtimeCheckBox, 2, 0, 1, 1)
 
-        self.checkBox_2 = QCheckBox(self.widget_6)
-        self.checkBox_2.setObjectName(u"checkBox_2")
+        self.levaCheckBox = QCheckBox(self.widget_6)
+        self.levaCheckBox.setObjectName(u"levaCheckBox")
 
-        self.gridLayout_3.addWidget(self.checkBox_2, 1, 2, 1, 1)
+        self.gridLayout_3.addWidget(self.levaCheckBox, 1, 2, 1, 1)
 
         self.nightTimeCheckBox = QCheckBox(self.widget_6)
         self.nightTimeCheckBox.setObjectName(u"nightTimeCheckBox")
@@ -353,10 +383,10 @@ class Ui_customPaymentsDetailsWidget(object):
 
         self.gridLayout_3.addWidget(self.hourlyCheckBox, 3, 0, 1, 1)
 
-        self.checkBox = QCheckBox(self.widget_6)
-        self.checkBox.setObjectName(u"checkBox")
+        self.holidaysCheckBox = QCheckBox(self.widget_6)
+        self.holidaysCheckBox.setObjectName(u"holidaysCheckBox")
 
-        self.gridLayout_3.addWidget(self.checkBox, 3, 1, 1, 1)
+        self.gridLayout_3.addWidget(self.holidaysCheckBox, 3, 1, 1, 1)
 
         self.selectAllCheckBox = QCheckBox(self.widget_6)
         self.selectAllCheckBox.setObjectName(u"selectAllCheckBox")
@@ -547,7 +577,7 @@ class Ui_customPaymentsDetailsWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 788, 285))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 788, 279))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -729,9 +759,10 @@ class Ui_customPaymentsDetailsWidget(object):
     def retranslateUi(self, customPaymentsDetailsWidget):
         customPaymentsDetailsWidget.setWindowTitle(QCoreApplication.translate("customPaymentsDetailsWidget", u"Form", None))
         self.pageTitle.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u0414\u0415\u0422\u0410\u0419\u041b\u0418", None))
-        self.logoutBtn.setText("")
+        self.closeBtn.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u0417\u0442\u0432\u043e\u0440\u0438", None))
         self.userIcon.setText("")
         self.usernameLabel.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"admin", None))
+        self.logoutBtn.setText("")
         self.excelBtn.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"Excel", None))
         self.includeSubrowCheckBox.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u0421 \u043f\u043e\u0434\u0440\u0435\u0434\u043e\u0432\u0435 \u0437\u0430 \u0434\u0435\u043d.", None))
         self.label_4.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u0417\u0430\u043f\u043b\u0430\u0442\u0430:", None))
@@ -748,12 +779,12 @@ class Ui_customPaymentsDetailsWidget(object):
         self.workerNumberLabel.setText("")
         self.workerLastNameLabel.setText("")
         self.workerPlaceLabel.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u041d\u0435 \u0435 \u043f\u043e\u0441\u043e\u0447\u0435\u043d\u043e", None))
-        self.weekendHolidaysCheckBox.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u041f\u043e\u0447\u0438\u0432\u043d\u0438", None))
+        self.weekendCheckBox.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u041f\u043e\u0447\u0438\u0432\u043d\u0438", None))
         self.overtimeCheckBox.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u0418\u0437\u0432\u044a\u043d\u0440\u0435\u0434\u0435\u043d", None))
-        self.checkBox_2.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u041b\u0432", None))
+        self.levaCheckBox.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u041b\u0432", None))
         self.nightTimeCheckBox.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u041d\u043e\u0449\u0435\u043d", None))
         self.hourlyCheckBox.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u041f\u043e\u0447\u0430\u0441\u043e\u0432\u043e", None))
-        self.checkBox.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u041f\u0430\u0440\u0437\u043d\u0438\u0447\u043d\u0438", None))
+        self.holidaysCheckBox.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u041f\u0430\u0440\u0437\u043d\u0438\u0447\u043d\u0438", None))
         self.selectAllCheckBox.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u0412\u0441\u0438\u0447\u043a\u0438", None))
         self.label_27.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u041e\u0442/\u0414\u043e \u0414\u0430\u0442\u0430: ", None))
         self.fromDateLineEdit.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"1.1.25", None))
@@ -771,11 +802,11 @@ class Ui_customPaymentsDetailsWidget(object):
         self.totalViewRows.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"0", None))
         self.label_36.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u0420\u0435\u0434\u043e\u0432\u0435:", None))
         self.totalSelectedRows.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"0", None))
-        self.label_38.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u041b\u0432.:", None))
+        self.label_38.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u0417\u0430\u0440. \u20ac:", None))
         self.totalLevaLabel.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"0", None))
-        self.label_37.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u20ac:", None))
+        self.label_37.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u0422\u043e\u0442\u0430\u043b \u20ac:", None))
         self.totalEuroLabel.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"0.0", None))
-        self.label_39.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u0421\u0440. \u043b\u0432.:", None))
+        self.label_39.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u0421\u0440. \u0417\u0430\u0440. \u20ac:", None))
         self.avrLevaLabel.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"0.0", None))
         self.label_43.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"\u0421\u0440. \u20ac:", None))
         self.avrEuroLabel.setText(QCoreApplication.translate("customPaymentsDetailsWidget", u"0.0", None))

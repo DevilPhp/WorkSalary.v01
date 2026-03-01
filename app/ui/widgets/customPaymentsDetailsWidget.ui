@@ -185,10 +185,10 @@ QLabel {
           </widget>
          </item>
          <item alignment="Qt::AlignRight">
-          <widget class="QWidget" name="userHolder" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <widget class="QWidget" name="widget_12" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_7">
             <property name="spacing">
-             <number>3</number>
+             <number>5</number>
             </property>
             <property name="leftMargin">
              <number>0</number>
@@ -197,53 +197,117 @@ QLabel {
              <number>0</number>
             </property>
             <property name="rightMargin">
-             <number>5</number>
+             <number>0</number>
             </property>
             <property name="bottomMargin">
              <number>0</number>
             </property>
             <item>
-             <widget class="QPushButton" name="logoutBtn">
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset resource="../../../resources.qrc">
-                <normaloff>:/icons/app/assets/icons/Log-Out--Streamline-Feather.svg</normaloff>:/icons/app/assets/icons/Log-Out--Streamline-Feather.svg</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>18</width>
-                <height>18</height>
-               </size>
-              </property>
+             <widget class="QWidget" name="widget_13" native="true">
+              <layout class="QHBoxLayout" name="horizontalLayout_10">
+               <property name="spacing">
+                <number>0</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QPushButton" name="closeBtn">
+                 <property name="styleSheet">
+                  <string notr="true">* {
+	padding: 3px;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Зтвори</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../../../resources.qrc">
+                   <normaloff>:/icons/app/assets/icons/Close-Square--Streamline-Solar-Broken.svg</normaloff>:/icons/app/assets/icons/Close-Square--Streamline-Solar-Broken.svg</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>20</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="userIcon">
-              <property name="focusPolicy">
-               <enum>Qt::NoFocus</enum>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset resource="../../../resources.qrc">
-                <normaloff>:/icons/app/assets/icons/User--Streamline-Feather.svg</normaloff>:/icons/app/assets/icons/User--Streamline-Feather.svg</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>18</width>
-                <height>18</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="usernameLabel">
-              <property name="text">
-               <string>admin</string>
-              </property>
+             <widget class="QWidget" name="userHolder" native="true">
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <property name="spacing">
+                <number>3</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>5</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QPushButton" name="userIcon">
+                 <property name="focusPolicy">
+                  <enum>Qt::NoFocus</enum>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../../../resources.qrc">
+                   <normaloff>:/icons/app/assets/icons/User--Streamline-Feather.svg</normaloff>:/icons/app/assets/icons/User--Streamline-Feather.svg</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>18</width>
+                   <height>18</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="usernameLabel">
+                 <property name="text">
+                  <string>admin</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="logoutBtn">
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../../../resources.qrc">
+                   <normaloff>:/icons/app/assets/icons/Log-Out--Streamline-Feather.svg</normaloff>:/icons/app/assets/icons/Log-Out--Streamline-Feather.svg</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>18</width>
+                   <height>18</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </widget>
             </item>
            </layout>
@@ -313,7 +377,7 @@ QLabel {
                <string>С подредове за ден.</string>
               </property>
               <property name="checked">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
              </widget>
             </item>
@@ -548,7 +612,7 @@ QLabel {
                   <number>3</number>
                  </property>
                  <item row="2" column="1">
-                  <widget class="QCheckBox" name="weekendHolidaysCheckBox">
+                  <widget class="QCheckBox" name="weekendCheckBox">
                    <property name="text">
                     <string>Почивни</string>
                    </property>
@@ -562,7 +626,7 @@ QLabel {
                   </widget>
                  </item>
                  <item row="1" column="2">
-                  <widget class="QCheckBox" name="checkBox_2">
+                  <widget class="QCheckBox" name="levaCheckBox">
                    <property name="text">
                     <string>Лв</string>
                    </property>
@@ -583,7 +647,7 @@ QLabel {
                   </widget>
                  </item>
                  <item row="3" column="1">
-                  <widget class="QCheckBox" name="checkBox">
+                  <widget class="QCheckBox" name="holidaysCheckBox">
                    <property name="text">
                     <string>Парзнични</string>
                    </property>
@@ -960,7 +1024,7 @@ QLabel {
         <x>0</x>
         <y>0</y>
         <width>788</width>
-        <height>285</height>
+        <height>279</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -1185,7 +1249,7 @@ QLabel {
             <item>
              <widget class="QLabel" name="label_38">
               <property name="text">
-               <string>Лв.:</string>
+               <string>Зар. €:</string>
               </property>
              </widget>
             </item>
@@ -1226,7 +1290,7 @@ QLabel {
             <item>
              <widget class="QLabel" name="label_37">
               <property name="text">
-               <string>€:</string>
+               <string>Тотал €:</string>
               </property>
              </widget>
             </item>
@@ -1267,7 +1331,7 @@ QLabel {
             <item>
              <widget class="QLabel" name="label_39">
               <property name="text">
-               <string>Ср. лв.:</string>
+               <string>Ср. Зар. €:</string>
               </property>
              </widget>
             </item>

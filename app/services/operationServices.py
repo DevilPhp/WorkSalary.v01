@@ -82,6 +82,30 @@ class OperationsServices:
 
     @staticmethod
     @handle_api_connection
+    def deleteOperationsGroup(groupId, name):
+        response = requests.post(f'{API_SERVER}/operation/delete_operations_groups/{groupId}').json()
+        if response['status'] =='success':
+            logger.info(f'Operation Group {name} - id: {groupId} deleted')
+            return True
+        else:
+            logger.error(f'Error deleting Operation Group {name} - id: {groupId}')
+            return False
+
+
+    @staticmethod
+    @handle_api_connection
+    def deleteOperationsGroupFromModel(groupId, name):
+        response = requests.post(f'{API_SERVER}/operation/delete_operations_group_for_model/{groupId}').json()
+        if response['status'] =='success':
+            logger.info(f'Operation Group {name} - id: {groupId} deleted from model')
+            return True
+        else:
+            logger.error(f'Error deleting Operation Group {name} - id: {groupId} from model')
+            return False
+
+
+    @staticmethod
+    @handle_api_connection
     def getOperationsGroups():
         response = requests.get(f'{API_SERVER}/operation/get_groups').json()
         if response['status'] =='success':

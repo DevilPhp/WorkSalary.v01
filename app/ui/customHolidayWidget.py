@@ -59,6 +59,7 @@ class CustomHolidaysWidget(QWidget, Ui_customHolidaysWidget):
         self.newHolidayCalBtn.clicked.connect(self.showCalendar)
         self.addNewHolidayBtn.clicked.connect(self.addNewHoliday)
 
+        self.closeBtn.clicked.connect(self.close)
         self.logoutBtn.clicked.connect(self.logout)
 
         # Add your code here to initialize the custom holidays widget

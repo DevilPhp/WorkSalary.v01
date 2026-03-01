@@ -178,7 +178,7 @@ def checkForColumns(table_name, df):
 
     elif table_name == 'paymentPerMinutes':
         df.drop(columns=['MinuteRabID'], inplace=True)
-        euroRate = 1.9558
+        euroRate = 1.95583
         paymentInEuro = []
         euroRateList = []
         active = []
@@ -206,7 +206,7 @@ def checkForColumns(table_name, df):
         df['EuroPerLev'] = euroRateList
 
     elif table_name == 'nightPaymentPerMinutes':
-        euroRate = 1.9558
+        euroRate = 1.95583
         paymentInEuro = []
         euroRateList = []
         active = []
@@ -344,6 +344,8 @@ def insert_data_to_postgres_multi(df1, df2):
     # df = pd.DataFrame(timePaperData).T
     # orderIds = []
 
+    # return
+
     for index, row in df1.iterrows():
         if row['WorkDayID'] in timePaperData.keys():
             # nightMins = timePaperData[row['WorkDayID']]['ShiftId'][1]
@@ -363,9 +365,11 @@ def insert_data_to_postgres_multi(df1, df2):
                 timePaperData[row['WorkDayID']][row['ПоръчкаNo']].append(row['ОперацияNo'])
                 timePaperData[row['WorkDayID']][f'{row["ПоръчкаNo"]} :TP'].append([round(row['Време'], 2),
                                                                                    int(row['Бройки'])])
-
     # df['OrderId'] = orderIds
     # print(df)
+    # for workDay, data in timePaperData.items():
+    #     print(data['ShiftId'])
+    # return
     addTimePaper(timePaperData)
 
 
@@ -376,24 +380,24 @@ def addTimePaper(timePaperData):
     check = []
     try:
         for workDayId, data in timePaperData.items():
-            if data['WeekDay'] > 5:
-                paymentRatio = 1.75
-            else:
-                paymentRatio = 1
+            # if data['WeekDay'] > 5:
+            #     paymentRatio = 1.75
+            # else:
+            #     paymentRatio = 1
             newTimePaper = TimePaper(
                 Date=data['Date'],
                 ShiftId=data['ShiftId'][0] if data['ShiftId'] else None,
                 # IsHourlyPaid=data['HourlyPaidId'],
                 WeekDay=data['WeekDay'],
                 NightShiftMins=data['ShiftId'][1] if data['ShiftId'] else 0,
-                PaymentRatio=paymentRatio,
+                PaymentRatio=1,
                 WorkerId=data['WorkerId'],
                 userCreated='admin'
             )
             session.add(newTimePaper)
             session.commit()
 
-            currentShiftNightMins = newTimePaper.NightShiftMins
+            # currentShiftNightMins = newTimePaper.NightShiftMins
 
             for operations in data.keys():
                 if operations not in keys and operations != f'{operations} :TP':
@@ -430,15 +434,15 @@ def addTimePaper(timePaperData):
                             # print(operation.id, operation.Операция, operation.TimeForOper)
                             operTime = timePaperData[workDayId][f'{operations} :TP'][index][0]
                             operPieces = timePaperData[workDayId][f'{operations} :TP'][index][1]
-                            operNightMins = 0
+                            # operNightMins = 0
 
-                            if currentShiftNightMins > 0:
-                                if currentShiftNightMins - operTime < 0:
-                                    operNightMins = currentShiftNightMins
-                                    currentShiftNightMins = 0
-                                else:
-                                    operNightMins = operTime
-                                    currentShiftNightMins -= operTime
+                            # if currentShiftNightMins > 0:
+                            #     if currentShiftNightMins - operTime < 0:
+                            #         operNightMins = currentShiftNightMins
+                            #         currentShiftNightMins = 0
+                            #     else:
+                            #         operNightMins = operTime
+                            #         currentShiftNightMins -= operTime
 
                             newTimePaperOperation = TimePaperOperation(
                                 TimePaperId=newTimePaper.id,
@@ -446,7 +450,7 @@ def addTimePaper(timePaperData):
                                 ModelOperationId=operation.id,
                                 Pieces=operPieces,
                                 WorkingTimeMinutes=operTime,
-                                NightMins=operNightMins
+                                # NightMins=operNightMins
                             )
                             session.add(newTimePaperOperation)
                             session.flush()
@@ -455,16 +459,14 @@ def addTimePaper(timePaperData):
 
                             newTimePaperOperation.productionModelOperations.ProducedPieces += int(operPieces)
 
-            hourlyNightMins = 0
+            # hourlyNightMins = 0
 
             if data['HourlyPaid']:
-                hourlyNightMins = createHourlyPaid(data['HourlyPaid'][0],
-                                                  data['HourlyPaid'][1], newTimePaper.id,
-                                                  currentShiftNightMins)
-            if hourlyNightMins:
-                newTimePaper.NightShiftMins = hourlyNightMins
-            elif currentShiftNightMins > 0:
-                newTimePaper.NightShiftMins = currentShiftNightMins
+                createHourlyPaid(data['HourlyPaid'][0], data['HourlyPaid'][1], newTimePaper.id)
+            # if hourlyNightMins:
+            #     newTimePaper.NightShiftMins = hourlyNightMins
+            # elif currentShiftNightMins > 0:
+            #     newTimePaper.NightShiftMins = currentShiftNightMins
         session.commit()
         existOpers = len(timePaperData.keys()) - zeroCount
         print(f"{existOpers} records successful and {zeroCount} records created")
@@ -476,7 +478,7 @@ def addTimePaper(timePaperData):
         session.close()
 
 
-def createHourlyPaid(start, end, timePaperId, nightMins):
+def createHourlyPaid(start, end, timePaperId):
     dateStart = datetime.combine(datetime.today(), start)
     dateEnd = datetime.combine(datetime.today(), end)
     diff = dateEnd - dateStart
@@ -487,13 +489,13 @@ def createHourlyPaid(start, end, timePaperId, nightMins):
     else:
         efficiency = int(diff.total_seconds() / 60)
 
-    hourlyNightMins = Utils.checkNightShiftMins(start, end)
-    if nightMins > 0 < hourlyNightMins:
-        if nightMins - hourlyNightMins < 0:
-            hourlyNightMins = nightMins
-            nightMins = 0
-        else:
-            nightMins -= hourlyNightMins
+    # hourlyNightMins = Utils.checkNightShiftMins(start, end)
+    # if nightMins > 0 < hourlyNightMins:
+    #     if nightMins - hourlyNightMins < 0:
+    #         hourlyNightMins = nightMins
+    #         nightMins = 0
+    #     else:
+    #         nightMins -= hourlyNightMins
 
     session = SessionLocal()
     try:
@@ -502,13 +504,13 @@ def createHourlyPaid(start, end, timePaperId, nightMins):
             Start=start,
             End=end,
             Efficiency=efficiency,
-            NightMins=hourlyNightMins,
+            # NightMins=hourlyNightMins,
             DateUpdated=datetime.today(),
             UserUpdated='admin'
         )
         session.add(newHourPaid)
         session.commit()
-        return nightMins
+        # return nightMins
         # return newHourPaid.id
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -529,7 +531,6 @@ def getWorkDataForTimePapers(orderNo, operationId):
         return None
     finally:
         session.close()
-
 
 
 def map_data_type(accessType):

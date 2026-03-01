@@ -63,12 +63,13 @@ class ProductionModelOperations(Base):
     LastUpdated = Column(DateTime, default=datetime.now, onupdate=datetime.now)
     UpdatedBy = Column(String, default="System")
 
-    productionModel = relationship("ProductionModel", back_populates="productionModelOperations")
+    productionModel = relationship("ProductionModel", back_populates="productionModelOperations",
+                                   cascade="all, delete")
     operations = relationship("Operation", back_populates="productionModelOperations")
     timePaperOperations = relationship("TimePaperOperation", back_populates="productionModelOperations")
     operationsGroups = relationship("OperationsGroupForModel",
                                     secondary="operationsGroupsForModelsTable",
-                                    back_populates="operations")
+                                    back_populates="operations", cascade='all, delete')
 
 
 class OperationsGroup(Base):
@@ -92,4 +93,4 @@ class OperationsGroupForModel(Base):
     productionModel = relationship("ProductionModel", back_populates="operationsGroupForModel")
     operations = relationship("ProductionModelOperations",
                               secondary="operationsGroupsForModelsTable",
-                              back_populates="operationsGroups")
+                              back_populates="operationsGroups", cascade='all, delete')

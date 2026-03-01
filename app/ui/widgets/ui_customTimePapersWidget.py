@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customTimePapersWidgetSlXMvd.ui'
+## Form generated from reading UI file 'customTimePapersWidgetLuCIbP.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -18,15 +18,14 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QAbstractSpinBox, QApplication, QCheckBox, QComboBox,
     QDateEdit, QFormLayout, QFrame, QGridLayout,
     QHBoxLayout, QLabel, QLineEdit, QPushButton,
-    QScrollArea, QSizePolicy, QTimeEdit, QVBoxLayout,
-    QWidget)
+    QScrollArea, QSizePolicy, QVBoxLayout, QWidget)
 import resources_rc
 
 class Ui_customTimePapersWidget(object):
     def setupUi(self, customTimePapersWidget):
         if not customTimePapersWidget.objectName():
             customTimePapersWidget.setObjectName(u"customTimePapersWidget")
-        customTimePapersWidget.resize(895, 613)
+        customTimePapersWidget.resize(895, 615)
         customTimePapersWidget.setMinimumSize(QSize(800, 580))
         customTimePapersWidget.setStyleSheet(u"*{\n"
 "	background-color: #dfdfdf;\n"
@@ -145,7 +144,7 @@ class Ui_customTimePapersWidget(object):
 "	icon: url(:/icons/app/assets/icons/Log-Out--Streamline-Feather_#192626.svg);\n"
 "}\n"
 "\n"
-"#refreshShiftsBtn, #refreshOpersGroupBtn {\n"
+"#addShiftsBtn, #refreshOpersGroupBtn {\n"
 "	padding: 0px;\n"
 "	background-color: #dfdfdf;\n"
 "}\n"
@@ -186,8 +185,8 @@ class Ui_customTimePapersWidget(object):
 "	alternate-background-color: #2c313c;\n"
 "}\n"
 "QComboBox::item:selected{\n"
-"	color: "
-                        "#2b2b2c;\n"
+"	color: #2b2"
+                        "b2c;\n"
 "	font: 700 9pt \"Segoe UI\";\n"
 "	border-radius: 0px;\n"
 "}\n"
@@ -231,21 +230,39 @@ class Ui_customTimePapersWidget(object):
 
         self.horizontalLayout.addWidget(self.pageTitle, 0, Qt.AlignHCenter)
 
-        self.userHolder = QWidget(self.headerHolder)
+        self.widget_26 = QWidget(self.headerHolder)
+        self.widget_26.setObjectName(u"widget_26")
+        self.horizontalLayout_37 = QHBoxLayout(self.widget_26)
+        self.horizontalLayout_37.setSpacing(5)
+        self.horizontalLayout_37.setObjectName(u"horizontalLayout_37")
+        self.horizontalLayout_37.setContentsMargins(0, 0, 0, 0)
+        self.widget_27 = QWidget(self.widget_26)
+        self.widget_27.setObjectName(u"widget_27")
+        self.horizontalLayout_38 = QHBoxLayout(self.widget_27)
+        self.horizontalLayout_38.setSpacing(0)
+        self.horizontalLayout_38.setObjectName(u"horizontalLayout_38")
+        self.horizontalLayout_38.setContentsMargins(0, 0, 0, 0)
+        self.closeBtn = QPushButton(self.widget_27)
+        self.closeBtn.setObjectName(u"closeBtn")
+        self.closeBtn.setStyleSheet(u"* {\n"
+"	padding: 3px;\n"
+"}")
+        icon = QIcon()
+        icon.addFile(u":/icons/app/assets/icons/Close-Square--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.closeBtn.setIcon(icon)
+        self.closeBtn.setIconSize(QSize(20, 20))
+
+        self.horizontalLayout_38.addWidget(self.closeBtn)
+
+
+        self.horizontalLayout_37.addWidget(self.widget_27)
+
+        self.userHolder = QWidget(self.widget_26)
         self.userHolder.setObjectName(u"userHolder")
         self.horizontalLayout_3 = QHBoxLayout(self.userHolder)
         self.horizontalLayout_3.setSpacing(3)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 5, 0)
-        self.logoutBtn = QPushButton(self.userHolder)
-        self.logoutBtn.setObjectName(u"logoutBtn")
-        icon = QIcon()
-        icon.addFile(u":/icons/app/assets/icons/Log-Out--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.logoutBtn.setIcon(icon)
-        self.logoutBtn.setIconSize(QSize(18, 18))
-
-        self.horizontalLayout_3.addWidget(self.logoutBtn)
-
         self.userIcon = QPushButton(self.userHolder)
         self.userIcon.setObjectName(u"userIcon")
         self.userIcon.setFocusPolicy(Qt.NoFocus)
@@ -261,8 +278,20 @@ class Ui_customTimePapersWidget(object):
 
         self.horizontalLayout_3.addWidget(self.usernameLabel)
 
+        self.logoutBtn = QPushButton(self.userHolder)
+        self.logoutBtn.setObjectName(u"logoutBtn")
+        icon2 = QIcon()
+        icon2.addFile(u":/icons/app/assets/icons/Log-Out--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.logoutBtn.setIcon(icon2)
+        self.logoutBtn.setIconSize(QSize(18, 18))
 
-        self.horizontalLayout.addWidget(self.userHolder, 0, Qt.AlignRight)
+        self.horizontalLayout_3.addWidget(self.logoutBtn)
+
+
+        self.horizontalLayout_37.addWidget(self.userHolder)
+
+
+        self.horizontalLayout.addWidget(self.widget_26, 0, Qt.AlignRight)
 
 
         self.verticalLayout_4.addWidget(self.headerHolder)
@@ -342,13 +371,6 @@ class Ui_customTimePapersWidget(object):
         self.horizontalLayout_34.setSpacing(5)
         self.horizontalLayout_34.setObjectName(u"horizontalLayout_34")
         self.horizontalLayout_34.setContentsMargins(0, 0, 0, 0)
-        self.workerNameLineEdit = QLineEdit(self.widget_14)
-        self.workerNameLineEdit.setObjectName(u"workerNameLineEdit")
-        self.workerNameLineEdit.setMaximumSize(QSize(16777215, 16777215))
-        self.workerNameLineEdit.setClearButtonEnabled(False)
-
-        self.horizontalLayout_34.addWidget(self.workerNameLineEdit)
-
         self.clearWorkerNameBtn = QPushButton(self.widget_14)
         self.clearWorkerNameBtn.setObjectName(u"clearWorkerNameBtn")
 
@@ -461,11 +483,6 @@ class Ui_customTimePapersWidget(object):
         self.horizontalLayout_6.setSpacing(5)
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
         self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
-        self.overtimeStart = QTimeEdit(self.overtimeStartWidget)
-        self.overtimeStart.setObjectName(u"overtimeStart")
-
-        self.horizontalLayout_6.addWidget(self.overtimeStart)
-
         self.label_19 = QLabel(self.overtimeStartWidget)
         self.label_19.setObjectName(u"label_19")
 
@@ -495,11 +512,6 @@ class Ui_customTimePapersWidget(object):
         self.horizontalLayout_10.setSpacing(5)
         self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
         self.horizontalLayout_10.setContentsMargins(0, 0, 0, 0)
-        self.hourlyStart = QTimeEdit(self.hourlyStartWidget)
-        self.hourlyStart.setObjectName(u"hourlyStart")
-
-        self.horizontalLayout_10.addWidget(self.hourlyStart)
-
         self.label_16 = QLabel(self.hourlyStartWidget)
         self.label_16.setObjectName(u"label_16")
 
@@ -535,12 +547,6 @@ class Ui_customTimePapersWidget(object):
         self.horizontalLayout_7.setSpacing(5)
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
         self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
-        self.overtimeEnd = QTimeEdit(self.overtimeEndWidget)
-        self.overtimeEnd.setObjectName(u"overtimeEnd")
-        self.overtimeEnd.setCursor(QCursor(Qt.ArrowCursor))
-
-        self.horizontalLayout_7.addWidget(self.overtimeEnd)
-
         self.label_20 = QLabel(self.overtimeEndWidget)
         self.label_20.setObjectName(u"label_20")
 
@@ -607,12 +613,6 @@ class Ui_customTimePapersWidget(object):
         self.horizontalLayout_9.setSpacing(5)
         self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
         self.horizontalLayout_9.setContentsMargins(0, 0, 0, 0)
-        self.shiftEnd = QTimeEdit(self.shiftEndWidget)
-        self.shiftEnd.setObjectName(u"shiftEnd")
-        self.shiftEnd.setTime(QTime(17, 0, 0))
-
-        self.horizontalLayout_9.addWidget(self.shiftEnd)
-
         self.label_15 = QLabel(self.shiftEndWidget)
         self.label_15.setObjectName(u"label_15")
 
@@ -627,13 +627,6 @@ class Ui_customTimePapersWidget(object):
         self.horizontalLayout_8.setSpacing(5)
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
         self.horizontalLayout_8.setContentsMargins(0, 0, 0, 0)
-        self.shiftStart = QTimeEdit(self.shiftStartWidget)
-        self.shiftStart.setObjectName(u"shiftStart")
-        self.shiftStart.setCalendarPopup(False)
-        self.shiftStart.setTime(QTime(8, 0, 0))
-
-        self.horizontalLayout_8.addWidget(self.shiftStart)
-
         self.label_14 = QLabel(self.shiftStartWidget)
         self.label_14.setObjectName(u"label_14")
 
@@ -658,11 +651,6 @@ class Ui_customTimePapersWidget(object):
         self.horizontalLayout_11.setSpacing(5)
         self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
         self.horizontalLayout_11.setContentsMargins(0, 0, 0, 0)
-        self.hourlyEnd = QTimeEdit(self.hourlyEndWidget)
-        self.hourlyEnd.setObjectName(u"hourlyEnd")
-
-        self.horizontalLayout_11.addWidget(self.hourlyEnd)
-
         self.label_17 = QLabel(self.hourlyEndWidget)
         self.label_17.setObjectName(u"label_17")
 
@@ -673,9 +661,9 @@ class Ui_customTimePapersWidget(object):
 
         self.addNewShiftBtn = QPushButton(self.widget_6)
         self.addNewShiftBtn.setObjectName(u"addNewShiftBtn")
-        icon2 = QIcon()
-        icon2.addFile(u":/icons/app/assets/icons/List-Down-Minimalistic--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.addNewShiftBtn.setIcon(icon2)
+        icon3 = QIcon()
+        icon3.addFile(u":/icons/app/assets/icons/List-Down-Minimalistic--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.addNewShiftBtn.setIcon(icon3)
         self.addNewShiftBtn.setIconSize(QSize(16, 16))
 
         self.newModelLayout.addWidget(self.addNewShiftBtn, 0, 9, 1, 1)
@@ -700,15 +688,15 @@ class Ui_customTimePapersWidget(object):
 
         self.horizontalLayout_28.addWidget(self.label_5)
 
-        self.refreshShiftsBtn = QPushButton(self.widget_20)
-        self.refreshShiftsBtn.setObjectName(u"refreshShiftsBtn")
-        self.refreshShiftsBtn.setFocusPolicy(Qt.NoFocus)
-        icon3 = QIcon()
-        icon3.addFile(u":/icons/app/assets/icons/Restart--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.refreshShiftsBtn.setIcon(icon3)
-        self.refreshShiftsBtn.setIconSize(QSize(16, 16))
+        self.addShiftsBtn = QPushButton(self.widget_20)
+        self.addShiftsBtn.setObjectName(u"addShiftsBtn")
+        self.addShiftsBtn.setFocusPolicy(Qt.NoFocus)
+        icon4 = QIcon()
+        icon4.addFile(u":/icons/app/assets/icons/Add-Square--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.addShiftsBtn.setIcon(icon4)
+        self.addShiftsBtn.setIconSize(QSize(20, 20))
 
-        self.horizontalLayout_28.addWidget(self.refreshShiftsBtn)
+        self.horizontalLayout_28.addWidget(self.addShiftsBtn)
 
 
         self.newModelLayout.addWidget(self.widget_20, 0, 0, 1, 1, Qt.AlignLeft)
@@ -770,7 +758,7 @@ class Ui_customTimePapersWidget(object):
         self.timePaperDateEdit.setFrame(False)
         self.timePaperDateEdit.setAlignment(Qt.AlignCenter)
         self.timePaperDateEdit.setCorrectionMode(QAbstractSpinBox.CorrectToNearestValue)
-        self.timePaperDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 8, 28), QTime(0, 0, 0)))
+        self.timePaperDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 8, 26), QTime(0, 0, 0)))
 
         self.horizontalLayout_15.addWidget(self.timePaperDateEdit)
 
@@ -780,9 +768,9 @@ class Ui_customTimePapersWidget(object):
         self.calendarBtn.setStyleSheet(u"*{\n"
 "	padding: 0px;\n"
 "}")
-        icon4 = QIcon()
-        icon4.addFile(u":/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.calendarBtn.setIcon(icon4)
+        icon5 = QIcon()
+        icon5.addFile(u":/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.calendarBtn.setIcon(icon5)
         self.calendarBtn.setIconSize(QSize(18, 18))
 
         self.horizontalLayout_15.addWidget(self.calendarBtn)
@@ -822,7 +810,9 @@ class Ui_customTimePapersWidget(object):
         self.refreshOpersGroupBtn = QPushButton(self.operationsGroupsHolder)
         self.refreshOpersGroupBtn.setObjectName(u"refreshOpersGroupBtn")
         self.refreshOpersGroupBtn.setToolTipDuration(-1)
-        self.refreshOpersGroupBtn.setIcon(icon3)
+        icon6 = QIcon()
+        icon6.addFile(u":/icons/app/assets/icons/Restart--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.refreshOpersGroupBtn.setIcon(icon6)
         self.refreshOpersGroupBtn.setIconSize(QSize(20, 20))
 
         self.horizontalLayout_30.addWidget(self.refreshOpersGroupBtn)
@@ -839,7 +829,7 @@ class Ui_customTimePapersWidget(object):
         self.operationsGroupsBtn = QPushButton(self.operationsGroupsHolder)
         self.operationsGroupsBtn.setObjectName(u"operationsGroupsBtn")
         self.operationsGroupsBtn.setFocusPolicy(Qt.NoFocus)
-        self.operationsGroupsBtn.setIcon(icon2)
+        self.operationsGroupsBtn.setIcon(icon3)
         self.operationsGroupsBtn.setIconSize(QSize(15, 15))
 
         self.horizontalLayout_30.addWidget(self.operationsGroupsBtn)
@@ -858,6 +848,31 @@ class Ui_customTimePapersWidget(object):
 
         self.operationsLayout.addWidget(self.isDefaultTimeCheckBox, 1, 5, 1, 1)
 
+        self.label_32 = QLabel(self.timePapersHolder)
+        self.label_32.setObjectName(u"label_32")
+
+        self.operationsLayout.addWidget(self.label_32, 1, 2, 1, 1)
+
+        self.label_33 = QLabel(self.timePapersHolder)
+        self.label_33.setObjectName(u"label_33")
+
+        self.operationsLayout.addWidget(self.label_33, 2, 2, 1, 1)
+
+        self.label_30 = QLabel(self.timePapersHolder)
+        self.label_30.setObjectName(u"label_30")
+
+        self.operationsLayout.addWidget(self.label_30, 1, 0, 1, 1)
+
+        self.label_35 = QLabel(self.timePapersHolder)
+        self.label_35.setObjectName(u"label_35")
+
+        self.operationsLayout.addWidget(self.label_35, 2, 4, 1, 1)
+
+        self.label_34 = QLabel(self.timePapersHolder)
+        self.label_34.setObjectName(u"label_34")
+
+        self.operationsLayout.addWidget(self.label_34, 1, 4, 1, 1)
+
         self.modelPiecesLineEdit = QLineEdit(self.timePapersHolder)
         self.modelPiecesLineEdit.setObjectName(u"modelPiecesLineEdit")
         self.modelPiecesLineEdit.setMinimumSize(QSize(0, 0))
@@ -866,70 +881,10 @@ class Ui_customTimePapersWidget(object):
 
         self.operationsLayout.addWidget(self.modelPiecesLineEdit, 1, 3, 1, 1)
 
-        self.clientModelsLineEdit = QLineEdit(self.timePapersHolder)
-        self.clientModelsLineEdit.setObjectName(u"clientModelsLineEdit")
-        self.clientModelsLineEdit.setMinimumSize(QSize(200, 0))
-
-        self.operationsLayout.addWidget(self.clientModelsLineEdit, 1, 1, 1, 1)
-
-        self.modelOperationLineEdit = QLineEdit(self.timePapersHolder)
-        self.modelOperationLineEdit.setObjectName(u"modelOperationLineEdit")
-        self.modelOperationLineEdit.setMaximumSize(QSize(16777215, 16777215))
-        self.modelOperationLineEdit.setReadOnly(True)
-
-        self.operationsLayout.addWidget(self.modelOperationLineEdit, 2, 1, 1, 1)
-
-        self.label_33 = QLabel(self.timePapersHolder)
-        self.label_33.setObjectName(u"label_33")
-
-        self.operationsLayout.addWidget(self.label_33, 2, 2, 1, 1)
-
-        self.piecesTimeLineEdit = QLineEdit(self.timePapersHolder)
-        self.piecesTimeLineEdit.setObjectName(u"piecesTimeLineEdit")
-        self.piecesTimeLineEdit.setMaximumSize(QSize(60, 16777215))
-        self.piecesTimeLineEdit.setFocusPolicy(Qt.NoFocus)
-        self.piecesTimeLineEdit.setReadOnly(True)
-
-        self.operationsLayout.addWidget(self.piecesTimeLineEdit, 2, 3, 1, 1)
-
         self.label_45 = QLabel(self.timePapersHolder)
         self.label_45.setObjectName(u"label_45")
 
         self.operationsLayout.addWidget(self.label_45, 3, 2, 1, 1)
-
-        self.addNewTimePaperBtn = QPushButton(self.timePapersHolder)
-        self.addNewTimePaperBtn.setObjectName(u"addNewTimePaperBtn")
-        self.addNewTimePaperBtn.setFocusPolicy(Qt.NoFocus)
-        self.addNewTimePaperBtn.setStyleSheet(u"*{\n"
-"	padding: 0px;\n"
-"	background-color: #dfdfdf;\n"
-"}")
-        icon5 = QIcon()
-        icon5.addFile(u":/icons/app/assets/icons/Check-Square--Streamline-Solar-Broken-#008b69.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.addNewTimePaperBtn.setIcon(icon5)
-        self.addNewTimePaperBtn.setIconSize(QSize(18, 18))
-
-        self.operationsLayout.addWidget(self.addNewTimePaperBtn, 3, 5, 1, 1, Qt.AlignLeft)
-
-        self.label_35 = QLabel(self.timePapersHolder)
-        self.label_35.setObjectName(u"label_35")
-
-        self.operationsLayout.addWidget(self.label_35, 2, 4, 1, 1)
-
-        self.label_30 = QLabel(self.timePapersHolder)
-        self.label_30.setObjectName(u"label_30")
-
-        self.operationsLayout.addWidget(self.label_30, 1, 0, 1, 1)
-
-        self.label_34 = QLabel(self.timePapersHolder)
-        self.label_34.setObjectName(u"label_34")
-
-        self.operationsLayout.addWidget(self.label_34, 1, 4, 1, 1)
-
-        self.label_32 = QLabel(self.timePapersHolder)
-        self.label_32.setObjectName(u"label_32")
-
-        self.operationsLayout.addWidget(self.label_32, 1, 2, 1, 1)
 
         self.widget_22 = QWidget(self.timePapersHolder)
         self.widget_22.setObjectName(u"widget_22")
@@ -985,6 +940,37 @@ class Ui_customTimePapersWidget(object):
 
         self.operationsLayout.addWidget(self.widget_22, 3, 1, 1, 1, Qt.AlignLeft)
 
+        self.label_40 = QLabel(self.timePapersHolder)
+        self.label_40.setObjectName(u"label_40")
+
+        self.operationsLayout.addWidget(self.label_40, 3, 0, 1, 1)
+
+        self.widget_25 = QWidget(self.timePapersHolder)
+        self.widget_25.setObjectName(u"widget_25")
+        sizePolicy.setHeightForWidth(self.widget_25.sizePolicy().hasHeightForWidth())
+        self.widget_25.setSizePolicy(sizePolicy)
+        self.horizontalLayout_36 = QHBoxLayout(self.widget_25)
+        self.horizontalLayout_36.setSpacing(0)
+        self.horizontalLayout_36.setObjectName(u"horizontalLayout_36")
+        self.horizontalLayout_36.setContentsMargins(0, 0, 0, 0)
+
+        self.operationsLayout.addWidget(self.widget_25, 1, 1, 1, 1)
+
+        self.modelOperationLineEdit = QLineEdit(self.timePapersHolder)
+        self.modelOperationLineEdit.setObjectName(u"modelOperationLineEdit")
+        self.modelOperationLineEdit.setMaximumSize(QSize(16777215, 16777215))
+        self.modelOperationLineEdit.setReadOnly(True)
+
+        self.operationsLayout.addWidget(self.modelOperationLineEdit, 2, 1, 1, 1)
+
+        self.piecesTimeLineEdit = QLineEdit(self.timePapersHolder)
+        self.piecesTimeLineEdit.setObjectName(u"piecesTimeLineEdit")
+        self.piecesTimeLineEdit.setMaximumSize(QSize(60, 16777215))
+        self.piecesTimeLineEdit.setFocusPolicy(Qt.NoFocus)
+        self.piecesTimeLineEdit.setReadOnly(True)
+
+        self.operationsLayout.addWidget(self.piecesTimeLineEdit, 2, 3, 1, 1)
+
         self.timeForPieceLineEdit = QLineEdit(self.timePapersHolder)
         self.timeForPieceLineEdit.setObjectName(u"timeForPieceLineEdit")
         self.timeForPieceLineEdit.setMaximumSize(QSize(55, 16777215))
@@ -993,10 +979,19 @@ class Ui_customTimePapersWidget(object):
 
         self.operationsLayout.addWidget(self.timeForPieceLineEdit, 2, 5, 1, 1)
 
-        self.label_40 = QLabel(self.timePapersHolder)
-        self.label_40.setObjectName(u"label_40")
+        self.addNewTimePaperBtn = QPushButton(self.timePapersHolder)
+        self.addNewTimePaperBtn.setObjectName(u"addNewTimePaperBtn")
+        self.addNewTimePaperBtn.setFocusPolicy(Qt.NoFocus)
+        self.addNewTimePaperBtn.setStyleSheet(u"*{\n"
+"	padding: 0px;\n"
+"	background-color: #dfdfdf;\n"
+"}")
+        icon7 = QIcon()
+        icon7.addFile(u":/icons/app/assets/icons/Check-Square--Streamline-Solar-Broken-#008b69.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.addNewTimePaperBtn.setIcon(icon7)
+        self.addNewTimePaperBtn.setIconSize(QSize(18, 18))
 
-        self.operationsLayout.addWidget(self.label_40, 3, 0, 1, 1)
+        self.operationsLayout.addWidget(self.addNewTimePaperBtn, 3, 5, 1, 1, Qt.AlignLeft)
 
         self.modelTotalPiecesLineEdit = QLineEdit(self.timePapersHolder)
         self.modelTotalPiecesLineEdit.setObjectName(u"modelTotalPiecesLineEdit")
@@ -1010,6 +1005,11 @@ class Ui_customTimePapersWidget(object):
         self.label_31.setObjectName(u"label_31")
 
         self.operationsLayout.addWidget(self.label_31, 2, 0, 1, 1)
+
+        self.effectOperTimesBtn = QPushButton(self.timePapersHolder)
+        self.effectOperTimesBtn.setObjectName(u"effectOperTimesBtn")
+
+        self.operationsLayout.addWidget(self.effectOperTimesBtn, 1, 6, 1, 1)
 
 
         self.verticalLayout_3.addLayout(self.operationsLayout)
@@ -1042,7 +1042,7 @@ class Ui_customTimePapersWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 883, 229))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 883, 225))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -1136,9 +1136,9 @@ class Ui_customTimePapersWidget(object):
 
         self.overtimeWarning = QPushButton(self.totalWorkingMinsHolder)
         self.overtimeWarning.setObjectName(u"overtimeWarning")
-        icon6 = QIcon()
-        icon6.addFile(u":/icons/app/assets/icons/Danger-Triangle--Streamline-Solar-Broken-#C75f59.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.overtimeWarning.setIcon(icon6)
+        icon8 = QIcon()
+        icon8.addFile(u":/icons/app/assets/icons/Danger-Triangle--Streamline-Solar-Broken-#C75f59.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.overtimeWarning.setIcon(icon8)
         self.overtimeWarning.setIconSize(QSize(18, 18))
 
         self.horizontalLayout_27.addWidget(self.overtimeWarning, 0, Qt.AlignHCenter|Qt.AlignVCenter)
@@ -1268,15 +1268,14 @@ class Ui_customTimePapersWidget(object):
     def retranslateUi(self, customTimePapersWidget):
         customTimePapersWidget.setWindowTitle(QCoreApplication.translate("customTimePapersWidget", u"Form", None))
         self.pageTitle.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041b\u0418\u0421\u0422\u041e\u0412\u0415 \u0417\u0410 \u0412\u0420\u0415\u041c\u0415", None))
-        self.logoutBtn.setText("")
+        self.closeBtn.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0417\u0442\u0432\u043e\u0440\u0438", None))
         self.userIcon.setText("")
         self.usernameLabel.setText(QCoreApplication.translate("customTimePapersWidget", u"admin", None))
+        self.logoutBtn.setText("")
         self.label.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0420\u0430\u0431\u043e\u0442\u043d\u0438\u043a", None))
         self.label_2.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0418\u043c\u0435:", None))
         self.label_4.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0424\u0430\u043c\u0438\u043b\u0438\u044f:", None))
         self.label_13.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041d\u043e\u043c\u0435\u0440:", None))
-        self.workerNameLineEdit.setText("")
-        self.workerNameLineEdit.setPlaceholderText("")
         self.clearWorkerNameBtn.setText(QCoreApplication.translate("customTimePapersWidget", u"x", None))
         self.label_12.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0420\u0430\u0431\u043e\u0442\u043d\u043e \u0412\u0440\u0435\u043c\u0435", None))
         self.label_22.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0414\u043b\u044a\u0436\u043d\u043e\u0441\u0442:", None))
@@ -1314,7 +1313,7 @@ class Ui_customTimePapersWidget(object):
         self.addNewShiftBtn.setText("")
         self.shiftNameLineEdit.setPlaceholderText(QCoreApplication.translate("customTimePapersWidget", u"\u0420\u0435\u0434\u043e\u0432\u043d\u0430", None))
         self.label_5.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0421\u043c\u044f\u043d\u0430:", None))
-        self.refreshShiftsBtn.setText("")
+        self.addShiftsBtn.setText("")
         self.label_25.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0414\u0430\u0442\u0430: ", None))
         self.timePaperDateEdit.setDisplayFormat(QCoreApplication.translate("customTimePapersWidget", u"dd.MM.yy '\u0433.'", None))
         self.calendarBtn.setText("")
@@ -1325,19 +1324,20 @@ class Ui_customTimePapersWidget(object):
         self.refreshOpersGroupBtn.setText("")
         self.operationsGroupsBtn.setText("")
         self.isDefaultTimeCheckBox.setText("")
-        self.label_33.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0412\u0440\u0435\u043c\u0435", None))
-        self.piecesTimeLineEdit.setText(QCoreApplication.translate("customTimePapersWidget", u"0", None))
-        self.label_45.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0411\u0440. \u041c\u043e\u0434\u0435\u043b", None))
-        self.addNewTimePaperBtn.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0417\u0430\u043f\u0438\u0441", None))
-        self.label_35.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0412\u0440\u0435\u043c\u0435 \u0437\u0430 \u0431\u0440.", None))
-        self.label_30.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041c\u043e\u0434\u0435\u043b:", None))
-        self.label_34.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0412\u0440\u0435\u043c\u0435\u041f\u043e\u041f\u043e\u0434.", None))
         self.label_32.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0411\u0440\u043e\u0439\u043a\u0438", None))
+        self.label_33.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0412\u0440\u0435\u043c\u0435", None))
+        self.label_30.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041c\u043e\u0434\u0435\u043b:", None))
+        self.label_35.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0412\u0440\u0435\u043c\u0435 \u0437\u0430 \u0431\u0440.", None))
+        self.label_34.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0412\u0440\u0435\u043c\u0435\u041f\u043e\u041f\u043e\u0434.", None))
+        self.label_45.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0411\u0440. \u041c\u043e\u0434\u0435\u043b", None))
         self.label_41.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0437\u0430 \u043f\u0440.:", None))
         self.piecesForProdLineEdit.setText("")
         self.label_44.setText(QCoreApplication.translate("customTimePapersWidget", u"\u043f\u0440\u043e\u0438\u0437\u0432.:", None))
         self.label_40.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0411\u0440\u043e\u0439\u043a\u0438 \u041e\u043f.", None))
+        self.piecesTimeLineEdit.setText(QCoreApplication.translate("customTimePapersWidget", u"0", None))
+        self.addNewTimePaperBtn.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0417\u0430\u043f\u0438\u0441", None))
         self.label_31.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041e\u043f\u0435\u0440\u0430\u0446\u0438\u044f", None))
+        self.effectOperTimesBtn.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041f\u0440\u043e\u043c\u044f\u043d\u0430 \u0432\u0440\u0435\u043c\u0435\u043d\u0430", None))
         self.showAllCheckBox.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0412\u0441\u0438\u0447\u043a\u0438 \u0437\u0430 \u0434\u0435\u043d\u044f", None))
         self.label_42.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041e\u0431\u0449\u043e \u0440\u0435\u0434\u043e\u0432\u0435:", None))
         self.totalViewRows.setText(QCoreApplication.translate("customTimePapersWidget", u"0", None))

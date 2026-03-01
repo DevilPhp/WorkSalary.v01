@@ -1,4 +1,6 @@
 import pandas as pd
+import requests
+from config import API_SERVER
 from app.database import engine
 from app.database import SessionLocal
 from app.database.workers import WorkerPosition, Worker

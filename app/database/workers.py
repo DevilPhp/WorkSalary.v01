@@ -105,7 +105,7 @@ class TimePaperOperation(Base):
     ModelOperationId = Column(Integer, ForeignKey('productionModelOperations.id'), nullable=True)
     Pieces = Column(Integer, nullable=False, default=0)
     WorkingTimeMinutes = Column(Float, nullable=False, default=0)
-    NightMins = Column(Float, nullable=True, default=0)
+    # NightMins = Column(Float, nullable=True, default=0)
 
     timePaper = relationship("TimePaper", back_populates="timePaperOperations")
     productionModels = relationship("ProductionModel", back_populates="timePaperOperations")
@@ -133,7 +133,7 @@ class HourlyPay(Base):
     Start = Column(Time, nullable=False)
     End = Column(Time, nullable=False)
     Efficiency = Column(Float, nullable=False)
-    NightMins = Column(Float, nullable=True, default=0)
+    # NightMins = Column(Float, nullable=True, default=0)
     HourlyRate = Column(Float, nullable=False, default=1)
     DateUpdated = Column(Date, nullable=False, default=datetime.today(), onupdate=datetime.today())
     UserUpdated = Column(String, nullable=False)
@@ -148,8 +148,8 @@ class OvertimePay(Base):
     Start = Column(Time, nullable=False)
     End = Column(Time, nullable=False)
     Efficiency = Column(Float, nullable=False)
-    NightMins = Column(Float, nullable=True, default=0)
-    OvertimeRate = Column(Float, nullable=False, default=1.5)
+    # NightMins = Column(Float, nullable=True, default=0)
+    OvertimeRate = Column(Float, nullable=False, default=0.5)
     DateUpdated = Column(Date, nullable=False, default=datetime.today(), onupdate=datetime.today())
     UserUpdated = Column(String, nullable=False)
 

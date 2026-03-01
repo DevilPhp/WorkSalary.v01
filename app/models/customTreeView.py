@@ -68,15 +68,15 @@ class CustomTreeView(QTreeView):
             if event.key() == Qt.Key.Key_Up and index.row() > 0:
                 self.selectRow(index.row() - 1)
                 # selectedItems = self.checkSender(parrentName)
-                selectedItems['payInLeva'] = self.selectionModel().selectedRows(12)
-                selectedItems['payInEuro'] = self.selectionModel().selectedRows(13)
+                selectedItems['payInLeva'] = self.selectionModel().selectedRows(26)
+                selectedItems['payInEuro'] = self.selectionModel().selectedRows(28)
                 self.selectedRows.emit(selectedItems)
 
             elif event.key() == Qt.Key.Key_Down and index.row() < self.model().rowCount() - 1:
                 self.selectRow(index.row() + 1)
                 # selectedItems = self.checkSender(parrentName)
-                selectedItems['payInLeva'] = self.selectionModel().selectedRows(12)
-                selectedItems['payInEuro'] = self.selectionModel().selectedRows(13)
+                selectedItems['payInLeva'] = self.selectionModel().selectedRows(26)
+                selectedItems['payInEuro'] = self.selectionModel().selectedRows(28)
                 self.selectedRows.emit(selectedItems)
 
         # print(selectedItems)
@@ -91,8 +91,8 @@ class CustomTreeView(QTreeView):
                 if not (modifiers & Qt.KeyboardModifier.ControlModifier or
                         modifiers & Qt.KeyboardModifier.ShiftModifier) or self.selectionModel().selectedRows(0):
                     # selectedItems = self.checkSender(parrentName)
-                    selectedItems['payInLeva'] = self.selectionModel().selectedRows(12)
-                    selectedItems['payInEuro'] = self.selectionModel().selectedRows(13)
+                    selectedItems['payInLeva'] = self.selectionModel().selectedRows(26)
+                    selectedItems['payInEuro'] = self.selectionModel().selectedRows(28)
                     # print(selectedItems)
                     self.selectedRows.emit(selectedItems)
 

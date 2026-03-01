@@ -7,6 +7,7 @@ from app.models.customSelectionModel import SingleMultiSelectionModel
 
 class TableModel(QAbstractTableModel):
     dataEdited = Signal(int, int, object)
+
     def __init__(self, data):
         super().__init__()
         self._data = data.copy()
@@ -154,8 +155,8 @@ class CustomTableViewWithMultiSelection(QTableView):
                 selectedItems['pieces'] = self.selectionModel().selectedRows(5)
                 selectedItems['piecesTime'] = self.selectionModel().selectedRows(6)
             elif parrentName == 'paymentsTableHolder':
-                selectedItems['payInLeva'] = self.selectionModel().selectedRows(12)
-                selectedItems['payInEuro'] = self.selectionModel().selectedRows(13)
+                selectedItems['payInLeva'] = self.selectionModel().selectedRows(27)
+                selectedItems['payInEuro'] = self.selectionModel().selectedRows(29)
             return selectedItems
         else:
             pass

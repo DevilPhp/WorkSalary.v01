@@ -207,23 +207,59 @@ class Utils:
         return datetime.strptime(stringDate, "%Y-%m-%d").date()
 
     @staticmethod
-    def calculateMinutes(startTime, endTime, breakTime=0):
+    def convertStringToTime(timeString):
+        timeString = timeString.replace(':', '')
+        # print(timeString)
+        # print(len(timeString))
+        if len(timeString) <= 2:
+            if len(timeString) == 1:
+                fixedString = '0' + timeString
+            else:
+                fixedString = timeString
+            fixedString = fixedString + ':00'
+            # newTimeString = fixedString
+            qTime = QTime.fromString(fixedString, "hh:mm")
+        elif len(timeString) < 4:
+            # newTimeString = '0' + timeString
+            # fixedString = timeString[0] + ':' + timeString[1] + timeString[2]
+            fixedString = '0' + timeString[0] + ':' + timeString[1] + timeString[2]
+            qTime = QTime.fromString(fixedString, "hh:mm")
+        else:
+            fixedString = timeString[0] + timeString[1] + ':' + timeString[2] + timeString[3]
+            # newTimeString = fixedString
+            qTime = QTime.fromString(fixedString, "hh:mm")
+        dtTime = datetime.strptime(fixedString, "%H:%M")
+        # print(fixedString, qTime, dtTime)
+        return [fixedString, qTime, dtTime]
+
+    @staticmethod
+    def calculateMinutes(startTime, endTime, breakTime=0, totalMins=0):
         '''Calculate the time difference between two time strings in minutes.
         Start and end times are in 24-hour format.
         Returns the difference in minutes.'''
-        start = startTime.time()
-        end = endTime.time()
+        if isinstance(startTime, QTime) and isinstance(endTime, QTime):
+            start = startTime
+            end = endTime
+        else:
+            start = startTime.time()
+            end = endTime.time()
 
         duration = start.msecsTo(end) // 60000
         if start.hour() > end.hour():
+            # zeroTime = QTime(24, 0)
+            # print(zeroTime)
+
             duration += 24 * 60
 
-        if duration > 300 and breakTime == 0:
-            duration -= 60
+        if totalMins == 0:
+            if duration > 300 and breakTime == 0:
+                duration -= 60
+            else:
+                duration -= breakTime
+            # print(f'Start: {start}, End: {end}, Duration: {duration}')
+            return duration
         else:
-            duration -= breakTime
-
-        return duration
+            return round(duration - totalMins, 0)
 
 
 class CustomCompleter(QCompleter):

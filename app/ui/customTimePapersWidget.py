@@ -3,7 +3,7 @@ from functools import partial
 import json
 
 from PySide6.QtCore import QTimer, QMimeData, QEvent, Signal
-from PySide6.QtGui import QStandardItemModel, QStandardItem, QDoubleValidator, QClipboard
+from PySide6.QtGui import QStandardItemModel, QStandardItem, QDoubleValidator, QClipboard, QValidator
 from PySide6.QtWidgets import QMenu, QDialog, QAbstractItemView
 
 from app.ui.widgets.ui_customTimePapersWidget import *
@@ -14,6 +14,7 @@ from app.services.operationServices import OperationsServices as OpS
 from app.ui.customCalendarWidget import CustomCalendarDialog
 from app.models.sortingModel import CaseInsensitiveProxyModel, FilterableHeaderView
 from app.models.tableModel import CustomTableViewWithMultiSelection
+from app.models.customLineEditWidget import CustomLineEdit
 from app.ui.messagesManager import MessageManager as MM
 from app.ui.customSortingMenuWidget import CustomSortingMenuWidget
 from app.ui.customYesNoMessage import CustomYesNowDialog
@@ -31,12 +32,33 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.usernameLabel.setText(user)
         self.user = user
 
+        # time = '1600'
+        # print(f'Current time: {time}')
+        # time = Utils.convertStringToTime(time)
+        # print(f'Converted time: {time[0]}, {time[1]}, {time[2]}')
+
+        self.shiftStart = CustomLineEdit(self)
+        self.shiftEnd = CustomLineEdit(self)
+        self.hourlyStart = CustomLineEdit(self)
+        self.hourlyEnd = CustomLineEdit(self)
+        self.overtimeStart = CustomLineEdit(self)
+        self.overtimeEnd = CustomLineEdit(self)
+        self.workerNameLineEdit = CustomLineEdit(self)
+        self.clientModelsLineEdit = CustomLineEdit(self)
+
+        self.timesLineEdits = [self.shiftStart, self.shiftEnd, self.hourlyStart,
+                               self.hourlyEnd, self.overtimeStart, self.overtimeEnd]
+
         self.workers = WoS.getWorkers()
         self.models = MoS.getClientsAndModels()
         self.overtimeWarning.setVisible(False)
         self.clientModels = {}
         self.modelOperations = {}
         self.workingShifts = WoS.getWorkingShifts()
+
+        self.setUpCustomLineEdits()
+
+        # print(self.workingShifts)
         self.workersInfo = []
         self.existingTimePapers = {}
         self.checkBoxFiltering = {}
@@ -44,6 +66,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.operationsGroups = OpS.getOperationsGroups()
         self.operationsGroupsHolder.setEnabled(False)
         self.operationsGroupsForModel = None
+        self.currentModelText = None
+
         # self.setOperationsGroups()
         self.lastSelectedModel = None
         self.setupWorkerAndModelsCompleter()
@@ -72,6 +96,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.editedRowId = None
         self.editedRowIndex = None
         self.isEditing = False
+        self.effectOperTimesBtn.setVisible(False)
 
         self.clipboardData = None
 
@@ -88,48 +113,80 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.refreshOpersGroupBtn.clicked.connect(self.refreshOpersGroup)
 
         self.isDefaultTimeCheckBox.stateChanged.connect(self.setDefaultTime)
-        self.shiftStart.timeChanged.connect(self.updateDuration)
-        self.shiftEnd.timeChanged.connect(self.updateDuration)
+        self.shiftStart.textChanged.connect(self.updateDuration)
+        self.shiftEnd.textChanged.connect(self.updateDuration)
+        # self.shiftStart.click.connect(print('shift start clicked'))
         self.shiftStart.editingFinished.connect(self.checkForExistingShift)
         self.shiftEnd.editingFinished.connect(self.checkForExistingShift)
-        self.overtimeStart.timeChanged.connect(self.updateDuration)
-        self.overtimeEnd.timeChanged.connect(self.updateDuration)
-        self.hourlyStart.timeChanged.connect(self.updateDuration)
-        self.hourlyEnd.timeChanged.connect(self.updateDuration)
-        # self.hourlyStart.editingFinished.connect(self.checkIfTimeIsValid)
-        # self.hourlyEnd.editingFinished.connect(self.checkIfTimeIsValid)
-        # self.overtimeStart.editingFinished.connect(self.checkIfTimeIsValid)
-        # self.overtimeEnd.editingFinished.connect(self.checkIfTimeIsValid)
+        self.overtimeStart.textChanged.connect(self.updateDuration)
+        self.overtimeEnd.textChanged.connect(self.updateDuration)
+        self.hourlyStart.textChanged.connect(self.updateDuration)
+        self.hourlyEnd.textChanged.connect(self.updateDuration)
+        self.hourlyStart.editingFinished.connect(self.checkOvertimeAndHourly)
+        self.hourlyEnd.editingFinished.connect(self.checkOvertimeAndHourly)
+        self.overtimeStart.editingFinished.connect(self.checkOvertimeAndHourly)
+        self.overtimeEnd.editingFinished.connect(self.checkOvertimeAndHourly)
 
         self.calendarBtn.clicked.connect(self.showCustomCalendaDialog)
         self.modelPiecesLineEdit.returnPressed.connect(self.addTimePaperOperation)
         self.addNewTimePaperBtn.clicked.connect(self.addTimePaperOperation)
         self.addNewShiftBtn.clicked.connect(self.setShiftsWindow)
-        self.refreshShiftsBtn.clicked.connect(self.refreshShifts)
+        self.addShiftsBtn.clicked.connect(self.addNewShift)
 
         self.clearWorkerNameBtn.setVisible(False)
         self.workerNameLineEdit.textChanged.connect(self.showClearWorkerNameBtn)
         self.clearWorkerNameBtn.clicked.connect(self.clearWorkerName)
         self.showAllCheckBox.stateChanged.connect(self.showAllWorkersForDate)
 
-        self.workerNameLineEdit.returnPressed.connect(self.updateWorkerInfo)
-        self.clientModelsLineEdit.returnPressed.connect(self.updateModelInfo)
+        self.workerNameLineEdit.editingFinished.connect(self.updateWorkerInfo)
+        # self.workerNameLineEdit.doubleClicked.connect(self.test)
 
-        # self.workerNameLineEdit.editingFinished.connect(self.checkWorker)
-        # self.clientModelsLineEdit.editingFinished.connect(self.checkModel)
-
-        # completer = self.clientModelsLineEdit.completer()
-        # self.clientModelsLineEdit.setText(Utils.setReturnBtnForCompleter(completer))
-        # self.clientModelsLineEdit.setText('')
+        self.clientModelsLineEdit.editingFinished.connect(self.updateModelInfo)
 
         self.modelPiecesLineEdit.textChanged.connect(self.updateModelPieces)
         self.timeForPieceLineEdit.textChanged.connect(self.updateModelPieces)
         self.modelOperationLineEdit.editingFinished.connect(self.updateModelOperation)
 
+        self.effectOperTimesBtn.clicked.connect(self.setModelOperationTimes)
+
         self.workerNameLineEdit.selectAll()
         self.workerNameLineEdit.setFocus()
 
+        self.closeBtn.clicked.connect(self.close)
         self.logoutBtn.clicked.connect(self.logout)
+
+        # self.shiftStart.setTime(time[1])
+
+    # def test(self):
+    #     print('Double clicked')
+
+    def setModelOperationTimes(self):
+        if self.clientModelsLineEdit == '':
+            MM.showOnWidget(self, 'Изберете модел!', 'error')
+            return
+        currentMonth = int(self.timePaperDateEdit.text().split('.')[1])
+        clientName = self.clientModelsLineEdit.text().split(' : ')[1]
+        modelName = self.clientModelsLineEdit.text().split(' : ')[0]
+        modelId =self.clientModels[self.clientModelsLineEdit.text()]
+        self.mainWindow.setModelOperPageForTimePapersCall(clientName, modelName, modelId, currentMonth)
+        # print(self.mainWindow.modelOperPage)
+        self.mainWindow.modelOperPage.pageClosedSignal.connect(self.effectOperTimesSuccess)
+
+    def effectOperTimesSuccess(self, signal):
+        setCurrentDate = QDate.fromString(self.timePaperDateEdit.text(), 'dd.MM.yyyy')
+        modelName = self.clientModelsLineEdit.text().split(' : ')[0]
+        if signal:
+        # print(self.mainWindow.modelOperPage)
+        # if self.mainWindow.modelOperPage:
+            MM.showOnWidget(self, f"Успешна корекция на операции за {modelName}", 'success')
+            # print(setCurrentDate)
+            self.refreshTimePapersForToday(int(self.workerNumberLineEdit.text()), currentDate=setCurrentDate)
+            self.timePaperDateEdit.setDate(setCurrentDate)
+            self.effectOperTimesBtn.setVisible(False)
+            self.clientModelsLineEdit.setFocus()
+            # print(self.timePaperDateEdit.date())
+        else:
+            MM.showOnWidget(self, f"Грешка при редектиране на операции за {modelName}", 'error')
 
     def showAllWorkersForDate(self):
         if self.showAllCheckBox.checkState() == Qt.CheckState.Checked:
@@ -197,7 +254,10 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             result = dialog.exec()
             if result == QDialog.Accepted:
                 if WoS.deleteTimePapers(selectedIds):
-                    self.refreshTimePapersForToday(int(self.workerNumberLineEdit.text()))
+                    if self.workerNumberLineEdit.text() == '':
+                        self.refreshTimePapersForToday()
+                    else:
+                        self.refreshTimePapersForToday(int(self.workerNumberLineEdit.text()))
                     self.clearOperationInfo(False)
                     MM.showOnWidget(self, 'Успешно изтрити записи', 'success')
                 else:
@@ -260,13 +320,13 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             timePerPiece = float(timeIndex.data(Qt.ItemDataRole.DisplayRole)) / int(self.originalPiecesValue)
             newTime = newPieces * timePerPiece
 
-            currentNightShiftMins = Utils.checkNightShiftMins(self.shiftStart.time(), self.shiftEnd.time())
-            if currentNightShiftMins > 300:
-                currentNightShiftMins -= 60
+            # currentNightShiftMins = Utils.checkNightShiftMins(self.shiftStart.time(), self.shiftEnd.time())
+            # if currentNightShiftMins > 300:
+            #     currentNightShiftMins -= 60
 
             self.tableTimePapersModel.item(self.proxyModelWorkers.mapToSource(timeIndex).row(),
                                            6).setText(Utils.setFloatToStr(round(newTime, 2)))
-            success = WoS.updateTimePaperPieces(operId, newPieces, newTime, currentNightShiftMins)
+            success = WoS.updateTimePaperPieces(operId, newPieces, newTime)
             if success:
                 workerId = self.workerNumberLineEdit.text() if self.workerNumberLineEdit.text() else None
                 if workerId:
@@ -359,14 +419,14 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.mainWindow.setModelOperPage(True)
 
     def setOperationsGroupForDB(self):
-        self.clearOperationInfo(False)
-        if self.operationsGroupComboBox.currentIndex() > -1 and self.operationsGroupsCheckBox.isChecked():
-            self.modelPiecesLineEdit.setReadOnly(False)
+        self.clearOperationInfo(False, True)
+        if self.operationsGroupComboBox.currentText() != '' and self.operationsGroupsCheckBox.isChecked():
             self.modelOperationLineEdit.blockSignals(True)
+            self.modelPiecesLineEdit.setReadOnly(False)
             self.modelOperationLineEdit.setReadOnly(True)
             self.modelOperationLineEdit.setText('Група операции')
-            self.modelOperationLineEdit.blockSignals(False)
             self.modelPiecesLineEdit.setFocus()
+            self.modelOperationLineEdit.blockSignals(False)
             return
         else:
             self.modelPiecesLineEdit.setReadOnly(True)
@@ -379,6 +439,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
     def setOperationsGroups(self, modelId=None):
         self.operationsGroupComboBox.clear()
+        # print(self.operationsGroups)
         if len(self.operationsGroups) > 0:
             for group, value in self.operationsGroups.items():
                 name = f'{value["id"]}: {group}'
@@ -386,11 +447,12 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 self.operationsGroupComboBox.setCurrentIndex(-1)
         if modelId:
             self.operationsGroupsForModel = OpS.getGroupOperationsForModel(modelId)
-            self.operationsGroupComboBox.insertSeparator(self.operationsGroupComboBox.count())
-            for group, value in self.operationsGroupsForModel.items():
-                name = f'{value["id"]}: {group}'
-                self.operationsGroupComboBox.addItem(name)
-                self.operationsGroupComboBox.setCurrentIndex(-1)
+            if len(self.operationsGroupsForModel) > 0:
+                self.operationsGroupComboBox.insertSeparator(self.operationsGroupComboBox.count())
+                for group, value in self.operationsGroupsForModel.items():
+                    name = f'{value["id"]}: {group}'
+                    self.operationsGroupComboBox.addItem(name)
+                    self.operationsGroupComboBox.setCurrentIndex(-1)
 
     def showOperationsGroups(self):
         self.operationsGroupComboBox.setEnabled(self.operationsGroupsCheckBox.isChecked())
@@ -400,22 +462,125 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.operationsGroupComboBox.setCurrentIndex(-1)
             self.clearOperationInfo(False)
 
+    def setUpCustomLineEdits(self):
+        self.widget_14.layout().insertWidget(0, self.workerNameLineEdit)
+        self.workerNameLineEdit.setMinimumWidth(207)
+
+        self.widget_25.layout().insertWidget(0, self.clientModelsLineEdit)
+        self.clientModelsLineEdit.setMinimumWidth(200)
+
+        timeValidator = QDoubleValidator(0, 9999, 0)
+        for timeLineEdit in self.timesLineEdits:
+            timeLineEdit.setMinimumWidth(34)
+            timeLineEdit.setMaximumWidth(34)
+            timeLineEdit.setValidator(timeValidator)
+            if timeLineEdit == self.shiftStart:
+                timeLineEdit.setText('08:00')
+            elif timeLineEdit == self.shiftEnd:
+                timeLineEdit.setText('17:00')
+            else:
+                timeLineEdit.setText('00:00')
+
+        self.shiftStartWidget.layout().insertWidget(0, self.shiftStart)
+        self.shiftEndWidget.layout().insertWidget(0, self.shiftEnd)
+        self.hourlyStartWidget.layout().insertWidget(0, self.hourlyStart)
+        self.hourlyEndWidget.layout().insertWidget(0, self.hourlyEnd)
+        self.overtimeStartWidget.layout().insertWidget(0, self.overtimeStart)
+        self.overtimeEndWidget.layout().insertWidget(0, self.overtimeEnd)
+
+    def checkOvertimeAndHourly(self):
+        if self.sender() == self.overtimeStart or self.sender() == self.overtimeEnd:
+            start = self.overtimeStart.text()
+            end = self.overtimeEnd.text()
+        elif self.sender() == self.hourlyStart or self.sender() == self.hourlyEnd:
+            start = self.hourlyStart.text()
+            end = self.hourlyEnd.text()
+
+        try:
+            start = Utils.convertStringToTime(start)
+            end = Utils.convertStringToTime(end)
+        except (IndexError, ValueError):
+            MM.showOnWidget(self, 'Невалиден формат на време', 'error')
+            if self.sender() == self.overtimeStart:
+                self.overtimeStart.selectAll()
+                self.overtimeStart.setFocus()
+            elif self.sender() == self.overtimeEnd:
+                self.overtimeEnd.selectAll()
+                self.overtimeEnd.setFocus()
+            elif self.sender() == self.hourlyStart:
+                self.hourlyStart.selectAll()
+                self.hourlyStart.setFocus()
+            elif self.sender() == self.hourlyEnd:
+                self.hourlyEnd.selectAll()
+                self.hourlyEnd.setFocus()
+            return
+
+        duration = Utils.calculateMinutes(start[1], end[1])
+        if self.sender() == self.overtimeStart or self.sender() == self.overtimeEnd:
+            self.overtimeStart.setText(start[0])
+            self.overtimeEnd.setText(end[0])
+            self.overtimeTotalMins.setText(str(duration))
+            if self.sender() == self.overtimeStart:
+                self.overtimeEnd.selectAll()
+                self.overtimeEnd.setFocus()
+            self.setTotalMinsColor()
+        elif self.sender() == self.hourlyStart or self.sender() == self.hourlyEnd:
+            self.hourlyStart.setText(start[0])
+            self.hourlyEnd.setText(end[0])
+            self.hourlyTotalMins.setText(str(duration))
+            if self.sender() == self.hourlyStart:
+                self.hourlyEnd.selectAll()
+                self.hourlyEnd.setFocus()
+
     def checkForExistingShift(self):
+        try:
+            shiftStart = Utils.convertStringToTime(self.shiftStart.text())
+            shiftEnd = Utils.convertStringToTime(self.shiftEnd.text())
+        except (IndexError, ValueError):
+            MM.showOnWidget(self, 'Невалиден формат на време', 'error')
+            if self.sender() == self.shiftStart:
+                self.shiftStart.selectAll()
+                self.shiftStart.setFocus()
+            elif self.sender() == self.shiftEnd:
+                self.shiftEnd.selectAll()
+                self.shiftEnd.setFocus()
+            return
+        # print(self.workingShifts)
         for key, value in self.workingShifts.items():
-            if (QTime.fromString(value[1], 'hh:mm') == self.shiftStart.time() and
-                    QTime.fromString(value[2], 'hh:mm') == self.shiftEnd.time()):
+            if value[1] == shiftStart[0] and value[2] == shiftEnd[0]:
                 self.shiftNameLineEdit.setCurrentText(key)
+                self.shiftStart.setText(shiftStart[0])
+                self.shiftEnd.setText(shiftEnd[0])
+                self.shiftTotalMins.setText(str(int(value[3])))
                 break
             else:
                 self.shiftNameLineEdit.setCurrentIndex(-1)
 
+        if self.shiftNameLineEdit.currentText() == '':
+            self.shiftStart.setText(shiftStart[0])
+            self.shiftEnd.setText(shiftEnd[0])
+            duration = Utils.calculateMinutes(shiftStart[1], shiftEnd[1])
+            self.shiftTotalMins.setText(str(duration))
+        if self.sender() == self.shiftStart:
+            self.shiftEnd.selectAll()
+            self.shiftEnd.setFocus()
+        elif self.sender() == self.shiftEnd:
+            self.clientModelsLineEdit.selectAll()
+            self.clientModelsLineEdit.setFocus()
+
     def setShiftsWindow(self):
+        isCalling = True
+        start = self.shiftStart.text()
+        end = self.shiftEnd.text()
+        efficency = self.shiftTotalMins.text()
         data = [
             self.shiftNameLineEdit.currentText(),
-            self.shiftStart.time(),
-            self.shiftEnd.time()
+            start,
+            end,
+            efficency
         ]
-        self.mainWindow.setWorkingShiftsPage(data)
+        self.mainWindow.setWorkingShiftsPage(data, isCalling)
+        self.mainWindow.workingShiftsPage.closeSignal.connect(lambda: self.refreshShifts(True))
 
     def showTimePaperDetails(self, selectedRows):
         numberSelectedRows = len(selectedRows['pieces'])
@@ -459,12 +624,16 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.timeForPieceLineEdit.setFocus()
             self.timeForPieceLineEdit.selectAll()
 
-    def refreshTimePapersForToday(self, workerId=None, showAll=False):
+    def refreshTimePapersForToday(self, workerId=None, showAll=False, currentDate=None):
         totalWorkingMins = 0
         totalProdPieces = 0
         self.existingTimePapers.clear()
         self.initialCheckBoxes.clear()
-        searchedDate = self.timePaperDateEdit.date().toString('yyyy-MM-dd')
+        print(currentDate)
+        if not currentDate:
+            searchedDate = self.timePaperDateEdit.date().toString('yyyy-MM-dd')
+        else:
+            searchedDate = currentDate.date().toString('yyyy-MM-dd')
         # formatedDate = datetime.strptime(searchedDate, '%Y-%m-%d').date()
         data = WoS.getTimePapersForDate(searchedDate, workerId, showAll)
         self.tableTimePapersModel.setRowCount(0)
@@ -521,19 +690,20 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 shift = WoS.getExistingTimePaperShift(timePaperId)
                 if shift:
                     self.shiftNameLineEdit.setCurrentText(shift[0])
-                    self.shiftStart.setTime(QTime.fromString(shift[1], "hh:mm"))
-                    self.shiftEnd.setTime(QTime.fromString(shift[2], "hh:mm"))
+                    self.shiftStart.setText(Utils.convertStringToTime(shift[1])[0])
+                    self.shiftEnd.setText(Utils.convertStringToTime(shift[2])[0])
+                    self.shiftTotalMins.setText(str(int(shift[3])))
                     self.addNewShiftBtn.setEnabled(False)
-                    self.refreshShiftsBtn.setEnabled(False)
+                    self.addShiftsBtn.setEnabled(False)
                     self.shiftNameLineEdit.setEnabled(False)
                     self.shiftStart.setEnabled(False)
                     self.shiftEnd.setEnabled(False)
             else:
                 self.shiftNameLineEdit.setCurrentIndex(0)
-                self.shiftStart.setTime(QTime(8, 0))
-                self.shiftEnd.setTime(QTime(17, 0))
+                self.shiftStart.setText('08:00')
+                self.shiftEnd.setText('17:00')
                 self.addNewShiftBtn.setEnabled(True)
-                self.refreshShiftsBtn.setEnabled(True)
+                self.addShiftsBtn.setEnabled(True)
                 self.shiftNameLineEdit.setEnabled(True)
                 self.shiftStart.setEnabled(True)
                 self.shiftEnd.setEnabled(True)
@@ -620,36 +790,58 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.clearOperationInfo()
 
     def updateDuration(self):
-        if self.sender() == self.shiftStart or self.sender() == self.shiftEnd:
-            duration = Utils.calculateMinutes(self.shiftStart, self.shiftEnd)
-            if duration < 0:
-                self.shiftStart.setTime(self.shiftEnd.time().addSecs(-1800))
-                duration = Utils.calculateMinutes(self.shiftStart, self.shiftEnd)
-            self.shiftTotalMins.setText(str(duration))
-            self.setTotalMinsColor()
+        timeText = self.sender().text()
+        # if len(timeText) == 1:
+        #     if int(timeText[0]) > 2:
+        #         # timeText[2] = '6'
+        #         self.sender().setText('2')
 
-        if self.sender() == self.hourlyStart or self.sender() == self.hourlyEnd:
-            duration = Utils.calculateMinutes(self.hourlyStart, self.hourlyEnd)
-            if duration < 0:
-                self.hourlyStart.setTime(self.hourlyEnd.time().addSecs(-1800))
-                duration = Utils.calculateMinutes(self.hourlyStart, self.hourlyEnd)
-            self.hourlyTotalMins.setText(str(duration))
+        if len(timeText) == 2:
+            if int(timeText[0]) >= 2:
+                if int(timeText[1]) > 3:
+                    self.sender().setText('2' + '3')
+                else:
+                    self.sender().setText('2' + timeText[1])
 
-        if self.sender() == self.overtimeStart or self.sender() == self.overtimeEnd:
-            duration = Utils.calculateMinutes(self.overtimeStart, self.overtimeEnd)
-            if duration < 0:
-                self.overtimeStart.setTime(self.overtimeEnd.time().addSecs(-1800))
-                duration = Utils.calculateMinutes(self.overtimeStart, self.overtimeEnd)
-            self.overtimeTotalMins.setText(str(duration))
-            self.setTotalMinsColor()
+        if len(timeText) == 3:
+            if int(timeText[2]) > 5:
+                # timeText[2] = '6'
+                self.sender().setText(timeText[0] + timeText[1] + '5')
+
+        self.setTotalMinsColor()
+
+        # if self.sender() == self.shiftStart or self.sender() == self.shiftEnd:
+        #     duration = Utils.calculateMinutes(self.shiftStart, self.shiftEnd)
+        #     if duration < 0:
+        #         self.shiftStart.setTime(self.shiftEnd.time().addSecs(-1800))
+        #         duration = Utils.calculateMinutes(self.shiftStart, self.shiftEnd)
+        #     self.shiftTotalMins.setText(str(duration))
+        #     self.setTotalMinsColor()
+        #
+        # if self.sender() == self.hourlyStart or self.sender() == self.hourlyEnd:
+        #     duration = Utils.calculateMinutes(self.hourlyStart, self.hourlyEnd)
+        #     if duration < 0:
+        #         self.hourlyStart.setTime(self.hourlyEnd.time().addSecs(-1800))
+        #         duration = Utils.calculateMinutes(self.hourlyStart, self.hourlyEnd)
+        #     self.hourlyTotalMins.setText(str(duration))
+        #
+        # if self.sender() == self.overtimeStart or self.sender() == self.overtimeEnd:
+        #     duration = Utils.calculateMinutes(self.overtimeStart, self.overtimeEnd)
+        #     if duration < 0:
+        #         self.overtimeStart.setTime(self.overtimeEnd.time().addSecs(-1800))
+        #         duration = Utils.calculateMinutes(self.overtimeStart, self.overtimeEnd)
+        #     self.overtimeTotalMins.setText(str(duration))
+        #     self.setTotalMinsColor()
 
     def checkIfTimeIsValid(self):
+        start = Utils.convertStringToTime(self.shiftStart.text())
+        end = Utils.convertStringToTime(self.shiftEnd.text())
+        shiftStart = start[1]
+        shiftEnd = end[1]
         if self.isHourlyWorking.isChecked():
             # Get all times as QTime objects
-            shiftStart = self.shiftStart.time()
-            shiftEnd = self.shiftEnd.time()
-            hourlyStart = self.hourlyStart.time()
-            hourlyEnd = self.hourlyEnd.time()
+            hourlyStart = Utils.convertStringToTime(self.hourlyStart.text())[1]
+            hourlyEnd = Utils.convertStringToTime(self.hourlyEnd.text())[1]
 
             # Check if shift crosses midnight
             isOvernightShift = shiftEnd <= shiftStart
@@ -664,15 +856,15 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
                 # Check if hourly shift is contained within the working shift
                 if not (isStartValid and isEndValid):
-                    self.hourlyStart.setTime(shiftStart)
-                    self.hourlyEnd.setTime(shiftEnd)
+                    self.hourlyStart.setText(start[0])
+                    self.hourlyEnd.setText(end[0])
                     MM.showOnWidget(self, 'Почасовото време не е валидно за работна смяна!', 'warning')
                     return False
 
                 # Check if hourly shift itself is valid (doesn't cross midnight in wrong direction)
                 if hourlyEnd <= hourlyStart and not (hourlyStart >= shiftStart and hourlyEnd <= shiftEnd):
-                    self.hourlyStart.setTime(shiftStart)
-                    self.hourlyEnd.setTime(shiftEnd)
+                    self.hourlyStart.setText(start[0])
+                    self.hourlyEnd.setText(end[0])
                     MM.showOnWidget(self, 'Почасовото време не е валидно - начало и край са разменени!', 'warning')
                     return False
 
@@ -681,15 +873,15 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 # For regular shifts (e.g., 8:00-17:00)
                 # Both hourly start and end must be within shift times
                 if not (shiftStart <= hourlyStart <= shiftEnd and shiftStart <= hourlyEnd <= shiftEnd):
-                    self.hourlyStart.setTime(shiftStart)
-                    self.hourlyEnd.setTime(shiftEnd)
+                    self.hourlyStart.setText(start[0])
+                    self.hourlyEnd.setText(end[0])
                     MM.showOnWidget(self, 'Почасовото време не е валидно за работна смяна!', 'warning')
                     return False
 
                 # Check if hourly start is before hourly end
                 if hourlyEnd < hourlyStart:
-                    self.hourlyStart.setTime(shiftStart)
-                    self.hourlyEnd.setTime(shiftEnd)
+                    self.hourlyStart.setText(start[0])
+                    self.hourlyEnd.setText(end[0])
                     MM.showOnWidget(self, 'Почасовото време не е валидно - начало и край са разменени!', 'warning')
                     return False
 
@@ -697,10 +889,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
         elif self.isOvertimeWorking.isChecked():
             # Get all times as QTime objects
-            shiftStart = self.shiftStart.time()
-            shiftEnd = self.shiftEnd.time()
-            overtimeStart = self.overtimeStart.time()
-            overtimeEnd = self.overtimeEnd.time()
+            overtimeStart = Utils.convertStringToTime(self.overtimeStart.text())[1]
+            overtimeEnd = Utils.convertStringToTime(self.overtimeEnd.text())[1]
 
             # Check if shift crosses midnight
             isOvernightShift = overtimeEnd <= overtimeStart
@@ -712,9 +902,9 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 # Create a helper function to check if a time is within the shift
                 def is_time_in_shift(time_to_check):
                     if shiftEnd <= shiftStart:  # If shift also crosses midnight
-                        return time_to_check >= shiftStart or time_to_check <= shiftEnd
+                        return time_to_check > shiftStart or time_to_check < shiftEnd
                     else:  # Regular shift
-                        return shiftStart <= time_to_check <= shiftEnd
+                        return shiftStart < time_to_check < shiftEnd
 
                 # Check if overtime start or end overlaps with shift
                 if is_time_in_shift(overtimeStart) or is_time_in_shift(overtimeEnd):
@@ -725,13 +915,17 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             else:
                 # For regular shifts, overtime must be outside the shift hours
                 # Either before shift start or after shift end
-                if (shiftStart <= overtimeStart <= shiftEnd) or (shiftStart <= overtimeEnd <= shiftEnd):
+                if (shiftStart < overtimeStart < shiftEnd) or (shiftStart < overtimeEnd < shiftEnd):
                     MM.showOnWidget(self, 'Извънредно време не е валидно за работна смяна!', 'warning')
                     return False
 
             # Check if overtime shift itself is valid
             if overtimeEnd < overtimeStart and not isOvernightShift:
                 MM.showOnWidget(self, 'Извънредно време не е валидно - начало и край са разменени!', 'warning')
+                return False
+
+            if shiftStart == overtimeStart and shiftEnd == overtimeEnd:
+                MM.showOnWidget(self, 'Извънредно време не е валидно за работна смяна!', 'warning')
                 return False
 
             return True
@@ -755,30 +949,65 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         shiftName = self.shiftNameLineEdit.currentText()
         if shiftName in self.workingShifts:
             shift = self.workingShifts[shiftName]
-            self.shiftStart.setTime(QTime.fromString(shift[1], 'hh:mm'))
-            self.shiftEnd.setTime(QTime.fromString(shift[2], 'hh:mm'))
+            self.shiftStart.setText(Utils.convertStringToTime(shift[1])[0])
+            self.shiftEnd.setText(Utils.convertStringToTime(shift[2])[0])
+            self.shiftTotalMins.setText(str(int(shift[3])))
 
-    def refreshShifts(self):
+    def addNewShift(self):
+        shiftName = self.shiftNameLineEdit.currentText()
+        if shiftName == '':
+            MM.showOnWidget(self, 'Моля въведете име за нова смяна!', 'warning')
+            return
+        elif shiftName in self.workingShifts:
+            MM.showOnWidget(self, 'Тази смяна вече съществува!', 'warning')
+            return
+        shiftStart = self.shiftStart.text()
+        shiftEnd = self.shiftEnd.text()
+        breakTime = self.checkBreakTime()
+        shiftTotalMins = int(self.shiftTotalMins.text())
+        newShift = [shiftName, shiftStart, shiftEnd, breakTime, shiftTotalMins, self.user]
+        if WoS.addWorkingShift(newShift):
+            self.refreshShifts()
+            MM.showOnWidget(self, f'Нова смяна {shiftName} добавена успешно!', 'info')
+        else:
+            MM.showOnWidget(self, 'Неуспешно добавяне на нова смяна!', 'error')
+
+    def refreshShifts(self, isCalling=False):
+        shiftName = self.shiftNameLineEdit.currentText()
+        # print(shiftName)
         self.workingShifts = WoS.getWorkingShifts()
         self.shiftNameLineEdit.clear()
         for shift in self.workingShifts.keys():
             self.shiftNameLineEdit.addItem(shift)
         Utils.setupCompleter(self.workingShifts.keys(), self.shiftNameLineEdit)
-        self.shiftNameLineEdit.setCurrentIndex(0)
+        # shiftId = self.workingShifts[shiftName][0]
+        # print(shiftId)
+        if not isCalling:
+            self.shiftNameLineEdit.setCurrentText(shiftName)
+            self.clientModelsLineEdit.setFocus()
+        else:
+            self.shiftNameLineEdit.setCurrentIndex(0)
+            MM.showOnWidget(self, 'Промените за смени са успешни!', 'info')
+
+    def checkBreakTime(self):
+        start = Utils.convertStringToTime(self.shiftStart.text())[1]
+        end = Utils.convertStringToTime(self.shiftEnd.text())[1]
+        return Utils.calculateMinutes(start, end, totalMins=int(self.shiftTotalMins.text()))
 
     def toggleHourlyWorking(self):
         if self.isHourlyWorking.isChecked():
             self.hourlyStartWidget.setEnabled(True)
             self.hourlyEndWidget.setEnabled(True)
-            self.hourlyStart.setTime(self.shiftStart.time())
-            self.hourlyEnd.setTime(self.shiftEnd.time())
+            self.hourlyStart.setText(self.shiftStart.text())
+            self.hourlyEnd.setText(self.shiftEnd.text())
             if self.isOvertimeWorking.isChecked():
                 self.isOvertimeWorking.setChecked(False)
         else:
             self.hourlyStartWidget.setEnabled(False)
             self.hourlyEndWidget.setEnabled(False)
-            self.hourlyStart.setTime(QTime(0, 0))
-            self.hourlyEnd.setTime(QTime(0, 0))
+            self.hourlyStart.setText('00:00')
+            self.hourlyEnd.setText('00:00')
+            self.hourlyTotalMins.setText('0')
 
     def toggleOvertimeWorking(self):
         if self.isOvertimeWorking.isChecked():
@@ -789,8 +1018,9 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         else:
             self.overtimeStartWidget.setEnabled(False)
             self.overtimeEndWidget.setEnabled(False)
-            self.overtimeStart.setTime(QTime(0, 0))
-            self.overtimeEnd.setTime(QTime(0, 0))
+            self.overtimeStart.setText('00:00')
+            self.overtimeEnd.setText('00:00')
+            self.overtimeTotalMins.setText('0')
 
     def setupWorkerAndModelsCompleter(self):
         for worker in self.workers:
@@ -809,15 +1039,24 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             return
 
     def updateModelInfo(self):
+        # print(self.currentModelText)
         if self.clientModelsLineEdit.text() != '':
             completer = self.clientModelsLineEdit.completer()
             self.clientModelsLineEdit.setText(Utils.setReturnBtnForCompleter(completer))
         selectedText = self.clientModelsLineEdit.text()
+        # if self.currentModelText != selectedText:
+        self.setModelInfo(selectedText)
+        # else:
+        #     self.modelOperationLineEdit.setFocus()
 
+    def setModelInfo(self, selectedText):
+        # self.currentModelText = selectedText
         if selectedText in self.clientModels.keys():
             modelId = self.clientModels[selectedText]
+            # self.clientModelsLineEdit.blockSignals(True)
             self.setOperationsGroups(modelId)
-            if self.operationsGroupComboBox.count() > 1:
+            # self.clientModelsLineEdit.blockSignals(False)
+            if self.operationsGroupComboBox.count() > 0:
                 self.operationsGroupsHolder.setEnabled(True)
             self.modelOperations.clear()
             modelData = MoS.getModelOperations(modelId)
@@ -831,22 +1070,25 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             Utils.setupCompleter(self.modelOperations.keys(), self.modelOperationLineEdit)
             self.modelOperationLineEdit.setReadOnly(False)
             self.modelOperationLineEdit.setFocus()
+            self.effectOperTimesBtn.setVisible(True)
         else:
             self.clientModelsLineEdit.clear()
-            self.clientModelsLineEdit.setFocus()
+            # self.clientModelsLineEdit.setFocus()
+            self.effectOperTimesBtn.setVisible(False)
             self.operationsGroupsHolder.setEnabled(False)
             self.modelTotalPiecesLineEdit.clear()
 
     def updateModelOperation(self):
+        # self.modelOperationLineEdit.blockSignals(True)
         if self.modelOperationLineEdit.text() != '':
             completer = self.modelOperationLineEdit.completer()
             self.modelOperationLineEdit.setText(Utils.setReturnBtnForCompleter(completer))
         selectedText = self.modelOperationLineEdit.text()
 
         if selectedText not in self.modelOperations.keys() or selectedText == '':
-            self.modelOperationLineEdit.setFocus()
-            self.modelOperationLineEdit.selectAll()
-            MM.showOnWidget(self, "Не е избрана операция", 'error')
+            self.modelOperationLineEdit.clear()
+            # self.modelOperationLineEdit.selectAll()
+            # MM.showOnWidget(self, "Не е избрана операция", 'error')
             self.modelPiecesLineEdit.setReadOnly(True)
             self.modelPiecesLineEdit.clear()
             return
@@ -864,6 +1106,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.timeForPieceLineEdit.setText(str(self.modelOperations[selectedText][0]))
             self.modelPiecesLineEdit.setReadOnly(False)
             self.modelPiecesLineEdit.setFocus()
+        # self.modelOperationLineEdit.blockSignals(False)
 
     def updateModelPieces(self):
         if self.sender() == self.modelPiecesLineEdit:
@@ -877,7 +1120,6 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.piecesTimeLineEdit.setText(str(round(pieces * timeForPiece, 2)))
 
     def addTimePaperOperation(self, copy=False, copyData=None):
-        overMinsForBreak = 300
 
         if self.clientModelsLineEdit.text() == '' or self.modelOperationLineEdit.text() == '':
             if not self.isHourlyWorking.isChecked() and not self.isOvertimeWorking.isChecked() and not copy:
@@ -969,28 +1211,22 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 orderId = self.clientModels[self.clientModelsLineEdit.text()]
                 pieces = int(self.modelPiecesLineEdit.text())
 
-            overtime = [self.overtimeStart.time().toString("hh:mm"),
-                        self.overtimeEnd.time().toString("hh:mm"),
+            shiftStart = Utils.convertStringToTime(self.shiftStart.text())
+            shiftEnd = Utils.convertStringToTime(self.shiftEnd.text())
+            overtimeStart = Utils.convertStringToTime(self.overtimeStart.text())
+            overtimeEnd = Utils.convertStringToTime(self.overtimeEnd.text())
+            hourlyStart = Utils.convertStringToTime(self.hourlyStart.text())
+            hourlyEnd = Utils.convertStringToTime(self.hourlyEnd.text())
+
+            overtime = [overtimeStart[0],
+                        overtimeEnd[0],
                         float(self.overtimeTotalMins.text())] if self.isOvertimeWorking.isChecked() else None
 
-            hourlyPay = [self.hourlyStart.time().toString("hh:mm"),
-                         self.hourlyEnd.time().toString("hh:mm"),
+            hourlyPay = [hourlyStart[0],
+                         hourlyEnd[0],
                          float(self.hourlyTotalMins.text())] if self.isHourlyWorking.isChecked() else None
 
-            nightMins = 0
-            if overtime:
-                nightMins += Utils.checkNightShiftMins(self.overtimeStart.time(), self.overtimeEnd.time())
-            elif hourlyPay:
-                nightMins += Utils.checkNightShiftMins(self.hourlyStart.time(), self.hourlyEnd.time())
-            else:
-                nightMins += Utils.checkNightShiftMins(self.shiftStart.time(), self.shiftEnd.time())
-
-            currentShiftNightMins = Utils.checkNightShiftMins(self.shiftStart.time(), self.shiftEnd.time())
-            if currentShiftNightMins > overMinsForBreak:
-                currentShiftNightMins -= 60
-
-            if nightMins > overMinsForBreak:
-                nightMins -= 60
+            currentShiftNightMins = Utils.checkNightShiftMins(shiftStart[1], shiftEnd[1])
 
             if int(self.workerNumberLineEdit.text()) not in self.existingTimePapers.keys():
                 dateStr = self.timePaperDateEdit.date().toString('yyyy-MM-dd')
@@ -1007,8 +1243,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                     'ModelOperationId': modelOperationId,
                     'Pieces': pieces if modelOperationId else 0,
                     'WorkingTimeMinutes': modelOperationTime,
-                    'nightMins': nightMins,
-                    'currentShiftNightMins': currentShiftNightMins,
+                    'nightMins': currentShiftNightMins
                 }
                 timePaper = WoS.addNewTimePaperAndOperation(timePaperData)
                 if operationsGroupForAdd or copy:
@@ -1023,7 +1258,6 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                     'IsOvertime': overtime,
                     'WorkingTimeMinutes': modelOperationTime,
                     'user': self.user,
-                    'nightMins': nightMins,
                     'currentShiftNightMins': currentShiftNightMins,
                 }
                 dataToAdd.append(timePaperData)
@@ -1048,6 +1282,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             return
 
     def updateWorkerInfo(self):
+        # self.workerNameLineEdit.blockSignals(True)
         self.clearOperationInfo(False)
         if self.workerNameLineEdit.text() != '':
             completer = self.workerNameLineEdit.completer()
@@ -1078,11 +1313,11 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
             if workerPosition:
                 self.workerPositionLineEdit.setText(workerPosition)
-
             else:
                 self.workerPositionLineEdit.setText('Не е указано')
+
             self.clientModelsLineEdit.setFocus()
-            self.clientModelsLineEdit.selectAll()
+            # self.clientModelsLineEdit.selectAll()
             self.showAllCheckBox.blockSignals(True)
             self.showAllCheckBox.setCheckState(Qt.CheckState.Unchecked)
             self.showAllCheckBox.blockSignals(False)
@@ -1091,6 +1326,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.workerNameLineEdit.clear()
             self.workerNameLineEdit.setFocus()
             self.clearWorker()
+        # self.workerNameLineEdit.blockSignals(False)
+        self.effectOperTimesBtn.setVisible(False)
 
     def clearWorker(self):
         self.workerShiftsHolder.setEnabled(False)
@@ -1103,21 +1340,22 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
     def clearWorkerInfo(self):
         self.shiftNameLineEdit.setCurrentIndex(0)
-        self.shiftStart.setTime(QTime(8, 0))
-        self.shiftEnd.setTime(QTime(17, 0))
+        self.shiftStart.setText('08:00')
+        self.shiftEnd.setText('17:00')
         self.isOvertimeWorking.setCheckState(Qt.CheckState.Unchecked)
         self.isHourlyWorking.setCheckState(Qt.CheckState.Unchecked)
-        self.overtimeStart.setTime(QTime(0, 0))
-        self.overtimeEnd.setTime(QTime(0, 0))
-        self.hourlyStart.setTime(QTime(0, 0))
-        self.hourlyEnd.setTime(QTime(0, 0))
+        self.overtimeStart.setText('00:00')
+        self.overtimeEnd.setText('00:00')
+        self.hourlyStart.setText('00:00')
+        self.hourlyEnd.setText('00:00')
 
-    def clearOperationInfo(self, model=True):
-        if model:
-            self.clientModelsLineEdit.clear()
-        else:
-            self.clientModelsLineEdit.setFocus()
-            self.clientModelsLineEdit.selectAll()
+    def clearOperationInfo(self, model=True, clear=False):
+        if not clear:
+            if model:
+                self.clientModelsLineEdit.clear()
+            else:
+                self.clientModelsLineEdit.setFocus()
+                self.clientModelsLineEdit.selectAll()
 
         if self.isHourlyWorking.isChecked():
             self.isHourlyWorking.setChecked(False)

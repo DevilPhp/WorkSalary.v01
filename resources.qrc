@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons">
+    <file>app/assets/icons/Trash-Bin-Trash--Streamline-Solar-Broken_#192626.svg</file>
     <file>app/assets/icons/Stop--Streamline-Solar-Broken_#070808.svg</file>
     <file>app/assets/icons/Stop--Streamline-Solar-Broken_#192626.svg</file>
     <file>app/assets/icons/Stop--Streamline-Solar-Broken.svg</file>

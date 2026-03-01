@@ -294,10 +294,10 @@ class WorkerServices:
 
     @staticmethod
     @handle_api_connection
-    def updateTimePaperPieces(operId, newPieces, newTime, nightShiftMins):
+    def updateTimePaperPieces(operId, newPieces, newTime):
         response = requests.post(f'{API_SERVER}/worker/update_time_paper_pieces',
                                  json={'operId': operId, 'newPieces': newPieces,
-                                       'newTime': newTime, 'nightShiftMins': nightShiftMins}).json()
+                                       'newTime': newTime}).json()
         if response['status'] =='success':
             logger.info(f"Time paper operation updated: {operId} New pieces: {newPieces}, New time: {newTime}")
             return True

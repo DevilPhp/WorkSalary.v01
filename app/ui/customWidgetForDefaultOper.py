@@ -10,6 +10,7 @@ from app.ui.customYesNoMessage import CustomYesNowDialog
 from app.ui.customAddOperationDialog import CustomAddOperationDialog
 from app.services.operationServices import OperationsServices as OpS
 from app.services.modelServices import ModelService as Ms
+from app.models.customLineEditWidget import CustomLineEdit
 from PySide6.QtWidgets import QCheckBox, QMenu, QDialog
 
 
@@ -30,8 +31,8 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
         # print(self.geometry())
         self.setCheckBox()
         self.selectAllCheckbox.stateChanged.connect(lambda: self.selectAllOperations())
-        self.modelTypesDict = {}
-        self.modelTypes = Ms.getAllModelTypes()
+        self.modelTypesDict = Ms.getAllModelTypes()
+        # self.modelTypes = Ms.getAllModelTypes()
         self.setComboBox()
         self.loadOperationsForModelType()
         self.saveBtn.clicked.connect(self.saveOperationsForModelType)
@@ -39,6 +40,7 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
         self.addNeModelType.clicked.connect(self.addNewModelTypeDialog)
         self.delDefModelTypeBtn.clicked.connect(self.deleteDefaultModelType)
 
+        self.closeBtn.clicked.connect(self.close)
         self.logoutBtn.clicked.connect(self.logout)
 
     def deleteDefaultModelType(self):
@@ -49,7 +51,7 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
         dialog.setMessage(name, message, 'deleting')
         if dialog.exec() == QDialog.Accepted:
             if Ms.deleteDefaultModelType(defaultModelType):
-                self.modelTypes = Ms.getAllModelTypes()
+                self.modelTypesDict = Ms.getAllModelTypes()
                 self.setComboBox()
                 MM.showOnWidget(self, f'Успешно изтриване на вид модели: {defaultModelType}', 'success')
             else:
@@ -60,7 +62,7 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
         if ok and newText:
             newModelType = Ms.addNewDefaultModelType(newText)
             if newModelType:
-                self.modelTypes = Ms.getAllModelTypes()
+                self.modelTypesDict = Ms.getAllModelTypes()
                 self.setComboBox()
                 MM.showOnWidget(self, f'Успешно добавяне на вид модели:\n {newText}', 'success')
             else:
@@ -121,10 +123,9 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
             self.defaultModelTypeComboBox.currentIndex() + 1
         )
         if defaultModelOpearions:
-            for operation in defaultModelOpearions:
-                self.comboBoxItems[operation.ОперацияNo][0].setChecked(True)
-                self.comboBoxItems[operation.ОперацияNo][1].setText(str(operation.defaultTime)
-                                                                    if operation.defaultTime else '')
+            for operation, time in defaultModelOpearions.items():
+                self.comboBoxItems[int(operation)][0].setChecked(True)
+                self.comboBoxItems[int(operation)][1].setText(str(time) if time else '')
 
     def resetAllOperations(self):
         for checkbox in self.comboBoxItems.values():
@@ -133,9 +134,9 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
 
     def setComboBox(self):
         self.defaultModelTypeComboBox.clear()
-        for modelType in self.modelTypes:
-            self.modelTypesDict[modelType.OblekloVid] = modelType.OblekloName
-            name = f'{modelType.OblekloVid}:  {modelType.OblekloName}'
+        for modelType, typeName in self.modelTypesDict.items():
+            # self.modelTypesDict[modelType.OblekloVid] = modelType.OblekloName
+            name = f'{modelType}:  {typeName}'
             self.defaultModelTypeComboBox.addItem(name)
         self.defaultModelTypeComboBox.setMinimumWidth(self.defaultModelTypeComboBox.minimumSizeHint().width() + 75)
         self.defaultModelTypeComboBox.currentIndexChanged.connect(self.loadOperationsForModelType)
@@ -276,18 +277,27 @@ class DefaultOperToModelTypeCustomWidget(QWidget, Ui_customWidgetForDefaultOper)
 class CustomCheckboxWidget(QWidget, Ui_customCheckBoxWidget):
     newOperName = Signal(str)
     deleteWidget = Signal(QWidget)
+    operTime = Signal(float)
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
+        self.lineEdit = CustomLineEdit(self)
+        self.lineEdit.setMinimumWidth(40)
+        self.lineEdit.setMaximumWidth(40)
+        self.lineEdit.setPlaceholderText('0')
+        self.labelHolder.layout().insertWidget(0, self.lineEdit)
+
         self.lineEdit.setEnabled(False)
         self.checkBox.stateChanged.connect(self.toggleLabel)
-        validator = QDoubleValidator(0.1, float('inf'), 2)
+        validator = QDoubleValidator(0.001, float('inf'), 4)
         validator.setNotation(QDoubleValidator.StandardNotation)
         validator.setLocale(QLocale.English)
         self.lineEdit.setValidator(validator)
         self.lineEdit.textChanged.connect(self.updateLabel)
+        self.lineEdit.editingFinished.connect(self.emitTime)
         self.checkBox.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.checkBox.customContextMenuRequested.connect(self.showContextMenu)
+        self.currentOperTime.setVisible(False)
 
     def showContextMenu(self, pos):
         window = self.window()
@@ -318,6 +328,23 @@ class CustomCheckboxWidget(QWidget, Ui_customCheckBoxWidget):
             self.checkBox.setText(newText)
         elif ok and self.window().objectName() == 'customWidgetForDefaultOper':
             self.newOperName.emit(newText)
+
+    def emitTime(self):
+        # print(self.currentOperTime)
+        try:
+            newOperTime = float(self.lineEdit.text())
+            if newOperTime < 0.01:
+                newOperTime = 0.01
+            self.lineEdit.setText(str(newOperTime))
+        except ValueError:
+            self.lineEdit.setText(self.currentOperTime.text())
+
+        if (self.window().objectName() == 'customWidgetForModelOper' and
+                self.currentOperTime.text() != self.lineEdit.text()):
+            emittedTime = float(self.lineEdit.text())
+            self.operTime.emit(emittedTime)
+
+
 
     def updateLabel(self):
         text = self.lineEdit.text()

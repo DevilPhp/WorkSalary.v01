@@ -205,10 +205,10 @@ QComboBox::item{
           </widget>
          </item>
          <item alignment="Qt::AlignRight">
-          <widget class="QWidget" name="widget_3" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <widget class="QWidget" name="widget_6" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_6">
             <property name="spacing">
-             <number>3</number>
+             <number>5</number>
             </property>
             <property name="leftMargin">
              <number>0</number>
@@ -217,53 +217,117 @@ QComboBox::item{
              <number>0</number>
             </property>
             <property name="rightMargin">
-             <number>5</number>
+             <number>0</number>
             </property>
             <property name="bottomMargin">
              <number>0</number>
             </property>
             <item>
-             <widget class="QPushButton" name="logoutBtn">
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset resource="../../../resources.qrc">
-                <normaloff>:/icons/app/assets/icons/Log-Out--Streamline-Feather.svg</normaloff>:/icons/app/assets/icons/Log-Out--Streamline-Feather.svg</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>18</width>
-                <height>18</height>
-               </size>
-              </property>
+             <widget class="QWidget" name="widget_7" native="true">
+              <layout class="QHBoxLayout" name="horizontalLayout_5">
+               <property name="spacing">
+                <number>0</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QPushButton" name="closeBtn">
+                 <property name="styleSheet">
+                  <string notr="true">* {
+	padding: 3px;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Зтвори</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../../../resources.qrc">
+                   <normaloff>:/icons/app/assets/icons/Close-Square--Streamline-Solar-Broken.svg</normaloff>:/icons/app/assets/icons/Close-Square--Streamline-Solar-Broken.svg</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>20</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="userIcon">
-              <property name="focusPolicy">
-               <enum>Qt::NoFocus</enum>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset resource="../../../resources.qrc">
-                <normaloff>:/icons/app/assets/icons/User--Streamline-Feather.svg</normaloff>:/icons/app/assets/icons/User--Streamline-Feather.svg</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>18</width>
-                <height>18</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="usernameLabel">
-              <property name="text">
-               <string>admin</string>
-              </property>
+             <widget class="QWidget" name="widget_3" native="true">
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <property name="spacing">
+                <number>3</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>5</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QPushButton" name="logoutBtn">
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../../../resources.qrc">
+                   <normaloff>:/icons/app/assets/icons/Log-Out--Streamline-Feather.svg</normaloff>:/icons/app/assets/icons/Log-Out--Streamline-Feather.svg</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>18</width>
+                   <height>18</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="userIcon">
+                 <property name="focusPolicy">
+                  <enum>Qt::NoFocus</enum>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../../../resources.qrc">
+                   <normaloff>:/icons/app/assets/icons/User--Streamline-Feather.svg</normaloff>:/icons/app/assets/icons/User--Streamline-Feather.svg</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>18</width>
+                   <height>18</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="usernameLabel">
+                 <property name="text">
+                  <string>admin</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </widget>
             </item>
            </layout>

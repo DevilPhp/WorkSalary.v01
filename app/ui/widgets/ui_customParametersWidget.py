@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customParametersWidgetPcavAD.ui'
+## Form generated from reading UI file 'customParametersWidgetSdtcdC.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -143,21 +143,39 @@ class Ui_customParametersWidget(object):
 
         self.horizontalLayout.addWidget(self.pageTitle, 0, Qt.AlignHCenter)
 
-        self.userHolder = QWidget(self.headerHolder)
+        self.widget_3 = QWidget(self.headerHolder)
+        self.widget_3.setObjectName(u"widget_3")
+        self.horizontalLayout_8 = QHBoxLayout(self.widget_3)
+        self.horizontalLayout_8.setSpacing(5)
+        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
+        self.horizontalLayout_8.setContentsMargins(0, 0, 0, 0)
+        self.widget_5 = QWidget(self.widget_3)
+        self.widget_5.setObjectName(u"widget_5")
+        self.horizontalLayout_7 = QHBoxLayout(self.widget_5)
+        self.horizontalLayout_7.setSpacing(0)
+        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
+        self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
+        self.closeBtn = QPushButton(self.widget_5)
+        self.closeBtn.setObjectName(u"closeBtn")
+        self.closeBtn.setStyleSheet(u"* {\n"
+"	padding: 3px;\n"
+"}")
+        icon = QIcon()
+        icon.addFile(u":/icons/app/assets/icons/Close-Square--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.closeBtn.setIcon(icon)
+        self.closeBtn.setIconSize(QSize(20, 20))
+
+        self.horizontalLayout_7.addWidget(self.closeBtn)
+
+
+        self.horizontalLayout_8.addWidget(self.widget_5)
+
+        self.userHolder = QWidget(self.widget_3)
         self.userHolder.setObjectName(u"userHolder")
         self.horizontalLayout_3 = QHBoxLayout(self.userHolder)
         self.horizontalLayout_3.setSpacing(3)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(0, 0, 5, 0)
-        self.logoutBtn = QPushButton(self.userHolder)
-        self.logoutBtn.setObjectName(u"logoutBtn")
-        icon = QIcon()
-        icon.addFile(u":/icons/app/assets/icons/Log-Out--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.logoutBtn.setIcon(icon)
-        self.logoutBtn.setIconSize(QSize(18, 18))
-
-        self.horizontalLayout_3.addWidget(self.logoutBtn)
-
         self.userIcon = QPushButton(self.userHolder)
         self.userIcon.setObjectName(u"userIcon")
         self.userIcon.setFocusPolicy(Qt.NoFocus)
@@ -173,8 +191,20 @@ class Ui_customParametersWidget(object):
 
         self.horizontalLayout_3.addWidget(self.usernameLabel)
 
+        self.logoutBtn = QPushButton(self.userHolder)
+        self.logoutBtn.setObjectName(u"logoutBtn")
+        icon2 = QIcon()
+        icon2.addFile(u":/icons/app/assets/icons/Log-Out--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.logoutBtn.setIcon(icon2)
+        self.logoutBtn.setIconSize(QSize(18, 18))
 
-        self.horizontalLayout.addWidget(self.userHolder, 0, Qt.AlignRight)
+        self.horizontalLayout_3.addWidget(self.logoutBtn)
+
+
+        self.horizontalLayout_8.addWidget(self.userHolder)
+
+
+        self.horizontalLayout.addWidget(self.widget_3, 0, Qt.AlignRight)
 
 
         self.verticalLayout_4.addWidget(self.headerHolder)
@@ -261,7 +291,7 @@ class Ui_customParametersWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 788, 435))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 788, 429))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -343,9 +373,10 @@ class Ui_customParametersWidget(object):
     def retranslateUi(self, customParametersWidget):
         customParametersWidget.setWindowTitle(QCoreApplication.translate("customParametersWidget", u"Form", None))
         self.pageTitle.setText(QCoreApplication.translate("customParametersWidget", u"\u041d\u041e\u041c\u0415\u041d\u041a\u041b\u0410\u0422\u0423\u0420\u0418", None))
-        self.logoutBtn.setText("")
+        self.closeBtn.setText(QCoreApplication.translate("customParametersWidget", u"\u0417\u0442\u0432\u043e\u0440\u0438", None))
         self.userIcon.setText("")
         self.usernameLabel.setText(QCoreApplication.translate("customParametersWidget", u"admin", None))
+        self.logoutBtn.setText("")
         self.clientsBtn.setText(QCoreApplication.translate("customParametersWidget", u"\u041a\u043b\u0438\u0435\u043d\u0442\u0438", None))
         self.cehoveBtn.setText(QCoreApplication.translate("customParametersWidget", u"\u0420\u0430\u0431\u043e\u0442\u043d\u0438 \u043c\u0435\u0441\u0442\u0430", None))
         self.machinesBtn.setText(QCoreApplication.translate("customParametersWidget", u"\u041c\u0430\u0448\u0438\u043d\u0438", None))

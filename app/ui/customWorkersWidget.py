@@ -60,6 +60,7 @@ class CustomWorkersWidget(QWidget, Ui_customWorkersEditWidget):
         self.expCheckBox.stateChanged.connect(self.toggleExp)
         self.allCheckBox.stateChanged.connect(self.toggleAll)
 
+        self.closeBtn.clicked.connect(self.close)
         self.logoutBtn.clicked.connect(self.logout)
 
     def showCustomMenu(self, position):

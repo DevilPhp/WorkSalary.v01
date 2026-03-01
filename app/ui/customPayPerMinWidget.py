@@ -54,6 +54,7 @@ class CustomPayPerMinWidget(QWidget, Ui_customPayPerMinWidget):
         self.payPerMinNightCheckBox.stateChanged.connect(self.showPayPerMinNight)
         self.addNewPayPerMinEntryBtn.clicked.connect(self.addNewPayPerMinEntry)
 
+        self.closeBtn.clicked.connect(self.close)
         self.logoutBtn.clicked.connect(self.logout)
 
     def refreshPayPerMinTable(self, data):
@@ -81,7 +82,7 @@ class CustomPayPerMinWidget(QWidget, Ui_customPayPerMinWidget):
                 idCell,
                 QStandardItem(str(payPerMin['valueLeva'])),
                 QStandardItem(str(round(payPerMin['valueEUR'], 4))),
-                QStandardItem(str(round(payPerMin['levaPerEuro'], 4))),
+                QStandardItem(str(round(payPerMin['levaPerEuro'], 5))),
                 activeCell,
                 QStandardItem(payPerMin['dateActive']),
                 QStandardItem(payPerMin['lastUpdated']),
@@ -104,7 +105,6 @@ class CustomPayPerMinWidget(QWidget, Ui_customPayPerMinWidget):
                 # Force the view to update this specific cell
                 modelIndex = self.payPerMinModel.index(self.checkedItemRow, 4)
                 self.payPerMinTableView.update(self.proxyModelPayPerMin.mapFromSource(modelIndex))
-
 
     def onCheckboxChanged(self, item):
         if item.column() == 4:
@@ -168,7 +168,6 @@ class CustomPayPerMinWidget(QWidget, Ui_customPayPerMinWidget):
 
         if action == deleteAction:
             self.deleteSelectedPayPerMin()
-
 
         elif action == editAction:
             self.editSelectedPayPerMin()
