@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customMessageWidgetXaZerz.ui'
+## Form generated from reading UI file 'customMessageWidgetGccJIo.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -23,7 +23,7 @@ class Ui_customMessageWidget(object):
     def setupUi(self, customMessageWidget):
         if not customMessageWidget.objectName():
             customMessageWidget.setObjectName(u"customMessageWidget")
-        customMessageWidget.resize(220, 200)
+        customMessageWidget.resize(220, 153)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)

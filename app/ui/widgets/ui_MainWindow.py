@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'MainWindowottzOJ.ui'
+## Form generated from reading UI file 'MainWindowoKwRMg.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -378,17 +378,10 @@ class Ui_MainWindow(object):
 
         self.mainMenuLayout.addWidget(self.label_7, 0, 3, 1, 1)
 
-        self.label_6 = QLabel(self.mainMenuWidget)
-        self.label_6.setObjectName(u"label_6")
-        self.label_6.setAlignment(Qt.AlignCenter)
+        self.paymentsPageBtn = QPushButton(self.mainMenuWidget)
+        self.paymentsPageBtn.setObjectName(u"paymentsPageBtn")
 
-        self.mainMenuLayout.addWidget(self.label_6, 0, 2, 1, 1)
-
-        self.label_3 = QLabel(self.mainMenuWidget)
-        self.label_3.setObjectName(u"label_3")
-        self.label_3.setAlignment(Qt.AlignCenter)
-
-        self.mainMenuLayout.addWidget(self.label_3, 0, 1, 1, 1)
+        self.mainMenuLayout.addWidget(self.paymentsPageBtn, 2, 1, 1, 1)
 
         self.label_2 = QLabel(self.mainMenuWidget)
         self.label_2.setObjectName(u"label_2")
@@ -402,28 +395,6 @@ class Ui_MainWindow(object):
 
         self.mainMenuLayout.addWidget(self.label_2, 0, 0, 1, 1)
 
-        self.payPerMinBtn = QPushButton(self.mainMenuWidget)
-        self.payPerMinBtn.setObjectName(u"payPerMinBtn")
-
-        self.mainMenuLayout.addWidget(self.payPerMinBtn, 1, 3, 1, 1)
-
-        self.setDefaultOperBtn = QPushButton(self.mainMenuWidget)
-        self.setDefaultOperBtn.setObjectName(u"setDefaultOperBtn")
-        self.setDefaultOperBtn.setFocusPolicy(Qt.NoFocus)
-
-        self.mainMenuLayout.addWidget(self.setDefaultOperBtn, 2, 2, 1, 1)
-
-        self.setModelsOperBtn = QPushButton(self.mainMenuWidget)
-        self.setModelsOperBtn.setObjectName(u"setModelsOperBtn")
-        self.setModelsOperBtn.setFocusPolicy(Qt.NoFocus)
-
-        self.mainMenuLayout.addWidget(self.setModelsOperBtn, 1, 2, 1, 1)
-
-        self.paymentsPageBtn = QPushButton(self.mainMenuWidget)
-        self.paymentsPageBtn.setObjectName(u"paymentsPageBtn")
-
-        self.mainMenuLayout.addWidget(self.paymentsPageBtn, 2, 1, 1, 1)
-
         self.referencesPageBtn = QPushButton(self.mainMenuWidget)
         self.referencesPageBtn.setObjectName(u"referencesPageBtn")
         sizePolicy.setHeightForWidth(self.referencesPageBtn.sizePolicy().hasHeightForWidth())
@@ -431,30 +402,64 @@ class Ui_MainWindow(object):
 
         self.mainMenuLayout.addWidget(self.referencesPageBtn, 2, 0, 1, 1)
 
-        self.timePapersBtn = QPushButton(self.mainMenuWidget)
-        self.timePapersBtn.setObjectName(u"timePapersBtn")
+        self.setDefaultOperBtn = QPushButton(self.mainMenuWidget)
+        self.setDefaultOperBtn.setObjectName(u"setDefaultOperBtn")
+        self.setDefaultOperBtn.setFocusPolicy(Qt.NoFocus)
 
-        self.mainMenuLayout.addWidget(self.timePapersBtn, 1, 0, 1, 1)
+        self.mainMenuLayout.addWidget(self.setDefaultOperBtn, 2, 2, 1, 1)
 
-        self.workersPageBtn = QPushButton(self.mainMenuWidget)
-        self.workersPageBtn.setObjectName(u"workersPageBtn")
+        self.label_3 = QLabel(self.mainMenuWidget)
+        self.label_3.setObjectName(u"label_3")
+        self.label_3.setAlignment(Qt.AlignCenter)
 
-        self.mainMenuLayout.addWidget(self.workersPageBtn, 1, 1, 1, 1)
+        self.mainMenuLayout.addWidget(self.label_3, 0, 1, 1, 1)
 
-        self.workingShiftsPageBtn = QPushButton(self.mainMenuWidget)
-        self.workingShiftsPageBtn.setObjectName(u"workingShiftsPageBtn")
+        self.parametersBtn = QPushButton(self.mainMenuWidget)
+        self.parametersBtn.setObjectName(u"parametersBtn")
 
-        self.mainMenuLayout.addWidget(self.workingShiftsPageBtn, 3, 1, 1, 1)
+        self.mainMenuLayout.addWidget(self.parametersBtn, 3, 3, 1, 1)
+
+        self.payPerMinBtn = QPushButton(self.mainMenuWidget)
+        self.payPerMinBtn.setObjectName(u"payPerMinBtn")
+
+        self.mainMenuLayout.addWidget(self.payPerMinBtn, 1, 3, 1, 1)
+
+        self.label_6 = QLabel(self.mainMenuWidget)
+        self.label_6.setObjectName(u"label_6")
+        self.label_6.setAlignment(Qt.AlignCenter)
+
+        self.mainMenuLayout.addWidget(self.label_6, 0, 2, 1, 1)
 
         self.holidaysPageBtn = QPushButton(self.mainMenuWidget)
         self.holidaysPageBtn.setObjectName(u"holidaysPageBtn")
 
         self.mainMenuLayout.addWidget(self.holidaysPageBtn, 2, 3, 1, 1)
 
-        self.parametersBtn = QPushButton(self.mainMenuWidget)
-        self.parametersBtn.setObjectName(u"parametersBtn")
+        self.workingShiftsPageBtn = QPushButton(self.mainMenuWidget)
+        self.workingShiftsPageBtn.setObjectName(u"workingShiftsPageBtn")
 
-        self.mainMenuLayout.addWidget(self.parametersBtn, 3, 3, 1, 1)
+        self.mainMenuLayout.addWidget(self.workingShiftsPageBtn, 3, 1, 1, 1)
+
+        self.workersPageBtn = QPushButton(self.mainMenuWidget)
+        self.workersPageBtn.setObjectName(u"workersPageBtn")
+
+        self.mainMenuLayout.addWidget(self.workersPageBtn, 1, 1, 1, 1)
+
+        self.setModelsOperBtn = QPushButton(self.mainMenuWidget)
+        self.setModelsOperBtn.setObjectName(u"setModelsOperBtn")
+        self.setModelsOperBtn.setFocusPolicy(Qt.NoFocus)
+
+        self.mainMenuLayout.addWidget(self.setModelsOperBtn, 1, 2, 1, 1)
+
+        self.timePapersBtn = QPushButton(self.mainMenuWidget)
+        self.timePapersBtn.setObjectName(u"timePapersBtn")
+
+        self.mainMenuLayout.addWidget(self.timePapersBtn, 1, 0, 1, 1)
+
+        self.archivePageBtn = QPushButton(self.mainMenuWidget)
+        self.archivePageBtn.setObjectName(u"archivePageBtn")
+
+        self.mainMenuLayout.addWidget(self.archivePageBtn, 4, 3, 1, 1)
 
 
         self.verticalLayout_10.addLayout(self.mainMenuLayout)
@@ -547,19 +552,20 @@ class Ui_MainWindow(object):
         self.usernameLabel.setText(QCoreApplication.translate("MainWindow", u"admin", None))
         self.logoutBtn.setText("")
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438", None))
-        self.label_6.setText(QCoreApplication.translate("MainWindow", u"\u041c\u043e\u0434\u0435\u043b\u0438", None))
-        self.label_3.setText(QCoreApplication.translate("MainWindow", u"\u041f\u0435\u0440\u0441\u043e\u043d\u0430\u043b", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"\u041b\u0438\u0441\u0442\u043e\u0432\u0435 \u0437\u0430 \u0432\u0440\u0435\u043c\u0435", None))
-        self.payPerMinBtn.setText(QCoreApplication.translate("MainWindow", u"\u0417\u0430\u043f\u043b\u0430\u0449\u0430\u043d\u0435 \u0437\u0430 \u041c\u0438\u043d", None))
-        self.setDefaultOperBtn.setText(QCoreApplication.translate("MainWindow", u"\u041e\u043f\u0435\u0440\u0430\u0446\u0438\u0439 \u043f\u043e \u043f\u043e\u0434\u0440\u0430\u0437\u0431\u0438\u0440\u0430\u043d\u0435", None))
-        self.setModelsOperBtn.setText(QCoreApplication.translate("MainWindow", u"\u041c\u043e\u0434\u0435\u043b\u0438 \u0438 \u041e\u043f\u0435\u0440\u0430\u0446\u0438\u0438", None))
         self.paymentsPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0447\u0438\u0441\u043b\u0435\u043d\u0438\u044f", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"\u041b\u0438\u0441\u0442\u043e\u0432\u0435 \u0437\u0430 \u0432\u0440\u0435\u043c\u0435", None))
         self.referencesPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u0421\u043f\u0440\u0430\u0432\u043a\u0438", None))
-        self.timePapersBtn.setText(QCoreApplication.translate("MainWindow", u"\u041b\u0438\u0441\u0442\u043e\u0432\u0435 \u0437\u0430 \u0432\u0440\u0435\u043c\u0435", None))
-        self.workersPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u041f\u0435\u0440\u0441\u043e\u043d\u0430\u043b", None))
-        self.workingShiftsPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u0420\u0430\u0431\u043e\u0442\u043d\u0438 \u0421\u043c\u0435\u043d\u0438", None))
-        self.holidaysPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u041f\u0440\u0430\u0437\u043d\u0438\u0447\u043d\u0438 \u0414\u043d\u0438", None))
+        self.setDefaultOperBtn.setText(QCoreApplication.translate("MainWindow", u"\u041e\u043f\u0435\u0440\u0430\u0446\u0438\u0439 \u043f\u043e \u043f\u043e\u0434\u0440\u0430\u0437\u0431\u0438\u0440\u0430\u043d\u0435", None))
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"\u041f\u0435\u0440\u0441\u043e\u043d\u0430\u043b", None))
         self.parametersBtn.setText(QCoreApplication.translate("MainWindow", u"\u041d\u043e\u043c\u0435\u043d\u043a\u043b\u0430\u0442\u0443\u0440\u0438", None))
+        self.payPerMinBtn.setText(QCoreApplication.translate("MainWindow", u"\u0417\u0430\u043f\u043b\u0430\u0449\u0430\u043d\u0435 \u0437\u0430 \u041c\u0438\u043d", None))
+        self.label_6.setText(QCoreApplication.translate("MainWindow", u"\u041c\u043e\u0434\u0435\u043b\u0438", None))
+        self.holidaysPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u041f\u0440\u0430\u0437\u043d\u0438\u0447\u043d\u0438 \u0414\u043d\u0438", None))
+        self.workingShiftsPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u0420\u0430\u0431\u043e\u0442\u043d\u0438 \u0421\u043c\u0435\u043d\u0438", None))
+        self.workersPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u041f\u0435\u0440\u0441\u043e\u043d\u0430\u043b", None))
+        self.setModelsOperBtn.setText(QCoreApplication.translate("MainWindow", u"\u041c\u043e\u0434\u0435\u043b\u0438 \u0438 \u041e\u043f\u0435\u0440\u0430\u0446\u0438\u0438", None))
+        self.timePapersBtn.setText(QCoreApplication.translate("MainWindow", u"\u041b\u0438\u0441\u0442\u043e\u0432\u0435 \u0437\u0430 \u0432\u0440\u0435\u043c\u0435", None))
+        self.archivePageBtn.setText(QCoreApplication.translate("MainWindow", u"\u0410\u0440\u0445\u0438\u0432\u0438\u0440\u0430\u043d\u0435", None))
         self.footerLabel_2.setText(QCoreApplication.translate("MainWindow", u"Author: Filip Chaushev   Dev v0.1.030", None))
         self.pageBtn.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
     # retranslateUi

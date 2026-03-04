@@ -438,6 +438,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             return
 
     def setOperationsGroups(self, modelId=None):
+        self.operationsGroupsCheckBox.setCheckState(Qt.CheckState.Unchecked)
         self.operationsGroupComboBox.clear()
         # print(self.operationsGroups)
         if len(self.operationsGroups) > 0:

@@ -24,6 +24,7 @@ from app.ui.messagesManager import MessageManager
 from app.ui.customHolidayWidget import CustomHolidaysWidget
 from app.ui.customPayPerMinWidget import CustomPayPerMinWidget
 from app.ui.customParametersWidget import CustomParametersWidget
+from app.ui.customArchiveWidget import CustomArchiveWidget
 import requests
 from config import API_SERVER
 
@@ -52,6 +53,7 @@ class MainWindow(QMainWindow):
         self.holidaysPage = None
         self.payPerMinPage = None
         self.parametersPage = None
+        self.archivePage = None
         self.workerPaymentsDetails = {}
         self.openedWindows = []
         self.clipboardData = QApplication.clipboard()
@@ -75,6 +77,7 @@ class MainWindow(QMainWindow):
         self.ui.holidaysPageBtn.clicked.connect(self.setHolidaysPage)
         self.ui.payPerMinBtn.clicked.connect(self.setPayPerMinPage)
         self.ui.parametersBtn.clicked.connect(self.setParametersPage)
+        self.ui.archivePageBtn.clicked.connect(self.setArchivePage)
 
         self.ui.closeBtn.clicked.connect(self.close)
         self.ui.logoutBtn.clicked.connect(lambda: self.logout(True))
@@ -108,6 +111,9 @@ class MainWindow(QMainWindow):
 
     def closeEvent(self, event):
         QApplication.quit()
+
+    def resetArchivePage(self):
+        self.archivePage = None
 
     def resetParametersPage(self):
         self.parametersPage = None
@@ -151,6 +157,18 @@ class MainWindow(QMainWindow):
             subWindow.setWidget(newWindow)
             self.ui.mainWindowsArea.addSubWindow(subWindow)
             subWindow.show()
+
+    def setArchivePage(self):
+        if self.archivePage is None:
+            if self.checkForServerConnection():
+                self.archivePage = CustomArchiveWidget(self, self.user)
+                self.archivePage.show()
+                self.archivePage.destroyed.connect(self.resetArchivePage)
+                self.archivePage.logoutSignal.connect(self.logout)
+            else:
+                self.logout(True)
+        else:
+            self.archivePage.activateWindow()
 
     def setParametersPage(self):
         if self.parametersPage is None:
@@ -299,6 +317,7 @@ class MainWindow(QMainWindow):
                 self.holidaysPage,
                 self.payPerMinPage,
                 self.parametersPage,
+                self.archivePage
             ]
 
             pages.extend(self.workerPaymentsDetails.values())

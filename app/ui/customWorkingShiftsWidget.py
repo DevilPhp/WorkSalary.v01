@@ -16,6 +16,7 @@ from datetime import datetime
 class CustomShiftsEditWidget(QWidget, Ui_customWorkingShiftsWidget):
     logoutSignal = Signal(bool)
     closeSignal = Signal(bool)
+
     def __init__(self, mainWindow, user, parent=None):
         super().__init__(parent)
         self.setupUi(self)

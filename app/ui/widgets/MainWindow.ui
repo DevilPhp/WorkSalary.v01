@@ -726,23 +726,10 @@ QPushButton:hover {
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="2">
-                 <widget class="QLabel" name="label_6">
+                <item row="2" column="1">
+                 <widget class="QPushButton" name="paymentsPageBtn">
                   <property name="text">
-                   <string>Модели</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <widget class="QLabel" name="label_3">
-                  <property name="text">
-                   <string>Персонал</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
+                   <string>Начисления</string>
                   </property>
                  </widget>
                 </item>
@@ -764,40 +751,6 @@ QPushButton:hover {
                   </property>
                  </widget>
                 </item>
-                <item row="1" column="3">
-                 <widget class="QPushButton" name="payPerMinBtn">
-                  <property name="text">
-                   <string>Заплащане за Мин</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="2">
-                 <widget class="QPushButton" name="setDefaultOperBtn">
-                  <property name="focusPolicy">
-                   <enum>Qt::NoFocus</enum>
-                  </property>
-                  <property name="text">
-                   <string>Операций по подразбиране</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="2">
-                 <widget class="QPushButton" name="setModelsOperBtn">
-                  <property name="focusPolicy">
-                   <enum>Qt::NoFocus</enum>
-                  </property>
-                  <property name="text">
-                   <string>Модели и Операции</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="1">
-                 <widget class="QPushButton" name="paymentsPageBtn">
-                  <property name="text">
-                   <string>Начисления</string>
-                  </property>
-                 </widget>
-                </item>
                 <item row="2" column="0">
                  <widget class="QPushButton" name="referencesPageBtn">
                   <property name="sizePolicy">
@@ -811,24 +764,47 @@ QPushButton:hover {
                   </property>
                  </widget>
                 </item>
-                <item row="1" column="0">
-                 <widget class="QPushButton" name="timePapersBtn">
+                <item row="2" column="2">
+                 <widget class="QPushButton" name="setDefaultOperBtn">
+                  <property name="focusPolicy">
+                   <enum>Qt::NoFocus</enum>
+                  </property>
                   <property name="text">
-                   <string>Листове за време</string>
+                   <string>Операций по подразбиране</string>
                   </property>
                  </widget>
                 </item>
-                <item row="1" column="1">
-                 <widget class="QPushButton" name="workersPageBtn">
+                <item row="0" column="1">
+                 <widget class="QLabel" name="label_3">
                   <property name="text">
                    <string>Персонал</string>
                   </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
                  </widget>
                 </item>
-                <item row="3" column="1">
-                 <widget class="QPushButton" name="workingShiftsPageBtn">
+                <item row="3" column="3">
+                 <widget class="QPushButton" name="parametersBtn">
                   <property name="text">
-                   <string>Работни Смени</string>
+                   <string>Номенклатури</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="3">
+                 <widget class="QPushButton" name="payPerMinBtn">
+                  <property name="text">
+                   <string>Заплащане за Мин</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="2">
+                 <widget class="QLabel" name="label_6">
+                  <property name="text">
+                   <string>Модели</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
                   </property>
                  </widget>
                 </item>
@@ -839,10 +815,41 @@ QPushButton:hover {
                   </property>
                  </widget>
                 </item>
-                <item row="3" column="3">
-                 <widget class="QPushButton" name="parametersBtn">
+                <item row="3" column="1">
+                 <widget class="QPushButton" name="workingShiftsPageBtn">
                   <property name="text">
-                   <string>Номенклатури</string>
+                   <string>Работни Смени</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QPushButton" name="workersPageBtn">
+                  <property name="text">
+                   <string>Персонал</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="2">
+                 <widget class="QPushButton" name="setModelsOperBtn">
+                  <property name="focusPolicy">
+                   <enum>Qt::NoFocus</enum>
+                  </property>
+                  <property name="text">
+                   <string>Модели и Операции</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QPushButton" name="timePapersBtn">
+                  <property name="text">
+                   <string>Листове за време</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="3">
+                 <widget class="QPushButton" name="archivePageBtn">
+                  <property name="text">
+                   <string>Архивиране</string>
                   </property>
                  </widget>
                 </item>

@@ -1,0 +1,1414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>customArchiveWidget</class>
+ <widget class="QWidget" name="customArchiveWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>580</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>800</width>
+    <height>580</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">*{
+	background-color: #dfdfdf;
+	font: 600 9pt &quot;Segoe UI&quot;;
+	color: #324b4c;
+}
+
+QScrollBar:vertical {
+	width: 20px;
+	background: none;
+}
+
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+	background: #dfdfdf;
+}
+
+QPushButton {
+	background-color: #c9c9c9;
+	border: none;
+	border-radius: 10px;
+	padding: 5px;
+	font-size: 9pt;
+}
+
+QPushButton:hover{
+	background-color: #aeaeae;
+}
+
+QDateEdit::up-button, QDateEdit::down-button{
+	width: 0px;
+}
+
+QLineEdit, QDateEdit{
+	border: none;
+	font-size: 9pt;
+	border-bottom: 1px solid #7c9399;
+}
+
+QMenu {
+	border: 1px solid #aeaeae;
+	border-radius: 5px;
+}
+
+QMenu::item {
+	padding: 5px;
+	font-size: 8pt;
+}
+
+QMenu::item:selected {
+	background-color: #aeaeae;
+	padding-left: 7px;
+}
+
+QComboBox{
+	background-color: #dfdfdf;
+	border-bottom: 2px solid #7c9399;
+	border-radius: 3px;
+}
+
+QComboBox::drop-down{
+	image: url(':/icons/app/assets/icons/Alt-Arrow-Down--Streamline-Solar-Broken.svg');
+	width: 16px;
+	height: 16px;
+}
+
+QComboBox:hover{
+	color: #2b2b2c;
+	font: 700 9pt &quot;Segoe UI&quot;;
+	border-radius: 0px;
+	alternate-background-color: #2c313c;
+}
+QComboBox::item:selected{
+	color: #2b2b2c;
+	font: 700 9pt &quot;Segoe UI&quot;;
+	border-radius: 0px;
+}
+QComboBox::item{
+	color: #324b4c;
+	font: 600 9pt &quot;Segoe UI&quot;;
+	height: 10px;  
+	border: 4px solid transparent;
+	padding: 0px 4px 0px 4px;
+}
+
+#modelHolder QLabel, #newModelInfoHolder * , #widget_11 *{
+	font-size: 9pt;
+}
+
+#optionsHolder, #optionsHolder_2 {
+	border-bottom: 2px dashed #7c9399;
+}
+
+#pageTitle {
+	font: 700 11pt &quot;Segoe UI&quot;;
+}
+
+#userIcon, #logoutBtn, #fromCalendarBtn, #fromCalendarBtn_2, #toCalendarBtn, #toCalendarBtn_2 {
+	background-color: #dfdfdf;
+	padding: 0px;
+}
+
+#logoutBtn:hover{
+	icon: url(:/icons/app/assets/icons/Log-Out--Streamline-Feather_#192626.svg);
+}
+
+
+#usernameLabel {
+	font-size: 10pt;
+}
+
+#workerPlaceLineEdit, #workerPositionLineEdit {
+	font-weight: 600;
+}
+
+#widget_3 * {
+	font-size: 9pt;
+}</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>10</number>
+   </property>
+   <property name="leftMargin">
+    <number>5</number>
+   </property>
+   <property name="topMargin">
+    <number>5</number>
+   </property>
+   <property name="rightMargin">
+    <number>5</number>
+   </property>
+   <property name="bottomMargin">
+    <number>5</number>
+   </property>
+   <item alignment="Qt::AlignTop">
+    <widget class="QWidget" name="widget" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <property name="spacing">
+       <number>5</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QWidget" name="headerHolder" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <property name="spacing">
+          <number>10</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item alignment="Qt::AlignLeft">
+          <widget class="QWidget" name="widget_4" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <property name="spacing">
+             <number>10</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+           </layout>
+          </widget>
+         </item>
+         <item alignment="Qt::AlignHCenter">
+          <widget class="QLabel" name="pageTitle">
+           <property name="text">
+            <string>АРХИВИРАНЕ</string>
+           </property>
+          </widget>
+         </item>
+         <item alignment="Qt::AlignRight">
+          <widget class="QWidget" name="widget_2" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_11">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QWidget" name="widget_5" native="true">
+              <layout class="QHBoxLayout" name="horizontalLayout_12">
+               <property name="spacing">
+                <number>0</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QPushButton" name="closeBtn">
+                 <property name="styleSheet">
+                  <string notr="true">* {
+	padding: 3px;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Зтвори</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../../../resources.qrc">
+                   <normaloff>:/icons/app/assets/icons/Close-Square--Streamline-Solar-Broken.svg</normaloff>:/icons/app/assets/icons/Close-Square--Streamline-Solar-Broken.svg</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>20</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QWidget" name="userHolder" native="true">
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <property name="spacing">
+                <number>3</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>5</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QPushButton" name="userIcon">
+                 <property name="focusPolicy">
+                  <enum>Qt::NoFocus</enum>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../../../resources.qrc">
+                   <normaloff>:/icons/app/assets/icons/User--Streamline-Feather.svg</normaloff>:/icons/app/assets/icons/User--Streamline-Feather.svg</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>18</width>
+                   <height>18</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="usernameLabel">
+                 <property name="text">
+                  <string>admin</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="logoutBtn">
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../../../resources.qrc">
+                   <normaloff>:/icons/app/assets/icons/Log-Out--Streamline-Feather.svg</normaloff>:/icons/app/assets/icons/Log-Out--Streamline-Feather.svg</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>18</width>
+                   <height>18</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="workerInfoHolder" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <property name="spacing">
+          <number>10</number>
+         </property>
+         <property name="leftMargin">
+          <number>5</number>
+         </property>
+         <property name="topMargin">
+          <number>5</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item alignment="Qt::AlignTop">
+          <widget class="QWidget" name="modelsArchiveWidget" native="true">
+           <layout class="QVBoxLayout" name="verticalLayout_7">
+            <property name="spacing">
+             <number>3</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item alignment="Qt::AlignHCenter">
+             <widget class="QWidget" name="widget_3" native="true">
+              <layout class="QVBoxLayout" name="verticalLayout_3">
+               <property name="spacing">
+                <number>0</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QCheckBox" name="archiveModelsCheckBox">
+                 <property name="text">
+                  <string>Архивиране на модели</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item alignment="Qt::AlignLeft">
+             <widget class="QWidget" name="forYearModelsWidget" native="true">
+              <layout class="QHBoxLayout" name="horizontalLayout_7">
+               <property name="spacing">
+                <number>5</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QCheckBox" name="forYearModelsCheckBox">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>За Година</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="forYearModelsComboBox">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>120</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item alignment="Qt::AlignLeft">
+             <widget class="QWidget" name="forMonthModelsWidget" native="true">
+              <layout class="QHBoxLayout" name="horizontalLayout_6">
+               <property name="spacing">
+                <number>7</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QCheckBox" name="forMonthModlesCheckBox">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>За Месец</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="forMonthModlesComboBox">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>120</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>Януари</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Февруари</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Март</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Април</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Май</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Юни</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Юли</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Август</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Септември</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Октомври</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Ноември</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Декември</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item alignment="Qt::AlignLeft">
+             <widget class="QWidget" name="forDatesModelsWidget" native="true">
+              <layout class="QHBoxLayout" name="horizontalLayout_8">
+               <property name="spacing">
+                <number>5</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item alignment="Qt::AlignLeft">
+                <widget class="QWidget" name="widget_10" native="true">
+                 <layout class="QHBoxLayout" name="horizontalLayout_9">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="QCheckBox" name="forDatesModlesCheckBox">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
+                    <property name="text">
+                     <string>От/До Дата:</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item alignment="Qt::AlignLeft">
+                <widget class="QWidget" name="widget_11" native="true">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <layout class="QHBoxLayout" name="horizontalLayout_10">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="QWidget" name="fromDateModelsWidget" native="true">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
+                    <layout class="QHBoxLayout" name="horizontalLayout_13">
+                     <property name="spacing">
+                      <number>3</number>
+                     </property>
+                     <property name="leftMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="topMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="rightMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="bottomMargin">
+                      <number>0</number>
+                     </property>
+                     <item>
+                      <widget class="QDateEdit" name="fromDateEdit">
+                       <property name="maximumSize">
+                        <size>
+                         <width>70</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <property name="focusPolicy">
+                        <enum>Qt::WheelFocus</enum>
+                       </property>
+                       <property name="frame">
+                        <bool>false</bool>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                       <property name="correctionMode">
+                        <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                       </property>
+                       <property name="minimumDateTime">
+                        <datetime>
+                         <hour>0</hour>
+                         <minute>0</minute>
+                         <second>0</second>
+                         <year>1990</year>
+                         <month>8</month>
+                         <day>22</day>
+                        </datetime>
+                       </property>
+                       <property name="displayFormat">
+                        <string>dd.MM.yy 'г.'</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="fromCalendarBtn">
+                       <property name="focusPolicy">
+                        <enum>Qt::NoFocus</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">*{
+	padding: 0px;
+}</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="../../../resources.qrc">
+                         <normaloff>:/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg</normaloff>:/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>18</width>
+                         <height>18</height>
+                        </size>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label">
+                    <property name="text">
+                     <string>  /  </string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QWidget" name="toDateModelsWidget" native="true">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
+                    <layout class="QHBoxLayout" name="horizontalLayout_14">
+                     <property name="spacing">
+                      <number>3</number>
+                     </property>
+                     <property name="leftMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="topMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="rightMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="bottomMargin">
+                      <number>0</number>
+                     </property>
+                     <item>
+                      <widget class="QDateEdit" name="toDateEdit">
+                       <property name="maximumSize">
+                        <size>
+                         <width>70</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <property name="focusPolicy">
+                        <enum>Qt::WheelFocus</enum>
+                       </property>
+                       <property name="frame">
+                        <bool>false</bool>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                       <property name="correctionMode">
+                        <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                       </property>
+                       <property name="minimumDateTime">
+                        <datetime>
+                         <hour>0</hour>
+                         <minute>0</minute>
+                         <second>0</second>
+                         <year>1990</year>
+                         <month>8</month>
+                         <day>24</day>
+                        </datetime>
+                       </property>
+                       <property name="displayFormat">
+                        <string>dd.MM.yy 'г.'</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="toCalendarBtn">
+                       <property name="focusPolicy">
+                        <enum>Qt::NoFocus</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">*{
+	padding: 0px;
+}</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="../../../resources.qrc">
+                         <normaloff>:/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg</normaloff>:/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>18</width>
+                         <height>18</height>
+                        </size>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item alignment="Qt::AlignTop">
+          <widget class="QWidget" name="timePapersArhiveWidget" native="true">
+           <layout class="QVBoxLayout" name="verticalLayout_6">
+            <property name="spacing">
+             <number>3</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item alignment="Qt::AlignHCenter">
+             <widget class="QWidget" name="widget_6" native="true">
+              <layout class="QVBoxLayout" name="verticalLayout_5">
+               <property name="spacing">
+                <number>0</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QCheckBox" name="archiveTPCheckBox">
+                 <property name="text">
+                  <string>Архивиране на Листове за време</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item alignment="Qt::AlignLeft">
+             <widget class="QWidget" name="forYearTPWidget" native="true">
+              <layout class="QHBoxLayout" name="horizontalLayout_21">
+               <property name="spacing">
+                <number>17</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QCheckBox" name="forYearTPCheckBox">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>За Година</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="forYearTPComboBox">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>120</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item alignment="Qt::AlignLeft">
+             <widget class="QWidget" name="forMonthTPWidget" native="true">
+              <layout class="QHBoxLayout" name="horizontalLayout_15">
+               <property name="spacing">
+                <number>19</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QCheckBox" name="forMonthTPCheckBox">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>За Месец</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="forMonthTPComboBox">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>120</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>Януари</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Февруари</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Март</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Април</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Май</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Юни</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Юли</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Август</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Септември</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Октомври</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Ноември</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Декември</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item alignment="Qt::AlignLeft">
+             <widget class="QWidget" name="forDatesTPWidget" native="true">
+              <layout class="QHBoxLayout" name="horizontalLayout_16">
+               <property name="spacing">
+                <number>5</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item alignment="Qt::AlignLeft">
+                <widget class="QWidget" name="widget_15" native="true">
+                 <layout class="QHBoxLayout" name="horizontalLayout_17">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="QCheckBox" name="forDatesTPCheckBox">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
+                    <property name="text">
+                     <string>От/До Дата:</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item alignment="Qt::AlignLeft">
+                <widget class="QWidget" name="widget_16" native="true">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <layout class="QHBoxLayout" name="horizontalLayout_18">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="QWidget" name="fromDateTPWidget" native="true">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
+                    <layout class="QHBoxLayout" name="horizontalLayout_19">
+                     <property name="spacing">
+                      <number>3</number>
+                     </property>
+                     <property name="leftMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="topMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="rightMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="bottomMargin">
+                      <number>0</number>
+                     </property>
+                     <item>
+                      <widget class="QDateEdit" name="fromDateEdit_2">
+                       <property name="maximumSize">
+                        <size>
+                         <width>70</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <property name="focusPolicy">
+                        <enum>Qt::WheelFocus</enum>
+                       </property>
+                       <property name="frame">
+                        <bool>false</bool>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                       <property name="correctionMode">
+                        <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                       </property>
+                       <property name="minimumDateTime">
+                        <datetime>
+                         <hour>0</hour>
+                         <minute>0</minute>
+                         <second>0</second>
+                         <year>1990</year>
+                         <month>8</month>
+                         <day>21</day>
+                        </datetime>
+                       </property>
+                       <property name="displayFormat">
+                        <string>dd.MM.yy 'г.'</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="fromCalendarBtn_2">
+                       <property name="focusPolicy">
+                        <enum>Qt::NoFocus</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">*{
+	padding: 0px;
+}</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="../../../resources.qrc">
+                         <normaloff>:/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg</normaloff>:/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>18</width>
+                         <height>18</height>
+                        </size>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_2">
+                    <property name="text">
+                     <string>  /  </string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QWidget" name="toDateTPWidget" native="true">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
+                    <layout class="QHBoxLayout" name="horizontalLayout_20">
+                     <property name="spacing">
+                      <number>3</number>
+                     </property>
+                     <property name="leftMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="topMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="rightMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="bottomMargin">
+                      <number>0</number>
+                     </property>
+                     <item>
+                      <widget class="QDateEdit" name="toDateEdit_2">
+                       <property name="maximumSize">
+                        <size>
+                         <width>70</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <property name="focusPolicy">
+                        <enum>Qt::WheelFocus</enum>
+                       </property>
+                       <property name="frame">
+                        <bool>false</bool>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                       <property name="correctionMode">
+                        <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                       </property>
+                       <property name="minimumDateTime">
+                        <datetime>
+                         <hour>0</hour>
+                         <minute>0</minute>
+                         <second>0</second>
+                         <year>1990</year>
+                         <month>8</month>
+                         <day>23</day>
+                        </datetime>
+                       </property>
+                       <property name="displayFormat">
+                        <string>dd.MM.yy 'г.'</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="toCalendarBtn_2">
+                       <property name="focusPolicy">
+                        <enum>Qt::NoFocus</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">*{
+	padding: 0px;
+}</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="../../../resources.qrc">
+                         <normaloff>:/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg</normaloff>:/icons/app/assets/icons/Calendar--Streamline-Solar-Broken.svg</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>18</width>
+                         <height>18</height>
+                        </size>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="operationsHolder" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QFrame" name="optionsHolder">
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <property name="spacing">
+             <number>10</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>5</number>
+            </property>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>788</width>
+        <height>421</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_12">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QWidget" name="archiveTableHolder" native="true">
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_11">
+          <property name="spacing">
+           <number>5</number>
+          </property>
+          <property name="leftMargin">
+           <number>5</number>
+          </property>
+          <property name="topMargin">
+           <number>5</number>
+          </property>
+          <property name="rightMargin">
+           <number>5</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../../../resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>
