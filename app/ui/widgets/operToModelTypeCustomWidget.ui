@@ -475,14 +475,14 @@ QComboBox::item{
                       </property>
                      </widget>
                     </item>
-                    <item row="2" column="0">
+                    <item row="3" column="0">
                      <widget class="QLabel" name="label_13">
                       <property name="text">
                        <string>Дата:</string>
                       </property>
                      </widget>
                     </item>
-                    <item row="2" column="1">
+                    <item row="3" column="1">
                      <widget class="QLabel" name="dataUpdatedLabel">
                       <property name="text">
                        <string/>
@@ -529,6 +529,20 @@ QComboBox::item{
                         <number>0</number>
                        </property>
                       </layout>
+                     </widget>
+                    </item>
+                    <item row="2" column="0">
+                     <widget class="QLabel" name="label_17">
+                      <property name="text">
+                       <string>В произв.</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="1">
+                     <widget class="QCheckBox" name="inProductionCheckBox">
+                      <property name="text">
+                       <string/>
+                      </property>
                      </widget>
                     </item>
                    </layout>
@@ -730,59 +744,53 @@ QComboBox::item{
                          </property>
                         </widget>
                        </item>
-                       <item row="0" column="4">
+                       <item row="0" column="0">
+                        <widget class="QLabel" name="label_5">
+                         <property name="text">
+                          <string>Име/Поръчка№</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="4">
                         <widget class="QLabel" name="label_10">
                          <property name="text">
                           <string>Описание</string>
                          </property>
                         </widget>
                        </item>
-                       <item row="2" column="2">
-                        <widget class="QLabel" name="label_3">
+                       <item row="1" column="2">
+                        <widget class="QLabel" name="label_8">
                          <property name="text">
-                          <string>Файн</string>
+                          <string>Прежда</string>
                          </property>
                         </widget>
                        </item>
-                       <item row="0" column="5">
-                        <widget class="QLineEdit" name="descrLineEdit">
-                         <property name="maximumSize">
-                          <size>
-                           <width>200</width>
-                           <height>16777215</height>
-                          </size>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="0" column="2">
-                        <widget class="QLabel" name="label_7">
-                         <property name="text">
-                          <string>Вид Модел</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="1" column="4">
+                       <item row="2" column="4">
                         <widget class="QLabel" name="label_11">
                          <property name="text">
                           <string>Актуален</string>
                          </property>
                         </widget>
                        </item>
-                       <item row="1" column="5" alignment="Qt::AlignVCenter">
-                        <widget class="QCheckBox" name="actualCheckBox">
-                         <property name="focusPolicy">
-                          <enum>Qt::ClickFocus</enum>
-                         </property>
-                         <property name="layoutDirection">
-                          <enum>Qt::LeftToRight</enum>
-                         </property>
-                         <property name="text">
-                          <string/>
+                       <item row="0" column="1">
+                        <widget class="QLineEdit" name="newModelLineEdit">
+                         <property name="maximumSize">
+                          <size>
+                           <width>150</width>
+                           <height>16777215</height>
+                          </size>
                          </property>
                         </widget>
                        </item>
-                       <item row="1" column="3">
-                        <widget class="QComboBox" name="yarnComboBox">
+                       <item row="0" column="5">
+                        <widget class="QComboBox" name="clientsComboBox">
+                         <property name="focusPolicy">
+                          <enum>Qt::NoFocus</enum>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="2" column="1">
+                        <widget class="QComboBox" name="machineComboBox">
                          <property name="maximumSize">
                           <size>
                            <width>150</width>
@@ -810,49 +818,32 @@ QComboBox::item{
                          </property>
                         </widget>
                        </item>
-                       <item row="1" column="0">
-                        <widget class="QLabel" name="label_9">
+                       <item row="0" column="2">
+                        <widget class="QLabel" name="label_7">
                          <property name="text">
-                          <string>Брой</string>
+                          <string>Вид Модел</string>
                          </property>
                         </widget>
                        </item>
-                       <item row="0" column="1">
-                        <widget class="QLineEdit" name="newModelLineEdit">
+                       <item row="1" column="5">
+                        <widget class="QLineEdit" name="descrLineEdit">
                          <property name="maximumSize">
                           <size>
-                           <width>150</width>
+                           <width>200</width>
                            <height>16777215</height>
                           </size>
                          </property>
                         </widget>
                        </item>
-                       <item row="0" column="0">
-                        <widget class="QLabel" name="label_5">
+                       <item row="0" column="4">
+                        <widget class="QLabel" name="label_16">
                          <property name="text">
-                          <string>Име/Поръчка№</string>
+                          <string>За Клиент</string>
                          </property>
                         </widget>
                        </item>
-                       <item row="2" column="3">
-                        <widget class="QLineEdit" name="machineGaugeLineEdit">
-                         <property name="maximumSize">
-                          <size>
-                           <width>150</width>
-                           <height>16777215</height>
-                          </size>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="1" column="2">
-                        <widget class="QLabel" name="label_8">
-                         <property name="text">
-                          <string>Прежда</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="2" column="1">
-                        <widget class="QComboBox" name="machineComboBox">
+                       <item row="1" column="3">
+                        <widget class="QComboBox" name="yarnComboBox">
                          <property name="maximumSize">
                           <size>
                            <width>150</width>
@@ -867,10 +858,47 @@ QComboBox::item{
                          </property>
                         </widget>
                        </item>
+                       <item row="2" column="2">
+                        <widget class="QLabel" name="label_3">
+                         <property name="text">
+                          <string>Файн</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="2" column="5">
+                        <widget class="QCheckBox" name="actualCheckBox">
+                         <property name="focusPolicy">
+                          <enum>Qt::ClickFocus</enum>
+                         </property>
+                         <property name="layoutDirection">
+                          <enum>Qt::LeftToRight</enum>
+                         </property>
+                         <property name="text">
+                          <string/>
+                         </property>
+                        </widget>
+                       </item>
                        <item row="2" column="0">
                         <widget class="QLabel" name="label_6">
                          <property name="text">
                           <string>Машина/Цех</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="0">
+                        <widget class="QLabel" name="label_9">
+                         <property name="text">
+                          <string>Брой</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="2" column="3">
+                        <widget class="QLineEdit" name="machineGaugeLineEdit">
+                         <property name="maximumSize">
+                          <size>
+                           <width>150</width>
+                           <height>16777215</height>
+                          </size>
                          </property>
                         </widget>
                        </item>

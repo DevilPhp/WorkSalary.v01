@@ -178,19 +178,6 @@ class ModelService:
             logger.error('Failed to get clients')
             return None
 
-    # @staticmethod
-    # @handle_api_connection
-    # def getAllModels():
-    #     response = requests.get(f'{API_SERVER}/model/get_all_models').json()
-    #     if response['status'] =='success':
-    #         return response['data']
-    #     else:
-    #         logger.error('Failed to get all models')
-    #         return None
-        #
-        # with getDatabase() as session:
-        #     return session.query(ProductionModel).all()
-
     @staticmethod
     @handle_api_connection
     def getForModelsGroups():
@@ -223,6 +210,30 @@ class ModelService:
             return True
         else:
             logger.error(f'No time papers found for month {month}')
+            return False
+
+    @staticmethod
+    @handle_api_connection
+    def setModelProductionStatus(modelId, status):
+        response = requests.post(f'{API_SERVER}/model/set_model_production_status',
+                                 json={'modelId': modelId, 'status': status}).json()
+        if response['status'] =='success':
+            logger.info(f'Production status for model {modelId} updated successfully')
+            return True
+        else:
+            logger.error(f'Failed to update production status for model {modelId}')
+            return False
+
+    @staticmethod
+    @handle_api_connection
+    def updateActualStatus(modelId, status):
+        response = requests.post(f'{API_SERVER}/model/update_model_actual',
+                                 json={'modelId': modelId, 'status': status}).json()
+        if response['status'] =='success':
+            logger.info(f'Actual status for model {modelId} updated successfully')
+            return True
+        else:
+            logger.error(f'Failed to update actual status for model {modelId}')
             return False
 
     @staticmethod
@@ -280,6 +291,28 @@ class ModelService:
             return response['models']
         else:
             logger.error(f'Failed to get models for client {clientId}')
+            return []
+
+    @staticmethod
+    @handle_api_connection
+    def getModelsYearsForClient(clientId):
+        response = requests.get(f'{API_SERVER}/model/get_model_years_for_client/{clientId}').json()
+        if response['status'] =='success':
+            logger.info(f'Models years for client {clientId} fetched successfully')
+            return response['years']
+        else:
+            logger.error(f'Failed to get models years for client {clientId}')
+            return []
+
+    @staticmethod
+    @handle_api_connection
+    def getProductionForClient(clientId, year):
+        response = requests.get(f'{API_SERVER}/model/get_production_for_client/{clientId}/{year}').json()
+        if response['status'] =='success':
+            logger.info(f'Production for client {clientId} and year {year} fetched successfully')
+            return response['models']
+        else:
+            logger.error(f'Failed to get production for client {clientId} and year {year}')
             return []
 
     @staticmethod

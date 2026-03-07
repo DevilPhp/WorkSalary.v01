@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'operToModelTypeCustomWidgetsscZmb.ui'
+## Form generated from reading UI file 'operToModelTypeCustomWidgetFlAhDI.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -300,12 +300,12 @@ class Ui_customWidgetForModelOper(object):
         self.label_13 = QLabel(self.widget_7)
         self.label_13.setObjectName(u"label_13")
 
-        self.modeLayout.setWidget(2, QFormLayout.LabelRole, self.label_13)
+        self.modeLayout.setWidget(3, QFormLayout.LabelRole, self.label_13)
 
         self.dataUpdatedLabel = QLabel(self.widget_7)
         self.dataUpdatedLabel.setObjectName(u"dataUpdatedLabel")
 
-        self.modeLayout.setWidget(2, QFormLayout.FieldRole, self.dataUpdatedLabel)
+        self.modeLayout.setWidget(3, QFormLayout.FieldRole, self.dataUpdatedLabel)
 
         self.clientsWidget = QWidget(self.widget_7)
         self.clientsWidget.setObjectName(u"clientsWidget")
@@ -324,6 +324,16 @@ class Ui_customWidgetForModelOper(object):
         self.horizontalLayout_11.setContentsMargins(0, 0, 0, 0)
 
         self.modeLayout.setWidget(1, QFormLayout.FieldRole, self.modelsWidget)
+
+        self.label_17 = QLabel(self.widget_7)
+        self.label_17.setObjectName(u"label_17")
+
+        self.modeLayout.setWidget(2, QFormLayout.LabelRole, self.label_17)
+
+        self.inProductionCheckBox = QCheckBox(self.widget_7)
+        self.inProductionCheckBox.setObjectName(u"inProductionCheckBox")
+
+        self.modeLayout.setWidget(2, QFormLayout.FieldRole, self.inProductionCheckBox)
 
 
         self.verticalLayout_7.addLayout(self.modeLayout)
@@ -412,57 +422,25 @@ class Ui_customWidgetForModelOper(object):
 
         self.newModelLayout.addWidget(self.modelTypeComboBox, 0, 3, 1, 1)
 
+        self.label_5 = QLabel(self.modelInfoWidget)
+        self.label_5.setObjectName(u"label_5")
+
+        self.newModelLayout.addWidget(self.label_5, 0, 0, 1, 1)
+
         self.label_10 = QLabel(self.modelInfoWidget)
         self.label_10.setObjectName(u"label_10")
 
-        self.newModelLayout.addWidget(self.label_10, 0, 4, 1, 1)
+        self.newModelLayout.addWidget(self.label_10, 1, 4, 1, 1)
 
-        self.label_3 = QLabel(self.modelInfoWidget)
-        self.label_3.setObjectName(u"label_3")
+        self.label_8 = QLabel(self.modelInfoWidget)
+        self.label_8.setObjectName(u"label_8")
 
-        self.newModelLayout.addWidget(self.label_3, 2, 2, 1, 1)
-
-        self.descrLineEdit = QLineEdit(self.modelInfoWidget)
-        self.descrLineEdit.setObjectName(u"descrLineEdit")
-        self.descrLineEdit.setMaximumSize(QSize(200, 16777215))
-
-        self.newModelLayout.addWidget(self.descrLineEdit, 0, 5, 1, 1)
-
-        self.label_7 = QLabel(self.modelInfoWidget)
-        self.label_7.setObjectName(u"label_7")
-
-        self.newModelLayout.addWidget(self.label_7, 0, 2, 1, 1)
+        self.newModelLayout.addWidget(self.label_8, 1, 2, 1, 1)
 
         self.label_11 = QLabel(self.modelInfoWidget)
         self.label_11.setObjectName(u"label_11")
 
-        self.newModelLayout.addWidget(self.label_11, 1, 4, 1, 1)
-
-        self.actualCheckBox = QCheckBox(self.modelInfoWidget)
-        self.actualCheckBox.setObjectName(u"actualCheckBox")
-        self.actualCheckBox.setFocusPolicy(Qt.ClickFocus)
-        self.actualCheckBox.setLayoutDirection(Qt.LeftToRight)
-
-        self.newModelLayout.addWidget(self.actualCheckBox, 1, 5, 1, 1, Qt.AlignVCenter)
-
-        self.yarnComboBox = QComboBox(self.modelInfoWidget)
-        self.yarnComboBox.setObjectName(u"yarnComboBox")
-        self.yarnComboBox.setMaximumSize(QSize(150, 16777215))
-        self.yarnComboBox.setFocusPolicy(Qt.NoFocus)
-        self.yarnComboBox.setDuplicatesEnabled(True)
-
-        self.newModelLayout.addWidget(self.yarnComboBox, 1, 3, 1, 1)
-
-        self.piecesLineEdit = QLineEdit(self.modelInfoWidget)
-        self.piecesLineEdit.setObjectName(u"piecesLineEdit")
-        self.piecesLineEdit.setMaximumSize(QSize(150, 16777215))
-
-        self.newModelLayout.addWidget(self.piecesLineEdit, 1, 1, 1, 1)
-
-        self.label_9 = QLabel(self.modelInfoWidget)
-        self.label_9.setObjectName(u"label_9")
-
-        self.newModelLayout.addWidget(self.label_9, 1, 0, 1, 1)
+        self.newModelLayout.addWidget(self.label_11, 2, 4, 1, 1)
 
         self.newModelLineEdit = QLineEdit(self.modelInfoWidget)
         self.newModelLineEdit.setObjectName(u"newModelLineEdit")
@@ -470,21 +448,11 @@ class Ui_customWidgetForModelOper(object):
 
         self.newModelLayout.addWidget(self.newModelLineEdit, 0, 1, 1, 1)
 
-        self.label_5 = QLabel(self.modelInfoWidget)
-        self.label_5.setObjectName(u"label_5")
+        self.clientsComboBox = QComboBox(self.modelInfoWidget)
+        self.clientsComboBox.setObjectName(u"clientsComboBox")
+        self.clientsComboBox.setFocusPolicy(Qt.NoFocus)
 
-        self.newModelLayout.addWidget(self.label_5, 0, 0, 1, 1)
-
-        self.machineGaugeLineEdit = QLineEdit(self.modelInfoWidget)
-        self.machineGaugeLineEdit.setObjectName(u"machineGaugeLineEdit")
-        self.machineGaugeLineEdit.setMaximumSize(QSize(150, 16777215))
-
-        self.newModelLayout.addWidget(self.machineGaugeLineEdit, 2, 3, 1, 1)
-
-        self.label_8 = QLabel(self.modelInfoWidget)
-        self.label_8.setObjectName(u"label_8")
-
-        self.newModelLayout.addWidget(self.label_8, 1, 2, 1, 1)
+        self.newModelLayout.addWidget(self.clientsComboBox, 0, 5, 1, 1)
 
         self.machineComboBox = QComboBox(self.modelInfoWidget)
         self.machineComboBox.setObjectName(u"machineComboBox")
@@ -494,10 +462,63 @@ class Ui_customWidgetForModelOper(object):
 
         self.newModelLayout.addWidget(self.machineComboBox, 2, 1, 1, 1)
 
+        self.piecesLineEdit = QLineEdit(self.modelInfoWidget)
+        self.piecesLineEdit.setObjectName(u"piecesLineEdit")
+        self.piecesLineEdit.setMaximumSize(QSize(150, 16777215))
+
+        self.newModelLayout.addWidget(self.piecesLineEdit, 1, 1, 1, 1)
+
+        self.label_7 = QLabel(self.modelInfoWidget)
+        self.label_7.setObjectName(u"label_7")
+
+        self.newModelLayout.addWidget(self.label_7, 0, 2, 1, 1)
+
+        self.descrLineEdit = QLineEdit(self.modelInfoWidget)
+        self.descrLineEdit.setObjectName(u"descrLineEdit")
+        self.descrLineEdit.setMaximumSize(QSize(200, 16777215))
+
+        self.newModelLayout.addWidget(self.descrLineEdit, 1, 5, 1, 1)
+
+        self.label_16 = QLabel(self.modelInfoWidget)
+        self.label_16.setObjectName(u"label_16")
+
+        self.newModelLayout.addWidget(self.label_16, 0, 4, 1, 1)
+
+        self.yarnComboBox = QComboBox(self.modelInfoWidget)
+        self.yarnComboBox.setObjectName(u"yarnComboBox")
+        self.yarnComboBox.setMaximumSize(QSize(150, 16777215))
+        self.yarnComboBox.setFocusPolicy(Qt.NoFocus)
+        self.yarnComboBox.setDuplicatesEnabled(True)
+
+        self.newModelLayout.addWidget(self.yarnComboBox, 1, 3, 1, 1)
+
+        self.label_3 = QLabel(self.modelInfoWidget)
+        self.label_3.setObjectName(u"label_3")
+
+        self.newModelLayout.addWidget(self.label_3, 2, 2, 1, 1)
+
+        self.actualCheckBox = QCheckBox(self.modelInfoWidget)
+        self.actualCheckBox.setObjectName(u"actualCheckBox")
+        self.actualCheckBox.setFocusPolicy(Qt.ClickFocus)
+        self.actualCheckBox.setLayoutDirection(Qt.LeftToRight)
+
+        self.newModelLayout.addWidget(self.actualCheckBox, 2, 5, 1, 1)
+
         self.label_6 = QLabel(self.modelInfoWidget)
         self.label_6.setObjectName(u"label_6")
 
         self.newModelLayout.addWidget(self.label_6, 2, 0, 1, 1)
+
+        self.label_9 = QLabel(self.modelInfoWidget)
+        self.label_9.setObjectName(u"label_9")
+
+        self.newModelLayout.addWidget(self.label_9, 1, 0, 1, 1)
+
+        self.machineGaugeLineEdit = QLineEdit(self.modelInfoWidget)
+        self.machineGaugeLineEdit.setObjectName(u"machineGaugeLineEdit")
+        self.machineGaugeLineEdit.setMaximumSize(QSize(150, 16777215))
+
+        self.newModelLayout.addWidget(self.machineGaugeLineEdit, 2, 3, 1, 1)
 
 
         self.verticalLayout_11.addLayout(self.newModelLayout)
@@ -706,20 +727,23 @@ class Ui_customWidgetForModelOper(object):
         self.label_4.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041c\u043e\u0434\u0435\u043b:", None))
         self.label_13.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0414\u0430\u0442\u0430:", None))
         self.dataUpdatedLabel.setText("")
+        self.label_17.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0412 \u043f\u0440\u043e\u0438\u0437\u0432.", None))
+        self.inProductionCheckBox.setText("")
         self.newModelCheckBox.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0421\u044a\u0437\u0434\u0430\u0432\u0430\u043d\u0435 \u043d\u0430 \u043d\u043e\u0432 \u043c\u043e\u0434\u0435\u043b", None))
         self.editModelCheckBox.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0420\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u0430\u043d\u0435 \u043d\u0430:", None))
         self.modelNameLabel.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041c\u043e\u0434\u0435\u043b", None))
         self.deleteModelBtn.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0418\u0437\u0442\u0440\u0438\u0432\u0430\u043d\u0435", None))
-        self.label_10.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435", None))
-        self.label_3.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0424\u0430\u0439\u043d", None))
-        self.label_7.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0412\u0438\u0434 \u041c\u043e\u0434\u0435\u043b", None))
-        self.label_11.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0410\u043a\u0442\u0443\u0430\u043b\u0435\u043d", None))
-        self.actualCheckBox.setText("")
-        self.piecesLineEdit.setPlaceholderText(QCoreApplication.translate("customWidgetForModelOper", u"0", None))
-        self.label_9.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0411\u0440\u043e\u0439", None))
         self.label_5.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0418\u043c\u0435/\u041f\u043e\u0440\u044a\u0447\u043a\u0430\u2116", None))
+        self.label_10.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435", None))
         self.label_8.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041f\u0440\u0435\u0436\u0434\u0430", None))
+        self.label_11.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0410\u043a\u0442\u0443\u0430\u043b\u0435\u043d", None))
+        self.piecesLineEdit.setPlaceholderText(QCoreApplication.translate("customWidgetForModelOper", u"0", None))
+        self.label_7.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0412\u0438\u0434 \u041c\u043e\u0434\u0435\u043b", None))
+        self.label_16.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0417\u0430 \u041a\u043b\u0438\u0435\u043d\u0442", None))
+        self.label_3.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0424\u0430\u0439\u043d", None))
+        self.actualCheckBox.setText("")
         self.label_6.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041c\u0430\u0448\u0438\u043d\u0430/\u0426\u0435\u0445", None))
+        self.label_9.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0411\u0440\u043e\u0439", None))
         self.label_15.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041a\u043e\u0440\u0435\u043a\u0446\u0438\u044f \u043d\u0430 \u043b\u0438\u0441\u0442\u043e\u0432\u0435 \u0437\u0430 \u0432\u0440\u0435\u043c\u0435", None))
         self.effectChangesComboBox.setItemText(0, QCoreApplication.translate("customWidgetForModelOper", u"\u042f\u043d\u0443\u0430\u0440\u0438", None))
         self.effectChangesComboBox.setItemText(1, QCoreApplication.translate("customWidgetForModelOper", u"\u0424\u0435\u0432\u0440\u0443\u0430\u0440\u0438", None))

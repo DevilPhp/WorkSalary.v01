@@ -71,6 +71,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.isNewModel = False
         self.lastSelectedClient = None
         self.lastSelectedModel = None
+        self.inProductionCheckBox.setEnabled(False)
 
         # print(self.geometry())
         self.setCheckBox()
@@ -81,6 +82,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         # self.modelsLineEdit.doubleClicked.connect(print('double clicked'))
 
         self.setupNewModelInfo()
+        self.setUpClientsComboBox()
 
         self.editModelHolder.setVisible(False)
         self.operationsHolder.setEnabled(False)
@@ -103,11 +105,21 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.forModelCheckBox.stateChanged.connect(self.updateForModelLineEdit)
         self.forModelLineEdit.editingFinished.connect(self.forModelLineEditChange)
         self.deleteModelBtn.clicked.connect(self.deleteModel)
+        self.inProductionCheckBox.stateChanged.connect(self.updateInProduction)
 
         self.clientsLineEdit.setFocus()
 
         self.closeBtn.clicked.connect(self.close)
         self.logoutBtn.clicked.connect(self.logout)
+
+    def updateInProduction(self):
+        modelId = self.modelNames[self.modelsLineEdit.text()][0]
+        # clientId = self.clientNames[self.clientsLineEdit.text()]
+        if modelId:
+            Ms.setModelProductionStatus(modelId, self.inProductionCheckBox.isChecked())
+        else:
+            return
+        # print(modelId, clientId)
 
     def setEffectChangesComboBox(self):
         if self.effectChangesCheckBox.isChecked():
@@ -118,6 +130,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
     def updateEditModelInfo(self):
         if self.editModelCheckBox.isChecked():
             self.setModelInfoIfExists()
+            self.clientsComboBox.setEnabled(False)
             self.newModelInfoHolder.setEnabled(True)
             self.newModelCheckBox.setEnabled(False)
             self.newModelLineEdit.setReadOnly(True)
@@ -128,6 +141,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             self.effectChangesWidget.setVisible(True)
         else:
             self.resetNewModelInfo()
+            self.clientsComboBox.setEnabled(True)
             self.setOperationsForModel(self.operationsForModel)
             self.newModelCheckBox.setEnabled(True)
             self.newModelLineEdit.setReadOnly(False)
@@ -272,7 +286,6 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
                     else:
                         MessageManager.showOnWidget(self, 'Група операции не беше изтрита успешно!', 'error')
                         return
-
 
     def saveForModelGroups(self, name):
         modelId = self.forModelLineEdit.text().split(' - ')[0]
@@ -450,6 +463,13 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
                     MessageManager.showOnWidget(self, 'Моля въведете Поръчка№!', 'error')
                     self.newModelLineEdit.setFocus()
                     return
+                elif self.clientsComboBox.currentText() != self.clientsLineEdit.text():
+                    selectedClientModels = Ms.getModelsForClient(self.clientNames[self.clientsComboBox.currentText()])
+                    if self.newModelLineEdit.text() in selectedClientModels.keys():
+                        message = f'Поръчка с такъв номер за клиента {self.clientsComboBox.currentText()} съществува!'
+                        MessageManager.showOnWidget(self, message, 'error')
+                        self.newModelLineEdit.setFocus()
+                        return
                 elif self.newModelLineEdit.text() in self.modelNames.keys():
                     MessageManager.showOnWidget(self, 'Поръчка с такъв номер вече съществъва!', 'error')
                     self.newModelLineEdit.setFocus()
@@ -472,7 +492,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             MessageManager.showOnWidget(self, 'Моля изберете поне една операция', 'error')
             return
 
-        print(self.changedOperTimes)
+        # print(self.changedOperTimes)
 
         newDialog = CustomYesNowDialog()
         if self.isNewModel:
@@ -527,13 +547,24 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
                     fain = self.machines[self.machineComboBox.currentText().split(' :  ')[0]][1]
 
             targetDate = datetime.datetime.now() + datetime.timedelta(days=30)
+            if (self.clientsComboBox.currentText() != self.clientsLineEdit.text() and
+                    self.clientsComboBox.currentText() != ''):
+                clientId = self.clientNames[self.clientsComboBox.currentText()]
+            else:
+                clientId = self.clientNames[self.clientsLineEdit.text()]
+
+            # if self.inProductionCheckBox.isChecked():
+            #     isModelForProduction = True
+            # else:
+            #     isModelForProduction = False
 
             self.newModel = {
                 'isNew': self.isNewModel,
                 'orderNo': orderNo,
                 'orderPieces': orderPieces,
-                'clientId': self.clientNames[self.clientsLineEdit.text()],
+                'clientId': clientId,
                 'actual': self.actualCheckBox.isChecked(),
+                # 'inProduction': self.inProductionCheckBox.isChecked(),
                 'machineId': machineId,
                 'fain': fain,
                 'wearType': vidObleklo,
@@ -607,6 +638,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
                     MessageManager.showOnWidget(self, 'Успешно изтрит модел!', 'success')
                     self.resetInformation()
                     self.modelsForGroup = Ms.getForModelsGroups()
+                    # self.setModelsForClient()
                     # self.editModelHolder.setVisible(False)
                 elif result == 2:
                     MessageManager.showOnWidget(self, 'Не можете изтриете модел, съществуват листове за време!',
@@ -624,6 +656,10 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.resetNewModelInfo()
         self.newModelCheckBox.setCheckState(Qt.CheckState.Unchecked)
         self.editModelCheckBox.setCheckState(Qt.CheckState.Unchecked)
+        self.inProductionCheckBox.blockSignals(True)
+        self.inProductionCheckBox.setCheckState(Qt.CheckState.Unchecked)
+        self.inProductionCheckBox.setEnabled(False)
+        self.inProductionCheckBox.blockSignals(False)
         self.resetAllOperations(True)
         self.setModelsForClient()
         self.modelsLineEdit.clear()
@@ -689,6 +725,12 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             self.clientNames[client] = int(clientId)
         Utils.setupCompleter(self.clientNames.keys(), self.clientsLineEdit)
 
+    def setUpClientsComboBox(self):
+        sortedClients = sorted(self.clientNames.keys(), key=lambda x: x.lower())
+        for client in sortedClients:
+            self.clientsComboBox.addItem(client)
+        self.clientsComboBox.setCurrentIndex(-1)
+
     def selectClient(self):
         selectedText = self.clientsLineEdit.text()
         if hasattr(self, 'lastSelectedClient') and self.lastSelectedClient == selectedText and selectedText != '':
@@ -702,6 +744,9 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.modelNames.clear()
         self.modelsLineEdit.clear()
         self.dataUpdatedLabel.setText('')
+        self.inProductionCheckBox.blockSignals(True)
+        self.inProductionCheckBox.setCheckState(Qt.CheckState.Unchecked)
+        self.inProductionCheckBox.blockSignals(False)
 
         if self.newModelCheckBox.isChecked():
             self.newModelCheckBox.setCheckState(Qt.CheckState.Unchecked)
@@ -726,10 +771,11 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         # self.editModelHolder.setVisible(False)
 
     def setModelsForClient(self):
+        self.modelNames.clear()
         self.models = Ms.getModelsForClient(self.clientNames[self.clientsLineEdit.text()])
         for model, value in self.models.items():
             if value[1] == self.clientNames[self.clientsLineEdit.text()]:
-                self.modelNames[model] = [value[0], value[2]]
+                self.modelNames[model] = [value[0], value[2], value[3]]
             # if model.ClientID == self.clientNames[self.clientsLineEdit.text()]:
             #     self.modelNames[model.ПоръчкаNo] = [model.id, model.DateCreated]
         Utils.setupCompleter(self.modelNames.keys(), self.modelsLineEdit)
@@ -739,7 +785,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         if hasattr(self, 'lastSelectedClient') and self.lastSelectedModel == selectedText and selectedText != '':
             self.modelsLineEdit.clearFocus()
             return
-        print('selectModel')
+        # print('selectModel')
         # if not self.isOperationsReseted:
         # self.resetAllOperations(True)
         self.changedOperTimes.clear()
@@ -755,6 +801,10 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             if not self.isOperationsReseted:
                 self.resetAllOperations()
             self.dataUpdatedLabel.setText('')
+            self.inProductionCheckBox.blockSignals(True)
+            self.inProductionCheckBox.setEnabled(False)
+            self.inProductionCheckBox.setCheckState(Qt.CheckState.Unchecked)
+            self.inProductionCheckBox.blockSignals(False)
             self.editModelHolder.setVisible(False)
             return
         if selectedText not in self.modelNames.keys():
@@ -767,6 +817,13 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.lastSelectedModel = selectedText
         self.operationsForModel = OpS.getOperationsForModel(self.modelNames[selectedText][0])
         self.dataUpdatedLabel.setText(self.modelNames[selectedText][1])
+        self.inProductionCheckBox.blockSignals(True)
+        self.inProductionCheckBox.setEnabled(True)
+        if self.modelNames[selectedText][2]:
+            self.inProductionCheckBox.setCheckState(Qt.CheckState.Checked)
+        else:
+            self.inProductionCheckBox.setCheckState(Qt.CheckState.Unchecked)
+        self.inProductionCheckBox.blockSignals(False)
 
         if self.newModelCheckBox.isChecked():
             self.setModelInfoIfExists()
@@ -854,7 +911,9 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             self.editModelHolder.setEnabled(False)
             self.operationsHolder.setEnabled(True)
             self.modelsLineEdit.setReadOnly(True)
+            self.clientsComboBox.setCurrentText(self.clientsLineEdit.text())
         else:
+            self.clientsComboBox.setCurrentIndex(-1)
             self.resetNewModelInfo()
             self.editModelHolder.setEnabled(True)
             self.newModelInfoHolder.setEnabled(False)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'MainWindowoKwRMg.ui'
+## Form generated from reading UI file 'MainWindoweoNCqv.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -402,12 +402,6 @@ class Ui_MainWindow(object):
 
         self.mainMenuLayout.addWidget(self.referencesPageBtn, 2, 0, 1, 1)
 
-        self.setDefaultOperBtn = QPushButton(self.mainMenuWidget)
-        self.setDefaultOperBtn.setObjectName(u"setDefaultOperBtn")
-        self.setDefaultOperBtn.setFocusPolicy(Qt.NoFocus)
-
-        self.mainMenuLayout.addWidget(self.setDefaultOperBtn, 2, 2, 1, 1)
-
         self.label_3 = QLabel(self.mainMenuWidget)
         self.label_3.setObjectName(u"label_3")
         self.label_3.setAlignment(Qt.AlignCenter)
@@ -460,6 +454,17 @@ class Ui_MainWindow(object):
         self.archivePageBtn.setObjectName(u"archivePageBtn")
 
         self.mainMenuLayout.addWidget(self.archivePageBtn, 4, 3, 1, 1)
+
+        self.setDefaultOperBtn = QPushButton(self.mainMenuWidget)
+        self.setDefaultOperBtn.setObjectName(u"setDefaultOperBtn")
+        self.setDefaultOperBtn.setFocusPolicy(Qt.NoFocus)
+
+        self.mainMenuLayout.addWidget(self.setDefaultOperBtn, 3, 2, 1, 1)
+
+        self.setProductionPageBtn = QPushButton(self.mainMenuWidget)
+        self.setProductionPageBtn.setObjectName(u"setProductionPageBtn")
+
+        self.mainMenuLayout.addWidget(self.setProductionPageBtn, 2, 2, 1, 1)
 
 
         self.verticalLayout_10.addLayout(self.mainMenuLayout)
@@ -555,7 +560,6 @@ class Ui_MainWindow(object):
         self.paymentsPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0447\u0438\u0441\u043b\u0435\u043d\u0438\u044f", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"\u041b\u0438\u0441\u0442\u043e\u0432\u0435 \u0437\u0430 \u0432\u0440\u0435\u043c\u0435", None))
         self.referencesPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u0421\u043f\u0440\u0430\u0432\u043a\u0438", None))
-        self.setDefaultOperBtn.setText(QCoreApplication.translate("MainWindow", u"\u041e\u043f\u0435\u0440\u0430\u0446\u0438\u0439 \u043f\u043e \u043f\u043e\u0434\u0440\u0430\u0437\u0431\u0438\u0440\u0430\u043d\u0435", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"\u041f\u0435\u0440\u0441\u043e\u043d\u0430\u043b", None))
         self.parametersBtn.setText(QCoreApplication.translate("MainWindow", u"\u041d\u043e\u043c\u0435\u043d\u043a\u043b\u0430\u0442\u0443\u0440\u0438", None))
         self.payPerMinBtn.setText(QCoreApplication.translate("MainWindow", u"\u0417\u0430\u043f\u043b\u0430\u0449\u0430\u043d\u0435 \u0437\u0430 \u041c\u0438\u043d", None))
@@ -566,6 +570,8 @@ class Ui_MainWindow(object):
         self.setModelsOperBtn.setText(QCoreApplication.translate("MainWindow", u"\u041c\u043e\u0434\u0435\u043b\u0438 \u0438 \u041e\u043f\u0435\u0440\u0430\u0446\u0438\u0438", None))
         self.timePapersBtn.setText(QCoreApplication.translate("MainWindow", u"\u041b\u0438\u0441\u0442\u043e\u0432\u0435 \u0437\u0430 \u0432\u0440\u0435\u043c\u0435", None))
         self.archivePageBtn.setText(QCoreApplication.translate("MainWindow", u"\u0410\u0440\u0445\u0438\u0432\u0438\u0440\u0430\u043d\u0435", None))
+        self.setDefaultOperBtn.setText(QCoreApplication.translate("MainWindow", u"\u041e\u043f\u0435\u0440\u0430\u0446\u0438\u0439 \u043f\u043e \u043f\u043e\u0434\u0440\u0430\u0437\u0431\u0438\u0440\u0430\u043d\u0435", None))
+        self.setProductionPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u041c\u043e\u0434\u0435\u043b\u0438 \u0437\u0430 \u043f\u0440\u043e\u0438\u0437\u0432\u043e\u0434\u0441\u0442\u0432\u043e", None))
         self.footerLabel_2.setText(QCoreApplication.translate("MainWindow", u"Author: Filip Chaushev   Dev v0.1.030", None))
         self.pageBtn.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
     # retranslateUi

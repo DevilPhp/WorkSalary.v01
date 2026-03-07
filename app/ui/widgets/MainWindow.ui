@@ -764,16 +764,6 @@ QPushButton:hover {
                   </property>
                  </widget>
                 </item>
-                <item row="2" column="2">
-                 <widget class="QPushButton" name="setDefaultOperBtn">
-                  <property name="focusPolicy">
-                   <enum>Qt::NoFocus</enum>
-                  </property>
-                  <property name="text">
-                   <string>Операций по подразбиране</string>
-                  </property>
-                 </widget>
-                </item>
                 <item row="0" column="1">
                  <widget class="QLabel" name="label_3">
                   <property name="text">
@@ -850,6 +840,23 @@ QPushButton:hover {
                  <widget class="QPushButton" name="archivePageBtn">
                   <property name="text">
                    <string>Архивиране</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="2">
+                 <widget class="QPushButton" name="setDefaultOperBtn">
+                  <property name="focusPolicy">
+                   <enum>Qt::NoFocus</enum>
+                  </property>
+                  <property name="text">
+                   <string>Операций по подразбиране</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="2">
+                 <widget class="QPushButton" name="setProductionPageBtn">
+                  <property name="text">
+                   <string>Модели за производство</string>
                   </property>
                  </widget>
                 </item>
