@@ -122,41 +122,6 @@ class CustomProductionWidget(QWidget, Ui_customProductionWidget):
                 self.productionModel.appendRow(row)
                 count += 1
 
-        # self.payPerMinModel.setRowCount(0)
-        # count = 1
-        # # row = []
-        # for payPerMin in data:
-        #     idCell = QStandardItem(str(count))
-        #     idCell.setData(payPerMin['id'], Qt.ItemDataRole.UserRole)
-        #
-        #     activeCell = QStandardItem()
-        #     activeCell.setCheckable(True)
-        #
-        #     if payPerMin['active']:
-        #         activeCell.setCheckState(Qt.CheckState.Checked)
-        #         activeCell.setData('Активно', Qt.ItemDataRole.DisplayRole)
-        #         activeCell.setData(payPerMin['id'], Qt.ItemDataRole.UserRole)
-        #         self.checkedItemRow = count - 1
-        #     else:
-        #         activeCell.setCheckState(Qt.CheckState.Unchecked)
-        #         activeCell.setData('Неактивно', Qt.ItemDataRole.DisplayRole)
-        #         activeCell.setData(payPerMin['id'], Qt.ItemDataRole.UserRole)
-        #
-        #     row = [
-        #         idCell,
-        #         QStandardItem(str(payPerMin['valueLeva'])),
-        #         QStandardItem(str(round(payPerMin['valueEUR'], 4))),
-        #         QStandardItem(str(round(payPerMin['levaPerEuro'], 5))),
-        #         activeCell,
-        #         QStandardItem(payPerMin['dateActive']),
-        #         QStandardItem(payPerMin['lastUpdated']),
-        #         QStandardItem(payPerMin['updatedBy']),
-        #         QStandardItem(payPerMin['comment'])
-        #     ]
-        #     self.payPerMinModel.appendRow(row)
-        #     count += 1
-
-
     def setModelYears(self):
         modelYears = Ms.getModelsYearsForClient(self.clientsName[self.clientsComboBox.currentText()])
         sortedModelYears = sorted(modelYears, key=lambda x: int(x))

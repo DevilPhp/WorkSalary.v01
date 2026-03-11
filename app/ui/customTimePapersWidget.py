@@ -231,10 +231,14 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         if action == deleteAction:
             selectedIds = []
             selectedOperations = []
-            selectedRow = self.timePapersForDayTableView.selectionModel().selectedRows(0)
+            selectedRows = self.timePapersForDayTableView.selectionModel().selectedRows(0)
             selectedOper = self.timePapersForDayTableView.selectionModel().selectedRows(4)
             selectedOvertimesAndHorlis = self.timePapersForDayTableView.selectionModel().selectedRows(2)
-            for selectedRow in selectedRow:
+            for selectedRow in selectedRows:
+                print(selectedRow.data(Qt.ItemDataRole.DisplayRole))
+                print(selectedRow.data(Qt.ItemDataRole.UserRole))
+                print(self.tableTimePapersModel.item(selectedRow.row(), 2).data(Qt.ItemDataRole.DisplayRole))
+                return
                 if self.tableTimePapersModel.item(selectedRow.row(), 2).text() == 'Почасова работа':
                     key = f'{selectedRow.data(Qt.ItemDataRole.UserRole)}_hourlyPay'
                 elif self.tableTimePapersModel.item(selectedRow.row(), 2).text() == 'Извънредна работа':
