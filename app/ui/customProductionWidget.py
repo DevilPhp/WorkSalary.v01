@@ -1,9 +1,10 @@
-from PySide6.QtCore import Signal
+from PySide6.QtCore import Signal, QRect, Qt
 from PySide6.QtGui import QStandardItemModel, QStandardItem
 
+from app.ui.addingCehoveDialog import CustomWorkingPlaceDialog
 from app.ui.messagesManager import MessageManager as MM
 from app.ui.widgets.ui_customProductionWidget import *
-from app.models.tableModel import CustomTableViewWithMultiSelection
+from app.models.tableModel import CustomTableViewWithMultiSelection, ButtonDelegation
 from app.models.sortingModel import CaseInsensitiveProxyModel
 from app.services.modelServices import ModelService as Ms
 from app.utils.utils import Utils
@@ -23,19 +24,20 @@ class CustomProductionWidget(QWidget, Ui_customProductionWidget):
 
         self.clientsName = {}
         self.clientModels = None
+        self.currentId = None
 
         self.productionTableView = CustomTableViewWithMultiSelection(singleSelection=True)
         self.productionTableHolder.layout().addWidget(self.productionTableView)
 
         self.productionModel = QStandardItemModel()
-        self.productionTableHeaderNames = ['ID', 'ПоръчкаNo', 'Активен', 'В Произв.', 'Файн',
+        self.productionTableHeaderNames = ['ID', 'ПоръчкаNo', 'Активен', 'В Произв.', 'Цехове', 'Файн',
                                            'Статус', 'Бройки', 'Създаден', 'Крайна Дата', 'Коментар']
         for i, header in enumerate(self.productionTableHeaderNames):
             self.productionModel.setHorizontalHeaderItem(i, QStandardItem(header))
             self.productionModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignLeft)
             self.productionModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignVCenter)
 
-        self.proxyModelProduction = CaseInsensitiveProxyModel(numericColumns=[0, 4, 6], dateColumns=[7, 8], parent=self)
+        self.proxyModelProduction = CaseInsensitiveProxyModel(numericColumns=[0, 5, 7], dateColumns=[8, 9], parent=self)
         self.proxyModelProduction.setSourceModel(self.productionModel)
         self.productionTableView.setModel(self.proxyModelProduction)
         self.productionTableView.setSortingEnabled(True)
@@ -46,12 +48,30 @@ class CustomProductionWidget(QWidget, Ui_customProductionWidget):
 
         self.setUpClientsComboBox()
 
+        self.buttonDelegate = ButtonDelegation(self.productionTableView)
+        self.buttonDelegate.clickedRow.connect(self.handleButtonClick)
+
         self.clientsComboBox.currentIndexChanged.connect(self.setModelYears)
         self.yearComboBox.currentIndexChanged.connect(self.refreshProductionTable)
         self.productionModel.itemChanged.connect(self.updateProductionModel)
 
         self.closeBtn.clicked.connect(self.close)
         self.logoutBtn.clicked.connect(self.logout)
+
+    def handleButtonClick(self, row):
+        model = self.productionTableView.model()
+        self.currentId = model.index(row, 0).data(Qt.ItemDataRole.UserRole)
+        modelName = model.index(row, 1).data(Qt.ItemDataRole.DisplayRole)
+        existingWorkPlaces = Ms.getExistingWorkingPlaces(self.currentId)
+        dialog = CustomWorkingPlaceDialog(modelName, existingWorkPlaces)
+        dialog.workPlaces.connect(self.setWorkingPlaces)
+        dialog.exec_()
+
+    def setWorkingPlaces(self, workingPlaces):
+        if Ms.addWorkingPlace(self.currentId, workingPlaces):
+            MM.showOnWidget(self, 'Успешно добавени работни места', 'success')
+        else:
+            MM.showOnWidget(self, 'Грешка при добавяне на работни места', 'error')
 
     def updateProductionModel(self, item):
         if item.column() == 2:
@@ -111,6 +131,7 @@ class CustomProductionWidget(QWidget, Ui_customProductionWidget):
                     QStandardItem(model),
                     activeCell,
                     inProductionCell,
+                    QStandardItem(),
                     QStandardItem(str(value[3])),
                     QStandardItem(str(value[4])),
                     QStandardItem(str(value[5])),
@@ -121,6 +142,7 @@ class CustomProductionWidget(QWidget, Ui_customProductionWidget):
 
                 self.productionModel.appendRow(row)
                 count += 1
+            self.productionTableView.setItemDelegateForColumn(4, self.buttonDelegate)
 
     def setModelYears(self):
         modelYears = Ms.getModelsYearsForClient(self.clientsName[self.clientsComboBox.currentText()])

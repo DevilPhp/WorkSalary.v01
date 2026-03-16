@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'operToModelTypeCustomWidgetFlAhDI.ui'
+## Form generated from reading UI file 'operToModelTypeCustomWidgetILyqLC.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -25,7 +25,7 @@ class Ui_customWidgetForModelOper(object):
     def setupUi(self, customWidgetForModelOper):
         if not customWidgetForModelOper.objectName():
             customWidgetForModelOper.setObjectName(u"customWidgetForModelOper")
-        customWidgetForModelOper.resize(994, 677)
+        customWidgetForModelOper.resize(994, 679)
         customWidgetForModelOper.setMinimumSize(QSize(800, 580))
         customWidgetForModelOper.setStyleSheet(u"*{\n"
 "	background-color: #dfdfdf;\n"
@@ -99,6 +99,10 @@ class Ui_customWidgetForModelOper(object):
 "	font-size: 10pt;\n"
 "}\n"
 "\n"
+"#modelWorkPlacesBtn {\n"
+"	padding: 3px;\n"
+"}\n"
+"\n"
 "QComboBox{\n"
 "	background-color: #dfdfdf;\n"
 "	border-bottom: 2px solid #7c9399;\n"
@@ -124,10 +128,10 @@ class Ui_customWidgetForModelOper(object):
 "}\n"
 "QComboBox::item{\n"
 "	color: #324b4c;\n"
-"	font: 600 8pt \"Segoe UI\";\n"
+"	font: 600 8"
+                        "pt \"Segoe UI\";\n"
 "	height: 10px;  \n"
-"	border: 4px s"
-                        "olid transparent;\n"
+"	border: 4px solid transparent;\n"
 "	padding: 0px 4px 0px 4px;\n"
 "}")
         self.verticalLayout = QVBoxLayout(customWidgetForModelOper)
@@ -520,6 +524,11 @@ class Ui_customWidgetForModelOper(object):
 
         self.newModelLayout.addWidget(self.machineGaugeLineEdit, 2, 3, 1, 1)
 
+        self.modelWorkPlacesBtn = QPushButton(self.modelInfoWidget)
+        self.modelWorkPlacesBtn.setObjectName(u"modelWorkPlacesBtn")
+
+        self.newModelLayout.addWidget(self.modelWorkPlacesBtn, 3, 0, 1, 1)
+
 
         self.verticalLayout_11.addLayout(self.newModelLayout)
 
@@ -744,6 +753,7 @@ class Ui_customWidgetForModelOper(object):
         self.actualCheckBox.setText("")
         self.label_6.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041c\u0430\u0448\u0438\u043d\u0430/\u0426\u0435\u0445", None))
         self.label_9.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0411\u0440\u043e\u0439", None))
+        self.modelWorkPlacesBtn.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u0426\u0435\u0445\u043e\u0435\u0432", None))
         self.label_15.setText(QCoreApplication.translate("customWidgetForModelOper", u"\u041a\u043e\u0440\u0435\u043a\u0446\u0438\u044f \u043d\u0430 \u043b\u0438\u0441\u0442\u043e\u0432\u0435 \u0437\u0430 \u0432\u0440\u0435\u043c\u0435", None))
         self.effectChangesComboBox.setItemText(0, QCoreApplication.translate("customWidgetForModelOper", u"\u042f\u043d\u0443\u0430\u0440\u0438", None))
         self.effectChangesComboBox.setItemText(1, QCoreApplication.translate("customWidgetForModelOper", u"\u0424\u0435\u0432\u0440\u0443\u0430\u0440\u0438", None))

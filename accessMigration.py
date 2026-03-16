@@ -48,7 +48,7 @@ def fetch_access_data(table_name):
         # & (df['LastModified'] >= '2025-01-01 00:00:00')
     elif table_name == "Обща" or table_name == "Дневник за часове":
         df = pd.read_sql(f'''SELECT * FROM "{table_name}" ORDER BY {"WorkDayID"}''', conn)
-        df = df[df['Дата'] >= '2025-12-01 00:00:00']
+        df = df[df['Дата'] >= '2026-01-01 00:00:00']
     else:
         df = pd.read_sql(f'''SELECT * FROM "{table_name}"''', conn)
 
@@ -380,6 +380,9 @@ def addTimePaper(timePaperData):
     check = []
     try:
         for workDayId, data in timePaperData.items():
+            # print(data['Date'])
+            # if data['Date'].date() == datetime.strptime('2026-02-24', '%Y-%m-%d').date():
+            # return
             # if data['WeekDay'] > 5:
             #     paymentRatio = 1.75
             # else:
@@ -434,6 +437,10 @@ def addTimePaper(timePaperData):
                             # print(operation.id, operation.Операция, operation.TimeForOper)
                             operTime = timePaperData[workDayId][f'{operations} :TP'][index][0]
                             operPieces = timePaperData[workDayId][f'{operations} :TP'][index][1]
+
+                            if operTime == 0 and operPieces > 0:
+                                operTime = round(operation.TimeForOper * operPieces, 2)
+
                             # operNightMins = 0
 
                             # if currentShiftNightMins > 0:
@@ -458,7 +465,7 @@ def addTimePaper(timePaperData):
                             newTimePaper.TotalHours = round(newTimePaper.TotalHours + operTime, 2)
 
                             newTimePaperOperation.productionModelOperations.ProducedPieces += int(operPieces)
-
+                            # print(orderId.id, operTime)
             # hourlyNightMins = 0
 
             if data['HourlyPaid']:

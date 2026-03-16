@@ -140,6 +140,9 @@ class Utils:
         if isinstance(startTime, QTime) and isinstance(endTime, QTime):
             startTime = Utils.convertQtimeToTime(startTime)
             endTime = Utils.convertQtimeToTime(endTime)
+        if isinstance(startTime, str) and isinstance(endTime, str):
+            startTime = datetime.strptime(startTime, "%H:%M").time()
+            endTime = datetime.strptime(endTime, "%H:%M").time()
 
         # Anchor everything to an arbitrary reference date
         DefaultDay = date(2000, 1, 1)

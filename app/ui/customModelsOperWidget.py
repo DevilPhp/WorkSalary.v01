@@ -13,6 +13,7 @@ from app.services.operationServices import OperationsServices as OpS
 from app.services.modelServices import ModelService as Ms
 from app.utils.utils import Utils
 from app.models.customLineEditWidget import CustomLineEdit
+from app.ui.addingCehoveDialog import CustomWorkingPlaceDialog
 import datetime
 
 
@@ -59,6 +60,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.modelNames = {}
         self.comboBoxItems = {}
         self.modelExistingOperations = []
+        self.existingWorkPlaces = []
         self.removedOperations = []
         self.newModelOperations = []
         self.changedOperTimes = {}
@@ -106,11 +108,32 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
         self.forModelLineEdit.editingFinished.connect(self.forModelLineEditChange)
         self.deleteModelBtn.clicked.connect(self.deleteModel)
         self.inProductionCheckBox.stateChanged.connect(self.updateInProduction)
+        self.modelWorkPlacesBtn.clicked.connect(self.showWorkingPlaces)
 
         self.clientsLineEdit.setFocus()
 
         self.closeBtn.clicked.connect(self.close)
         self.logoutBtn.clicked.connect(self.logout)
+
+    def showWorkingPlaces(self):
+        if self.modelsLineEdit.text() == '':
+            self.existingWorkPlaces.clear()
+        if self.newModelLineEdit.text() != '':
+            modelName = self.newModelLineEdit.text()
+        elif self.modelsLineEdit.text() != '':
+            if not self.existingWorkPlaces:
+                modelId = self.modelNames[self.modelsLineEdit.text()][0]
+                self.existingWorkPlaces = Ms.getExistingWorkingPlaces(modelId)
+            modelName = self.modelsLineEdit.text()
+        else:
+            modelName = 'Не е избрана модел'
+        dialog = CustomWorkingPlaceDialog(modelName, self.existingWorkPlaces)
+        dialog.workPlaces.connect(self.updateWorkingPlaces)
+        dialog.exec_()
+
+    def updateWorkingPlaces(self, workPlaces):
+        self.existingWorkPlaces = workPlaces
+        # print(workPlaces)
 
     def updateInProduction(self):
         modelId = self.modelNames[self.modelsLineEdit.text()][0]
@@ -394,6 +417,7 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             self.forModelLineEdit.clear()
 
     def forModelLineEditChange(self):
+        self.existingWorkPlaces.clear()
         selectedText = self.forModelLineEdit.text()
         if selectedText in self.modelsForGroup:
             operationsForModel = OpS.getOperationsForModel(selectedText.split(' - ')[0])
@@ -577,6 +601,8 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
             }
             if self.isNewModel:
                 newModelAdded = Ms.addNewModel(self.newModel, self.addOperationsForNewModel)
+                if self.existingWorkPlaces:
+                    Ms.addWorkingPlace(newModelAdded[1], self.existingWorkPlaces)
                 self.modelsForGroup = Ms.getForModelsGroups()
             else:
                 if self.checkOperations():
@@ -586,20 +612,22 @@ class CustomWidgetForModelOper(QWidget, Ui_customWidgetForModelOper):
                                                   self.modelNames[self.modelsLineEdit.text()][0])
                     newModelAdded = Ms.updateModel(self.newModel, None,
                                                    self.addOperationsForNewModel, self.removedOperations, None)
+                    if self.existingWorkPlaces:
+                        Ms.addWorkingPlace(self.modelNames[self.modelsLineEdit.text()][0], self.existingWorkPlaces)
                     self.changedOperTimes.clear()
                 else:
                     self.selectModel()
                     return
             if newModelAdded:
                 if self.isNewModel:
-                    message = f'Успешно добавен нов модел: {newModelAdded}'
+                    message = f'Успешно добавен нов модел: {newModelAdded[0]}'
                 else:
                     message = f'Успешно редактиран модел: {self.modelsLineEdit.text()}'
 
                 MessageManager.showOnWidget(self, message,
                                             'success')
                 self.resetInformation()
-
+                self.existingWorkPlaces.clear()
 
             else:
                 MessageManager.showOnWidget(self, 'Неуспешно добавен модел!', 'error')

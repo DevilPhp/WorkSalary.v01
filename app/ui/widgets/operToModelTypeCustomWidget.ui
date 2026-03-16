@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>994</width>
-    <height>677</height>
+    <height>679</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -89,6 +89,10 @@ QLineEdit {
 
 #usernameLabel {
 	font-size: 10pt;
+}
+
+#modelWorkPlacesBtn {
+	padding: 3px;
 }
 
 QComboBox{
@@ -899,6 +903,13 @@ QComboBox::item{
                            <width>150</width>
                            <height>16777215</height>
                           </size>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="3" column="0">
+                        <widget class="QPushButton" name="modelWorkPlacesBtn">
+                         <property name="text">
+                          <string>Цехоев</string>
                          </property>
                         </widget>
                        </item>

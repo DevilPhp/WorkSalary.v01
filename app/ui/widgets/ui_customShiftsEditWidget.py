@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customShiftsEditWidgetvKARZL.ui'
+## Form generated from reading UI file 'customShiftsEditWidgetdtyTQg.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -15,9 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
-    QLabel, QLineEdit, QPushButton, QScrollArea,
-    QSizePolicy, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QFrame, QGridLayout,
+    QHBoxLayout, QLabel, QLineEdit, QPushButton,
+    QScrollArea, QSizePolicy, QVBoxLayout, QWidget)
 import resources_rc
 
 class Ui_customWorkingShiftsWidget(object):
@@ -252,21 +252,6 @@ class Ui_customWorkingShiftsWidget(object):
         self.newModelLayout = QGridLayout()
         self.newModelLayout.setSpacing(10)
         self.newModelLayout.setObjectName(u"newModelLayout")
-        self.workingShiftsNameLineEdit = QLineEdit(self.widget_6)
-        self.workingShiftsNameLineEdit.setObjectName(u"workingShiftsNameLineEdit")
-
-        self.newModelLayout.addWidget(self.workingShiftsNameLineEdit, 0, 1, 1, 1)
-
-        self.label_7 = QLabel(self.widget_6)
-        self.label_7.setObjectName(u"label_7")
-
-        self.newModelLayout.addWidget(self.label_7, 0, 2, 1, 1)
-
-        self.label_10 = QLabel(self.widget_6)
-        self.label_10.setObjectName(u"label_10")
-
-        self.newModelLayout.addWidget(self.label_10, 1, 2, 1, 1)
-
         self.widget_3 = QWidget(self.widget_6)
         self.widget_3.setObjectName(u"widget_3")
         self.horizontalLayout_6 = QHBoxLayout(self.widget_3)
@@ -287,20 +272,53 @@ class Ui_customWorkingShiftsWidget(object):
 
         self.newModelLayout.addWidget(self.widget_3, 1, 1, 1, 1, Qt.AlignLeft)
 
-        self.label_5 = QLabel(self.widget_6)
-        self.label_5.setObjectName(u"label_5")
+        self.label_10 = QLabel(self.widget_6)
+        self.label_10.setObjectName(u"label_10")
 
-        self.newModelLayout.addWidget(self.label_5, 0, 0, 1, 1)
+        self.newModelLayout.addWidget(self.label_10, 1, 2, 1, 1)
 
-        self.shiftTotalMins = QLabel(self.widget_6)
-        self.shiftTotalMins.setObjectName(u"shiftTotalMins")
+        self.shiftEndWidget = QWidget(self.widget_6)
+        self.shiftEndWidget.setObjectName(u"shiftEndWidget")
+        self.horizontalLayout_9 = QHBoxLayout(self.shiftEndWidget)
+        self.horizontalLayout_9.setSpacing(5)
+        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
+        self.horizontalLayout_9.setContentsMargins(0, 0, 0, 0)
+        self.shiftEndEditWidget = QWidget(self.shiftEndWidget)
+        self.shiftEndEditWidget.setObjectName(u"shiftEndEditWidget")
+        self.horizontalLayout_10 = QHBoxLayout(self.shiftEndEditWidget)
+        self.horizontalLayout_10.setSpacing(0)
+        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
+        self.horizontalLayout_10.setContentsMargins(0, 0, 0, 0)
 
-        self.newModelLayout.addWidget(self.shiftTotalMins, 0, 7, 1, 1)
+        self.horizontalLayout_9.addWidget(self.shiftEndEditWidget)
+
+        self.label_15 = QLabel(self.shiftEndWidget)
+        self.label_15.setObjectName(u"label_15")
+
+        self.horizontalLayout_9.addWidget(self.label_15)
+
+
+        self.newModelLayout.addWidget(self.shiftEndWidget, 1, 3, 1, 1)
 
         self.label = QLabel(self.widget_6)
         self.label.setObjectName(u"label")
 
         self.newModelLayout.addWidget(self.label, 1, 0, 1, 1)
+
+        self.workingShiftsNameLineEdit = QLineEdit(self.widget_6)
+        self.workingShiftsNameLineEdit.setObjectName(u"workingShiftsNameLineEdit")
+
+        self.newModelLayout.addWidget(self.workingShiftsNameLineEdit, 0, 1, 1, 1)
+
+        self.label_5 = QLabel(self.widget_6)
+        self.label_5.setObjectName(u"label_5")
+
+        self.newModelLayout.addWidget(self.label_5, 0, 0, 1, 1)
+
+        self.label_7 = QLabel(self.widget_6)
+        self.label_7.setObjectName(u"label_7")
+
+        self.newModelLayout.addWidget(self.label_7, 0, 2, 1, 1)
 
         self.shiftStartWidget = QWidget(self.widget_6)
         self.shiftStartWidget.setObjectName(u"shiftStartWidget")
@@ -325,38 +343,34 @@ class Ui_customWorkingShiftsWidget(object):
 
         self.newModelLayout.addWidget(self.shiftStartWidget, 0, 3, 1, 1)
 
-        self.label_21 = QLabel(self.widget_6)
+        self.widget_7 = QWidget(self.widget_6)
+        self.widget_7.setObjectName(u"widget_7")
+        self.horizontalLayout_13 = QHBoxLayout(self.widget_7)
+        self.horizontalLayout_13.setSpacing(5)
+        self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
+        self.horizontalLayout_13.setContentsMargins(0, 0, 0, 0)
+        self.label_21 = QLabel(self.widget_7)
         self.label_21.setObjectName(u"label_21")
 
-        self.newModelLayout.addWidget(self.label_21, 0, 6, 1, 1)
+        self.horizontalLayout_13.addWidget(self.label_21)
 
-        self.label_27 = QLabel(self.widget_6)
+        self.shiftTotalMins = QLabel(self.widget_7)
+        self.shiftTotalMins.setObjectName(u"shiftTotalMins")
+
+        self.horizontalLayout_13.addWidget(self.shiftTotalMins)
+
+        self.label_27 = QLabel(self.widget_7)
         self.label_27.setObjectName(u"label_27")
 
-        self.newModelLayout.addWidget(self.label_27, 0, 8, 1, 1)
-
-        self.shiftEndWidget = QWidget(self.widget_6)
-        self.shiftEndWidget.setObjectName(u"shiftEndWidget")
-        self.horizontalLayout_9 = QHBoxLayout(self.shiftEndWidget)
-        self.horizontalLayout_9.setSpacing(5)
-        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
-        self.horizontalLayout_9.setContentsMargins(0, 0, 0, 0)
-        self.shiftEndEditWidget = QWidget(self.shiftEndWidget)
-        self.shiftEndEditWidget.setObjectName(u"shiftEndEditWidget")
-        self.horizontalLayout_10 = QHBoxLayout(self.shiftEndEditWidget)
-        self.horizontalLayout_10.setSpacing(0)
-        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
-        self.horizontalLayout_10.setContentsMargins(0, 0, 0, 0)
-
-        self.horizontalLayout_9.addWidget(self.shiftEndEditWidget)
-
-        self.label_15 = QLabel(self.shiftEndWidget)
-        self.label_15.setObjectName(u"label_15")
-
-        self.horizontalLayout_9.addWidget(self.label_15)
+        self.horizontalLayout_13.addWidget(self.label_27)
 
 
-        self.newModelLayout.addWidget(self.shiftEndWidget, 1, 3, 1, 1)
+        self.newModelLayout.addWidget(self.widget_7, 0, 6, 1, 1)
+
+        self.isNewShiftCheckBox = QCheckBox(self.widget_6)
+        self.isNewShiftCheckBox.setObjectName(u"isNewShiftCheckBox")
+
+        self.newModelLayout.addWidget(self.isNewShiftCheckBox, 1, 6, 1, 1)
 
 
         self.verticalLayout_3.addLayout(self.newModelLayout)
@@ -417,7 +431,7 @@ class Ui_customWorkingShiftsWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 788, 419))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 788, 418))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -449,17 +463,18 @@ class Ui_customWorkingShiftsWidget(object):
         self.userIcon.setText("")
         self.usernameLabel.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"admin", None))
         self.logoutBtn.setText("")
-        self.label_7.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"\u041d\u0430\u0447\u0430\u043b\u043e:", None))
-        self.label_10.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"\u041a\u0440\u0430\u0439:", None))
         self.shiftBreakLineEdit.setPlaceholderText(QCoreApplication.translate("customWorkingShiftsWidget", u"60", None))
         self.label_2.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"\u043c\u0438\u043d.", None))
-        self.label_5.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"\u0421\u043c\u044f\u043d\u0430:", None))
-        self.shiftTotalMins.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"480", None))
+        self.label_10.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"\u041a\u0440\u0430\u0439:", None))
+        self.label_15.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"\u0447.", None))
         self.label.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"\u041f\u043e\u043a\u0438\u0432\u043a\u0430:", None))
+        self.label_5.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"\u0421\u043c\u044f\u043d\u0430:", None))
+        self.label_7.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"\u041d\u0430\u0447\u0430\u043b\u043e:", None))
         self.label_14.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"\u0447.", None))
         self.label_21.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"\u041e\u0431\u0449\u043e:", None))
+        self.shiftTotalMins.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"480", None))
         self.label_27.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"\u043c\u0438\u043d.", None))
-        self.label_15.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"\u0447.", None))
+        self.isNewShiftCheckBox.setText(QCoreApplication.translate("customWorkingShiftsWidget", u"\u041d\u043e\u0432\u0430 \u0441\u043c\u044f\u043d\u0430", None))
         self.acceptWorkingShiftsBtn.setText("")
     # retranslateUi
 

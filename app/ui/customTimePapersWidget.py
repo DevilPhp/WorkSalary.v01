@@ -231,37 +231,49 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         if action == deleteAction:
             selectedIds = []
             selectedOperations = []
-            selectedRows = self.timePapersForDayTableView.selectionModel().selectedRows(0)
-            selectedOper = self.timePapersForDayTableView.selectionModel().selectedRows(4)
-            selectedOvertimesAndHorlis = self.timePapersForDayTableView.selectionModel().selectedRows(2)
-            for selectedRow in selectedRows:
-                print(selectedRow.data(Qt.ItemDataRole.DisplayRole))
-                print(selectedRow.data(Qt.ItemDataRole.UserRole))
-                print(self.tableTimePapersModel.item(selectedRow.row(), 2).data(Qt.ItemDataRole.DisplayRole))
-                return
-                if self.tableTimePapersModel.item(selectedRow.row(), 2).text() == 'Почасова работа':
-                    key = f'{selectedRow.data(Qt.ItemDataRole.UserRole)}_hourlyPay'
-                elif self.tableTimePapersModel.item(selectedRow.row(), 2).text() == 'Извънредна работа':
-                    key = f'{selectedRow.data(Qt.ItemDataRole.UserRole)}_overtimePay'
+            selectedProxyRows = self.timePapersForDayTableView.selectionModel().selectedRows(2)
+            processedRows = set()
+
+            for selectedProxyRow in selectedProxyRows:
+                sourceIndex = self.proxyModelWorkers.mapToSource(selectedProxyRow)
+                selectedRow = sourceIndex.row()
+
+                if selectedRow in processedRows:
+                    continue
+                processedRows.add(selectedRow)
+
+                timePaperColumn = self.tableTimePapersModel.item(selectedRow, 0)
+                operationColumn = self.tableTimePapersModel.item(selectedRow, 2)
+                operationNameColumn = self.tableTimePapersModel.item(selectedRow, 4)
+
+                operationId = timePaperColumn.data(Qt.ItemDataRole.UserRole)
+                operTypeName = operationColumn.data(Qt.ItemDataRole.DisplayRole)
+                operName = operationNameColumn.data(Qt.ItemDataRole.DisplayRole)
+
+                if operTypeName == 'Почасова работа':
+                    key = f'{operationId}_hourlyPay'
+                    selectedOperations.append(operTypeName)
+                elif operTypeName == 'Извънредна работа':
+                    key = f'{operationId}_overtimePay'
+                    selectedOperations.append(operTypeName)
                 else:
-                    key = f'{selectedRow.data(Qt.ItemDataRole.UserRole)}_operation'
+                    key = f'{operationId}_operation'
+                    selectedOperations.append(operName)
+
                 selectedIds.append(key)
-            for selectedOperation in selectedOper:
-                selectedOperations.append(selectedOperation.data(Qt.ItemDataRole.DisplayRole))
-            for selectedOvertimeAndHorly in selectedOvertimesAndHorlis:
-                if (selectedOvertimeAndHorly.data(Qt.ItemDataRole.DisplayRole) == 'Почасова работа' or
-                        selectedOvertimeAndHorly.data(Qt.ItemDataRole.DisplayRole) == 'Извънредна работа'):
-                    selectedOperations.append(selectedOvertimeAndHorly.data(Qt.ItemDataRole.DisplayRole))
+
             dialog = CustomYesNowDialog()
             message = 'Изтриване на:\n\n' + '\n'.join(selectedOperations)
             dialog.setMessage(name='', message=message, mode='deleting')
             result = dialog.exec()
             if result == QDialog.Accepted:
                 if WoS.deleteTimePapers(selectedIds):
-                    if self.workerNumberLineEdit.text() == '':
-                        self.refreshTimePapersForToday()
-                    else:
+                    if self.showAllCheckBox.isChecked():
+                        self.refreshTimePapersForToday(showAll=True)
+                    elif self.workerNumberLineEdit.text() != '':
                         self.refreshTimePapersForToday(int(self.workerNumberLineEdit.text()))
+                    else:
+                        self.refreshTimePapersForToday()
                     self.clearOperationInfo(False)
                     MM.showOnWidget(self, 'Успешно изтрити записи', 'success')
                 else:
@@ -634,7 +646,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         totalProdPieces = 0
         self.existingTimePapers.clear()
         self.initialCheckBoxes.clear()
-        print(currentDate)
+        # print(currentDate)
         if not currentDate:
             searchedDate = self.timePaperDateEdit.date().toString('yyyy-MM-dd')
         else:
@@ -946,7 +958,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.isOvertimeWorking.stateChanged.connect(self.toggleOvertimeWorking)
         for shift in self.workingShifts.keys():
             self.shiftNameLineEdit.addItem(shift)
-        self.shiftNameLineEdit.setCurrentIndex(0)
+        self.shiftNameLineEdit.setCurrentIndex(-1)
         Utils.setupCompleter(self.workingShifts.keys(), self.shiftNameLineEdit)
         self.shiftNameLineEdit.currentIndexChanged.connect(self.updateShiftInfo)
 

@@ -373,3 +373,14 @@ class WorkerServices:
         response = requests.get(f'{API_SERVER}/worker/get_working_shifts').json()
         return response['data']
 
+    @staticmethod
+    @handle_api_connection
+    def getWorkingPlaces():
+        response = requests.get(f'{API_SERVER}/worker/get_working_places').json()
+        if response['status'] =='success':
+            logger.info('Retrieved working places')
+            return response['data']
+        else:
+            logger.error('Failed to get working places')
+            return []
+

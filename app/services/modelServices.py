@@ -262,7 +262,7 @@ class ModelService:
                                  json={'model': newModel, 'operations': operations}).json()
         if response['status'] =='success':
             logger.info(f'New model {newModel["orderNo"]} added successfully')
-            return newModel["orderNo"]
+            return [newModel["orderNo"], response['modelId']]
         else:
             logger.error(f'Failed to add new model {newModel["orderNo"]}')
             return None
@@ -387,4 +387,27 @@ class ModelService:
             return True
         else:
             logger.error(f'Failed to save operations for model type {modelTypeId}')
+            return False
+
+    @staticmethod
+    @handle_api_connection
+    def getExistingWorkingPlaces(modelId):
+        response = requests.get(f'{API_SERVER}/model/get_existing_working_places/{modelId}').json()
+        if response['status'] == 'success':
+            logger.info('Retrieved existing working places')
+            return response['workingPlaces']
+        else:
+            logger.error('Failed to get existing working places')
+            return []
+
+    @staticmethod
+    @handle_api_connection
+    def addWorkingPlace(modelId, workingPlaces):
+        response = requests.post(f'{API_SERVER}/model/add_working_place/{modelId}',
+                                 json={'workingPlaces': workingPlaces}).json()
+        if response['status'] =='success':
+            logger.info(f'Added working place to model {modelId}')
+            return True
+        else:
+            logger.error(f'Failed to add working place to model {modelId}')
             return False

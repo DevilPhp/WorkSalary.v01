@@ -1,7 +1,8 @@
-from PySide6.QtCore import QAbstractTableModel, Qt, Signal, QItemSelection, QItemSelectionModel, QModelIndex
 import pandas as pd
 import numpy as np
-from PySide6.QtWidgets import QTableView, QAbstractItemView
+from PySide6.QtCore import QAbstractTableModel, Qt, Signal, QItemSelection, QItemSelectionModel, QModelIndex, QRect
+from PySide6.QtWidgets import (QTableView, QAbstractItemView, QStyledItemDelegate,
+                               QStyleOptionButton, QApplication, QStyle)
 from app.models.customSelectionModel import SingleMultiSelectionModel
 
 
@@ -215,3 +216,41 @@ class CustomTableViewWithMultiSelection(QTableView):
                     # self.clearFocus()
 
         super().mousePressEvent(event)
+
+
+class ButtonDelegation(QStyledItemDelegate):
+    clickedRow = Signal(int)
+    """
+    Delegate that draws a button in a table cell and detects clicks.
+    """
+    def paint(self, painter, option, index):
+        """
+        Draw the button inside the cell.
+        """
+        button = QStyleOptionButton()
+        button.rect = option.rect
+        button.text = "Цехове"
+        button.state = QStyle.State_Enabled
+
+        QApplication.style().drawControl(QStyle.CE_PushButton, button, painter)
+
+    def editorEvent(self, event, model, option, index):
+        """
+        Detect mouse clicks on the button.
+        """
+        if event.type() == event.Type.MouseButtonRelease:
+            if event.button() == Qt.LeftButton:
+                row = index.row()
+
+                # Execute your function
+                self.buttonClicked(row)
+
+        return True
+
+    def buttonClicked(self, row):
+        """
+        Custom function executed when button is clicked.
+        """
+        self.clickedRow.emit(row)
+        # print(self.currentId)
+        # print(workingPlaces)
