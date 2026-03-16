@@ -32,11 +32,6 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.usernameLabel.setText(user)
         self.user = user
 
-        # time = '1600'
-        # print(f'Current time: {time}')
-        # time = Utils.convertStringToTime(time)
-        # print(f'Converted time: {time[0]}, {time[1]}, {time[2]}')
-
         self.shiftStart = CustomLineEdit(self)
         self.shiftEnd = CustomLineEdit(self)
         self.hourlyStart = CustomLineEdit(self)
@@ -49,30 +44,29 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.timesLineEdits = [self.shiftStart, self.shiftEnd, self.hourlyStart,
                                self.hourlyEnd, self.overtimeStart, self.overtimeEnd]
 
-        self.workers = WoS.getWorkers()
-        self.models = MoS.getClientsAndModels()
+        self.workers = None
+        self.models = None
         self.overtimeWarning.setVisible(False)
         self.clientModels = {}
         self.modelOperations = {}
-        self.workingShifts = WoS.getWorkingShifts()
+        self.workingShifts = None
 
         self.setUpCustomLineEdits()
 
-        # print(self.workingShifts)
         self.workersInfo = []
         self.existingTimePapers = {}
         self.checkBoxFiltering = {}
         self.initialCheckBoxes = {}
-        self.operationsGroups = OpS.getOperationsGroups()
+        self.operationsGroups = None
         self.operationsGroupsHolder.setEnabled(False)
         self.operationsGroupsForModel = None
         self.currentModelText = None
 
         # self.setOperationsGroups()
         self.lastSelectedModel = None
-        self.setupWorkerAndModelsCompleter()
+        # self.setupWorkerAndModelsCompleter()
         self.timePaperDateEdit.setDate(QDate.currentDate())
-        self.setupWorkingTimeWidgets()
+        # self.setupWorkingTimeWidgets()
         self.timePapersForDayTableView = CustomTableViewWithMultiSelection(self, )
         self.timePaperTableHolder.layout().addWidget(self.timePapersForDayTableView)
         self.tableTimePapersModel = QStandardItemModel()
@@ -87,7 +81,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.timePapersForDayTableView.horizontalHeader().setStretchLastSection(True)
         self.timePapersForDayTableView.horizontalHeader().setMinimumWidth(80)
         self.totalWorkingMinsHolder.setVisible(False)
-        self.refreshTimePapersForToday()
+        # self.refreshTimePapersForToday()
         self.timePapersForDayTableView.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.timePapersForDayTableView.customContextMenuRequested.connect(self.showCustomContextMenu)
         self.timePapersForDayTableView.selectedRows.connect(self.showTimePaperDetails)
@@ -155,10 +149,17 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.closeBtn.clicked.connect(self.close)
         self.logoutBtn.clicked.connect(self.logout)
 
+        QTimer.singleShot(0, self.loadInitialData)
+
         # self.shiftStart.setTime(time[1])
 
-    # def test(self):
-    #     print('Double clicked')
+    def loadInitialData(self):
+        self.workers = WoS.getWorkers()
+        self.models = MoS.getClientsAndModels()
+        self.workingShifts = WoS.getWorkingShifts()
+        self.operationsGroups = OpS.getOperationsGroups()
+        self.setupWorkerAndModelsCompleter()
+        self.setupWorkingTimeWidgets()
 
     def setModelOperationTimes(self):
         if self.clientModelsLineEdit == '':
@@ -982,7 +983,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         shiftEnd = self.shiftEnd.text()
         breakTime = self.checkBreakTime()
         shiftTotalMins = int(self.shiftTotalMins.text())
-        newShift = [shiftName, shiftStart, shiftEnd, breakTime, shiftTotalMins, self.user]
+        nightMins = Utils.checkNightShiftMins(shiftStart, shiftEnd)
+        newShift = [shiftName, shiftStart, shiftEnd, breakTime, shiftTotalMins, nightMins, self.user]
         if WoS.addWorkingShift(newShift):
             self.refreshShifts()
             MM.showOnWidget(self, f'Нова смяна {shiftName} добавена успешно!', 'info')
@@ -1243,8 +1245,6 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                          hourlyEnd[0],
                          float(self.hourlyTotalMins.text())] if self.isHourlyWorking.isChecked() else None
 
-            currentShiftNightMins = Utils.checkNightShiftMins(shiftStart[1], shiftEnd[1])
-
             if int(self.workerNumberLineEdit.text()) not in self.existingTimePapers.keys():
                 dateStr = self.timePaperDateEdit.date().toString('yyyy-MM-dd')
                 date = datetime.strptime(dateStr, '%Y-%m-%d').date()
@@ -1260,7 +1260,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                     'ModelOperationId': modelOperationId,
                     'Pieces': pieces if modelOperationId else 0,
                     'WorkingTimeMinutes': modelOperationTime,
-                    'nightMins': currentShiftNightMins
+                    'nightMins': self.workingShifts[self.shiftNameLineEdit.currentText()][4]
                 }
                 timePaper = WoS.addNewTimePaperAndOperation(timePaperData)
                 if operationsGroupForAdd or copy:
@@ -1275,7 +1275,6 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                     'IsOvertime': overtime,
                     'WorkingTimeMinutes': modelOperationTime,
                     'user': self.user,
-                    'currentShiftNightMins': currentShiftNightMins,
                 }
                 dataToAdd.append(timePaperData)
         if dataToAdd:
