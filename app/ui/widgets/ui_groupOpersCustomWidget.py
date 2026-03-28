@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'groupOpersCustomWidgetTfcnjI.ui'
+## Form generated from reading UI file 'groupOpersCustomWidgetxemGrr.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -15,11 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractItemView, QAbstractScrollArea, QApplication, QCheckBox,
-    QComboBox, QFrame, QGridLayout, QHBoxLayout,
-    QHeaderView, QLabel, QLineEdit, QListView,
-    QPushButton, QSizePolicy, QTreeView, QVBoxLayout,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QFrame,
+    QGridLayout, QHBoxLayout, QLabel, QLineEdit,
+    QPushButton, QSizePolicy, QVBoxLayout, QWidget)
 import resources_rc
 
 class Ui_customWidgetGroupOpers(object):
@@ -404,25 +402,16 @@ class Ui_customWidgetGroupOpers(object):
 
         self.verticalLayout_6.addWidget(self.widget_3, 0, Qt.AlignHCenter|Qt.AlignTop)
 
-        self.widget_7 = QWidget(self.widget)
-        self.widget_7.setObjectName(u"widget_7")
-        sizePolicy1.setHeightForWidth(self.widget_7.sizePolicy().hasHeightForWidth())
-        self.widget_7.setSizePolicy(sizePolicy1)
-        self.verticalLayout_10 = QVBoxLayout(self.widget_7)
+        self.operationListViewWidget = QWidget(self.widget)
+        self.operationListViewWidget.setObjectName(u"operationListViewWidget")
+        sizePolicy1.setHeightForWidth(self.operationListViewWidget.sizePolicy().hasHeightForWidth())
+        self.operationListViewWidget.setSizePolicy(sizePolicy1)
+        self.verticalLayout_10 = QVBoxLayout(self.operationListViewWidget)
         self.verticalLayout_10.setSpacing(0)
         self.verticalLayout_10.setObjectName(u"verticalLayout_10")
         self.verticalLayout_10.setContentsMargins(0, 0, 0, 0)
-        self.operationsListView = QListView(self.widget_7)
-        self.operationsListView.setObjectName(u"operationsListView")
-        self.operationsListView.setDragEnabled(True)
-        self.operationsListView.setDragDropMode(QAbstractItemView.DragOnly)
-        self.operationsListView.setAlternatingRowColors(True)
-        self.operationsListView.setSelectionMode(QAbstractItemView.MultiSelection)
 
-        self.verticalLayout_10.addWidget(self.operationsListView)
-
-
-        self.verticalLayout_6.addWidget(self.widget_7)
+        self.verticalLayout_6.addWidget(self.operationListViewWidget)
 
 
         self.horizontalLayout_10.addWidget(self.widget)
@@ -581,20 +570,6 @@ class Ui_customWidgetGroupOpers(object):
         self.verticalLayout_9.setSpacing(0)
         self.verticalLayout_9.setObjectName(u"verticalLayout_9")
         self.verticalLayout_9.setContentsMargins(0, 0, 0, 0)
-        self.operTreeView = QTreeView(self.operViewWidget)
-        self.operTreeView.setObjectName(u"operTreeView")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Maximum)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.operTreeView.sizePolicy().hasHeightForWidth())
-        self.operTreeView.setSizePolicy(sizePolicy2)
-        self.operTreeView.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
-        self.operTreeView.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.operTreeView.setDragDropMode(QAbstractItemView.DropOnly)
-        self.operTreeView.setAlternatingRowColors(True)
-
-        self.verticalLayout_9.addWidget(self.operTreeView)
-
 
         self.verticalLayout_7.addWidget(self.operViewWidget)
 

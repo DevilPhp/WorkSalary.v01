@@ -1,5 +1,8 @@
-from PySide6.QtCore import QAbstractTableModel, Qt, Signal, QItemSelection, QItemSelectionModel
-from PySide6.QtWidgets import QTreeView, QAbstractItemView
+import json
+
+from PySide6.QtCore import QAbstractTableModel, Qt, Signal, QItemSelection, QItemSelectionModel, QMimeData
+from PySide6.QtGui import QDrag
+from PySide6.QtWidgets import QTreeView, QAbstractItemView, QListView
 
 
 class CustomTreeView(QTreeView):
@@ -132,37 +135,76 @@ class CustomTreeViewWithDrop(QTreeView):
         self.setSizeAdjustPolicy(QAbstractItemView.SizeAdjustPolicy.AdjustToContents)
         # self.doubleClicked.connect(self.doubleClickedItem)
 
-        self.setStyleSheet('''
+    def dropEvent(self, event):
+        index = self.indexAt(event.position().toPoint())
+        if not index.isValid():
+            event.ignore()
+            return
 
-                            QHeaderView:section{
-                                font: 700 9pt "Segoe UI";
-                                background-color: #dfdfdf;
-                                padding-left: 5px;
-                                padding-top:5px;
-                                padding-right:5px;
-                                selection-background-color: #7f7f7f;
-                            }
-                            QAbstractItemView{
-                                alternate-background-color: #d3d3d3;
-                                font: 8pt "Segoe UI";
-                            }
-                            QAbstractItemView:item{
-                                border-bottom: 1px solid #aeaeae;
-                            }
+        model = self.model()
+        parrentItem = model.itemFromIndex(index)
+        nodeType = parrentItem.data(Qt.ItemDataRole.UserRole + 1)
 
-                            QAbstractItemView::item:selected{
-                                background-color: rgba(198, 228, 254, 45);
-                                selection-color: #324b4c;
-                            }
-                            QAbstractItemView::item:hover{
-                                background-color: rgba(198, 228, 254, 45);
-                                selection-color: #324b4c;
-                            }
+        if parrentItem is None:
+            event.ignore()
+            return
 
-                            QTreeView::item:has-children:open {
-                                background-color: #7fd1ae;
-                            }
-                            QTreeView::branch:has-children:open {
-                                background-color: #7e7e7e;
-                            }
-                        ''')
+        if nodeType == "group" or nodeType == "struct":
+            if not event.mimeData().hasFormat("application/x-operations-json"):
+                event.ignore()
+                return
+            rawData = bytes(event.mimeData().data("application/x-operations-json")).decode("utf-8")
+            operations = json.loads(rawData)
+            for operation in operations:
+                print(operation)
+        else:
+            event.ignore()
+            return
+
+
+class CustomListViewWithDrag(QListView):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setDragEnabled(True)
+        self.setAlternatingRowColors(True)
+        self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
+        self.setSizeAdjustPolicy(QAbstractItemView.SizeAdjustPolicy.AdjustToContents)
+
+    def startDrag(self, event):
+        indexes = self.selectedIndexes()
+        if not indexes:
+            return
+        model = self.model()
+        operations = []
+        seenRows = set()
+
+        for index in indexes:
+            if index.row() in seenRows:
+                continue
+            seenRows.add(index.row())
+            item = model.itemFromIndex(index)
+
+            if item is None:
+                continue
+
+            operations.append({
+                'id': item.data(Qt.ItemDataRole.UserRole),
+                'name': item.text(),
+            })
+
+        if not operations:
+            return
+
+        print(operations)
+
+        mimeData = QMimeData()
+        mimeData.setText("\n".join(op['name'] for op in operations))
+
+        mimeData.setData(
+            'application/x-operations-json',
+            json.dumps(operations).encode('utf-8')
+        )
+
+        drag = QDrag(self)
+        drag.setMimeData(mimeData)
+        drag.exec(Qt.DropAction.CopyAction)

@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QMenu, QDialog
 from app.ui.widgets.ui_groupOpersCustomWidget import *
 from app.services.groupOperServices import GroupOperationsService as GoS
 from app.models.sortingModel import CaseInsensitiveProxyModel
-from app.models.customTreeView import CustomTreeViewWithDrop
+from app.models.customTreeView import CustomTreeViewWithDrop, CustomListViewWithDrag
 
 
 class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
@@ -24,19 +24,20 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         self.groupsOper = {}
         self.struct = {}
 
-        # self.operTreeView = CustomTreeViewWithDrop(self)
-        # self.operViewWidget.layout().addWidget(self.operTreeView)
+        self.operTreeView = CustomTreeViewWithDrop(self)
+        self.operViewWidget.layout().addWidget(self.operTreeView)
+
+        self.operationsListView = CustomListViewWithDrag(self)
+        self.operationListViewWidget.layout().addWidget(self.operationsListView)
 
         self.operTreeViewModel = QStandardItemModel()
-        self.proxyOperTreeView = CaseInsensitiveProxyModel(parent=self)
-        self.proxyOperTreeView.setSourceModel(self.operTreeViewModel)
-        self.operTreeView.setModel(self.proxyOperTreeView)
+        # self.proxyOperTreeView = CaseInsensitiveProxyModel(parent=self)
+        # self.proxyOperTreeView.setSourceModel(self.operTreeViewModel)
+        self.operTreeView.setModel(self.operTreeViewModel)
         self.operTreeView.header().hide()
 
         self.operListViewModel = QStandardItemModel()
-        self.proxyOperListView = CaseInsensitiveProxyModel(parent=self)
-        self.proxyOperListView.setSourceModel(self.operListViewModel)
-        self.operationsListView.setModel(self.proxyOperListView)
+        self.operationsListView.setModel(self.operListViewModel)
 
         QTimer.singleShot(0, self.loadInitialData)
 
@@ -102,14 +103,14 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
                 gaugeItem = QStandardItem(gauge)
                 gaugeItem.setCheckable(True)
                 gaugeItem.setData(gaugeId, Qt.ItemDataRole.UserRole)
-                item.setData("gauge", Qt.ItemDataRole.UserRole + 1)
+                gaugeItem.setData("gauge", Qt.ItemDataRole.UserRole + 1)
                 item.appendRow(gaugeItem)
 
                 for group, groupId in self.groupsOper.items():
                     groupItem = QStandardItem(group)
                     groupItem.setCheckable(True)
                     groupItem.setData(groupId, Qt.ItemDataRole.UserRole)
-                    item.setData("group", Qt.ItemDataRole.UserRole + 1)
+                    groupItem.setData("group", Qt.ItemDataRole.UserRole + 1)
                     gaugeItem.appendRow(groupItem)
 
                     if group == 'Плетене':
@@ -117,7 +118,7 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
                             structItem = QStandardItem(struct)
                             structItem.setCheckable(True)
                             structItem.setData(structId, Qt.ItemDataRole.UserRole)
-                            item.setData("struct", Qt.ItemDataRole.UserRole + 1)
+                            structItem.setData("struct", Qt.ItemDataRole.UserRole + 1)
                             groupItem.appendRow(structItem)
 
     def logout(self):
