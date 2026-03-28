@@ -26,6 +26,7 @@ from app.ui.customPayPerMinWidget import CustomPayPerMinWidget
 from app.ui.customParametersWidget import CustomParametersWidget
 from app.ui.customArchiveWidget import CustomArchiveWidget
 from app.ui.customProductionWidget import CustomProductionWidget
+from app.ui.customGroupOperWidget import CustomGroupOperWidget
 import requests
 from config import API_SERVER
 
@@ -56,6 +57,7 @@ class MainWindow(QMainWindow):
         self.parametersPage = None
         self.archivePage = None
         self.productionPage = None
+        self.groupOperPage = None
         self.workerPaymentsDetails = {}
         self.openedWindows = []
         self.clipboardData = QApplication.clipboard()
@@ -81,6 +83,7 @@ class MainWindow(QMainWindow):
         self.ui.parametersBtn.clicked.connect(self.setParametersPage)
         self.ui.archivePageBtn.clicked.connect(self.setArchivePage)
         self.ui.setProductionPageBtn.clicked.connect(self.setProductionPage)
+        self.ui.groupOpersPageBtn.clicked.connect(self.setGroupOperPage)
 
         self.ui.closeBtn.clicked.connect(self.close)
         self.ui.logoutBtn.clicked.connect(lambda: self.logout(True))
@@ -148,6 +151,9 @@ class MainWindow(QMainWindow):
     def resetPayPerMinPage(self):
         self.payPerMinPage = None
 
+    def resetGroupOperPage(self):
+        self.groupOperPage = None
+
     def removeWorkerPaymentsDetails(self, workerId):
         if workerId in self.workerPaymentsDetails:
             del self.workerPaymentsDetails[workerId]
@@ -163,6 +169,18 @@ class MainWindow(QMainWindow):
             subWindow.setWidget(newWindow)
             self.ui.mainWindowsArea.addSubWindow(subWindow)
             subWindow.show()
+
+    def setGroupOperPage(self):
+        if self.groupOperPage is None:
+            if self.checkForServerConnection():
+                self.groupOperPage = CustomGroupOperWidget(self, self.user)
+                self.groupOperPage.show()
+                self.groupOperPage.destroyed.connect(self.resetGroupOperPage)
+                self.groupOperPage.logoutSignal.connect(self.logout)
+            else:
+                self.logout(True)
+        else:
+            self.groupOperPage.activateWindow()
 
     def setProductionPage(self):
         if self.productionPage is None:
@@ -336,7 +354,8 @@ class MainWindow(QMainWindow):
                 self.payPerMinPage,
                 self.parametersPage,
                 self.archivePage,
-                self.productionPage
+                self.productionPage,
+                self.groupOperPage,
             ]
 
             pages.extend(self.workerPaymentsDetails.values())

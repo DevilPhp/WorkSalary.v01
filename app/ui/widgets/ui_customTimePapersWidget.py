@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customTimePapersWidgetLuCIbP.ui'
+## Form generated from reading UI file 'customTimePapersWidgetjssBpN.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -670,7 +670,7 @@ class Ui_customTimePapersWidget(object):
 
         self.shiftNameLineEdit = QComboBox(self.widget_6)
         self.shiftNameLineEdit.setObjectName(u"shiftNameLineEdit")
-        self.shiftNameLineEdit.setMinimumSize(QSize(70, 0))
+        self.shiftNameLineEdit.setMinimumSize(QSize(80, 0))
         self.shiftNameLineEdit.setEditable(True)
         self.shiftNameLineEdit.setSizeAdjustPolicy(QComboBox.AdjustToContents)
         self.shiftNameLineEdit.setIconSize(QSize(12, 12))
@@ -758,7 +758,7 @@ class Ui_customTimePapersWidget(object):
         self.timePaperDateEdit.setFrame(False)
         self.timePaperDateEdit.setAlignment(Qt.AlignCenter)
         self.timePaperDateEdit.setCorrectionMode(QAbstractSpinBox.CorrectToNearestValue)
-        self.timePaperDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 8, 26), QTime(0, 0, 0)))
+        self.timePaperDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 8, 25), QTime(0, 0, 0)))
 
         self.horizontalLayout_15.addWidget(self.timePaperDateEdit)
 

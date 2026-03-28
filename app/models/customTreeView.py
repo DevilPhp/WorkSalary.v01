@@ -115,3 +115,54 @@ class CustomTreeView(QTreeView):
                     # self.clearFocus()
 
         super().mousePressEvent(event)
+
+
+class CustomTreeViewWithDrop(QTreeView):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+        self.setSelectionBehavior(QTreeView.SelectionBehavior.SelectRows)
+        self.setSelectionMode(QTreeView.SelectionMode.ExtendedSelection)
+
+        self.setDragEnabled(True)
+        self.setDragDropMode(QAbstractItemView.DragDropMode.DropOnly)
+        self.setEditTriggers(QAbstractItemView.EditTrigger.DoubleClicked)
+        self.setAlternatingRowColors(True)
+        self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self.setSizeAdjustPolicy(QAbstractItemView.SizeAdjustPolicy.AdjustToContents)
+        # self.doubleClicked.connect(self.doubleClickedItem)
+
+        self.setStyleSheet('''
+
+                            QHeaderView:section{
+                                font: 700 9pt "Segoe UI";
+                                background-color: #dfdfdf;
+                                padding-left: 5px;
+                                padding-top:5px;
+                                padding-right:5px;
+                                selection-background-color: #7f7f7f;
+                            }
+                            QAbstractItemView{
+                                alternate-background-color: #d3d3d3;
+                                font: 8pt "Segoe UI";
+                            }
+                            QAbstractItemView:item{
+                                border-bottom: 1px solid #aeaeae;
+                            }
+
+                            QAbstractItemView::item:selected{
+                                background-color: rgba(198, 228, 254, 45);
+                                selection-color: #324b4c;
+                            }
+                            QAbstractItemView::item:hover{
+                                background-color: rgba(198, 228, 254, 45);
+                                selection-color: #324b4c;
+                            }
+
+                            QTreeView::item:has-children:open {
+                                background-color: #7fd1ae;
+                            }
+                            QTreeView::branch:has-children:open {
+                                background-color: #7e7e7e;
+                            }
+                        ''')

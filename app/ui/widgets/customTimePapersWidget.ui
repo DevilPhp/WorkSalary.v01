@@ -1115,7 +1115,7 @@ QComboBox:header{
                      <widget class="QComboBox" name="shiftNameLineEdit">
                       <property name="minimumSize">
                        <size>
-                        <width>70</width>
+                        <width>80</width>
                         <height>0</height>
                        </size>
                       </property>
@@ -1313,7 +1313,7 @@ QComboBox:header{
                    <second>0</second>
                    <year>1990</year>
                    <month>8</month>
-                   <day>26</day>
+                   <day>25</day>
                   </datetime>
                  </property>
                  <property name="displayFormat">

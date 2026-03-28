@@ -267,6 +267,7 @@ def insert_data_to_postgres_special(tablename, df):
             for start, end in zip(startTime, endTime):
                 start = datetime.combine(datetime.today(), start)
                 end = datetime.combine(datetime.today(), end)
+                nightMins = Utils.checkNightShiftMins(start.time(), end.time())
                 diff = end - start
                 if start > end:
                     diff += timedelta(days=1)
@@ -281,6 +282,7 @@ def insert_data_to_postgres_special(tablename, df):
                     EndTime=end,
                     Efficiency=efficiency,
                     DateUpdated=datetime.today(),
+                    NightTime=nightMins,
                     UserUpdated='admin'
                 )
                 session.add(newWorkShift)
@@ -681,9 +683,9 @@ def extract_and_transform_data():
     insert_data_to_postgres("nightPaymentPerMinutes", nightPaymentData)
     shiftsData = fetch_access_data_special("Дневник за часове")
     insert_data_to_postgres_special('workingShifts', shiftsData)
-    timePapersData = fetch_access_data("Обща")
-    workingHoursData = fetch_access_data("Дневник за часове")
-    insert_data_to_postgres_multi(timePapersData, workingHoursData)
+    # timePapersData = fetch_access_data("Обща")
+    # workingHoursData = fetch_access_data("Дневник за часове")
+    # insert_data_to_postgres_multi(timePapersData, workingHoursData)
 
 
     # print(data)

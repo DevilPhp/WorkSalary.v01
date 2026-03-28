@@ -352,6 +352,18 @@ class WorkerServices:
 
     @staticmethod
     @handle_api_connection
+    def getTimePapersForWorker(workerId, date):
+        response = requests.get(f'{API_SERVER}/worker/get_time_papers_for_worker',
+                                json={'workerId': workerId, 'date': date}).json()
+        if response['status'] =='success':
+            logger.info(f"Time papers for worker {workerId} on {date}: {response['timePaperId']}")
+            return int(response['timePaperId'])
+        else:
+            logger.error('Failed to get time papers for worker')
+            return []
+
+    @staticmethod
+    @handle_api_connection
     def getTimePapersForDate(date, workerId, showAll=False):
         response = requests.get(f'{API_SERVER}/worker/get_time_papers_for_date',
                                 json={'date': date, 'workerId': workerId, 'showAll': showAll}).json()

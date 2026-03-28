@@ -6,7 +6,6 @@ from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QHeaderView, QMenu, QCheckBox, QWidgetAction, QApplication
 
 
-
 class CaseInsensitiveProxyModel(QSortFilterProxyModel):
     def __init__(self, numericColumns=None, dateColumns=None, *args, **kwargs):
         super().__init__(*args, **kwargs)

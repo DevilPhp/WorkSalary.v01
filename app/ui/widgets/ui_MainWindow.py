@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'MainWindoweoNCqv.ui'
+## Form generated from reading UI file 'MainWindowulVzQp.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -466,6 +466,11 @@ class Ui_MainWindow(object):
 
         self.mainMenuLayout.addWidget(self.setProductionPageBtn, 2, 2, 1, 1)
 
+        self.groupOpersPageBtn = QPushButton(self.mainMenuWidget)
+        self.groupOpersPageBtn.setObjectName(u"groupOpersPageBtn")
+
+        self.mainMenuLayout.addWidget(self.groupOpersPageBtn, 4, 2, 1, 1)
+
 
         self.verticalLayout_10.addLayout(self.mainMenuLayout)
 
@@ -572,6 +577,7 @@ class Ui_MainWindow(object):
         self.archivePageBtn.setText(QCoreApplication.translate("MainWindow", u"\u0410\u0440\u0445\u0438\u0432\u0438\u0440\u0430\u043d\u0435", None))
         self.setDefaultOperBtn.setText(QCoreApplication.translate("MainWindow", u"\u041e\u043f\u0435\u0440\u0430\u0446\u0438\u0439 \u043f\u043e \u043f\u043e\u0434\u0440\u0430\u0437\u0431\u0438\u0440\u0430\u043d\u0435", None))
         self.setProductionPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u041c\u043e\u0434\u0435\u043b\u0438 \u0437\u0430 \u043f\u0440\u043e\u0438\u0437\u0432\u043e\u0434\u0441\u0442\u0432\u043e", None))
+        self.groupOpersPageBtn.setText(QCoreApplication.translate("MainWindow", u"\u0413\u0440\u0443\u043f\u0438 \u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438", None))
         self.footerLabel_2.setText(QCoreApplication.translate("MainWindow", u"Author: Filip Chaushev   Dev v0.1.030", None))
         self.pageBtn.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
     # retranslateUi

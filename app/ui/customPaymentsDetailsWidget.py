@@ -432,19 +432,6 @@ class CustomPaymentsDetailsWidget(QWidget, Ui_customPaymentsDetailsWidget):
                     parrentRowToAdd = QStandardItem(str(row['payment']))
                     parentRow = parrentRowToAdd
 
-                    # ['ID'0, 'Дата'1, 'Смяна'2, 'Прис. Вр.'3, 'Поръчки'4, 'Опер.'5, 'Вр. мин.'6,
-                    #  'Поч. дни'7, 'Поч. дни Лв.'8, 'Поч. дни €'9, 'В Празници'10, 'В Празници Лв.'11,
-                    #  'В Празници €'12, 'Почас.'13, 'Извънр.'14, 'Извънр. Лв.'15, 'Извънр. €'16, 'Нощен'17,
-                    #  'Нощен Лв.'18, 'Нощен €'19, 'Бр.'20, 'Ефект.'21, 'Извънр. Тотал'22, 'Извънр. Тотал Лв.'23,
-                    #  'Извънр. Тотал €'24, 'Зар. Лв.'25, 'Зар. €'26, 'Тотал лв.'27, 'Тотал €'28]
-
-                    # (row, payment, date, shift, shiftTime, ordersCount, operationsCount, totalTime, weekends,
-                    #  weekendsLeva, weekendsEuro, holidays, holidaysLeva, hildaysEuro, totalHourlyTime,
-                    #  totalOvertime,
-                    #  overtimeLeva, overtimeEuro, totalNightTime, nightTimeLeva, nightTimeEuro, totalPieces,
-                    #  efficency, totalOvertimeMins, totalOvertimeMinsLeva, totalOvertimeMinsEuro,
-                    #  workingLeva, workingEuro, totalPaymentInLev, totalPaymentInEuro):
-
                     parrentRowForAppend = [
                         parrentRowToAdd,
                         QStandardItem(row['date']),

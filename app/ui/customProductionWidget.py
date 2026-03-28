@@ -94,6 +94,7 @@ class CustomProductionWidget(QWidget, Ui_customProductionWidget):
             year = int(self.yearComboBox.currentText())
             clientId = self.clientsName[self.clientsComboBox.currentText()]
             self.clientModels = Ms.getProductionForClient(clientId, year)
+        # print(self.clientModels)
 
         self.productionModel.setRowCount(0)
         count = 1
@@ -147,12 +148,14 @@ class CustomProductionWidget(QWidget, Ui_customProductionWidget):
     def setModelYears(self):
         modelYears = Ms.getModelsYearsForClient(self.clientsName[self.clientsComboBox.currentText()])
         sortedModelYears = sorted(modelYears, key=lambda x: int(x))
+        # self.yearComboBox.blockSignals(True)
         self.yearComboBox.clear()
-        self.yearComboBox.blockSignals(True)
         for year in sortedModelYears:
             self.yearComboBox.addItem(str(year))
-        self.yearComboBox.blockSignals(False)
+        # self.yearComboBox.blockSignals(False)
+        # print(sortedModelYears)
         self.yearComboBox.setCurrentIndex(len(sortedModelYears) - 1)
+        # self.yearComboBox.setCurrentIndex(-1)
         # print(modelYears)
 
     def setUpClientsComboBox(self):

@@ -270,7 +270,6 @@ class ModelService:
     @staticmethod
     @handle_api_connection
     def deleteModel(modelId):
-        print(modelId)
         response = requests.post(f'{API_SERVER}/model/delete_model', json={'modelId': modelId}).json()
         if response['status'] =='success':
             logger.info(f'Model {modelId} deleted successfully')

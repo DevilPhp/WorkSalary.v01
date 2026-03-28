@@ -687,8 +687,11 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 QStandardItem(Utils.setFloatToStr(item[6])),
             ]
             self.tableTimePapersModel.appendRow(row)
-            self.existingTimePapers[item[1]] = item[0]
+            # self.existingTimePapers[item[1]] = item[0]
         if workerId:
+            timePaper = WoS.getTimePapersForWorker(workerId, searchedDate)
+            if timePaper:
+                self.existingTimePapers[workerId] = timePaper
             self.totalProdPiecesHolder.setVisible(False)
             self.totalWorkingMinsHolder.setVisible(True)
             self.totalWorkingMins.setText(str(round(totalWorkingMins, 2)))
@@ -702,6 +705,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.setTotalMinsColor()
 
     def checkForExistingShiftInTimePaper(self, workerId):
+        print(workerId)
         if workerId:
             if self.existingTimePapers:
                 timePaperId = self.existingTimePapers[int(workerId)]
@@ -1230,8 +1234,6 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 orderId = self.clientModels[self.clientModelsLineEdit.text()]
                 pieces = int(self.modelPiecesLineEdit.text())
 
-            shiftStart = Utils.convertStringToTime(self.shiftStart.text())
-            shiftEnd = Utils.convertStringToTime(self.shiftEnd.text())
             overtimeStart = Utils.convertStringToTime(self.overtimeStart.text())
             overtimeEnd = Utils.convertStringToTime(self.overtimeEnd.text())
             hourlyStart = Utils.convertStringToTime(self.hourlyStart.text())
