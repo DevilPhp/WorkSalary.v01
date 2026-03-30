@@ -6,6 +6,7 @@ from app.ui.widgets.ui_groupOpersCustomWidget import *
 from app.services.groupOperServices import GroupOperationsService as GoS
 from app.models.sortingModel import CaseInsensitiveProxyModel
 from app.models.customTreeView import CustomTreeViewWithDrop, CustomListViewWithDrag
+from app.ui.customAddingOpersDialog import CustomAddOperationDialog
 
 
 class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
@@ -39,10 +40,26 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         self.operListViewModel = QStandardItemModel()
         self.operationsListView.setModel(self.operListViewModel)
 
+        self.operTreeView.dropedOpers.connect(self.dropOpers)
+
         QTimer.singleShot(0, self.loadInitialData)
 
         self.closeBtn.clicked.connect(self.close)
         self.logoutBtn.clicked.connect(self.logout)
+
+    def dropOpers(self, items):
+        firstParent = items[1].parent()
+        secondParent = firstParent.parent()
+        if firstParent.text() == "Плетене":
+            thirdParent = secondParent.parent()
+        else:
+            thirdParent = None
+        dialog = CustomAddOperationDialog(items[0], items[1], firstParent, secondParent, thirdParent)
+        dialog.emitedData.connect(self.addOperations)
+        dialog.exec_()
+
+    def addOperations(self, data):
+        print(data)
 
     def loadInitialData(self):
         data = GoS.getInitialData()

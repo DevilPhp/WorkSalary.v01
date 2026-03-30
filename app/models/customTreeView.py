@@ -121,19 +121,50 @@ class CustomTreeView(QTreeView):
 
 
 class CustomTreeViewWithDrop(QTreeView):
+    dropedOpers = Signal(list)
+
     def __init__(self, parent=None):
         super().__init__(parent)
 
         self.setSelectionBehavior(QTreeView.SelectionBehavior.SelectRows)
         self.setSelectionMode(QTreeView.SelectionMode.ExtendedSelection)
 
-        self.setDragEnabled(True)
+        self.setDragEnabled(False)  # this view is only a drop target
+        self.setAcceptDrops(True)  # IMPORTANT
+        self.setDropIndicatorShown(True)  # optional but useful
         self.setDragDropMode(QAbstractItemView.DragDropMode.DropOnly)
+
         self.setEditTriggers(QAbstractItemView.EditTrigger.DoubleClicked)
         self.setAlternatingRowColors(True)
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.setSizeAdjustPolicy(QAbstractItemView.SizeAdjustPolicy.AdjustToContents)
-        # self.doubleClicked.connect(self.doubleClickedItem)
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasFormat("application/x-operations-json"):
+            event.acceptProposedAction()
+        else:
+            event.ignore()
+
+    def dragMoveEvent(self, event):
+        index = self.indexAt(event.position().toPoint())
+
+        if not index.isValid():
+            event.ignore()
+            return
+
+        model = self.model()
+        parentItem = model.itemFromIndex(index)
+
+        if parentItem is None:
+            event.ignore()
+            return
+
+        nodeType = parentItem.data(Qt.ItemDataRole.UserRole + 1)
+
+        if event.mimeData().hasFormat("application/x-operations-json") and nodeType in ("group", "struct"):
+            event.acceptProposedAction()
+        else:
+            event.ignore()
 
     def dropEvent(self, event):
         index = self.indexAt(event.position().toPoint())
@@ -149,17 +180,17 @@ class CustomTreeViewWithDrop(QTreeView):
             event.ignore()
             return
 
-        if nodeType == "group" or nodeType == "struct":
+        if nodeType in ("group", "struct") and parrentItem.text() != "Плетене":
             if not event.mimeData().hasFormat("application/x-operations-json"):
                 event.ignore()
                 return
+
             rawData = bytes(event.mimeData().data("application/x-operations-json")).decode("utf-8")
             operations = json.loads(rawData)
-            for operation in operations:
-                print(operation)
+            event.acceptProposedAction()
+            self.dropedOpers.emit([operations, parrentItem])
         else:
             event.ignore()
-            return
 
 
 class CustomListViewWithDrag(QListView):
@@ -195,7 +226,7 @@ class CustomListViewWithDrag(QListView):
         if not operations:
             return
 
-        print(operations)
+        # print(operations)
 
         mimeData = QMimeData()
         mimeData.setText("\n".join(op['name'] for op in operations))

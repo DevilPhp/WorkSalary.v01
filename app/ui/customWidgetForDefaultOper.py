@@ -278,6 +278,7 @@ class CustomCheckboxWidget(QWidget, Ui_customCheckBoxWidget):
     newOperName = Signal(str)
     deleteWidget = Signal(QWidget)
     operTime = Signal(float)
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
@@ -343,8 +344,6 @@ class CustomCheckboxWidget(QWidget, Ui_customCheckBoxWidget):
                 self.currentOperTime.text() != self.lineEdit.text()):
             emittedTime = float(self.lineEdit.text())
             self.operTime.emit(emittedTime)
-
-
 
     def updateLabel(self):
         text = self.lineEdit.text()
