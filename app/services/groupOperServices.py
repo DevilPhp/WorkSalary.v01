@@ -16,3 +16,14 @@ class GroupOperationsService:
         else:
             logger.error('Failed to fetch initial data for oper groups')
             return {}
+
+    @staticmethod
+    @handle_api_connection
+    def saveOperationsToDB(row):
+        response = requests.post(f'{API_SERVER}/group_operations/save_opers', json={'row': row}).json()
+        if response['status'] == 'success':
+            logger.info('Successfully saved operations to database')
+            return response['data']
+        else:
+            logger.error('Failed to save operations to database')
+            return []

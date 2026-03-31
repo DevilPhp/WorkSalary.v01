@@ -46,15 +46,16 @@ class CustomAddOperationDialog(QDialog, Ui_CustomDroppingOpersDialog):
         parentList = []
         operList = []
         if self.thirdParent:
-            parentList.append({'name': self.thirdParent.data(Qt.ItemDataRole.UserRole + 1),
+            parentList.append({'nodeType': self.thirdParent.data(Qt.ItemDataRole.UserRole + 1),
                                'id': self.thirdParent.data(Qt.ItemDataRole.UserRole)})
-        parentList.append({'name': self.secondParent.data(Qt.ItemDataRole.UserRole + 1),
+        parentList.append({'nodeType': self.secondParent.data(Qt.ItemDataRole.UserRole + 1),
                            'id': self.secondParent.data(Qt.ItemDataRole.UserRole)})
-        parentList.append({'name': self.firstParent.data(Qt.ItemDataRole.UserRole + 1),
+        parentList.append({'nodeType': self.firstParent.data(Qt.ItemDataRole.UserRole + 1),
                            'id': self.firstParent.data(Qt.ItemDataRole.UserRole)})
-        parentList.append({'name': self.currentItem.data(Qt.ItemDataRole.UserRole + 1),
+        parentList.append({'nodeType': self.currentItem.data(Qt.ItemDataRole.UserRole + 1),
                            'id': self.currentItem.data(Qt.ItemDataRole.UserRole)})
         emitedData['parentList'] = parentList
+        emitedData['currentNode'] = self.currentItem
 
         for index in range(len(self.operations)):
             operId = int(self.opersGridLayout.itemAtPosition(index, 0).widget().objectName())
