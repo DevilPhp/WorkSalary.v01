@@ -1,13 +1,18 @@
-from PySide6.QtCore import Signal, QTimer
-from PySide6.QtGui import QStandardItemModel, QStandardItem, QDoubleValidator
-from PySide6.QtWidgets import QMenu, QDialog
+from functools import partial
 
+from PySide6.QtCore import Signal, QTimer, QRegularExpression
+from PySide6.QtGui import QStandardItemModel, QStandardItem, QDoubleValidator
+from PySide6.QtWidgets import QMenu, QDialog, QAbstractScrollArea
+
+from app.ui.customSortingMenuWidget import CustomSortingMenuWidget
 from app.ui.widgets.ui_groupOpersCustomWidget import *
 from app.services.groupOperServices import GroupOperationsService as GoS
-from app.models.sortingModel import CaseInsensitiveProxyModel
-from app.models.customTreeView import CustomTreeViewWithDrop, CustomListViewWithDrag
+from app.models.sortingModel import CaseInsensitiveProxyModel, FilterableHeaderView
+from app.models.customTreeView import CustomTreeViewWithDrop
+from app.models.tableModel import CustomTableWithDrag
 from app.ui.customAddingOpersDialog import CustomAddOperationDialog
 from app.ui.messagesManager import MessageManager as MM
+from app.models.customLineEditWidget import CustomLineEdit
 
 
 class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
@@ -31,8 +36,11 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         self.operTreeView = CustomTreeViewWithDrop(self)
         self.operViewWidget.layout().addWidget(self.operTreeView)
 
-        self.operationsListView = CustomListViewWithDrag(self)
-        self.operationListViewWidget.layout().addWidget(self.operationsListView)
+        self.operationsTableView = CustomTableWithDrag(self)
+        self.operationListViewWidget.layout().addWidget(self.operationsTableView)
+
+        self.searchLineEdit = CustomLineEdit(self)
+        self.searchHolderWidget.layout().addWidget(self.searchLineEdit)
 
         self.operTreeViewModel = QStandardItemModel()
         # self.proxyOperTreeView = CaseInsensitiveProxyModel(parent=self)
@@ -43,24 +51,117 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         self.operTreeView.setColumnWidth(0, 450)
         self.operTreeViewModel.dataChanged.connect(self.updateOperList)
 
-        self.operListViewModel = QStandardItemModel()
-        self.operationsListView.setModel(self.operListViewModel)
+        self.operTableViewModel = QStandardItemModel()
+
+        self.tableOperDetailsNames = ['№', 'Операция']
+
+        for i, tableHeaderName in enumerate(self.tableOperDetailsNames):
+            self.operTableViewModel.setHorizontalHeaderItem(i, QStandardItem(tableHeaderName))
+            self.operTableViewModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignHCenter)
+            # self.operTableViewModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignVCenter)
+        self.proxyModelOperDetailsTable = CaseInsensitiveProxyModel(numericColumns=[0], parent=self)
+
+        self.setProxyModel(self.proxyModelOperDetailsTable, self.operTableViewModel, self.operationsTableView)
+        self.operationsTableView.horizontalHeader().setStretchLastSection(True)
+        self.operationsTableView.setColumnWidth(0, 40)
+
+        self.checkBoxFiltering = {}
+        self.initialCheckBoxes = {}
 
         self.operTreeView.dropedOpers.connect(self.dropOpers)
 
         QTimer.singleShot(0, self.loadInitialData)
 
+        self.searchLineEdit.textChanged.connect(self.proxyModelOperDetailsTable.setSearchText)
         self.closeBtn.clicked.connect(self.close)
         self.logoutBtn.clicked.connect(self.logout)
 
+    def filterOperations(self, text):
+        text = text.strip()
+        print(text)
+
+        if not text:
+            self.proxyModelOperDetailsTable.setFilterRegularExpression(QRegularExpression())
+        escapeText = QRegularExpression.escape(text)
+
+        regex = QRegularExpression(
+            f".*{escapeText}.*",
+            QRegularExpression.PatternOption.CaseInsensitiveOption
+        )
+
+        self.proxyModelOperDetailsTable.setFilterRegularExpression(regex)
+
+    def setProxyModel(self, proxyModel, model, table):
+        proxyModel.setSourceModel(model)
+        filterableHeaderView = FilterableHeaderView(Qt.Orientation.Horizontal, table)
+        table.setHorizontalHeader(filterableHeaderView)
+        filterableHeaderView.filterRequested.connect(partial(self.updateFilter, proxyModel, filterableHeaderView))
+        table.setModel(proxyModel)
+
+    def updateFilter(self, proxyModel, header, column):
+        if column < 3:
+            # Create dictionaries to store column values and checked states if they don't exist
+            if not hasattr(self, 'columnValues'):
+                self.columnValues = {}
+            if not hasattr(self, 'checkedStates'):
+                self.checkedStates = {}
+            if column not in self.checkBoxFiltering:
+                self.checkBoxFiltering[column] = []
+
+            items = []
+            self.columnValues[column] = []
+
+            for row in range(proxyModel.rowCount()):
+                index = proxyModel.index(row, column)
+                value = proxyModel.data(index, Qt.ItemDataRole.DisplayRole)
+                if value not in self.columnValues[column]:
+                    self.columnValues[column].append(value)
+                    if value not in self.initialCheckBoxes:
+                        self.initialCheckBoxes[value] = column
+
+            for value in self.columnValues[column]:
+                items.append(value)
+
+            if items:
+                menu = CustomSortingMenuWidget(header)
+                for item in items:
+                    checked = item in self.checkBoxFiltering[column]
+                    menu.addItem(item, checked)
+                menu.setMenuSize(len(items))
+                menu.move(self.cursor().pos())
+                menu.checkedCheckbox.connect(partial(self.applyFilter, proxyModel))
+
+    def applyFilter(self, proxyModel, item):
+        col = self.initialCheckBoxes[item.text()]
+        if item.isChecked() and item.text() not in self.checkBoxFiltering[col]:
+            self.checkBoxFiltering[col].append(item.text())
+        elif not item.isChecked() and item.text() in self.checkBoxFiltering[col]:
+            self.checkBoxFiltering[col].remove(item.text())
+
+        if not self.checkBoxFiltering[col]:
+            if col in proxyModel.columnFilters:
+                del proxyModel.columnFilters[col]
+        else:
+            proxyModel.setFilterForColumn(col, self.checkBoxFiltering)
+        proxyModel.invalidateFilter()
+
     def updateOperList(self, data):
-        text = data.data(Qt.ItemDataRole.DisplayRole)
+        self.operTreeViewModel.blockSignals(True)
+        selectedItem = self.operTreeViewModel.itemFromIndex(data)
+        currentText = selectedItem.text()
+        originalValue = selectedItem.data(Qt.ItemDataRole.UserRole)
         try:
-            numText = float(text)
-            data.setData(f"{numText:.2f}", Qt.ItemDataRole.DisplayRole)
-        except ValueError:
-            data.setData(text, Qt.ItemDataRole.DisplayRole)
-        print(data.row(), data.data(Qt.ItemDataRole.UserRole + 1))
+            numText = float(currentText)
+            if not (0.01 <= numText <= 999):
+                currentText = f"{originalValue:.2f}"
+            else:
+                if currentText != str(originalValue):
+                    currentText = f"{numText:.2f}"
+                    selectedItem.setData(float(currentText), Qt.ItemDataRole.UserRole)
+            selectedItem.setText(currentText)
+        except (ValueError, TypeError):
+            selectedItem.setText(str(originalValue))
+        self.operTreeViewModel.blockSignals(False)
 
     def dropOpers(self, items):
         firstParent = items[1].parent()
@@ -212,14 +313,17 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         self.refreshTreeView()
 
     def setOperations(self, value):
-        self.operListViewModel.setRowCount(0)
+        self.operTableViewModel.setRowCount(0)
         for oper in value:
             self.operations[oper["name"]] = oper["id"]
             self.operNamesById[oper["id"]] = oper["name"]
-            operation = QStandardItem(oper["name"])
-            operation.setData(oper["id"], Qt.ItemDataRole.UserRole)
-            operation.setData("catalogOperation", Qt.ItemDataRole.UserRole + 1)
-            self.operListViewModel.appendRow(operation)
+            operationName = QStandardItem(oper["name"])
+            operationNumber = QStandardItem(str(oper["number"]))
+            operationName.setData(oper["id"], Qt.ItemDataRole.UserRole)
+            operationName.setData("catalogOperation", Qt.ItemDataRole.UserRole + 1)
+            operationNumber.setData(oper["id"], Qt.ItemDataRole.UserRole)
+            self.operTableViewModel.appendRow([operationNumber, operationName])
+        self.operationsTableView.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
 
     def setModelTypes(self, value):
         for item in value:

@@ -1,6 +1,10 @@
+import json
+
 import pandas as pd
 import numpy as np
-from PySide6.QtCore import QAbstractTableModel, Qt, Signal, QItemSelection, QItemSelectionModel, QModelIndex, QRect
+from PySide6.QtCore import QAbstractTableModel, Qt, Signal, QItemSelection, QItemSelectionModel, QModelIndex, QRect, \
+    QMimeData
+from PySide6.QtGui import QDrag
 from PySide6.QtWidgets import (QTableView, QAbstractItemView, QStyledItemDelegate,
                                QStyleOptionButton, QApplication, QStyle)
 from app.models.customSelectionModel import SingleMultiSelectionModel
@@ -216,6 +220,103 @@ class CustomTableViewWithMultiSelection(QTableView):
                     # self.clearFocus()
 
         super().mousePressEvent(event)
+
+
+class CustomTableWithDrag(QTableView):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setDragEnabled(True)
+        self.setDragDropMode(QAbstractItemView.DragDropMode.DragOnly)
+        self.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
+        self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.setSizeAdjustPolicy(QAbstractItemView.SizeAdjustPolicy.AdjustToContents)
+        self.setAlternatingRowColors(True)
+        self.setSortingEnabled(True)
+        self.setShowGrid(False)
+        self.setStyleSheet('''
+            QHeaderView:section:horizontal  {
+                font: 700 9pt "Segoe UI";
+                background-color: #dfdfdf;
+            }
+            ''')
+        self.verticalHeader().setDefaultSectionSize(0)
+        self.verticalHeader().hide()
+        self.setCornerButtonEnabled(False)
+
+    def startDrag(self, supportedActions):
+        """
+            Starts drag operation for the selected rows in the table.
+
+            Important:
+            In QTableView with proxy model, selected indexes belong to the proxy.
+            So we map them back to the source model before reading real data.
+        """
+
+        indexes = self.selectedIndexes()
+        if not indexes:
+            return
+
+        proxyModel = self.model()
+        if proxyModel is None:
+            return
+
+        sourceModel = proxyModel.sourceModel() if hasattr(proxyModel, 'sourceModel') else proxyModel
+
+        operations = []
+        seenSourceRows = set()
+        for proxyIndex in indexes:
+            if not proxyIndex.isValid():
+                continue
+
+            # Map proxy index -> source index
+            if hasattr(proxyModel, 'mapToSource'):
+                sourceIndex = proxyModel.mapToSource(proxyIndex)
+            else:
+                sourceIndex = proxyIndex
+
+            if not sourceIndex.isValid():
+                continue
+            sourceRow = sourceIndex.row()
+
+            # Prevent reading the same row multiple times,
+            # because QTableView selection includes indexes from both columns.
+            if sourceRow in seenSourceRows:
+                continue
+            seenSourceRows.add(sourceRow)
+
+            # Read data from the source model row.
+            # Column 0 = number/id
+            # Column 1 = operation name
+            nameIndex = sourceModel.index(sourceRow, 1)
+            operationId = sourceModel.data(nameIndex, Qt.ItemDataRole.UserRole)
+            operationName = sourceModel.data(nameIndex, Qt.ItemDataRole.DisplayRole)
+
+            if not operationName:
+                continue
+
+            operations.append({
+                'id': operationId,
+                'name': operationName,
+            })
+        if not operations:
+            return
+
+        mimeData = QMimeData()
+        # Plain text version
+        # Useful if the drop target reads only text.
+        mimeData.setText("\n".join(op["name"] for op in operations))
+
+        # Custom JSON version
+        # Useful if the drop target supports structured data.
+        mimeData.setData(
+            "application/x-operations-json",
+            json.dumps(operations).encode("utf-8")
+        )
+
+        drag = QDrag(self)
+        drag.setMimeData(mimeData)
+        drag.exec(Qt.DropAction.CopyAction)
 
 
 class ButtonDelegation(QStyledItemDelegate):

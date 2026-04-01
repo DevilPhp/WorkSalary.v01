@@ -12,9 +12,29 @@ class CaseInsensitiveProxyModel(QSortFilterProxyModel):
         self.columnFilters = {}
         self.numericColumns = numericColumns or []
         self.dateColumns = dateColumns or []
+        self.searchText = ""
+        self.searchColumns = [0, 1]
 
     def setFilterForColumn(self, column, filterSet):
         self.columnFilters[column] = filterSet[column]
+        self.invalidateFilter()
+
+    def setSearchText(self, text):
+        """
+        Called from QLineEdit.textChanged.
+        Saves the search text and refreshes the proxy filtering.
+        """
+        self.searchText = (text or "").strip().lower()
+        self.invalidateFilter()
+
+    def setSearchColumns(self, columns):
+        """
+        Allows choosing which columns are checked by text search.
+        Example:
+            [1]    -> search only in operation name
+            [0, 1] -> search in both number and operation name
+        """
+        self.searchColumns = columns
         self.invalidateFilter()
 
     def _parseDate(self, dateString):
@@ -32,6 +52,30 @@ class CaseInsensitiveProxyModel(QSortFilterProxyModel):
                 return None
 
     def filterAcceptsRow(self, sourceRow, sourceParent):
+        sourceModel = self.sourceModel()
+
+        if self.searchText:
+            rowMatchesSearch = False
+
+            # Check the search text in the chosen columns
+            for column in self.searchColumns:
+                index = sourceModel.index(sourceRow, column, sourceParent)
+                data = sourceModel.data(index, Qt.ItemDataRole.DisplayRole)
+
+                # Convert None safely to empty string
+                data_text = str(data or "").lower()
+
+                # If the typed text is found in this column,
+                # keep this row as matching the search
+                if self.searchText in data_text:
+                    rowMatchesSearch = True
+                    break
+
+            # If the row does not match the search text in any searched column,
+            # hide it
+            if not rowMatchesSearch:
+                return False
+
         # If no filters are active, accept all rows
         if not self.columnFilters:
             return True
@@ -92,10 +136,25 @@ class CaseInsensitiveProxyModel(QSortFilterProxyModel):
             del self.columnFilters[column]
             self.invalidateFilter()
 
+    def clearSearchText(self):
+        """
+        Clears only the line edit search filter.
+        """
+        self.searchText = ""
+        self.invalidateFilter()
+
+    def clearAll(self):
+        """
+        Clears both text search and column filters.
+        """
+        self.searchText = ""
+        self.columnFilters.clear()
+        self.invalidateFilter()
 
 
 class FilterableHeaderView(QHeaderView):
     filterRequested = Signal(int)
+
     def __init__(self, orientation, parent=None):
         super().__init__(orientation, parent)
         self.setSectionsClickable(True)
@@ -103,6 +162,7 @@ class FilterableHeaderView(QHeaderView):
         self.filteredNames = []
         # self.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         # self.customContextMenuRequested.connect(self.showFilterMenu)
+
     def mousePressEvent(self, event):
         logicalIndex = self.logicalIndexAt(event.pos())
         if event.button() == Qt.MouseButton.RightButton:
