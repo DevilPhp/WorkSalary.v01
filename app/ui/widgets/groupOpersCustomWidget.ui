@@ -1033,16 +1033,22 @@ QComboBox::item{
                 </widget>
                </item>
                <item>
-                <widget class="QWidget" name="operViewWidget" native="true">
+                <widget class="QWidget" name="operViewHolderWidget" native="true">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
                  <layout class="QVBoxLayout" name="verticalLayout_9">
                   <property name="spacing">
-                   <number>0</number>
+                   <number>10</number>
                   </property>
                   <property name="leftMargin">
                    <number>0</number>
@@ -1056,6 +1062,88 @@ QComboBox::item{
                   <property name="bottomMargin">
                    <number>0</number>
                   </property>
+                  <item alignment="Qt::AlignLeft|Qt::AlignTop">
+                   <widget class="QWidget" name="widget" native="true">
+                    <layout class="QHBoxLayout" name="horizontalLayout_17">
+                     <property name="spacing">
+                      <number>3</number>
+                     </property>
+                     <property name="leftMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="topMargin">
+                      <number>10</number>
+                     </property>
+                     <property name="rightMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="bottomMargin">
+                      <number>0</number>
+                     </property>
+                     <item>
+                      <widget class="QLabel" name="label_12">
+                       <property name="text">
+                        <string>Търсене: </string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="searchTreeHolderWidget" native="true">
+                       <property name="minimumSize">
+                        <size>
+                         <width>220</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>350</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <layout class="QHBoxLayout" name="horizontalLayout_16">
+                        <property name="spacing">
+                         <number>0</number>
+                        </property>
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                       </layout>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QWidget" name="operViewWidget" native="true">
+                    <layout class="QVBoxLayout" name="verticalLayout_10">
+                     <property name="spacing">
+                      <number>0</number>
+                     </property>
+                     <property name="leftMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="topMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="rightMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="bottomMargin">
+                      <number>0</number>
+                     </property>
+                    </layout>
+                   </widget>
+                  </item>
                  </layout>
                 </widget>
                </item>

@@ -152,6 +152,112 @@ class CaseInsensitiveProxyModel(QSortFilterProxyModel):
         self.invalidateFilter()
 
 
+class CustomInsensitiveTreeProxyModel(CaseInsensitiveProxyModel):
+    def __init__(self, numericColumns=None, dateColumns=None,  *args, **kwargs):
+        super().__init__(numericColumns=numericColumns, dateColumns=dateColumns, *args, **kwargs)
+
+    def filterAcceptsRow(self, sourceRow, sourceParent):
+        """
+        A tree row stays visible if:
+        1. the row itself matches
+        2. any parent above it matches
+        3. any child below it matches
+
+        This gives the behavior:
+        - searching a parent keeps the whole subtree visible
+        - searching a child keeps the full path to that child visible
+        """
+        source_model = self.sourceModel()
+        if source_model is None:
+            return False
+
+        # 1) Current row matches
+        if self._rowMatches(sourceRow, sourceParent):
+            return True
+
+        # 2) Any parent matches
+        parent_index = sourceParent
+        while parent_index.isValid():
+            if self._indexMatches(parent_index):
+                return True
+            parent_index = parent_index.parent()
+
+        # 3) Any child matches
+        current_index = source_model.index(sourceRow, 0, sourceParent)
+        if self._hasMatchingChildren(current_index):
+            return True
+
+        return False
+
+    def _rowMatches(self, sourceRow, sourceParent):
+        """
+        Checks whether the current row itself matches
+        the active search text and column filters.
+        """
+        source_model = self.sourceModel()
+
+        # Check line edit text search
+        if self.searchText:
+            row_matches_search = False
+
+            for column in self.searchColumns:
+                index = source_model.index(sourceRow, column, sourceParent)
+                data = source_model.data(index, Qt.ItemDataRole.DisplayRole)
+                data_text = str(data or "").lower()
+
+                if self.searchText in data_text:
+                    row_matches_search = True
+                    break
+
+            if not row_matches_search:
+                return False
+
+        # Check header / column filters
+        for column, filterSet in self.columnFilters.items():
+            if not filterSet:
+                continue
+
+            index = source_model.index(sourceRow, column, sourceParent)
+            data = source_model.data(index, Qt.ItemDataRole.DisplayRole)
+
+            if data not in filterSet:
+                return False
+
+        return True
+
+    def _indexMatches(self, index):
+        """
+        Checks whether the row represented by this index matches.
+        """
+        if not index.isValid():
+            return False
+
+        return self._rowMatches(index.row(), index.parent())
+
+    def _hasMatchingChildren(self, parentIndex):
+        """
+        Recursively checks whether any descendant of parentIndex matches.
+        """
+        source_model = self.sourceModel()
+        if source_model is None or not parentIndex.isValid():
+            return False
+
+        child_count = source_model.rowCount(parentIndex)
+
+        for child_row in range(child_count):
+            # If the direct child matches, return True
+            if self._rowMatches(child_row, parentIndex):
+                return True
+
+            # Otherwise check deeper descendants
+            child_index = source_model.index(child_row, 0, parentIndex)
+            if self._hasMatchingChildren(child_index):
+                return True
+
+        return False
+
+
+
 class FilterableHeaderView(QHeaderView):
     filterRequested = Signal(int)
 

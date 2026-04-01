@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'groupOpersCustomWidgetSNjKfA.ui'
+## Form generated from reading UI file 'groupOpersCustomWidgetwvQJsw.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -571,16 +571,51 @@ class Ui_customWidgetGroupOpers(object):
 
         self.verticalLayout_7.addWidget(self.modelInfoWidget, 0, Qt.AlignLeft)
 
-        self.operViewWidget = QWidget(self.widget_2)
-        self.operViewWidget.setObjectName(u"operViewWidget")
-        sizePolicy.setHeightForWidth(self.operViewWidget.sizePolicy().hasHeightForWidth())
-        self.operViewWidget.setSizePolicy(sizePolicy)
-        self.verticalLayout_9 = QVBoxLayout(self.operViewWidget)
-        self.verticalLayout_9.setSpacing(0)
+        self.operViewHolderWidget = QWidget(self.widget_2)
+        self.operViewHolderWidget.setObjectName(u"operViewHolderWidget")
+        sizePolicy.setHeightForWidth(self.operViewHolderWidget.sizePolicy().hasHeightForWidth())
+        self.operViewHolderWidget.setSizePolicy(sizePolicy)
+        self.operViewHolderWidget.setMinimumSize(QSize(0, 0))
+        self.verticalLayout_9 = QVBoxLayout(self.operViewHolderWidget)
+        self.verticalLayout_9.setSpacing(10)
         self.verticalLayout_9.setObjectName(u"verticalLayout_9")
         self.verticalLayout_9.setContentsMargins(0, 0, 0, 0)
+        self.widget = QWidget(self.operViewHolderWidget)
+        self.widget.setObjectName(u"widget")
+        self.horizontalLayout_17 = QHBoxLayout(self.widget)
+        self.horizontalLayout_17.setSpacing(3)
+        self.horizontalLayout_17.setObjectName(u"horizontalLayout_17")
+        self.horizontalLayout_17.setContentsMargins(0, 10, 0, 0)
+        self.label_12 = QLabel(self.widget)
+        self.label_12.setObjectName(u"label_12")
 
-        self.verticalLayout_7.addWidget(self.operViewWidget)
+        self.horizontalLayout_17.addWidget(self.label_12)
+
+        self.searchTreeHolderWidget = QWidget(self.widget)
+        self.searchTreeHolderWidget.setObjectName(u"searchTreeHolderWidget")
+        self.searchTreeHolderWidget.setMinimumSize(QSize(220, 0))
+        self.searchTreeHolderWidget.setMaximumSize(QSize(350, 16777215))
+        self.horizontalLayout_16 = QHBoxLayout(self.searchTreeHolderWidget)
+        self.horizontalLayout_16.setSpacing(0)
+        self.horizontalLayout_16.setObjectName(u"horizontalLayout_16")
+        self.horizontalLayout_16.setContentsMargins(0, 0, 0, 0)
+
+        self.horizontalLayout_17.addWidget(self.searchTreeHolderWidget)
+
+
+        self.verticalLayout_9.addWidget(self.widget, 0, Qt.AlignLeft|Qt.AlignTop)
+
+        self.operViewWidget = QWidget(self.operViewHolderWidget)
+        self.operViewWidget.setObjectName(u"operViewWidget")
+        self.verticalLayout_10 = QVBoxLayout(self.operViewWidget)
+        self.verticalLayout_10.setSpacing(0)
+        self.verticalLayout_10.setObjectName(u"verticalLayout_10")
+        self.verticalLayout_10.setContentsMargins(0, 0, 0, 0)
+
+        self.verticalLayout_9.addWidget(self.operViewWidget)
+
+
+        self.verticalLayout_7.addWidget(self.operViewHolderWidget)
 
 
         self.horizontalLayout_10.addWidget(self.widget_2, 0, Qt.AlignTop)
@@ -632,5 +667,6 @@ class Ui_customWidgetGroupOpers(object):
         self.forProdCheckBox.setText("")
         self.saveBtn.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0417\u0430\u043f\u0430\u0437\u0432\u0430\u043d\u0435", None))
         self.deleteBtn.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0418\u0437\u0442\u0440\u0438\u0432\u0430\u043d\u0435", None))
+        self.label_12.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0422\u044a\u0440\u0441\u0435\u043d\u0435: ", None))
     # retranslateUi
 

@@ -1,8 +1,8 @@
 import json
 
 from PySide6.QtCore import QAbstractTableModel, Qt, Signal, QItemSelection, QItemSelectionModel, QMimeData
-from PySide6.QtGui import QDrag
-from PySide6.QtWidgets import QTreeView, QAbstractItemView, QListView
+from PySide6.QtGui import QDrag, QBrush, QColor
+from PySide6.QtWidgets import QTreeView, QAbstractItemView, QListView, QStyledItemDelegate, QStyle
 
 
 class CustomTreeView(QTreeView):
@@ -138,6 +138,22 @@ class CustomTreeViewWithDrop(QTreeView):
         self.setAlternatingRowColors(True)
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.setSizeAdjustPolicy(QAbstractItemView.SizeAdjustPolicy.AdjustToContents)
+        self.setSortingEnabled(True)
+
+        # Set custom delegate for expanded type rows
+        self.treeDelegate = TreeExpandedTypeDelegate(self, self)
+        self.setItemDelegate(self.treeDelegate)
+
+        # Refresh colors when rows are expanded/collapsed
+        self.expanded.connect(self.refreshTreeRowColors)
+        self.collapsed.connect(self.refreshTreeRowColors)
+
+    def refreshTreeRowColors(self):
+        """
+            Repaint the tree viewport so row colors update
+            after expanding or collapsing items.
+        """
+        self.viewport().update()
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasFormat("application/x-operations-json"):
@@ -153,7 +169,14 @@ class CustomTreeViewWithDrop(QTreeView):
             return
 
         model = self.model()
-        parentItem = model.itemFromIndex(index)
+        if hasattr(model, "mapToSource"):
+            sourceIndex = model.mapToSource(index)
+            sourceModel = model.sourceModel()
+        else:
+            sourceIndex = index
+            sourceModel = model
+
+        parentItem = sourceModel.itemFromIndex(sourceIndex)
 
         if parentItem is None:
             event.ignore()
@@ -173,22 +196,32 @@ class CustomTreeViewWithDrop(QTreeView):
             return
 
         model = self.model()
-        parrentItem = model.itemFromIndex(index)
-        nodeType = parrentItem.data(Qt.ItemDataRole.UserRole + 1)
+        # Map proxy index -> source index if proxy is used
+        if hasattr(model, "mapToSource"):
+            sourceIndex = model.mapToSource(index)
+            sourceModel = model.sourceModel()
+        else:
+            sourceIndex = index
+            sourceModel = model
 
-        if parrentItem is None:
+        parentItem = sourceModel.itemFromIndex(sourceIndex)
+
+        nodeType = parentItem.data(Qt.ItemDataRole.UserRole + 1)
+
+        if parentItem is None:
             event.ignore()
             return
 
-        if nodeType in ("group", "struct") and parrentItem.text() != "Плетене":
+        if nodeType in ("group", "struct") and parentItem.text() != "Плетене":
             if not event.mimeData().hasFormat("application/x-operations-json"):
                 event.ignore()
                 return
 
             rawData = bytes(event.mimeData().data("application/x-operations-json")).decode("utf-8")
             operations = json.loads(rawData)
+
             event.acceptProposedAction()
-            self.dropedOpers.emit([operations, parrentItem])
+            self.dropedOpers.emit([operations, parentItem])
         else:
             event.ignore()
 
@@ -239,3 +272,23 @@ class CustomListViewWithDrag(QListView):
         drag = QDrag(self)
         drag.setMimeData(mimeData)
         drag.exec(Qt.DropAction.CopyAction)
+
+
+class TreeExpandedTypeDelegate(QStyledItemDelegate):
+    def __init__(self, treeView, parent=None):
+        super().__init__(parent)
+        self.treeView = treeView
+
+    def paint(self, painter, option, index):
+        opt = option
+
+        # Use column 0 for checking node type and expanded state
+        rowRootIndex = index.siblingAtColumn(0)
+
+        nodeType = rowRootIndex.data(Qt.ItemDataRole.UserRole + 1)
+
+        if nodeType == 'type' and self.treeView.isExpanded(rowRootIndex):
+            if not (opt.state & QStyle.StateFlag.State_Selected):
+                opt.backgroundBrush = QBrush(QColor(80, 120, 80))
+
+        super().paint(painter, opt, index)

@@ -7,7 +7,7 @@ from PySide6.QtWidgets import QMenu, QDialog, QAbstractScrollArea
 from app.ui.customSortingMenuWidget import CustomSortingMenuWidget
 from app.ui.widgets.ui_groupOpersCustomWidget import *
 from app.services.groupOperServices import GroupOperationsService as GoS
-from app.models.sortingModel import CaseInsensitiveProxyModel, FilterableHeaderView
+from app.models.sortingModel import CaseInsensitiveProxyModel, FilterableHeaderView, CustomInsensitiveTreeProxyModel
 from app.models.customTreeView import CustomTreeViewWithDrop
 from app.models.tableModel import CustomTableWithDrag
 from app.ui.customAddingOpersDialog import CustomAddOperationDialog
@@ -41,12 +41,15 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
 
         self.searchLineEdit = CustomLineEdit(self)
         self.searchHolderWidget.layout().addWidget(self.searchLineEdit)
+        self.searchTreeLineEdit = CustomLineEdit(self)
+        self.searchTreeHolderWidget.layout().addWidget(self.searchTreeLineEdit)
 
         self.operTreeViewModel = QStandardItemModel()
-        # self.proxyOperTreeView = CaseInsensitiveProxyModel(parent=self)
-        # self.proxyOperTreeView.setSourceModel(self.operTreeViewModel)
         self.operTreeViewModel.setHorizontalHeaderLabels(["Операции", "Време"])
-        self.operTreeView.setModel(self.operTreeViewModel)
+        self.proxyOperTreeView = CustomInsensitiveTreeProxyModel(numericColumns=[1], parent=self)
+        self.proxyOperTreeView.setSourceModel(self.operTreeViewModel)
+        self.proxyOperTreeView.setSearchColumns([0])
+        self.operTreeView.setModel(self.proxyOperTreeView)
         # self.operTreeView.header().hide()
         self.operTreeView.setColumnWidth(0, 450)
         self.operTreeViewModel.dataChanged.connect(self.updateOperList)
@@ -73,23 +76,18 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         QTimer.singleShot(0, self.loadInitialData)
 
         self.searchLineEdit.textChanged.connect(self.proxyModelOperDetailsTable.setSearchText)
+        self.searchTreeLineEdit.textChanged.connect(self.proxyOperTreeView.setSearchText)
+        self.searchTreeLineEdit.textChanged.connect(self.onTreeSearchTextChanged)
         self.closeBtn.clicked.connect(self.close)
         self.logoutBtn.clicked.connect(self.logout)
 
-    def filterOperations(self, text):
-        text = text.strip()
-        print(text)
+    def onTreeSearchTextChanged(self, text):
+        self.proxyOperTreeView.setSearchText(text)
 
-        if not text:
-            self.proxyModelOperDetailsTable.setFilterRegularExpression(QRegularExpression())
-        escapeText = QRegularExpression.escape(text)
-
-        regex = QRegularExpression(
-            f".*{escapeText}.*",
-            QRegularExpression.PatternOption.CaseInsensitiveOption
-        )
-
-        self.proxyModelOperDetailsTable.setFilterRegularExpression(regex)
+        if text.strip():
+            self.operTreeView.expandToDepth(2)  # or expandAll()
+        else:
+            self.operTreeView.collapseAll()
 
     def setProxyModel(self, proxyModel, model, table):
         proxyModel.setSourceModel(model)
