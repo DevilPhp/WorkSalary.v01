@@ -2,7 +2,7 @@ import json
 
 from PySide6.QtCore import QAbstractTableModel, Qt, Signal, QItemSelection, QItemSelectionModel, QMimeData
 from PySide6.QtGui import QDrag, QBrush, QColor
-from PySide6.QtWidgets import QTreeView, QAbstractItemView, QListView, QStyledItemDelegate, QStyle
+from PySide6.QtWidgets import QTreeView, QAbstractItemView, QListView, QStyledItemDelegate, QStyle, QStyleOptionViewItem
 
 
 class CustomTreeView(QTreeView):
@@ -127,7 +127,7 @@ class CustomTreeViewWithDrop(QTreeView):
         super().__init__(parent)
 
         self.setSelectionBehavior(QTreeView.SelectionBehavior.SelectRows)
-        self.setSelectionMode(QTreeView.SelectionMode.ExtendedSelection)
+        self.setSelectionMode(QTreeView.SelectionMode.SingleSelection)
 
         self.setDragEnabled(False)  # this view is only a drop target
         self.setAcceptDrops(True)  # IMPORTANT
@@ -148,10 +148,10 @@ class CustomTreeViewWithDrop(QTreeView):
         self.expanded.connect(self.refreshTreeRowColors)
         self.collapsed.connect(self.refreshTreeRowColors)
 
-    def refreshTreeRowColors(self):
+    def refreshTreeRowColors(self, *args):
         """
-            Repaint the tree viewport so row colors update
-            after expanding or collapsing items.
+        Repaint the tree viewport so row colors update
+        after expanding or collapsing items.
         """
         self.viewport().update()
 
@@ -280,15 +280,29 @@ class TreeExpandedTypeDelegate(QStyledItemDelegate):
         self.treeView = treeView
 
     def paint(self, painter, option, index):
-        opt = option
+        """
+        Paint expanded 'type' rows with custom background color.
+        """
 
-        # Use column 0 for checking node type and expanded state
+        # Make a real copy of the style option
+        opt = QStyleOptionViewItem(option)
+        self.initStyleOption(opt, index)
+
+        # Always inspect column 0 of the same row
         rowRootIndex = index.siblingAtColumn(0)
 
         nodeType = rowRootIndex.data(Qt.ItemDataRole.UserRole + 1)
 
-        if nodeType == 'type' and self.treeView.isExpanded(rowRootIndex):
-            if not (opt.state & QStyle.StateFlag.State_Selected):
-                opt.backgroundBrush = QBrush(QColor(80, 120, 80))
+        isExpandedType = (
+            nodeType == "type" and
+            self.treeView.isExpanded(rowRootIndex)
+        )
 
+        # Paint custom background BEFORE default painting
+        if isExpandedType and not (opt.state & QStyle.StateFlag.State_Selected):
+            painter.save()
+            painter.fillRect(opt.rect, QColor(150, 207, 193))
+            painter.restore()
+
+        # Let default delegate paint text / icon / selection
         super().paint(painter, opt, index)

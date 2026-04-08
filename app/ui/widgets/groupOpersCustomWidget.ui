@@ -95,6 +95,25 @@ QLineEdit {
 	padding: 3px;
 }
 
+QMenu {
+	border: 1px solid #aeaeae;
+	border-radius: 5px;
+}
+
+QMenu::item {
+	padding: 5px;
+	font-size: 8pt;
+}
+
+QMenu::item:disabled {
+	color: #8e9090;
+}
+
+QMenu::item:selected {
+	background-color: #aeaeae;
+	padding-left: 7px;
+}
+
 QComboBox{
 	background-color: #dfdfdf;
 	border-bottom: 2px solid #7c9399;

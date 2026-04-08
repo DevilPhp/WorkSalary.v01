@@ -705,7 +705,6 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         self.setTotalMinsColor()
 
     def checkForExistingShiftInTimePaper(self, workerId):
-        print(workerId)
         if workerId:
             if self.existingTimePapers:
                 timePaperId = self.existingTimePapers[int(workerId)]

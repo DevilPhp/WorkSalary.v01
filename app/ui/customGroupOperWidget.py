@@ -13,6 +13,8 @@ from app.models.tableModel import CustomTableWithDrag
 from app.ui.customAddingOpersDialog import CustomAddOperationDialog
 from app.ui.messagesManager import MessageManager as MM
 from app.models.customLineEditWidget import CustomLineEdit
+from app.ui.customAddOperationDialog import CustomAddOperationDialog as addOperDialog
+from app.ui.customAddingOpersDialog import CustomBranchDialog as branchDialog
 
 
 class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
@@ -52,10 +54,7 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         self.operTreeView.setModel(self.proxyOperTreeView)
         # self.operTreeView.header().hide()
         self.operTreeView.setColumnWidth(0, 450)
-        self.operTreeViewModel.dataChanged.connect(self.updateOperList)
-
         self.operTableViewModel = QStandardItemModel()
-
         self.tableOperDetailsNames = ['№', 'Операция']
 
         for i, tableHeaderName in enumerate(self.tableOperDetailsNames):
@@ -68,16 +67,26 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         self.operationsTableView.horizontalHeader().setStretchLastSection(True)
         self.operationsTableView.setColumnWidth(0, 40)
 
+        self.operationsTableView.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.operationsTableView.customContextMenuRequested.connect(self.showCustomTableMenu)
+
+        self.operTreeView.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.operTreeView.customContextMenuRequested.connect(self.showCustomTreeMenu)
+
         self.checkBoxFiltering = {}
         self.initialCheckBoxes = {}
 
         self.operTreeView.dropedOpers.connect(self.dropOpers)
+        self.operTreeViewModel.dataChanged.connect(self.updateOperList)
+        self._handlingTreeChecks = False
+        self.operTreeViewModel.itemChanged.connect(self.handleTreeItemChanged)
 
         QTimer.singleShot(0, self.loadInitialData)
 
         self.searchLineEdit.textChanged.connect(self.proxyModelOperDetailsTable.setSearchText)
-        self.searchTreeLineEdit.textChanged.connect(self.proxyOperTreeView.setSearchText)
+        # self.searchTreeLineEdit.textChanged.connect(self.proxyOperTreeView.setSearchText)
         self.searchTreeLineEdit.textChanged.connect(self.onTreeSearchTextChanged)
+
         self.closeBtn.clicked.connect(self.close)
         self.logoutBtn.clicked.connect(self.logout)
 
@@ -143,22 +152,277 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
             proxyModel.setFilterForColumn(col, self.checkBoxFiltering)
         proxyModel.invalidateFilter()
 
-    def updateOperList(self, data):
+    def getNodeType(self, item):
+        """
+        Returns the custom node type stored in UserRole + 1.
+        """
+        if item is None:
+            return None
+        return item.data(Qt.ItemDataRole.UserRole + 1)
+
+    def setItemChecked(self, item, checked):
+        """
+        Safely sets item checked/unchecked only if needed.
+        """
+        if item is None or not item.isCheckable():
+            return
+
+        newState = Qt.CheckState.Checked if checked else Qt.CheckState.Unchecked
+        if item.checkState() != newState:
+            item.setCheckState(newState)
+
+    def setChildrenCheckedRecursive(self, parentItem, checked):
+        """
+        Recursively checks/unchecks all children in column 0.
+        """
+        if parentItem is None:
+            return
+
+        for row in range(parentItem.rowCount()):
+            childItem = parentItem.child(row, 0)
+            if childItem is not None:
+                self.setItemChecked(childItem, checked)
+                self.setChildrenCheckedRecursive(childItem, checked)
+
+    def checkParentsUpward(self, item):
+        """
+        Checks all parents of the given item.
+        """
+        parentItem = item.parent()
+        while parentItem is not None:
+            self.setItemChecked(parentItem, True)
+            parentItem = parentItem.parent()
+
+    def hasCheckedDirectChild(self, parentItem):
+        """
+        Returns True if parentItem has at least one direct checked child.
+        """
+        if parentItem is None:
+            return False
+
+        for row in range(parentItem.rowCount()):
+            childItem = parentItem.child(row, 0)
+            if childItem is not None and childItem.checkState() == Qt.CheckState.Checked:
+                return True
+        return False
+
+    def updateParentsAfterUncheck(self, item):
+        """
+        Walk upward and uncheck parents that no longer have checked direct children.
+        """
+        parentItem = item.parent()
+        while parentItem is not None:
+            if self.hasCheckedDirectChild(parentItem):
+                self.setItemChecked(parentItem, True)
+            else:
+                self.setItemChecked(parentItem, False)
+            parentItem = parentItem.parent()
+
+    def checkGaugeFlow(self, gaugeItem):
+        """
+        Flow for selected gauge:
+        - check parent type
+        - check all groups except 'Плетене'
+        - check all operations under those groups
+        - do NOT auto-check structs under 'Плетене'
+        """
+        if gaugeItem is None:
+            return
+
+        # Check type parent
+        self.checkParentsUpward(gaugeItem)
+
+        # Check all groups except 'Плетене'
+        for row in range(gaugeItem.rowCount()):
+            groupItem = gaugeItem.child(row, 0)
+            if groupItem is None:
+                continue
+
+            groupName = groupItem.text().strip()
+            groupNodeType = self.getNodeType(groupItem)
+
+            if groupNodeType != "group":
+                continue
+
+            if groupName == "Плетене":
+                # Important: do NOT auto-check knitting struct/items here
+                continue
+
+            self.setItemChecked(groupItem, True)
+            self.setChildrenCheckedRecursive(groupItem, True)
+
+    def checkStructFlow(self, structItem):
+        """
+        Flow for selected struct under group 'Плетене':
+        - check all operations under struct
+        - check all parents upward
+        """
+        if structItem is None:
+            return
+
+        self.setChildrenCheckedRecursive(structItem, True)
+        self.checkParentsUpward(structItem)
+
+    def handleTypeItem(self, item, checked):
+        """
+        Type behavior:
+        - checked -> only type stays checked
+        - unchecked -> uncheck everything below it
+        """
+        if checked:
+            return
+        self.setChildrenCheckedRecursive(item, False)
+
+    def handleGaugeItem(self, item, checked):
+        """
+        Gauge behavior:
+        - checked -> type checked + all groups except 'Плетене' + their operations
+        - unchecked -> uncheck everything below gauge and update parents
+        """
+        if checked:
+            self.checkGaugeFlow(item)
+        else:
+            self.setChildrenCheckedRecursive(item, False)
+            self.updateParentsAfterUncheck(item)
+
+    def handleGroupItem(self, item, checked):
+        """
+        Group behavior:
+        - for 'Плетене':
+            checked   -> only check parents upward, no auto struct selection
+            unchecked -> uncheck all structs/operations under it
+        - for other groups:
+            checked   -> check all operations under group + parents
+            unchecked -> uncheck all operations under group
+        """
+        groupName = item.text().strip()
+
+        if groupName == "Плетене":
+            if checked:
+                self.checkParentsUpward(item)
+            else:
+                self.setChildrenCheckedRecursive(item, False)
+                self.updateParentsAfterUncheck(item)
+        else:
+            if checked:
+                self.setChildrenCheckedRecursive(item, True)
+                self.checkParentsUpward(item)
+            else:
+                self.setChildrenCheckedRecursive(item, False)
+                self.updateParentsAfterUncheck(item)
+
+    def handleStructItem(self, item, checked):
+        """
+        Struct behavior:
+        - checked -> check all struct operations + all parents
+        - unchecked -> uncheck struct operations and update parents
+        """
+        if checked:
+            self.checkStructFlow(item)
+        else:
+            self.setChildrenCheckedRecursive(item, False)
+            self.updateParentsAfterUncheck(item)
+
+    def handleOperationItem(self, item, checked):
+        """
+        Operation behavior:
+        - checked -> check all parents
+        - unchecked -> update parents based on remaining checked siblings
+        """
+        if checked:
+            self.checkParentsUpward(item)
+        else:
+            self.updateParentsAfterUncheck(item)
+
+    def handleTreeItemChanged(self, item):
+        """
+        Main checkbox logic for the operations tree.
+
+        node types:
+        - type
+        - gauge
+        - group
+        - struct
+        - оperation   (kept exactly as in your current code)
+        """
+        if item is None:
+            return
+
+        # We only care about first column tree items
+        if item.column() != 0:
+            return
+
+        nodeType = self.getNodeType(item)
+        if nodeType is None:
+            return
+
+        if self._handlingTreeChecks:
+            return
+
+        checked = item.checkState() == Qt.CheckState.Checked
+
+        self._handlingTreeChecks = True
+        try:
+            if nodeType == "type":
+                self.handleTypeItem(item, checked)
+
+            elif nodeType == "gauge":
+                self.handleGaugeItem(item, checked)
+
+            elif nodeType == "group":
+                self.handleGroupItem(item, checked)
+
+            elif nodeType == "struct":
+                self.handleStructItem(item, checked)
+
+            elif nodeType == "operation":
+                self.handleOperationItem(item, checked)
+
+        finally:
+            self._handlingTreeChecks = False
+
+    def updateOperList(self, topLeft, bottomRight=None, roles=None):
+        """
+        Handles editing only for the time column.
+        Ignores checkbox changes in column 0.
+        """
+        if not topLeft.isValid():
+            return
+
+        # Only process the "Време" column
+        if topLeft.column() != 1:
+            return
+
         self.operTreeViewModel.blockSignals(True)
-        selectedItem = self.operTreeViewModel.itemFromIndex(data)
+
+        selectedItem = self.operTreeViewModel.itemFromIndex(topLeft)
+        if selectedItem is None:
+            self.operTreeViewModel.blockSignals(False)
+            return
+
         currentText = selectedItem.text()
         originalValue = selectedItem.data(Qt.ItemDataRole.UserRole)
+
+        if currentText:
+            normalizedText = currentText.replace(",", ".")
+        else:
+            normalizedText = currentText
+
         try:
-            numText = float(currentText)
+            numText = float(normalizedText)
             if not (0.01 <= numText <= 999):
                 currentText = f"{originalValue:.2f}"
             else:
                 if currentText != str(originalValue):
                     currentText = f"{numText:.2f}"
                     selectedItem.setData(float(currentText), Qt.ItemDataRole.UserRole)
+
             selectedItem.setText(currentText)
+
         except (ValueError, TypeError):
-            selectedItem.setText(str(originalValue))
+            if originalValue is not None:
+                selectedItem.setText(str(originalValue))
+
         self.operTreeViewModel.blockSignals(False)
 
     def dropOpers(self, items):
@@ -269,10 +533,10 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         return currentParent
 
     def appendOperationToBranch(self, branchItem, operId, mins, operCatalogId):
-        operName = self.operNamesById[operId]
+        operName = self.operNamesById[operId][0]
         operNameItem = QStandardItem(operName)
         operNameItem.setData(operId, Qt.ItemDataRole.UserRole)
-        operNameItem.setData("оperation", Qt.ItemDataRole.UserRole + 1)
+        operNameItem.setData("operation", Qt.ItemDataRole.UserRole + 1)
         operNameItem.setEditable(False)
         operNameItem.setCheckable(True)
         operMins = QStandardItem(f'{mins:.2f}')
@@ -289,32 +553,40 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
                 branchItem.child(row, 1).setData(mins, Qt.ItemDataRole.UserRole)
                 break
 
-    def loadInitialData(self):
+    def loadInitialData(self, refreshOperTable=True, refreshTable=False):
         data = GoS.getInitialData()
         # print(data)
         if data:
-            for key, value in data.items():
-                if key == "modelTypes":
-                    self.setModelTypes(value)
-                elif key == "guages":
-                    self.setGauges(value)
-                elif key == "groups":
-                    self.setGroups(value)
-                elif key == "structures":
-                    self.setStruct(value)
-                elif key == "operations":
-                    self.setOperations(value)
-                elif key == "operCatalog":
-                    self.operCatalog = value
+            if not refreshTable:
+                for key, value in data.items():
+                    if key == "modelTypes":
+                        self.setModelTypes(value)
+                    elif key == "guages":
+                        self.setGauges(value)
+                    elif key == "groups":
+                        self.setGroups(value)
+                    elif key == "structures":
+                        self.setStruct(value)
+                    elif key == "operations":
+                        if refreshOperTable:
+                            self.setOperations(value)
+                    elif key == "operCatalog":
+                        self.operCatalog = value
 
-        self.setTreeView()
-        self.refreshTreeView()
+                self.setTreeView()
+                self.refreshTreeView()
+            else:
+                for key, value in data.items():
+                    if key == "operations":
+                        self.setOperations(value)
 
     def setOperations(self, value):
         self.operTableViewModel.setRowCount(0)
+        self.operations.clear()
+        self.operNamesById.clear()
         for oper in value:
-            self.operations[oper["name"]] = oper["id"]
-            self.operNamesById[oper["id"]] = oper["name"]
+            self.operations[oper["name"]] = [oper["id"], oper["number"]]
+            self.operNamesById[oper["id"]] = [oper["name"], oper["number"]]
             operationName = QStandardItem(oper["name"])
             operationNumber = QStandardItem(str(oper["number"]))
             operationName.setData(oper["id"], Qt.ItemDataRole.UserRole)
@@ -323,22 +595,240 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
             self.operTableViewModel.appendRow([operationNumber, operationName])
         self.operationsTableView.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
 
+    # ----Tree Context Menu Setter---- #
+
+    def showCustomTreeMenu(self, pos):
+
+        item = self.checkItem(pos)
+        nodeType = item.data(Qt.ItemDataRole.UserRole + 1)
+        if not nodeType:
+            return
+
+        editAction, addAction, deleteAction = self.setCustomMenuActions(nodeType)
+
+        menu = QMenu(self)
+        addAction = menu.addAction(addAction)
+        editAction = menu.addAction(editAction)
+        deleteAction = menu.addAction(deleteAction)
+
+        action = menu.exec_(self.operTreeView.viewport().mapToGlobal(pos))
+        if action == addAction:
+            self.addBranch(nodeType, item)
+        elif action == editAction:
+            self.editBranch(nodeType, item)
+        elif action == deleteAction:
+            self.deleteBranch(nodeType, item)
+
+    def addBranch(self, nodeType, item):
+        dialog = branchDialog()
+        result = None
+        if nodeType == "type":
+            dialog.dialogTitle.setText("Добавяне вид")
+            result = dialog.exec()
+        elif nodeType == "gauge":
+            dialog.dialogTitle.setText("Добавяне файн")
+            result = dialog.exec()
+        elif nodeType == "group":
+            dialog.dialogTitle.setText("Добавяне група")
+            result = dialog.exec()
+        elif nodeType == "struct":
+            dialog.dialogTitle.setText("Добавяне структура")
+            result = dialog.exec()
+        elif nodeType == "operation":
+            newOper = {}
+
+            def onOperInfo(operInfo):
+                newOper['result'] = self.addNewOper(True, operInfo)
+
+            dialog = addOperDialog(isNewOper=True, operations=self.operations)
+            dialog.operInfo.connect(onOperInfo)
+            dialog.exec()
+            if newOper:
+                self.dropOpers([newOper['result'], item.parent()])
+            else:
+                return
+        if result == QDialog.Accepted:
+            name = dialog.branchNameLineEdit.text()
+            newBranch = GoS.addBranch(nodeType, name)
+            if newBranch:
+                MM.showOnWidget(self, f"Успешно добавен {name}.", "success")
+                self.loadInitialData(refreshOperTable=False)
+            else:
+                MM.showOnWidget(self, f"Неуспешно добавен {name}.", "error")
+
+    def editBranch(self, nodeType, item):
+        dialog = branchDialog()
+        if nodeType == "type":
+            dialog.dialogTitle.setText("Редактиране вид")
+        elif nodeType == "gauge":
+            dialog.dialogTitle.setText("Редактиране файн")
+        elif nodeType == "group":
+            dialog.dialogTitle.setText("Редактиране група")
+        elif nodeType == "struct":
+            dialog.dialogTitle.setText("Редактиране структура")
+        elif nodeType == "operation":
+            operId = item.data(Qt.ItemDataRole.UserRole)
+            operName = item.text()
+            operNum = self.operNamesById[operId][1]
+            operGroupId = int(str(operNum)[0])
+            operation = {
+                "id": operId,
+                "name": operName,
+                "groupId": operGroupId,
+                "number": operNum
+            }
+            dialog = addOperDialog(isNewOper=True, oper=operation, operations=self.operations)
+            dialog.operInfo.connect(self.updateOper)
+
+        branchName = item.text()
+        branchId = item.data(Qt.ItemDataRole.UserRole)
+        dialog.branchNameLineEdit.setText(branchName)
+        dialog.branchNameLineEdit.setFocus()
+        dialog.branchNameLineEdit.selectAll()
+        result = dialog.exec()
+
+        if result == QDialog.Accepted:
+            newBranchName = dialog.branchNameLineEdit.text()
+            updatedBranch = GoS.editBranch(nodeType, branchId, newBranchName)
+            if updatedBranch:
+                MM.showOnWidget(self, f"Успешно редактиран {updatedBranch['name']}.", "success")
+                self.loadInitialData(refreshOperTable=False)
+            else:
+                MM.showOnWidget(self, f"Неуспешно редактиран {branchName}.", "error")
+
+    def deleteBranch(self, nodeType, item):
+        print(nodeType)
+        print(item.text())
+
+    def checkItem(self, pos):
+        proxyIndex = self.operTreeView.indexAt(pos)
+        if not proxyIndex.isValid():
+            return None
+        sourceIndex = self.proxyOperTreeView.mapToSource(proxyIndex)
+        item = self.operTreeViewModel.itemFromIndex(sourceIndex)
+        if item is None:
+            return None
+        return item
+
+    def setCustomMenuActions(self, nodeType):
+        if nodeType == "type":
+            editAction = "Редактиране вид"
+            addAction = "Добавяне вид"
+            deleteAction = "Изтриване вид"
+        elif nodeType == "gauge":
+            editAction = "Редактиране файн"
+            addAction = "Добавяне файн"
+            deleteAction = "Изтриване файн"
+        elif nodeType == "group":
+            editAction = "Редактиране група"
+            addAction = "Добавяне група"
+            deleteAction = "Изтриване група"
+        elif nodeType == "struct":
+            editAction = "Редактиране структура"
+            addAction = "Добавяне структура"
+            deleteAction = "Изтриване структура"
+        elif nodeType == "operation":
+            editAction = "Редактиране операция"
+            addAction = "Добавяне операция"
+            deleteAction = "Изтриване операция"
+        else:
+            editAction = None
+            addAction = None
+            deleteAction = None
+
+        return editAction, addAction, deleteAction
+
+
+    # ----Table Context Menu Setter---- #
+
+    def showCustomTableMenu(self, pos):
+        menu = QMenu(self)
+        addAction = menu.addAction("Добавяне")
+        editAction = menu.addAction("Редактиране")
+        deleteAction = menu.addAction("Изтриване")
+
+        action = menu.exec_(self.operationsTableView.viewport().mapToGlobal(pos))
+        if action == addAction:
+            self.addOperation()
+        elif action == editAction:
+            self.editOperation()
+        elif action == deleteAction:
+            self.deleteOperation()
+
+    def addOperation(self):
+        dialog = addOperDialog(isNewOper=True, operations=self.operations)
+        dialog.operInfo.connect(partial(self.addNewOper, False))
+        dialog.exec()
+
+    def editOperation(self):
+        selectedItems = self.operationsTableView.selectionModel().selectedRows(1)
+        selectedRow = self.proxyModelOperDetailsTable.mapToSource(selectedItems[0]).row()
+        operId = self.operTableViewModel.item(selectedRow, 1).data(Qt.ItemDataRole.UserRole)
+        operNum = self.operTableViewModel.item(selectedRow, 0).data(Qt.ItemDataRole.DisplayRole)
+        operGropId = int(operNum[0])
+        selectedOper = self.operNamesById[operId][0]
+        operation = {
+            "id": operId,
+            "name": selectedOper,
+            "groupId": operGropId,
+            "number": int(operNum)
+        }
+        dialog = addOperDialog(isNewOper=True, oper=operation, operations=self.operations)
+        dialog.operInfo.connect(self.updateOper)
+        dialog.exec()
+
+    def addNewOper(self, isFromBranch, oper):
+        addedOper = GoS.addOperation(oper)
+        if addedOper:
+            operName = addedOper.get("name")
+            MM.showOnWidget(self, f"Операцията '{operName}' беше добавена успешно.", "success")
+            if isFromBranch:
+                self.loadInitialData(refreshTable=True)
+                return [{
+                    "id": addedOper.get("id"),
+                    "name": operName
+                }]
+            else:
+                self.loadInitialData()
+        else:
+            MM.showOnWidget(self, "Добавянето на операцията неуспешно.", "error")
+            if isFromBranch:
+                return []
+
+    def updateOper(self, oper):
+        updateOper = GoS.updateOperation(oper)
+        if updateOper:
+            operName = updateOper.get("name")
+            operId = updateOper.get("id")
+            self.loadInitialData()
+            MM.showOnWidget(self, f"Операцията {operId}: '{operName}' беше редактирана успешно.", "success")
+        else:
+            MM.showOnWidget(self, "Редактирането на операцията неуспешно.", "error")
+
     def setModelTypes(self, value):
+        self.typeComboBox.clear()
+        self.modelTypes.clear()
         for item in value:
             self.modelTypes[item["name"]] = item["id"]
             self.typeComboBox.addItem(item["name"])
 
     def setGauges(self, value):
+        self.gaugeComboBox.clear()
+        self.gauges.clear()
         for item in value:
             self.gauges[item["name"]] = item["id"]
             self.gaugeComboBox.addItem(item["name"])
 
     def setGroups(self, value):
+        self.groupComboBox.clear()
+        self.groupsOper.clear()
         for item in value:
             self.groupsOper[item["name"]] = item["id"]
             self.groupComboBox.addItem(item["name"])
 
     def setStruct(self, value):
+        self.structComboBox.clear()
+        self.struct.clear()
         for item in value:
             self.struct[item["name"]] = item["id"]
             self.structComboBox.addItem(item["name"])

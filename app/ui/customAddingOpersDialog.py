@@ -3,6 +3,7 @@ from PySide6.QtGui import QDoubleValidator
 from PySide6.QtWidgets import QGraphicsDropShadowEffect, QLineEdit
 from app.models.customLineEditWidget import CustomLineEdit
 from app.ui.widgets.ui_customDroppingOpersDialog import *
+from app.ui.widgets.ui_customAddingDialog import *
 
 
 class CustomAddOperationDialog(QDialog, Ui_CustomDroppingOpersDialog):
@@ -34,8 +35,8 @@ class CustomAddOperationDialog(QDialog, Ui_CustomDroppingOpersDialog):
         self.operPositionLabel.setText(text)
         self.operations = operations
         self.validator = QDoubleValidator(0.01, float(999), 2)
-        self.validator.setNotation(QDoubleValidator.StandardNotation)
-        self.validator.setLocale(QLocale.English)
+        self.validator.setNotation(QDoubleValidator.Notation.StandardNotation)
+        self.validator.setLocale(QLocale.Language.English)
 
         self.setOpersForm()
         self.yesBtn.clicked.connect(self.emitAcceptedOpers)
@@ -73,9 +74,9 @@ class CustomAddOperationDialog(QDialog, Ui_CustomDroppingOpersDialog):
             operMins = CustomLineEdit()
             operMins.setText("0.01")
             operMins.setMaximumWidth(40)
+            operMins.setValidator(self.validator)
             operMins.textChanged.connect(self.updateLabel)
             operMins.editingFinished.connect(self.setMinsText)
-            operMins.setValidator(self.validator)
             operMinsLabel = QLabel("мин.")
             self.opersGridLayout.addWidget(operName, index, 0)
             self.opersGridLayout.addWidget(operMins, index, 1)
@@ -91,6 +92,22 @@ class CustomAddOperationDialog(QDialog, Ui_CustomDroppingOpersDialog):
     def updateLabel(self):
         text = self.sender().text()
         if ',' in text:
-            text = text.split(',')[0]
-            text = text + '.'
-        self.sender().setText(text)
+            text = text.replace(',', '.')
+            self.sender().setText(text)
+
+
+class CustomBranchDialog(QDialog, Ui_customAddingDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setupUi(self)
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+        shadow = QGraphicsDropShadowEffect(self)
+        shadow.setBlurRadius(15)
+        shadow.setXOffset(2)
+        shadow.setYOffset(2)
+        shadow.setColor(QColor("#7f7f7f"))
+        self.setGraphicsEffect(shadow)
+
+        self.noBtn.clicked.connect(self.reject)
+        self.yesBtn.clicked.connect(self.accept)

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>customAddOperationDialog</class>
- <widget class="QDialog" name="customAddOperationDialog">
+ <class>customAddingDialog</class>
+ <widget class="QDialog" name="customAddingDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>364</width>
-    <height>296</height>
+    <height>262</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -260,15 +260,8 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
              </property>
             </widget>
            </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_2">
-             <property name="text">
-              <string>Група: </string>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="1">
-            <widget class="QLineEdit" name="operationNameLineEdit">
+            <widget class="QLineEdit" name="branchNameLineEdit">
              <property name="minimumSize">
               <size>
                <width>180</width>
@@ -277,18 +270,19 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
-            <widget class="QComboBox" name="operTypeComboBox"/>
-           </item>
-           <item row="2" column="0">
+           <item row="1" column="0">
             <widget class="QLabel" name="label_3">
              <property name="text">
-              <string>Номер: </string>
+              <string>Индекс:</string>
              </property>
             </widget>
            </item>
-           <item row="2" column="1">
-            <widget class="QLineEdit" name="operNumLineEdit"/>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="ranchIndexLineEdit">
+             <property name="placeholderText">
+              <string>0</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>

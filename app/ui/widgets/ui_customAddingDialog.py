@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customAddOperationDialogoKLxOF.ui'
+## Form generated from reading UI file 'customAddingDialogMzWGDx.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -15,24 +15,24 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QComboBox, QDialog, QFormLayout,
-    QHBoxLayout, QLabel, QLineEdit, QPushButton,
-    QSizePolicy, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QDialog, QFormLayout, QHBoxLayout,
+    QLabel, QLineEdit, QPushButton, QSizePolicy,
+    QVBoxLayout, QWidget)
 import resources_rc
 
-class Ui_customAddOperationDialog(object):
-    def setupUi(self, customAddOperationDialog):
-        if not customAddOperationDialog.objectName():
-            customAddOperationDialog.setObjectName(u"customAddOperationDialog")
-        customAddOperationDialog.resize(364, 296)
+class Ui_customAddingDialog(object):
+    def setupUi(self, customAddingDialog):
+        if not customAddingDialog.objectName():
+            customAddingDialog.setObjectName(u"customAddingDialog")
+        customAddingDialog.resize(364, 262)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(customAddOperationDialog.sizePolicy().hasHeightForWidth())
-        customAddOperationDialog.setSizePolicy(sizePolicy)
-        customAddOperationDialog.setMinimumSize(QSize(0, 0))
-        customAddOperationDialog.setMouseTracking(True)
-        customAddOperationDialog.setStyleSheet(u"*{\n"
+        sizePolicy.setHeightForWidth(customAddingDialog.sizePolicy().hasHeightForWidth())
+        customAddingDialog.setSizePolicy(sizePolicy)
+        customAddingDialog.setMinimumSize(QSize(0, 0))
+        customAddingDialog.setMouseTracking(True)
+        customAddingDialog.setStyleSheet(u"*{\n"
 "	font: 600 9pt \"Segoe UI\";\n"
 "	border: none;\n"
 "	background-color: #dfdfdf;\n"
@@ -139,11 +139,11 @@ class Ui_customAddOperationDialog(object):
                         "rollBar::sub-line:vertical {\n"
 "	background: #dfdfdf;\n"
 "}")
-        self.verticalLayout_2 = QVBoxLayout(customAddOperationDialog)
+        self.verticalLayout_2 = QVBoxLayout(customAddingDialog)
         self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.mainWidget = QWidget(customAddOperationDialog)
+        self.mainWidget = QWidget(customAddingDialog)
         self.mainWidget.setObjectName(u"mainWidget")
         sizePolicy1 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Expanding)
         sizePolicy1.setHorizontalStretch(0)
@@ -187,31 +187,21 @@ class Ui_customAddOperationDialog(object):
 
         self.addOperationLayout.setWidget(0, QFormLayout.LabelRole, self.label)
 
-        self.label_2 = QLabel(self.widget)
-        self.label_2.setObjectName(u"label_2")
+        self.branchNameLineEdit = QLineEdit(self.widget)
+        self.branchNameLineEdit.setObjectName(u"branchNameLineEdit")
+        self.branchNameLineEdit.setMinimumSize(QSize(180, 0))
 
-        self.addOperationLayout.setWidget(1, QFormLayout.LabelRole, self.label_2)
-
-        self.operationNameLineEdit = QLineEdit(self.widget)
-        self.operationNameLineEdit.setObjectName(u"operationNameLineEdit")
-        self.operationNameLineEdit.setMinimumSize(QSize(180, 0))
-
-        self.addOperationLayout.setWidget(0, QFormLayout.FieldRole, self.operationNameLineEdit)
-
-        self.operTypeComboBox = QComboBox(self.widget)
-        self.operTypeComboBox.setObjectName(u"operTypeComboBox")
-
-        self.addOperationLayout.setWidget(1, QFormLayout.FieldRole, self.operTypeComboBox)
+        self.addOperationLayout.setWidget(0, QFormLayout.FieldRole, self.branchNameLineEdit)
 
         self.label_3 = QLabel(self.widget)
         self.label_3.setObjectName(u"label_3")
 
-        self.addOperationLayout.setWidget(2, QFormLayout.LabelRole, self.label_3)
+        self.addOperationLayout.setWidget(1, QFormLayout.LabelRole, self.label_3)
 
-        self.operNumLineEdit = QLineEdit(self.widget)
-        self.operNumLineEdit.setObjectName(u"operNumLineEdit")
+        self.ranchIndexLineEdit = QLineEdit(self.widget)
+        self.ranchIndexLineEdit.setObjectName(u"ranchIndexLineEdit")
 
-        self.addOperationLayout.setWidget(2, QFormLayout.FieldRole, self.operNumLineEdit)
+        self.addOperationLayout.setWidget(1, QFormLayout.FieldRole, self.ranchIndexLineEdit)
 
 
         self.verticalLayout_3.addLayout(self.addOperationLayout)
@@ -261,18 +251,18 @@ class Ui_customAddOperationDialog(object):
         self.verticalLayout_2.addWidget(self.mainWidget, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
 
-        self.retranslateUi(customAddOperationDialog)
+        self.retranslateUi(customAddingDialog)
 
-        QMetaObject.connectSlotsByName(customAddOperationDialog)
+        QMetaObject.connectSlotsByName(customAddingDialog)
     # setupUi
 
-    def retranslateUi(self, customAddOperationDialog):
-        customAddOperationDialog.setWindowTitle(QCoreApplication.translate("customAddOperationDialog", u"CustomYesNoDialog", None))
-        self.dialogTitle.setText(QCoreApplication.translate("customAddOperationDialog", u"\u0414\u043e\u0431\u0430\u0432\u044f\u043d\u0435 \u043d\u0430 \u043e\u043f\u0435\u0440\u0430\u0446\u0438\u044f", None))
-        self.label.setText(QCoreApplication.translate("customAddOperationDialog", u"\u0418\u043c\u0435: ", None))
-        self.label_2.setText(QCoreApplication.translate("customAddOperationDialog", u"\u0413\u0440\u0443\u043f\u0430: ", None))
-        self.label_3.setText(QCoreApplication.translate("customAddOperationDialog", u"\u041d\u043e\u043c\u0435\u0440: ", None))
-        self.yesBtn.setText(QCoreApplication.translate("customAddOperationDialog", u"\u0414\u0410", None))
-        self.noBtn.setText(QCoreApplication.translate("customAddOperationDialog", u"\u041d\u0415", None))
+    def retranslateUi(self, customAddingDialog):
+        customAddingDialog.setWindowTitle(QCoreApplication.translate("customAddingDialog", u"CustomYesNoDialog", None))
+        self.dialogTitle.setText(QCoreApplication.translate("customAddingDialog", u"\u0414\u043e\u0431\u0430\u0432\u044f\u043d\u0435 \u043d\u0430 \u043e\u043f\u0435\u0440\u0430\u0446\u0438\u044f", None))
+        self.label.setText(QCoreApplication.translate("customAddingDialog", u"\u0418\u043c\u0435: ", None))
+        self.label_3.setText(QCoreApplication.translate("customAddingDialog", u"\u0418\u043d\u0434\u0435\u043a\u0441:", None))
+        self.ranchIndexLineEdit.setPlaceholderText(QCoreApplication.translate("customAddingDialog", u"0", None))
+        self.yesBtn.setText(QCoreApplication.translate("customAddingDialog", u"\u0414\u0410", None))
+        self.noBtn.setText(QCoreApplication.translate("customAddingDialog", u"\u041d\u0415", None))
     # retranslateUi
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'groupOpersCustomWidgetwvQJsw.ui'
+## Form generated from reading UI file 'groupOpersCustomWidgetgsXYYi.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -102,6 +102,25 @@ class Ui_customWidgetGroupOpers(object):
 "	padding: 3px;\n"
 "}\n"
 "\n"
+"QMenu {\n"
+"	border: 1px solid #aeaeae;\n"
+"	border-radius: 5px;\n"
+"}\n"
+"\n"
+"QMenu::item {\n"
+"	padding: 5px;\n"
+"	font-size: 8pt;\n"
+"}\n"
+"\n"
+"QMenu::item:disabled {\n"
+"	color: #8e9090;\n"
+"}\n"
+"\n"
+"QMenu::item:selected {\n"
+"	background-color: #aeaeae;\n"
+"	padding-left: 7px;\n"
+"}\n"
+"\n"
 "QComboBox{\n"
 "	background-color: #dfdfdf;\n"
 "	border-bottom: 2px solid #7c9399;\n"
@@ -114,7 +133,8 @@ class Ui_customWidgetGroupOpers(object):
 "	height: 16px;\n"
 "}\n"
 "\n"
-"QComboBox:hover{\n"
+"QComboBox:hover"
+                        "{\n"
 "	color: #2b2b2c;\n"
 "	font: 700 8pt \"Segoe UI\";\n"
 "	border-radius: 0px;\n"
@@ -127,8 +147,7 @@ class Ui_customWidgetGroupOpers(object):
 "}\n"
 "QComboBox::item{\n"
 "	color: #324b4c;\n"
-"	font: 600 8"
-                        "pt \"Segoe UI\";\n"
+"	font: 600 8pt \"Segoe UI\";\n"
 "	height: 10px;  \n"
 "	border: 4px solid transparent;\n"
 "	padding: 0px 4px 0px 4px;\n"

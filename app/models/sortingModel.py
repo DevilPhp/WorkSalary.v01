@@ -155,64 +155,56 @@ class CaseInsensitiveProxyModel(QSortFilterProxyModel):
 class CustomInsensitiveTreeProxyModel(CaseInsensitiveProxyModel):
     def __init__(self, numericColumns=None, dateColumns=None,  *args, **kwargs):
         super().__init__(numericColumns=numericColumns, dateColumns=dateColumns, *args, **kwargs)
+        self.searchTokens = []
+
+    def setSearchText(self, text):
+        """
+        Normalize the typed text and split it into tokens.
+        Example:
+            '  жилетка   плетене ' -> ['жилетка', 'плетене']
+        """
+        normalized = " ".join((text or "").lower().split())
+        self.searchText = normalized
+        self.searchTokens = normalized.split() if normalized else []
+        self.invalidateFilter()
 
     def filterAcceptsRow(self, sourceRow, sourceParent):
-        """
-        A tree row stays visible if:
-        1. the row itself matches
-        2. any parent above it matches
-        3. any child below it matches
-
-        This gives the behavior:
-        - searching a parent keeps the whole subtree visible
-        - searching a child keeps the full path to that child visible
-        """
         source_model = self.sourceModel()
         if source_model is None:
             return False
 
-        # 1) Current row matches
+        current_index = source_model.index(sourceRow, 0, sourceParent)
+        if not current_index.isValid():
+            return False
+
+        # 1) Current row/path matches search + filters
         if self._rowMatches(sourceRow, sourceParent):
             return True
 
-        # 2) Any parent matches
-        parent_index = sourceParent
-        while parent_index.isValid():
-            if self._indexMatches(parent_index):
+        # 2) Keep parent rows visible if any child matches
+        for child_row in range(source_model.rowCount(current_index)):
+            if self.filterAcceptsRow(child_row, current_index):
                 return True
-            parent_index = parent_index.parent()
-
-        # 3) Any child matches
-        current_index = source_model.index(sourceRow, 0, sourceParent)
-        if self._hasMatchingChildren(current_index):
-            return True
 
         return False
 
     def _rowMatches(self, sourceRow, sourceParent):
-        """
-        Checks whether the current row itself matches
-        the active search text and column filters.
-        """
         source_model = self.sourceModel()
+        current_index = source_model.index(sourceRow, 0, sourceParent)
 
-        # Check line edit text search
-        if self.searchText:
-            row_matches_search = False
+        # -----------------------------------------
+        # Text search by path (parents + current row)
+        # -----------------------------------------
+        if self.searchTokens:
+            path_text = self._buildPathText(current_index)
 
-            for column in self.searchColumns:
-                index = source_model.index(sourceRow, column, sourceParent)
-                data = source_model.data(index, Qt.ItemDataRole.DisplayRole)
-                data_text = str(data or "").lower()
-
-                if self.searchText in data_text:
-                    row_matches_search = True
-                    break
-
-            if not row_matches_search:
+            # Every typed word must exist somewhere in the path
+            if not all(token in path_text for token in self.searchTokens):
                 return False
 
-        # Check header / column filters
+        # -----------------------------------------
+        # Header / column filters for the current row
+        # -----------------------------------------
         for column, filterSet in self.columnFilters.items():
             if not filterSet:
                 continue
@@ -224,6 +216,43 @@ class CustomInsensitiveTreeProxyModel(CaseInsensitiveProxyModel):
                 return False
 
         return True
+
+    def _buildPathText(self, index):
+        """
+        Build searchable text from:
+        parent type -> gauge -> group -> struct -> current row
+
+        This is fast and works well for hierarchical searches like:
+            'жилетка плетене'
+        """
+        if not index.isValid():
+            return ""
+
+        source_model = self.sourceModel()
+        parts = []
+
+        current = index
+        while current.isValid():
+            row = current.row()
+            parent = current.parent()
+
+            # Collect text from the configured search columns for this row
+            row_parts = []
+            for column in self.searchColumns:
+                col_index = source_model.index(row, column, parent)
+                data = source_model.data(col_index, Qt.ItemDataRole.DisplayRole)
+                if data is not None:
+                    row_parts.append(str(data).strip().lower())
+
+            row_text = " ".join(part for part in row_parts if part)
+            if row_text:
+                parts.append(row_text)
+
+            current = current.parent()
+
+        # Reverse so it becomes: top parent -> ... -> current row
+        parts.reverse()
+        return " ".join(parts)
 
     def _indexMatches(self, index):
         """
