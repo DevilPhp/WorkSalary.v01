@@ -26,7 +26,6 @@ class CustomYesNowDialog(QDialog, Ui_CustomYesNoDialog):
             self.normalIcon.setHidden(True)
             self.warningIcon.setHidden(False)
             self.noBtn.setVisible(False)
-            self.yesBtn.setText("Затваряне")
         self.yesBtn.clicked.connect(self.accept)
         self.noBtn.clicked.connect(self.reject)
 

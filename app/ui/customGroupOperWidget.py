@@ -15,6 +15,7 @@ from app.ui.messagesManager import MessageManager as MM
 from app.models.customLineEditWidget import CustomLineEdit
 from app.ui.customAddOperationDialog import CustomAddOperationDialog as addOperDialog
 from app.ui.customAddingOpersDialog import CustomBranchDialog as branchDialog
+from app.ui.customYesNoMessage import CustomYesNowDialog
 
 
 class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
@@ -537,6 +538,7 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         operNameItem = QStandardItem(operName)
         operNameItem.setData(operId, Qt.ItemDataRole.UserRole)
         operNameItem.setData("operation", Qt.ItemDataRole.UserRole + 1)
+        operNameItem.setData(operCatalogId, Qt.ItemDataRole.UserRole + 2)
         operNameItem.setEditable(False)
         operNameItem.setCheckable(True)
         operMins = QStandardItem(f'{mins:.2f}')
@@ -603,6 +605,9 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         nodeType = item.data(Qt.ItemDataRole.UserRole + 1)
         if not nodeType:
             return
+        operations = []
+        if nodeType == "operation":
+            operations = self.getSelectedOperations(item.parent())
 
         editAction, addAction, deleteAction = self.setCustomMenuActions(nodeType)
 
@@ -617,7 +622,7 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         elif action == editAction:
             self.editBranch(nodeType, item)
         elif action == deleteAction:
-            self.deleteBranch(nodeType, item)
+            self.deleteBranch(nodeType, item, operations)
 
     def addBranch(self, nodeType, item):
         dialog = branchDialog()
@@ -696,9 +701,43 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
             else:
                 MM.showOnWidget(self, f"Неуспешно редактиран {branchName}.", "error")
 
-    def deleteBranch(self, nodeType, item):
-        print(nodeType)
-        print(item.text())
+    def deleteBranch(self, nodeType, item, operations):
+        itemId = item.data(Qt.ItemDataRole.UserRole)
+        if nodeType == "type":
+            nodeName = "Вид облеко"
+        elif nodeType == "gauge":
+            nodeName = "Файн"
+        elif nodeType == "group":
+            nodeName = "Група"
+        elif nodeType == "struct":
+            nodeName = "Структура"
+        else:
+            nodeName = "Операция"
+
+        acceptDialog = CustomYesNowDialog(isNormalIcon=False)
+        message = f"Изтриване на {nodeName}: "
+
+        if not operations:
+            acceptDialog.setMessage(name=item.text(), message=message, mode='deleting')
+            result = acceptDialog.exec()
+            if result == QDialog.Accepted:
+                deletedBranch = GoS.deleteBranch(nodeType, itemId, item.text())
+                if deletedBranch:
+                    MM.showOnWidget(self, f"Успешно изтрит {nodeName}.", "success")
+                    self.loadInitialData(refreshOperTable=False)
+                else:
+                    MM.showOnWidget(self, f"Неуспешно изтрит {nodeName}.", "error")
+        else:
+            name = "\n".join(op["name"] for op in operations)
+            acceptDialog.setMessage(name=name, message=message, mode='deleting')
+            result = acceptDialog.exec()
+            if result == QDialog.Accepted:
+                deletedOperations = GoS.deleteSelectedOperationsFromTreeView(operations)
+                if deletedOperations:
+                    MM.showOnWidget(self, f"Успешно изтрити операции:\n{name}", "success")
+                    self.loadInitialData(refreshOperTable=False)
+                else:
+                    MM.showOnWidget(self, f"Неуспешно изтрити операции.\n{name}", "error")
 
     def checkItem(self, pos):
         proxyIndex = self.operTreeView.indexAt(pos)
@@ -709,6 +748,34 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         if item is None:
             return None
         return item
+
+    def getSelectedOperations(self, selectedParent):
+
+        # ---- Make so more then one operations can be deleted at the same time
+        indexes = self.operTreeView.selectionModel().selectedIndexes()
+        seenKeys = set()
+        operations = []
+        for index in indexes:
+            sourceIndex = self.proxyOperTreeView.mapToSource(index)
+            item = self.operTreeViewModel.itemFromIndex(sourceIndex)
+            if selectedParent != item.parent():
+                continue
+            else:
+                parent = item.parent()
+            row = item.row()
+            operId = parent.child(row, 0).data(Qt.ItemDataRole.UserRole)
+            catalogId = parent.child(row, 0).data(Qt.ItemDataRole.UserRole + 2)
+            operName = parent.child(row, 0).text()
+            key = (operId, catalogId)
+            if key in seenKeys:
+                continue
+            seenKeys.add(key)
+            operations.append({
+                "id": operId,
+                "catalogId": catalogId,
+                "name": operName,
+            })
+        return operations
 
     def setCustomMenuActions(self, nodeType):
         if nodeType == "type":
@@ -737,7 +804,6 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
             deleteAction = None
 
         return editAction, addAction, deleteAction
-
 
     # ----Table Context Menu Setter---- #
 
@@ -804,6 +870,49 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
             MM.showOnWidget(self, f"Операцията {operId}: '{operName}' беше редактирана успешно.", "success")
         else:
             MM.showOnWidget(self, "Редактирането на операцията неуспешно.", "error")
+
+    def deleteOperation(self):
+        operations = []
+        selectedItems = self.operationsTableView.selectionModel().selectedRows()
+
+        if not selectedItems:
+            return
+
+        for item in selectedItems:
+            selectedRow = self.proxyModelOperDetailsTable.mapToSource(item).row()
+            operId = self.operTableViewModel.item(selectedRow, 1).data(Qt.ItemDataRole.UserRole)
+            operName = self.operTableViewModel.item(selectedRow, 1).data(Qt.ItemDataRole.DisplayRole)
+            operations.append({
+                "id": operId,
+                "name": operName
+            })
+        if not operations:
+            return
+        acceptDialog = CustomYesNowDialog(isNormalIcon=False)
+        message = f"Изтриване на операция: "
+        name = "\n".join(op["name"] for op in operations)
+        if len(operations) > 1:
+            message = f"Изтриване на операции: "
+        acceptDialog.setMessage(name=name, message=message, mode='deleting')
+        result = acceptDialog.exec()
+
+        if result == QDialog.Accepted:
+            operationsInTreeView = GoS.checkExistingOperationsInTreeView(operations)
+            if operationsInTreeView:
+                warningDialog = CustomYesNowDialog(isNormalIcon=False)
+                message = 'Селектираните операции съществуват в видове модели. Потвърждавате ли да изтриете тези операции?'
+                name = "\n".join(op for op in operationsInTreeView)
+                warningDialog.setMessage(name=name, message=message, mode='warning')
+                warningnResult = warningDialog.exec()
+                if warningnResult == QDialog.Accepted:
+                    deletedOperations = GoS.deleteSelectedOperationsFromTableView(operations)
+                    if deletedOperations:
+                        MM.showOnWidget(self, f"Успешно изтрити операции:\n{name}", "success")
+                        self.loadInitialData()
+                    else:
+                        MM.showOnWidget(self, f"Неуспешно изтрити операции.\n{name}", "error")
+
+    # ---- UI Setting ---- #
 
     def setModelTypes(self, value):
         self.typeComboBox.clear()

@@ -30,6 +30,18 @@ class GroupOperationsService:
             logger.error('Failed to fetch groups')
             return {}
 
+    @staticmethod
+    @handle_api_connection
+    def checkExistingOperationsInTreeView(operations):
+        response = requests.post(f'{API_SERVER}/group_operations/check_existing_operations_in_tree',
+                                json={'operations': operations}).json()
+        if response['status'] =='success':
+            logger.info('Successfully checked existing operations in tree view')
+            return response['data']
+        else:
+            logger.error('Failed to check existing operations in tree view')
+            return []
+
 
     #-------SETTERS-------#
 
@@ -90,4 +102,40 @@ class GroupOperationsService:
             return response['data']
         else:
             logger.error(f'Failed to edit branch id-{branchId}')
+            return False
+
+    @staticmethod
+    @handle_api_connection
+    def deleteBranch(nodeType, branchId, branchName):
+        response = requests.post(f'{API_SERVER}/group_operations/delete_branch',
+                                 json={'nodeType': nodeType, 'branchId': branchId}).json()
+        if response['status'] =='success':
+            logger.info(f'Successfully deleted branch id-{branchName}')
+            return True
+        else:
+            logger.error(f'Failed to delete branch id-{branchName}')
+            return False
+
+    @staticmethod
+    @handle_api_connection
+    def deleteSelectedOperationsFromTreeView(operations):
+        response = requests.post(f'{API_SERVER}/group_operations/delete_selected_operations',
+                                 json={'operations': operations}).json()
+        if response['status'] =='success':
+            logger.info('Successfully deleted selected operations')
+            return True
+        else:
+            logger.error('Failed to delete selected operations')
+            return False
+
+    @staticmethod
+    @handle_api_connection
+    def deleteSelectedOperationsFromTableView(operations):
+        response = requests.post(f'{API_SERVER}/group_operations/delete_selected_operations_from_table',
+                                 json={'operations': operations}).json()
+        if response['status'] =='success':
+            logger.info('Successfully deleted selected operations from table')
+            return True
+        else:
+            logger.error('Failed to delete selected operations from table')
             return False

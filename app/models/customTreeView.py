@@ -127,12 +127,13 @@ class CustomTreeViewWithDrop(QTreeView):
         super().__init__(parent)
 
         self.setSelectionBehavior(QTreeView.SelectionBehavior.SelectRows)
-        self.setSelectionMode(QTreeView.SelectionMode.SingleSelection)
+        self.setSelectionMode(QTreeView.SelectionMode.ExtendedSelection)
 
-        self.setDragEnabled(False)  # this view is only a drop target
+        self.setDragEnabled(True)
         self.setAcceptDrops(True)  # IMPORTANT
         self.setDropIndicatorShown(True)  # optional but useful
-        self.setDragDropMode(QAbstractItemView.DragDropMode.DropOnly)
+        self.setDragDropMode(QAbstractItemView.DragDropMode.DragDrop)
+        self.setDefaultDropAction(Qt.DropAction.CopyAction)
 
         self.setEditTriggers(QAbstractItemView.EditTrigger.DoubleClicked)
         self.setAlternatingRowColors(True)
@@ -188,6 +189,72 @@ class CustomTreeViewWithDrop(QTreeView):
             event.acceptProposedAction()
         else:
             event.ignore()
+
+    def startDrag(self, supportedActions):
+        """
+        Start drag only for operation rows already inside the tree.
+        """
+        indexes = self.selectionModel().selectedIndexes()
+        if not indexes:
+            return
+
+        model = self.model()
+        operations = []
+        seenKeys = set()
+        sourceParent = None
+
+        for proxyIndex in indexes:
+            if hasattr(model, "mapToSource"):
+                sourceIndex = model.mapToSource(proxyIndex)
+                sourceModel = model.sourceModel()
+            else:
+                sourceIndex = proxyIndex
+                sourceModel = model
+
+            item = sourceModel.itemFromIndex(sourceIndex)
+            if item is None:
+                continue
+
+            nodeType = item.data(Qt.ItemDataRole.UserRole + 1)
+            if nodeType != "operation":
+                continue
+
+            parentItem = item.parent()
+            if parentItem is None:
+                continue
+
+            if sourceParent is None:
+                sourceParent = parentItem
+            elif parentItem != sourceParent:
+                continue
+
+            operId = item.data(Qt.ItemDataRole.UserRole)
+            parentNodeType = parentItem.data(Qt.ItemDataRole.UserRole + 1)
+            parentNodeId = parentItem.data(Qt.ItemDataRole.UserRole)
+            key = (parentNodeType, parentNodeId, operId)
+
+            if key in seenKeys:
+                continue
+            seenKeys.add(key)
+
+            operations.append({
+                "id": operId,
+                "name": item.text()
+            })
+
+        if not operations:
+            return
+
+        mimeData = QMimeData()
+        mimeData.setText("\n".join(op["name"] for op in operations))
+        mimeData.setData(
+            "application/x-operations-json",
+            json.dumps(operations).encode("utf-8")
+        )
+
+        drag = QDrag(self)
+        drag.setMimeData(mimeData)
+        drag.exec(Qt.DropAction.CopyAction)
 
     def dropEvent(self, event):
         index = self.indexAt(event.position().toPoint())
