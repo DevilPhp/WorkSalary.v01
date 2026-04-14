@@ -13,6 +13,7 @@ from app.utils.utils import Utils
 
 class CustomAddOperationDialog(QDialog, Ui_customAddOperationDialog):
     operInfo = Signal(list)
+    isInputs = Signal(bool)
 
     def __init__(self, isNewOper=False, oper=None, operations=None, parent=None):
         super().__init__(parent)
@@ -126,7 +127,12 @@ class CustomAddOperationDialog(QDialog, Ui_customAddOperationDialog):
     def acceptOper(self):
         if self.operationNameLineEdit.text() == "":
             self.operationNameLineEdit.setFocus()
+            self.isInputs.emit(False)
             return
+
+        if self.operNumLineEdit.text() == "":
+            self.operNumLineEdit.setText("0")
+
         if not self.isNewOper:
             returnedData = [self.operationNameLineEdit.text(), self.operTypeComboBox.currentText().split(':  ')[0]]
         else:

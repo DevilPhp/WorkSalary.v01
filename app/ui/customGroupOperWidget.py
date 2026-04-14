@@ -88,6 +88,11 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         # self.searchTreeLineEdit.textChanged.connect(self.proxyOperTreeView.setSearchText)
         self.searchTreeLineEdit.textChanged.connect(self.onTreeSearchTextChanged)
 
+        self.addTypeBtn.clicked.connect(partial(self.addNewBranch, "type"))
+        self.addGaugeBtn.clicked.connect(partial(self.addNewBranch, "gauge"))
+        self.addGroupBtn.clicked.connect(partial(self.addNewBranch, "group"))
+        self.addStructBtn.clicked.connect(partial(self.addNewBranch, "struct"))
+
         self.closeBtn.clicked.connect(self.close)
         self.logoutBtn.clicked.connect(self.logout)
 
@@ -597,6 +602,10 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
             self.operTableViewModel.appendRow([operationNumber, operationName])
         self.operationsTableView.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
 
+    def addNewBranch(self, nodeType):
+        if nodeType:
+            self.addBranch(nodeType, None)
+
     # ----Tree Context Menu Setter---- #
 
     def showCustomTreeMenu(self, pos):
@@ -823,6 +832,7 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
 
     def addOperation(self):
         dialog = addOperDialog(isNewOper=True, operations=self.operations)
+        dialog.isInputs.connect(self.checkInputs)
         dialog.operInfo.connect(partial(self.addNewOper, False))
         dialog.exec()
 
@@ -840,8 +850,14 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
             "number": int(operNum)
         }
         dialog = addOperDialog(isNewOper=True, oper=operation, operations=self.operations)
+        dialog.isInputs.connect(self.checkInputs)
         dialog.operInfo.connect(self.updateOper)
         dialog.exec()
+
+    def checkInputs(self, isInputs):
+        if not isInputs:
+            MM.showOnWidget(self, "Трябва да въведете входни данни за операцията.", "error")
+            return
 
     def addNewOper(self, isFromBranch, oper):
         addedOper = GoS.addOperation(oper)
@@ -911,6 +927,13 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
                         self.loadInitialData()
                     else:
                         MM.showOnWidget(self, f"Неуспешно изтрити операции.\n{name}", "error")
+            else:
+                deletedOperations = GoS.deleteSelectedOperationsFromTableView(operations)
+                if deletedOperations:
+                    MM.showOnWidget(self, f"Успешно изтрити операции:\n{name}", "success")
+                    self.loadInitialData()
+                else:
+                    MM.showOnWidget(self, f"Неуспешно изтрити операции.\n{name}", "error")
 
     # ---- UI Setting ---- #
 
