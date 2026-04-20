@@ -1,7 +1,7 @@
 from functools import partial
 
 from PySide6.QtCore import Signal
-from PySide6.QtGui import QIntValidator
+from PySide6.QtGui import QIntValidator, QDoubleValidator
 
 from app.ui.widgets.ui_customAddOperationDialog import *
 
@@ -26,11 +26,19 @@ class CustomAddOperationDialog(QDialog, Ui_customAddOperationDialog):
         shadow.setYOffset(2)
         shadow.setColor(QColor("#7f7f7f"))
         self.setGraphicsEffect(shadow)
+
+        validator = QDoubleValidator(0.01, float(999), 2)
+        validator.setNotation(QDoubleValidator.StandardNotation)
+        validator.setLocale(QLocale.English)
+
         self.operNumLineEdit.setValidator(QIntValidator(1, 1000000))
+        self.operTimeLineEdit.setValidator(validator)
+
         self.isNewOper = isNewOper
         self.oper = oper
         if self.oper:
             self.operationNameLineEdit.setText(self.oper.get("name"))
+            self.operTimeLineEdit.setText(self.oper.get("time"))
         self.groupsList = []
         self.operations = operations
         self.operNums = [oper[1] for name, oper in operations.items()] if operations else []
@@ -50,6 +58,7 @@ class CustomAddOperationDialog(QDialog, Ui_customAddOperationDialog):
                 self.groupsList.append(item)
                 self.operTypeComboBox.addItem(item)
             Utils.setupCompleter(self.groupsList, self.operTypeComboBox.lineEdit())
+            self.operTypeComboBox.setCurrentIndex(-1)
 
         self.operTypeComboBox.currentTextChanged.connect(self.operGroupSelected)
 
@@ -59,6 +68,11 @@ class CustomAddOperationDialog(QDialog, Ui_customAddOperationDialog):
             self.operTypeComboBox.setCurrentIndex(-1)
 
         self.operationNameLineEdit.editingFinished.connect(self.operNameChanged)
+        self.operTimeLineEdit.textChanged.connect(self.operTimeChanged)
+        self.operTimeLineEdit.editingFinished.connect(self.operTimeEdited)
+
+        self.operationNameLineEdit.setFocus()
+        self.operationNameLineEdit.selectAll()
 
         self.yesBtn.clicked.connect(self.acceptOper)
         self.noBtn.clicked.connect(self.reject)
@@ -136,12 +150,28 @@ class CustomAddOperationDialog(QDialog, Ui_customAddOperationDialog):
         if not self.isNewOper:
             returnedData = [self.operationNameLineEdit.text(), self.operTypeComboBox.currentText().split(':  ')[0]]
         else:
+            defaultTime = float(self.operTimeLineEdit.text())
+            if defaultTime < 0.01:
+                defaultTime = 0.01
             if self.oper:
                 returnedData = [self.oper.get("id"),
                                 self.operationNameLineEdit.text(),
-                                int(self.operNumLineEdit.text())]
+                                int(self.operNumLineEdit.text()),
+                                defaultTime]
             else:
-                returnedData = [self.operationNameLineEdit.text(), int(self.operNumLineEdit.text())]
+                returnedData = [self.operationNameLineEdit.text(),
+                                int(self.operNumLineEdit.text()),
+                                defaultTime]
         self.operInfo.emit(returnedData)
         self.close()
 
+    def operTimeChanged(self, text):
+        currentText = text.replace(",", ".")
+        self.operTimeLineEdit.setText(currentText)
+
+    def operTimeEdited(self):
+        convertedTime = float(self.operTimeLineEdit.text())
+        # if convertedTime < 0.01:
+        #     self.operTimeLineEdit.setText("0.01")
+        # else:
+        self.operTimeLineEdit.setText(str(convertedTime))

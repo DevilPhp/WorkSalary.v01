@@ -231,6 +231,7 @@ class CustomTreeViewWithDrop(QTreeView):
             operId = item.data(Qt.ItemDataRole.UserRole)
             parentNodeType = parentItem.data(Qt.ItemDataRole.UserRole + 1)
             parentNodeId = parentItem.data(Qt.ItemDataRole.UserRole)
+            operTime = sourceModel.index(sourceIndex.row(), 1, sourceIndex.parent()).data(Qt.ItemDataRole.DisplayRole)
             key = (parentNodeType, parentNodeId, operId)
 
             if key in seenKeys:
@@ -239,7 +240,8 @@ class CustomTreeViewWithDrop(QTreeView):
 
             operations.append({
                 "id": operId,
-                "name": item.text()
+                "name": item.text(),
+                "time": operTime,
             })
 
         if not operations:

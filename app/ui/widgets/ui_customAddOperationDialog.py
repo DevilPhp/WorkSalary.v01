@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customAddOperationDialogoKLxOF.ui'
+## Form generated from reading UI file 'customAddOperationDialogXMbczr.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -24,7 +24,7 @@ class Ui_customAddOperationDialog(object):
     def setupUi(self, customAddOperationDialog):
         if not customAddOperationDialog.objectName():
             customAddOperationDialog.setObjectName(u"customAddOperationDialog")
-        customAddOperationDialog.resize(364, 296)
+        customAddOperationDialog.resize(410, 336)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -194,7 +194,7 @@ class Ui_customAddOperationDialog(object):
 
         self.operationNameLineEdit = QLineEdit(self.widget)
         self.operationNameLineEdit.setObjectName(u"operationNameLineEdit")
-        self.operationNameLineEdit.setMinimumSize(QSize(180, 0))
+        self.operationNameLineEdit.setMinimumSize(QSize(210, 0))
 
         self.addOperationLayout.setWidget(0, QFormLayout.FieldRole, self.operationNameLineEdit)
 
@@ -212,6 +212,16 @@ class Ui_customAddOperationDialog(object):
         self.operNumLineEdit.setObjectName(u"operNumLineEdit")
 
         self.addOperationLayout.setWidget(2, QFormLayout.FieldRole, self.operNumLineEdit)
+
+        self.label_4 = QLabel(self.widget)
+        self.label_4.setObjectName(u"label_4")
+
+        self.addOperationLayout.setWidget(3, QFormLayout.LabelRole, self.label_4)
+
+        self.operTimeLineEdit = QLineEdit(self.widget)
+        self.operTimeLineEdit.setObjectName(u"operTimeLineEdit")
+
+        self.addOperationLayout.setWidget(3, QFormLayout.FieldRole, self.operTimeLineEdit)
 
 
         self.verticalLayout_3.addLayout(self.addOperationLayout)
@@ -247,6 +257,7 @@ class Ui_customAddOperationDialog(object):
         self.noBtn = QPushButton(self.buttonsWidget)
         self.noBtn.setObjectName(u"noBtn")
         self.noBtn.setFont(font)
+        self.noBtn.setFocusPolicy(Qt.NoFocus)
         icon1 = QIcon()
         icon1.addFile(u":/icons/app/assets/icons/Close-Square--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.noBtn.setIcon(icon1)
@@ -272,6 +283,9 @@ class Ui_customAddOperationDialog(object):
         self.label.setText(QCoreApplication.translate("customAddOperationDialog", u"\u0418\u043c\u0435: ", None))
         self.label_2.setText(QCoreApplication.translate("customAddOperationDialog", u"\u0413\u0440\u0443\u043f\u0430: ", None))
         self.label_3.setText(QCoreApplication.translate("customAddOperationDialog", u"\u041d\u043e\u043c\u0435\u0440: ", None))
+        self.label_4.setText(QCoreApplication.translate("customAddOperationDialog", u"\u0412\u0440\u0435\u043c\u0435", None))
+        self.operTimeLineEdit.setText(QCoreApplication.translate("customAddOperationDialog", u"0.01", None))
+        self.operTimeLineEdit.setPlaceholderText(QCoreApplication.translate("customAddOperationDialog", u"0.01", None))
         self.yesBtn.setText(QCoreApplication.translate("customAddOperationDialog", u"\u0414\u0410", None))
         self.noBtn.setText(QCoreApplication.translate("customAddOperationDialog", u"\u041d\u0415", None))
     # retranslateUi

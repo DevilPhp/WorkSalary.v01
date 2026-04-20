@@ -72,7 +72,7 @@ class CustomAddOperationDialog(QDialog, Ui_CustomDroppingOpersDialog):
             operName = QLabel(oper['name'])
             operName.setObjectName(str(oper['id']))
             operMins = CustomLineEdit()
-            operMins.setText("0.01")
+            operMins.setText(str(oper['time']))
             operMins.setMaximumWidth(40)
             operMins.setValidator(self.validator)
             operMins.textChanged.connect(self.updateLabel)

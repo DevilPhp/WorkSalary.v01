@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'groupOpersCustomWidgetgsXYYi.ui'
+## Form generated from reading UI file 'groupOpersCustomWidgettKNiKO.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -24,7 +24,7 @@ class Ui_customWidgetGroupOpers(object):
     def setupUi(self, customWidgetGroupOpers):
         if not customWidgetGroupOpers.objectName():
             customWidgetGroupOpers.setObjectName(u"customWidgetGroupOpers")
-        customWidgetGroupOpers.resize(1139, 699)
+        customWidgetGroupOpers.resize(1187, 699)
         customWidgetGroupOpers.setMinimumSize(QSize(800, 580))
         customWidgetGroupOpers.setStyleSheet(u"*{\n"
 "	background-color: #dfdfdf;\n"
@@ -58,6 +58,11 @@ class Ui_customWidgetGroupOpers(object):
 "	font-size: 8pt;\n"
 "}\n"
 "\n"
+"#modelLabel {\n"
+"	font-size: 10pt;\n"
+"	font-weight: 700;\n"
+"}\n"
+"\n"
 "#widget_4 *, #saveOpertaionsGroupsBtn, #saveNewModel, #deleteOperetionGroupsBtn {\n"
 "	font-size: 8pt;\n"
 "	font-weight: 700;\n"
@@ -72,12 +77,12 @@ class Ui_customWidgetGroupOpers(object):
 "}\n"
 "\n"
 "#pageTitle {\n"
-"	font: 700 11pt \"Segoe UI\";\n"
+"	font: 700 11pt \""
+                        "Segoe UI\";\n"
 "}\n"
 "\n"
 "#userIcon, #logoutBtn {\n"
-"	background-color:"
-                        " #dfdfdf;\n"
+"	background-color: #dfdfdf;\n"
 "	padding: 0px;\n"
 "}\n"
 "\n"
@@ -85,12 +90,12 @@ class Ui_customWidgetGroupOpers(object):
 "	icon: url(:/icons/app/assets/icons/Log-Out--Streamline-Feather_#192626.svg);\n"
 "}\n"
 "\n"
-"#deleteModelBtn {\n"
+"#deleteModelBtn, #oldModelsBtn {\n"
 "	background-color: #dfdfdf;\n"
 "	padding: 2px;\n"
 "}\n"
 "\n"
-"#deleteModelBtn:hover{\n"
+"#deleteModelBtn:hover, #oldModelsBtn:hover{\n"
 "	background-color: #aeaeae;\n"
 "}\n"
 "\n"
@@ -128,13 +133,13 @@ class Ui_customWidgetGroupOpers(object):
 "}\n"
 "\n"
 "QComboBox::drop-down{\n"
-"	image: url(':/icons/app/assets/icons/Alt-Arrow-Down--Streamline-Solar-Broken.svg');\n"
+"	image: url(':/icons/app/assets/icons/Alt-A"
+                        "rrow-Down--Streamline-Solar-Broken.svg');\n"
 "	width: 16px;\n"
 "	height: 16px;\n"
 "}\n"
 "\n"
-"QComboBox:hover"
-                        "{\n"
+"QComboBox:hover{\n"
 "	color: #2b2b2c;\n"
 "	font: 700 8pt \"Segoe UI\";\n"
 "	border-radius: 0px;\n"
@@ -398,7 +403,7 @@ class Ui_customWidgetGroupOpers(object):
         self.operationViewWidget.setObjectName(u"operationViewWidget")
         sizePolicy.setHeightForWidth(self.operationViewWidget.sizePolicy().hasHeightForWidth())
         self.operationViewWidget.setSizePolicy(sizePolicy)
-        self.operationViewWidget.setMinimumSize(QSize(350, 0))
+        self.operationViewWidget.setMinimumSize(QSize(400, 0))
         self.operationViewWidget.setMaximumSize(QSize(16777215, 16777215))
         self.verticalLayout_5 = QVBoxLayout(self.operationViewWidget)
         self.verticalLayout_5.setSpacing(10)
@@ -458,14 +463,102 @@ class Ui_customWidgetGroupOpers(object):
         self.verticalLayout_3 = QVBoxLayout(self.widget_5)
         self.verticalLayout_3.setSpacing(0)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.label_2 = QLabel(self.widget_5)
-        self.label_2.setObjectName(u"label_2")
+        self.verticalLayout_3.setContentsMargins(0, 0, 0, 10)
+        self.modelLabel = QLabel(self.widget_5)
+        self.modelLabel.setObjectName(u"modelLabel")
 
-        self.verticalLayout_3.addWidget(self.label_2)
+        self.verticalLayout_3.addWidget(self.modelLabel)
 
 
         self.verticalLayout_7.addWidget(self.widget_5, 0, Qt.AlignHCenter)
+
+        self.widget_3 = QWidget(self.widget_2)
+        self.widget_3.setObjectName(u"widget_3")
+        self.widget_3.setMinimumSize(QSize(0, 0))
+        self.verticalLayout_11 = QVBoxLayout(self.widget_3)
+        self.verticalLayout_11.setSpacing(5)
+        self.verticalLayout_11.setObjectName(u"verticalLayout_11")
+        self.verticalLayout_11.setContentsMargins(0, 0, 0, 5)
+        self.widget_7 = QWidget(self.widget_3)
+        self.widget_7.setObjectName(u"widget_7")
+        self.horizontalLayout_21 = QHBoxLayout(self.widget_7)
+        self.horizontalLayout_21.setSpacing(10)
+        self.horizontalLayout_21.setObjectName(u"horizontalLayout_21")
+        self.horizontalLayout_21.setContentsMargins(0, 0, 0, 0)
+        self.widget_11 = QWidget(self.widget_7)
+        self.widget_11.setObjectName(u"widget_11")
+        self.horizontalLayout_18 = QHBoxLayout(self.widget_11)
+        self.horizontalLayout_18.setSpacing(0)
+        self.horizontalLayout_18.setObjectName(u"horizontalLayout_18")
+        self.horizontalLayout_18.setContentsMargins(0, 0, 0, 0)
+        self.newModelCheckBox = QCheckBox(self.widget_11)
+        self.newModelCheckBox.setObjectName(u"newModelCheckBox")
+
+        self.horizontalLayout_18.addWidget(self.newModelCheckBox)
+
+
+        self.horizontalLayout_21.addWidget(self.widget_11)
+
+        self.widget_12 = QWidget(self.widget_7)
+        self.widget_12.setObjectName(u"widget_12")
+        self.horizontalLayout_19 = QHBoxLayout(self.widget_12)
+        self.horizontalLayout_19.setSpacing(5)
+        self.horizontalLayout_19.setObjectName(u"horizontalLayout_19")
+        self.horizontalLayout_19.setContentsMargins(0, 0, 0, 0)
+        self.editModelCheckBox = QCheckBox(self.widget_12)
+        self.editModelCheckBox.setObjectName(u"editModelCheckBox")
+
+        self.horizontalLayout_19.addWidget(self.editModelCheckBox)
+
+        self.modelNameLabel = QLabel(self.widget_12)
+        self.modelNameLabel.setObjectName(u"modelNameLabel")
+
+        self.horizontalLayout_19.addWidget(self.modelNameLabel)
+
+
+        self.horizontalLayout_21.addWidget(self.widget_12)
+
+        self.widget_13 = QWidget(self.widget_7)
+        self.widget_13.setObjectName(u"widget_13")
+        self.horizontalLayout_20 = QHBoxLayout(self.widget_13)
+        self.horizontalLayout_20.setSpacing(0)
+        self.horizontalLayout_20.setObjectName(u"horizontalLayout_20")
+        self.horizontalLayout_20.setContentsMargins(0, 0, 0, 0)
+        self.deleteModelBtn = QPushButton(self.widget_13)
+        self.deleteModelBtn.setObjectName(u"deleteModelBtn")
+        icon5 = QIcon()
+        icon5.addFile(u":/icons/app/assets/icons/Trash-Bin-Trash--Streamline-Solar-Broken.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.deleteModelBtn.setIcon(icon5)
+        self.deleteModelBtn.setIconSize(QSize(20, 20))
+
+        self.horizontalLayout_20.addWidget(self.deleteModelBtn)
+
+
+        self.horizontalLayout_21.addWidget(self.widget_13)
+
+
+        self.verticalLayout_11.addWidget(self.widget_7, 0, Qt.AlignLeft)
+
+        self.oldModelsWidget = QWidget(self.widget_3)
+        self.oldModelsWidget.setObjectName(u"oldModelsWidget")
+        self.horizontalLayout_22 = QHBoxLayout(self.oldModelsWidget)
+        self.horizontalLayout_22.setSpacing(5)
+        self.horizontalLayout_22.setObjectName(u"horizontalLayout_22")
+        self.horizontalLayout_22.setContentsMargins(0, 0, 0, 0)
+        self.oldModelsBtn = QPushButton(self.oldModelsWidget)
+        self.oldModelsBtn.setObjectName(u"oldModelsBtn")
+        icon6 = QIcon()
+        icon6.addFile(u":/icons/app/assets/icons/Eye--Streamline-Feather.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.oldModelsBtn.setIcon(icon6)
+        self.oldModelsBtn.setIconSize(QSize(20, 20))
+
+        self.horizontalLayout_22.addWidget(self.oldModelsBtn)
+
+
+        self.verticalLayout_11.addWidget(self.oldModelsWidget, 0, Qt.AlignLeft)
+
+
+        self.verticalLayout_7.addWidget(self.widget_3)
 
         self.modelInfoWidget = QWidget(self.widget_2)
         self.modelInfoWidget.setObjectName(u"modelInfoWidget")
@@ -475,31 +568,6 @@ class Ui_customWidgetGroupOpers(object):
         self.verticalLayout_8.setContentsMargins(0, 0, 0, 5)
         self.gridLayout = QGridLayout()
         self.gridLayout.setObjectName(u"gridLayout")
-        self.label_6 = QLabel(self.modelInfoWidget)
-        self.label_6.setObjectName(u"label_6")
-
-        self.gridLayout.addWidget(self.label_6, 0, 2, 1, 1)
-
-        self.label_10 = QLabel(self.modelInfoWidget)
-        self.label_10.setObjectName(u"label_10")
-
-        self.gridLayout.addWidget(self.label_10, 1, 4, 1, 1)
-
-        self.label_8 = QLabel(self.modelInfoWidget)
-        self.label_8.setObjectName(u"label_8")
-
-        self.gridLayout.addWidget(self.label_8, 2, 2, 1, 1)
-
-        self.label_5 = QLabel(self.modelInfoWidget)
-        self.label_5.setObjectName(u"label_5")
-
-        self.gridLayout.addWidget(self.label_5, 2, 0, 1, 1)
-
-        self.cehoveBtn = QPushButton(self.modelInfoWidget)
-        self.cehoveBtn.setObjectName(u"cehoveBtn")
-
-        self.gridLayout.addWidget(self.cehoveBtn, 1, 3, 1, 1)
-
         self.yarnLineEdit = QLineEdit(self.modelInfoWidget)
         self.yarnLineEdit.setObjectName(u"yarnLineEdit")
 
@@ -510,55 +578,92 @@ class Ui_customWidgetGroupOpers(object):
 
         self.gridLayout.addWidget(self.dateLineEdit, 2, 1, 1, 1)
 
-        self.label_11 = QLabel(self.modelInfoWidget)
-        self.label_11.setObjectName(u"label_11")
+        self.label_5 = QLabel(self.modelInfoWidget)
+        self.label_5.setObjectName(u"label_5")
 
-        self.gridLayout.addWidget(self.label_11, 2, 4, 1, 1)
-
-        self.piecesLineEdit = QLineEdit(self.modelInfoWidget)
-        self.piecesLineEdit.setObjectName(u"piecesLineEdit")
-
-        self.gridLayout.addWidget(self.piecesLineEdit, 0, 3, 1, 1)
-
-        self.label_9 = QLabel(self.modelInfoWidget)
-        self.label_9.setObjectName(u"label_9")
-
-        self.gridLayout.addWidget(self.label_9, 0, 4, 1, 1)
-
-        self.modelNameLineEdit = QLineEdit(self.modelInfoWidget)
-        self.modelNameLineEdit.setObjectName(u"modelNameLineEdit")
-
-        self.gridLayout.addWidget(self.modelNameLineEdit, 0, 1, 1, 1)
-
-        self.label_7 = QLabel(self.modelInfoWidget)
-        self.label_7.setObjectName(u"label_7")
-
-        self.gridLayout.addWidget(self.label_7, 1, 2, 1, 1)
-
-        self.label_3 = QLabel(self.modelInfoWidget)
-        self.label_3.setObjectName(u"label_3")
-
-        self.gridLayout.addWidget(self.label_3, 0, 0, 1, 1)
-
-        self.label_4 = QLabel(self.modelInfoWidget)
-        self.label_4.setObjectName(u"label_4")
-
-        self.gridLayout.addWidget(self.label_4, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.label_5, 2, 0, 1, 1)
 
         self.clientNameLineEdit = QLineEdit(self.modelInfoWidget)
         self.clientNameLineEdit.setObjectName(u"clientNameLineEdit")
 
         self.gridLayout.addWidget(self.clientNameLineEdit, 1, 1, 1, 1)
 
+        self.label_8 = QLabel(self.modelInfoWidget)
+        self.label_8.setObjectName(u"label_8")
+
+        self.gridLayout.addWidget(self.label_8, 2, 2, 1, 1)
+
+        self.cehoveBtn = QPushButton(self.modelInfoWidget)
+        self.cehoveBtn.setObjectName(u"cehoveBtn")
+
+        self.gridLayout.addWidget(self.cehoveBtn, 1, 3, 1, 1)
+
+        self.piecesLineEdit = QLineEdit(self.modelInfoWidget)
+        self.piecesLineEdit.setObjectName(u"piecesLineEdit")
+
+        self.gridLayout.addWidget(self.piecesLineEdit, 0, 3, 1, 1)
+
+        self.label_2 = QLabel(self.modelInfoWidget)
+        self.label_2.setObjectName(u"label_2")
+
+        self.gridLayout.addWidget(self.label_2, 0, 4, 1, 1)
+
+        self.label_3 = QLabel(self.modelInfoWidget)
+        self.label_3.setObjectName(u"label_3")
+
+        self.gridLayout.addWidget(self.label_3, 0, 0, 1, 1)
+
         self.commentLineEdit = QLineEdit(self.modelInfoWidget)
         self.commentLineEdit.setObjectName(u"commentLineEdit")
 
-        self.gridLayout.addWidget(self.commentLineEdit, 0, 5, 1, 1)
+        self.gridLayout.addWidget(self.commentLineEdit, 0, 7, 1, 1)
+
+        self.label_7 = QLabel(self.modelInfoWidget)
+        self.label_7.setObjectName(u"label_7")
+
+        self.gridLayout.addWidget(self.label_7, 1, 2, 1, 1)
+
+        self.label_6 = QLabel(self.modelInfoWidget)
+        self.label_6.setObjectName(u"label_6")
+
+        self.gridLayout.addWidget(self.label_6, 0, 2, 1, 1)
+
+        self.modelNameLineEdit = QLineEdit(self.modelInfoWidget)
+        self.modelNameLineEdit.setObjectName(u"modelNameLineEdit")
+        self.modelNameLineEdit.setMinimumSize(QSize(150, 0))
+
+        self.gridLayout.addWidget(self.modelNameLineEdit, 0, 1, 1, 1)
+
+        self.label_4 = QLabel(self.modelInfoWidget)
+        self.label_4.setObjectName(u"label_4")
+
+        self.gridLayout.addWidget(self.label_4, 1, 0, 1, 1)
+
+        self.label_9 = QLabel(self.modelInfoWidget)
+        self.label_9.setObjectName(u"label_9")
+
+        self.gridLayout.addWidget(self.label_9, 0, 6, 1, 1)
+
+        self.forClientComboBox = QComboBox(self.modelInfoWidget)
+        self.forClientComboBox.setObjectName(u"forClientComboBox")
+        self.forClientComboBox.setMinimumSize(QSize(120, 0))
+
+        self.gridLayout.addWidget(self.forClientComboBox, 0, 5, 1, 1)
+
+        self.label_10 = QLabel(self.modelInfoWidget)
+        self.label_10.setObjectName(u"label_10")
+
+        self.gridLayout.addWidget(self.label_10, 1, 4, 1, 1)
 
         self.actualCheckBox = QCheckBox(self.modelInfoWidget)
         self.actualCheckBox.setObjectName(u"actualCheckBox")
 
         self.gridLayout.addWidget(self.actualCheckBox, 1, 5, 1, 1)
+
+        self.label_11 = QLabel(self.modelInfoWidget)
+        self.label_11.setObjectName(u"label_11")
+
+        self.gridLayout.addWidget(self.label_11, 2, 4, 1, 1)
 
         self.forProdCheckBox = QCheckBox(self.modelInfoWidget)
         self.forProdCheckBox.setObjectName(u"forProdCheckBox")
@@ -578,11 +683,6 @@ class Ui_customWidgetGroupOpers(object):
         self.saveBtn.setObjectName(u"saveBtn")
 
         self.horizontalLayout_11.addWidget(self.saveBtn)
-
-        self.deleteBtn = QPushButton(self.widget_10)
-        self.deleteBtn.setObjectName(u"deleteBtn")
-
-        self.horizontalLayout_11.addWidget(self.deleteBtn)
 
 
         self.verticalLayout_8.addWidget(self.widget_10, 0, Qt.AlignHCenter)
@@ -671,21 +771,26 @@ class Ui_customWidgetGroupOpers(object):
         self.addStructBtn.setText("")
         self.structComboBox.setPlaceholderText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0421\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0430", None))
         self.label.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0422\u044a\u0440\u0441\u0435\u043d\u0435: ", None))
-        self.label_2.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u041c\u043e\u0434\u0435\u043b", None))
-        self.label_6.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0411\u0440\u043e\u0439:", None))
-        self.label_10.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0410\u043a\u0442\u0443\u0430\u043b\u0435\u043d:", None))
-        self.label_8.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u041f\u0440\u0435\u0436\u0434\u0430:", None))
+        self.modelLabel.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u041c\u043e\u0434\u0435\u043b", None))
+        self.newModelCheckBox.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0421\u044a\u0437\u0434\u0430\u0432\u0430\u043d\u0435 \u043d\u0430 \u043d\u043e\u0432 \u043c\u043e\u0434\u0435\u043b", None))
+        self.editModelCheckBox.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0420\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u0430\u043d\u0435 \u043d\u0430:", None))
+        self.modelNameLabel.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u041c\u043e\u0434\u0435\u043b", None))
+        self.deleteModelBtn.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0418\u0437\u0442\u0440\u0438\u0432\u0430\u043d\u0435", None))
+        self.oldModelsBtn.setText(QCoreApplication.translate("customWidgetGroupOpers", u" \u0421\u0442\u0430\u0440\u0438 \u043c\u043e\u0434\u0435\u043b\u0438", None))
         self.label_5.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0414\u0430\u0442\u0430:", None))
+        self.label_8.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u041f\u0440\u0435\u0436\u0434\u0430:", None))
         self.cehoveBtn.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0418\u0437\u0431\u0438\u0440\u0430\u043d\u0435", None))
-        self.label_11.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0417\u0430 \u043f\u0440\u043e\u0438\u0437\u0432.:", None))
-        self.label_9.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u041a\u043e\u043c\u0435\u043d.:", None))
-        self.label_7.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0426\u0435\u0445:", None))
+        self.label_2.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0417\u0430 \u041a\u043b\u0438\u0435\u043d\u0442", None))
         self.label_3.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0418\u043c\u0435:", None))
+        self.label_7.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0426\u0435\u0445:", None))
+        self.label_6.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0411\u0440\u043e\u0439:", None))
         self.label_4.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u041a\u043b\u0438\u0435\u043d\u0442:", None))
+        self.label_9.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u041a\u043e\u043c\u0435\u043d.:", None))
+        self.label_10.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0410\u043a\u0442\u0443\u0430\u043b\u0435\u043d:", None))
         self.actualCheckBox.setText("")
+        self.label_11.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0417\u0430 \u043f\u0440\u043e\u0438\u0437\u0432.:", None))
         self.forProdCheckBox.setText("")
         self.saveBtn.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0417\u0430\u043f\u0430\u0437\u0432\u0430\u043d\u0435", None))
-        self.deleteBtn.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0418\u0437\u0442\u0440\u0438\u0432\u0430\u043d\u0435", None))
         self.label_12.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0422\u044a\u0440\u0441\u0435\u043d\u0435: ", None))
     # retranslateUi
 

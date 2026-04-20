@@ -7,6 +7,7 @@ from PySide6.QtWidgets import QMenu, QDialog, QAbstractScrollArea
 from app.ui.customSortingMenuWidget import CustomSortingMenuWidget
 from app.ui.widgets.ui_groupOpersCustomWidget import *
 from app.services.groupOperServices import GroupOperationsService as GoS
+from app.services.modelServices import ModelService as Ms
 from app.models.sortingModel import CaseInsensitiveProxyModel, FilterableHeaderView, CustomInsensitiveTreeProxyModel
 from app.models.customTreeView import CustomTreeViewWithDrop
 from app.models.tableModel import CustomTableWithDrag
@@ -16,10 +17,12 @@ from app.models.customLineEditWidget import CustomLineEdit
 from app.ui.customAddOperationDialog import CustomAddOperationDialog as addOperDialog
 from app.ui.customAddingOpersDialog import CustomBranchDialog as branchDialog
 from app.ui.customYesNoMessage import CustomYesNowDialog
+from app.utils.utils import Utils
 
 
 class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
     logoutSignal = Signal(bool)
+    oldModelsSignal = Signal(bool)
 
     def __init__(self, mainWindow, user, parent=None):
         super().__init__(parent)
@@ -35,6 +38,12 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         self.groupsOper = {}
         self.struct = {}
         self.operCatalog = {}
+        self.clients = {}
+
+        self.clientNameLineEdit.setReadOnly(True)
+        self.dateLineEdit.setReadOnly(True)
+        self.modelInfoWidget.setEnabled(False)
+        self.deleteModelBtn.setVisible(False)
 
         self.operTreeView = CustomTreeViewWithDrop(self)
         self.operViewWidget.layout().addWidget(self.operTreeView)
@@ -56,17 +65,18 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         # self.operTreeView.header().hide()
         self.operTreeView.setColumnWidth(0, 450)
         self.operTableViewModel = QStandardItemModel()
-        self.tableOperDetailsNames = ['№', 'Операция']
+        self.tableOperDetailsNames = ['№', 'Вр.', 'Операция']
 
         for i, tableHeaderName in enumerate(self.tableOperDetailsNames):
             self.operTableViewModel.setHorizontalHeaderItem(i, QStandardItem(tableHeaderName))
             self.operTableViewModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignHCenter)
             # self.operTableViewModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignVCenter)
-        self.proxyModelOperDetailsTable = CaseInsensitiveProxyModel(numericColumns=[0], parent=self)
+        self.proxyModelOperDetailsTable = CaseInsensitiveProxyModel(numericColumns=[0, 1], parent=self)
 
         self.setProxyModel(self.proxyModelOperDetailsTable, self.operTableViewModel, self.operationsTableView)
         self.operationsTableView.horizontalHeader().setStretchLastSection(True)
         self.operationsTableView.setColumnWidth(0, 40)
+        self.operationsTableView.setColumnWidth(1, 50)
 
         self.operationsTableView.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.operationsTableView.customContextMenuRequested.connect(self.showCustomTableMenu)
@@ -92,9 +102,35 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         self.addGaugeBtn.clicked.connect(partial(self.addNewBranch, "gauge"))
         self.addGroupBtn.clicked.connect(partial(self.addNewBranch, "group"))
         self.addStructBtn.clicked.connect(partial(self.addNewBranch, "struct"))
+        self.newModelCheckBox.stateChanged.connect(self.setNewModel)
+        self.editModelCheckBox.stateChanged.connect(self.setEditModel)
+        self.oldModelsBtn.clicked.connect(self.loadOldModelsPage)
 
         self.closeBtn.clicked.connect(self.close)
         self.logoutBtn.clicked.connect(self.logout)
+
+    def loadOldModelsPage(self):
+        self.oldModelsSignal.emit(True)
+
+    def setNewModel(self, state):
+        if state == 2:
+            if self.editModelCheckBox.isChecked():
+                self.editModelCheckBox.blockSignals(True)
+                self.editModelCheckBox.setCheckState(Qt.CheckState.Unchecked)
+                self.editModelCheckBox.blockSignals(False)
+            self.modelInfoWidget.setEnabled(True)
+        else:
+            self.modelInfoWidget.setEnabled(False)
+
+    def setEditModel(self, state):
+        if state == 2:
+            if self.newModelCheckBox.isChecked():
+                self.newModelCheckBox.blockSignals(True)
+                self.newModelCheckBox.setCheckState(Qt.CheckState.Unchecked)
+                self.newModelCheckBox.blockSignals(False)
+            self.modelInfoWidget.setEnabled(True)
+        else:
+            self.modelInfoWidget.setEnabled(False)
 
     def onTreeSearchTextChanged(self, text):
         self.proxyOperTreeView.setSearchText(text)
@@ -177,6 +213,42 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         if item.checkState() != newState:
             item.setCheckState(newState)
 
+    def uncheckOtherTypeItems(self, currentTypeItem):
+        """
+        Make sure only one top-level 'type' item can stay checked.
+
+        When a new type is checked:
+        - all other checked type items become unchecked
+        - all their children also become unchecked
+
+        Example:
+        If "Жилетка" is checked and the user checks "Пуловер",
+        then "Жилетка" and everything under it will be unchecked.
+        """
+        if currentTypeItem is None:
+            return
+
+        # Loop through all top-level rows in the tree model.
+        # In your tree, top-level items are the nodeType == "type" items.
+        for row in range(self.operTreeViewModel.rowCount()):
+            typeItem = self.operTreeViewModel.item(row, 0)
+
+            if typeItem is None:
+                continue
+
+            # Skip the currently selected type.
+            if typeItem is currentTypeItem:
+                continue
+
+            # Safety check: apply this only to nodeType "type".
+            if self.getNodeType(typeItem) != "type":
+                continue
+
+            # If another type is checked, uncheck it and all children under it.
+            if typeItem.checkState() == Qt.CheckState.Checked:
+                self.setItemChecked(typeItem, False)
+                self.setChildrenCheckedRecursive(typeItem, False)
+
     def setChildrenCheckedRecursive(self, parentItem, checked):
         """
         Recursively checks/unchecks all children in column 0.
@@ -193,9 +265,16 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
     def checkParentsUpward(self, item):
         """
         Checks all parents of the given item.
+
+        Special rule:
+        If a parent is nodeType 'type', first uncheck all other type items
+        so only one type can stay checked at a time.
         """
         parentItem = item.parent()
         while parentItem is not None:
+            if self.getNodeType(parentItem) == "type":
+                self.uncheckOtherTypeItems(parentItem)
+
             self.setItemChecked(parentItem, True)
             parentItem = parentItem.parent()
 
@@ -272,12 +351,15 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
     def handleTypeItem(self, item, checked):
         """
         Type behavior:
-        - checked -> only type stays checked
+        - checked   -> uncheck every other type, so only this one stays checked
         - unchecked -> uncheck everything below it
         """
         if checked:
-            return
-        self.setChildrenCheckedRecursive(item, False)
+            # Keep only one checked type in the whole tree.
+            self.uncheckOtherTypeItems(item)
+        else:
+            # If the current type is unchecked, clear everything below it too.
+            self.setChildrenCheckedRecursive(item, False)
 
     def handleGaugeItem(self, item, checked):
         """
@@ -560,7 +642,7 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
                 branchItem.child(row, 1).setData(mins, Qt.ItemDataRole.UserRole)
                 break
 
-    def loadInitialData(self, refreshOperTable=True, refreshTable=False):
+    def loadInitialData(self, refreshOperTable=True, refreshTable=False, gettingModels=True, gettingClients=True):
         data = GoS.getInitialData()
         # print(data)
         if data:
@@ -587,6 +669,25 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
                     if key == "operations":
                         self.setOperations(value)
 
+        if gettingModels:
+            models = Ms.getNewModelsAndClients()
+            if models:
+                modelsList = []
+                for model in models:
+                    modelsList.append(f'{model["OrderNo"]} : {model["client"]}')
+                Utils.setupCompleter(modelsList, self.modelNameLineEdit)
+
+        if gettingClients:
+            clients = Ms.getClients()
+            if clients:
+                self.forClientComboBox.clear()
+                self.forClientComboBox.setEditable(True)
+                for idClient, client in clients.items():
+                    self.clients[client] = int(idClient)
+                    self.forClientComboBox.addItem(client)
+                self.forClientComboBox.setCurrentIndex(-1)
+                Utils.setupCompleter(self.clients.keys(), self.forClientComboBox)
+
     def setOperations(self, value):
         self.operTableViewModel.setRowCount(0)
         self.operations.clear()
@@ -596,10 +697,12 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
             self.operNamesById[oper["id"]] = [oper["name"], oper["number"]]
             operationName = QStandardItem(oper["name"])
             operationNumber = QStandardItem(str(oper["number"]))
+            operationTime = QStandardItem(str(oper["time"]))
             operationName.setData(oper["id"], Qt.ItemDataRole.UserRole)
             operationName.setData("catalogOperation", Qt.ItemDataRole.UserRole + 1)
             operationNumber.setData(oper["id"], Qt.ItemDataRole.UserRole)
-            self.operTableViewModel.appendRow([operationNumber, operationName])
+            operationTime.setData(oper["time"], Qt.ItemDataRole.UserRole)
+            self.operTableViewModel.appendRow([operationNumber, operationTime, operationName])
         self.operationsTableView.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
 
     def addNewBranch(self, nodeType):
@@ -666,7 +769,7 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
             newBranch = GoS.addBranch(nodeType, name)
             if newBranch:
                 MM.showOnWidget(self, f"Успешно добавен {name}.", "success")
-                self.loadInitialData(refreshOperTable=False)
+                self.loadInitialData(refreshOperTable=False, gettingModels=False, gettingClients=False)
             else:
                 MM.showOnWidget(self, f"Неуспешно добавен {name}.", "error")
 
@@ -706,7 +809,7 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
             updatedBranch = GoS.editBranch(nodeType, branchId, newBranchName)
             if updatedBranch:
                 MM.showOnWidget(self, f"Успешно редактиран {updatedBranch['name']}.", "success")
-                self.loadInitialData(refreshOperTable=False)
+                self.loadInitialData(refreshOperTable=False, gettingModels=False, gettingClients=False)
             else:
                 MM.showOnWidget(self, f"Неуспешно редактиран {branchName}.", "error")
 
@@ -733,7 +836,7 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
                 deletedBranch = GoS.deleteBranch(nodeType, itemId, item.text())
                 if deletedBranch:
                     MM.showOnWidget(self, f"Успешно изтрит {nodeName}.", "success")
-                    self.loadInitialData(refreshOperTable=False)
+                    self.loadInitialData(refreshOperTable=False, gettingModels=False, gettingClients=False)
                 else:
                     MM.showOnWidget(self, f"Неуспешно изтрит {nodeName}.", "error")
         else:
@@ -744,7 +847,7 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
                 deletedOperations = GoS.deleteSelectedOperationsFromTreeView(operations)
                 if deletedOperations:
                     MM.showOnWidget(self, f"Успешно изтрити операции:\n{name}", "success")
-                    self.loadInitialData(refreshOperTable=False)
+                    self.loadInitialData(refreshOperTable=False, gettingModels=False, gettingClients=False)
                 else:
                     MM.showOnWidget(self, f"Неуспешно изтрити операции.\n{name}", "error")
 
@@ -839,15 +942,17 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
     def editOperation(self):
         selectedItems = self.operationsTableView.selectionModel().selectedRows(1)
         selectedRow = self.proxyModelOperDetailsTable.mapToSource(selectedItems[0]).row()
-        operId = self.operTableViewModel.item(selectedRow, 1).data(Qt.ItemDataRole.UserRole)
+        operId = self.operTableViewModel.item(selectedRow, 2).data(Qt.ItemDataRole.UserRole)
         operNum = self.operTableViewModel.item(selectedRow, 0).data(Qt.ItemDataRole.DisplayRole)
+        operTime = self.operTableViewModel.item(selectedRow, 1).data(Qt.ItemDataRole.DisplayRole)
         operGropId = int(operNum[0])
         selectedOper = self.operNamesById[operId][0]
         operation = {
             "id": operId,
             "name": selectedOper,
             "groupId": operGropId,
-            "number": int(operNum)
+            "number": int(operNum),
+            "time": operTime
         }
         dialog = addOperDialog(isNewOper=True, oper=operation, operations=self.operations)
         dialog.isInputs.connect(self.checkInputs)
@@ -865,13 +970,13 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
             operName = addedOper.get("name")
             MM.showOnWidget(self, f"Операцията '{operName}' беше добавена успешно.", "success")
             if isFromBranch:
-                self.loadInitialData(refreshTable=True)
+                self.loadInitialData(refreshTable=True, gettingModels=False, gettingClients=False)
                 return [{
                     "id": addedOper.get("id"),
                     "name": operName
                 }]
             else:
-                self.loadInitialData()
+                self.loadInitialData(gettingModels=False, gettingClients=False)
         else:
             MM.showOnWidget(self, "Добавянето на операцията неуспешно.", "error")
             if isFromBranch:
@@ -882,7 +987,7 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         if updateOper:
             operName = updateOper.get("name")
             operId = updateOper.get("id")
-            self.loadInitialData()
+            self.loadInitialData(gettingModels=False, gettingClients=False)
             MM.showOnWidget(self, f"Операцията {operId}: '{operName}' беше редактирана успешно.", "success")
         else:
             MM.showOnWidget(self, "Редактирането на операцията неуспешно.", "error")
@@ -924,14 +1029,14 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
                     deletedOperations = GoS.deleteSelectedOperationsFromTableView(operations)
                     if deletedOperations:
                         MM.showOnWidget(self, f"Успешно изтрити операции:\n{name}", "success")
-                        self.loadInitialData()
+                        self.loadInitialData(gettingModels=False, gettingClients=False)
                     else:
                         MM.showOnWidget(self, f"Неуспешно изтрити операции.\n{name}", "error")
             else:
                 deletedOperations = GoS.deleteSelectedOperationsFromTableView(operations)
                 if deletedOperations:
                     MM.showOnWidget(self, f"Успешно изтрити операции:\n{name}", "success")
-                    self.loadInitialData()
+                    self.loadInitialData(gettingModels=False, gettingClients=False)
                 else:
                     MM.showOnWidget(self, f"Неуспешно изтрити операции.\n{name}", "error")
 

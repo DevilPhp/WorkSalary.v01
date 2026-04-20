@@ -157,6 +157,16 @@ class ModelService:
             logger.error('Failed to get clients and models')
             return None
 
+    @staticmethod
+    @handle_api_connection
+    def getNewModelsAndClients():
+        response = requests.get(f'{API_SERVER}/model/get_new_models_and_clients').json()
+        if response['status'] =='success':
+            return response['data']
+        else:
+            logger.error('Failed to get new models and clients')
+            return []
+
 
     @staticmethod
     @handle_api_connection

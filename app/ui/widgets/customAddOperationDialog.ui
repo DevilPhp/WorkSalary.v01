@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>364</width>
-    <height>296</height>
+    <width>410</width>
+    <height>336</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -271,7 +271,7 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
             <widget class="QLineEdit" name="operationNameLineEdit">
              <property name="minimumSize">
               <size>
-               <width>180</width>
+               <width>210</width>
                <height>0</height>
               </size>
              </property>
@@ -289,6 +289,23 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
            </item>
            <item row="2" column="1">
             <widget class="QLineEdit" name="operNumLineEdit"/>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>Време</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLineEdit" name="operTimeLineEdit">
+             <property name="text">
+              <string>0.01</string>
+             </property>
+             <property name="placeholderText">
+              <string>0.01</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
@@ -364,6 +381,9 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
              <italic>false</italic>
              <bold>true</bold>
             </font>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
            </property>
            <property name="text">
             <string>НЕ</string>

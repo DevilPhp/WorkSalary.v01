@@ -177,10 +177,14 @@ class MainWindow(QMainWindow):
                 self.groupOperPage.show()
                 self.groupOperPage.destroyed.connect(self.resetGroupOperPage)
                 self.groupOperPage.logoutSignal.connect(self.logout)
+                self.groupOperPage.oldModelsSignal.connect(self.setOldModlesPage)
             else:
                 self.logout(True)
         else:
             self.groupOperPage.activateWindow()
+
+    def setOldModlesPage(self):
+        print("Old models page")
 
     def setProductionPage(self):
         if self.productionPage is None:
