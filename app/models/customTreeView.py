@@ -1,8 +1,9 @@
 import json
 
 from PySide6.QtCore import QAbstractTableModel, Qt, Signal, QItemSelection, QItemSelectionModel, QMimeData
-from PySide6.QtGui import QDrag, QBrush, QColor
-from PySide6.QtWidgets import QTreeView, QAbstractItemView, QListView, QStyledItemDelegate, QStyle, QStyleOptionViewItem
+from PySide6.QtGui import QDrag, QBrush, QColor, QKeySequence
+from PySide6.QtWidgets import (QTreeView, QAbstractItemView, QListView,
+                               QStyledItemDelegate, QStyle, QStyleOptionViewItem, QApplication)
 
 
 class CustomTreeView(QTreeView):
@@ -141,6 +142,8 @@ class CustomTreeViewWithDrop(QTreeView):
         self.setSizeAdjustPolicy(QAbstractItemView.SizeAdjustPolicy.AdjustToContents)
         self.setSortingEnabled(True)
 
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+
         # Set custom delegate for expanded type rows
         self.treeDelegate = TreeExpandedTypeDelegate(self, self)
         self.setItemDelegate(self.treeDelegate)
@@ -194,9 +197,42 @@ class CustomTreeViewWithDrop(QTreeView):
         """
         Start drag only for operation rows already inside the tree.
         """
+        operations, _ = self.getSelectedOperations()
+        if not operations:
+            return
+        mimeData = self.setMimeData(operations)
+
+        drag = QDrag(self)
+        drag.setMimeData(mimeData)
+        drag.exec(Qt.DropAction.CopyAction)
+
+    def copySelectedOperations(self):
+        """
+        Copy selected operations from the tree to the system clipboard
+        using the same mime format as drag/drop.
+        """
+        operations, sourceParent = self.getSelectedOperations()
+        if not operations:
+            return False
+
+        mimeData = self.setMimeData(operations)
+
+        QApplication.clipboard().setMimeData(mimeData)
+        return True
+
+    def getSelectedOperations(self):
+        """
+        Collect selected operation rows from the tree view.
+
+        Rules:
+        - only rows with nodeType == "operation" are copied
+        - only operations from the same parent are allowed in one copy action
+        - duplicates are skipped
+        """
+
         indexes = self.selectionModel().selectedIndexes()
         if not indexes:
-            return
+            return [], None
 
         model = self.model()
         operations = []
@@ -244,19 +280,81 @@ class CustomTreeViewWithDrop(QTreeView):
                 "time": operTime,
             })
 
-        if not operations:
-            return
+        return operations, sourceParent
 
+    def setMimeData(self, operations):
         mimeData = QMimeData()
         mimeData.setText("\n".join(op["name"] for op in operations))
         mimeData.setData(
             "application/x-operations-json",
             json.dumps(operations).encode("utf-8")
         )
+        return mimeData
 
-        drag = QDrag(self)
-        drag.setMimeData(mimeData)
-        drag.exec(Qt.DropAction.CopyAction)
+    def getPasteTargetItem(self):
+        """
+        Returns the current tree item that can accept pasted operations.
+
+        Valid targets:
+        - group
+        - struct
+
+        If current item is an operation, its parent is used as target.
+        """
+        currentIndex = self.currentIndex()
+        if not currentIndex.isValid():
+            return None
+
+        model = self.model()
+        if hasattr(model, "mapToSource"):
+            sourceIndex = model.mapToSource(currentIndex)
+            sourceModel = model.sourceModel()
+        else:
+            sourceIndex = currentIndex
+            sourceModel = model
+
+        item = sourceModel.itemFromIndex(sourceIndex)
+        if item is None:
+            return None
+
+        nodeType = item.data(Qt.ItemDataRole.UserRole + 1)
+
+        # If user selected an operation row, paste into its parent branch.
+        if nodeType == "operation":
+            item = item.parent()
+            if item is None:
+                return None
+            nodeType = item.data(Qt.ItemDataRole.UserRole + 1)
+
+        if nodeType in ("group", "struct"):
+            return item
+
+        return None
+
+    def pasteOperations(self, targetItem=None):
+        """
+        Read copied operations from clipboard and emit them through the same
+        signal used by drag/drop.
+        """
+
+        if targetItem is None:
+            targetItem = self.getPasteTargetItem()
+
+        if targetItem is None:
+            return False
+
+        mimeData = QApplication.clipboard().mimeData()
+        if mimeData is None or not mimeData.hasFormat("application/x-operations-json"):
+            return False
+
+        rawData = bytes(mimeData.data("application/x-operations-json")).decode("utf-8")
+        operations = json.loads(rawData)
+
+        if not operations:
+            return False
+
+        self.dropedOpers.emit([operations, targetItem])
+        return True
 
     def dropEvent(self, event):
         index = self.indexAt(event.position().toPoint())

@@ -985,14 +985,7 @@ QComboBox::item{
                         <item>
                          <widget class="QCheckBox" name="editModelCheckBox">
                           <property name="text">
-                           <string>Редактиране на:</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QLabel" name="modelNameLabel">
-                          <property name="text">
-                           <string>Модел</string>
+                           <string>Редактиране</string>
                           </property>
                          </widget>
                         </item>
@@ -1290,11 +1283,17 @@ QComboBox::item{
                   <property name="bottomMargin">
                    <number>0</number>
                   </property>
-                  <item alignment="Qt::AlignLeft|Qt::AlignTop">
-                   <widget class="QWidget" name="widget" native="true">
-                    <layout class="QHBoxLayout" name="horizontalLayout_17">
+                  <item alignment="Qt::AlignLeft">
+                   <widget class="QWidget" name="widget_9" native="true">
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                    <layout class="QHBoxLayout" name="horizontalLayout_23">
                      <property name="spacing">
-                      <number>3</number>
+                      <number>25</number>
                      </property>
                      <property name="leftMargin">
                       <number>0</number>
@@ -1309,29 +1308,10 @@ QComboBox::item{
                       <number>0</number>
                      </property>
                      <item>
-                      <widget class="QLabel" name="label_12">
-                       <property name="text">
-                        <string>Търсене: </string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QWidget" name="searchTreeHolderWidget" native="true">
-                       <property name="minimumSize">
-                        <size>
-                         <width>220</width>
-                         <height>0</height>
-                        </size>
-                       </property>
-                       <property name="maximumSize">
-                        <size>
-                         <width>350</width>
-                         <height>16777215</height>
-                        </size>
-                       </property>
-                       <layout class="QHBoxLayout" name="horizontalLayout_16">
+                      <widget class="QWidget" name="widget" native="true">
+                       <layout class="QHBoxLayout" name="horizontalLayout_17">
                         <property name="spacing">
-                         <number>0</number>
+                         <number>3</number>
                         </property>
                         <property name="leftMargin">
                          <number>0</number>
@@ -1345,6 +1325,91 @@ QComboBox::item{
                         <property name="bottomMargin">
                          <number>0</number>
                         </property>
+                        <item>
+                         <widget class="QLabel" name="label_12">
+                          <property name="text">
+                           <string>Търсене: </string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QWidget" name="searchTreeHolderWidget" native="true">
+                          <property name="minimumSize">
+                           <size>
+                            <width>220</width>
+                            <height>0</height>
+                           </size>
+                          </property>
+                          <property name="maximumSize">
+                           <size>
+                            <width>350</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <layout class="QHBoxLayout" name="horizontalLayout_16">
+                           <property name="spacing">
+                            <number>0</number>
+                           </property>
+                           <property name="leftMargin">
+                            <number>0</number>
+                           </property>
+                           <property name="topMargin">
+                            <number>0</number>
+                           </property>
+                           <property name="rightMargin">
+                            <number>0</number>
+                           </property>
+                           <property name="bottomMargin">
+                            <number>0</number>
+                           </property>
+                          </layout>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="operTimesWidget" native="true">
+                       <layout class="QHBoxLayout" name="horizontalLayout_24">
+                        <property name="spacing">
+                         <number>20</number>
+                        </property>
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <widget class="QPushButton" name="saveOperTimesBtn">
+                          <property name="text">
+                           <string>Запазване на времена</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QPushButton" name="refreshOperTimesBtn">
+                          <property name="text">
+                           <string> Отказ</string>
+                          </property>
+                          <property name="icon">
+                           <iconset resource="../../../resources.qrc">
+                            <normaloff>:/icons/app/assets/icons/Close-Square--Streamline-Solar-Broken.svg</normaloff>:/icons/app/assets/icons/Close-Square--Streamline-Solar-Broken.svg</iconset>
+                          </property>
+                          <property name="iconSize">
+                           <size>
+                            <width>18</width>
+                            <height>18</height>
+                           </size>
+                          </property>
+                         </widget>
+                        </item>
                        </layout>
                       </widget>
                      </item>

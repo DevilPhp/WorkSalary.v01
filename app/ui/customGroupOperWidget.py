@@ -1,7 +1,7 @@
 from functools import partial
 
 from PySide6.QtCore import Signal, QTimer, QRegularExpression
-from PySide6.QtGui import QStandardItemModel, QStandardItem, QDoubleValidator
+from PySide6.QtGui import QStandardItemModel, QStandardItem, QDoubleValidator, QShortcut, QKeySequence
 from PySide6.QtWidgets import QMenu, QDialog, QAbstractScrollArea
 
 from app.ui.customSortingMenuWidget import CustomSortingMenuWidget
@@ -12,6 +12,7 @@ from app.models.sortingModel import CaseInsensitiveProxyModel, FilterableHeaderV
 from app.models.customTreeView import CustomTreeViewWithDrop
 from app.models.tableModel import CustomTableWithDrag
 from app.ui.customAddingOpersDialog import CustomAddOperationDialog
+from app.ui.customOperTimesDialog import CustomTimeChangeOpersDialog as timeChangeDialog
 from app.ui.messagesManager import MessageManager as MM
 from app.models.customLineEditWidget import CustomLineEdit
 from app.ui.customAddOperationDialog import CustomAddOperationDialog as addOperDialog
@@ -39,11 +40,13 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         self.struct = {}
         self.operCatalog = {}
         self.clients = {}
+        self.changedOperTimes = {}
 
         self.clientNameLineEdit.setReadOnly(True)
         self.dateLineEdit.setReadOnly(True)
         self.modelInfoWidget.setEnabled(False)
         self.deleteModelBtn.setVisible(False)
+        self.operTimesWidget.setVisible(False)
 
         self.operTreeView = CustomTreeViewWithDrop(self)
         self.operViewWidget.layout().addWidget(self.operTreeView)
@@ -84,6 +87,12 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         self.operTreeView.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.operTreeView.customContextMenuRequested.connect(self.showCustomTreeMenu)
 
+        self.copyTreeShortcut = QShortcut(QKeySequence("Ctrl+C"), self.operTreeView)
+        self.copyTreeShortcut.activated.connect(self.copyTreeOperations)
+
+        self.pasteTreeShortcut = QShortcut(QKeySequence("Ctrl+V"), self.operTreeView)
+        self.pasteTreeShortcut.activated.connect(self.pasteTreeOperations)
+
         self.checkBoxFiltering = {}
         self.initialCheckBoxes = {}
 
@@ -106,8 +115,32 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         self.editModelCheckBox.stateChanged.connect(self.setEditModel)
         self.oldModelsBtn.clicked.connect(self.loadOldModelsPage)
 
+        self.saveOperTimesBtn.clicked.connect(self.changeOperTimes)
+        self.refreshOperTimesBtn.clicked.connect(self.refreshOperTimes)
+
         self.closeBtn.clicked.connect(self.close)
         self.logoutBtn.clicked.connect(self.logout)
+
+    def refreshOperTimes(self):
+        self.loadInitialData(refreshOperTable=False, gettingModels=False, gettingClients=False)
+        if self.operTimesWidget.isVisible():
+            self.changedOperTimes.clear()
+            self.operTimesWidget.setVisible(False)
+
+    def changeOperTimes(self):
+        customDialog = timeChangeDialog(self.changedOperTimes)
+        result = customDialog.exec()
+        if result == QDialog.DialogCode.Accepted:
+            if GoS.updateTreeOpersTimes(self.changedOperTimes):
+                MM.showOnWidget(self, "Времена за операции са променени успешно", "success")
+                if self.operTimesWidget.isVisible():
+                    self.changedOperTimes.clear()
+                    self.operTimesWidget.setVisible(False)
+            else:
+                MM.showOnWidget(self, "Грешка при промяна на времена за операции", "error")
+                self.loadInitialData(refreshOperTable=False, gettingModels=False, gettingClients=False)
+                self.changedOperTimes.clear()
+                self.operTimesWidget.setVisible(False)
 
     def loadOldModelsPage(self):
         self.oldModelsSignal.emit(True)
@@ -473,6 +506,9 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         """
         Handles editing only for the time column.
         Ignores checkbox changes in column 0.
+
+        Also stores changed operation rows in self.changedOperTimes,
+        so later they can be saved when a button is clicked.
         """
         if not topLeft.isValid():
             return
@@ -483,35 +519,97 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
 
         self.operTreeViewModel.blockSignals(True)
 
-        selectedItem = self.operTreeViewModel.itemFromIndex(topLeft)
-        if selectedItem is None:
-            self.operTreeViewModel.blockSignals(False)
-            return
-
-        currentText = selectedItem.text()
-        originalValue = selectedItem.data(Qt.ItemDataRole.UserRole)
-
-        if currentText:
-            normalizedText = currentText.replace(",", ".")
-        else:
-            normalizedText = currentText
-
         try:
-            numText = float(normalizedText)
-            if not (0.01 <= numText <= 999):
-                currentText = f"{originalValue:.2f}"
+            # Item from edited cell (column 1 = time)
+            timeItem = self.operTreeViewModel.itemFromIndex(topLeft)
+            if timeItem is None:
+                return
+
+            # Get the item from the same row but column 0
+            # Example use: operation name / operation id / tree node info
+            nameIndex = self.operTreeViewModel.index(topLeft.row(), 0, topLeft.parent())
+            nameItem = self.operTreeViewModel.itemFromIndex(nameIndex)
+            nodeType = topLeft.parent().data(Qt.ItemDataRole.UserRole + 1)
+            firstParent = topLeft.parent()
+            secondParent = firstParent.parent()
+            thirdParent = secondParent.parent()
+            firstParentText = firstParent.data(Qt.ItemDataRole.DisplayRole)
+            secondParentText = secondParent.data(Qt.ItemDataRole.DisplayRole)
+            thirdParentText = thirdParent.data(Qt.ItemDataRole.DisplayRole)
+            if nodeType == "struct":
+                forthParent = thirdParent.parent()
+                forthParentText = forthParent.data(Qt.ItemDataRole.DisplayRole)
             else:
-                if currentText != str(originalValue):
-                    currentText = f"{numText:.2f}"
-                    selectedItem.setData(float(currentText), Qt.ItemDataRole.UserRole)
+                forthParent = None
+            if nameItem is None:
+                return
 
-            selectedItem.setText(currentText)
+            currentText = timeItem.text()
+            originalValue = timeItem.data(Qt.ItemDataRole.UserRole)
 
-        except (ValueError, TypeError):
-            if originalValue is not None:
-                selectedItem.setText(str(originalValue))
+            if currentText:
+                normalizedText = currentText.replace(",", ".")
+            else:
+                normalizedText = currentText
 
-        self.operTreeViewModel.blockSignals(False)
+            try:
+                numText = float(normalizedText)
+
+                # Validate range like QDoubleValidator(0.01, 999, 2)
+                if not (0.01 <= numText <= 999):
+                    # Restore old value if input is outside allowed range
+                    currentText = f"{originalValue:.2f}"
+                else:
+                    # If value is changed, format and store it
+                    if originalValue is None or numText != float(originalValue):
+                        currentText = f"{numText:.2f}"
+
+                        # Save the normalized float in UserRole
+                        timeItem.setData(float(currentText), Qt.ItemDataRole.UserRole)
+
+                        # Example:
+                        # column 0 item may contain operation name and operation id
+                        operName = nameItem.text()
+                        operId = nameItem.data(Qt.ItemDataRole.UserRole)
+
+                        if forthParent:
+                            key = f"{forthParentText} > {thirdParentText} > {secondParentText} > {firstParentText}"
+                        else:
+                            key = f"{thirdParentText} > {secondParentText} > {firstParentText}"
+
+                        # Store changed operation in dict
+                        # This avoids duplicates if user edits same row more than once
+                        catalogListId = timeItem.data(Qt.ItemDataRole.UserRole + 1)
+                        if key not in self.changedOperTimes.keys():
+                            self.changedOperTimes[key] = {
+                                catalogListId:
+                                    {
+                                    "operId": operId,
+                                    "operName": operName,
+                                    "oldTime": originalValue,
+                                    "newTime": float(currentText),
+                                    }
+                                }
+                        else:
+                            self.changedOperTimes[key][catalogListId] = {
+                                "operId": operId,
+                                "operName": operName,
+                                "oldTime": originalValue,
+                                "newTime": float(currentText),
+                            }
+
+                # Set formatted text in the cell
+                timeItem.setText(currentText)
+
+            except (ValueError, TypeError):
+                # Restore old value if input is invalid
+                if originalValue is not None:
+                    timeItem.setText(f"{float(originalValue):.2f}")
+
+        finally:
+            self.operTreeViewModel.blockSignals(False)
+            if not self.operTimesWidget.isVisible():
+                self.operTimesWidget.setVisible(True)
 
     def dropOpers(self, items):
         firstParent = items[1].parent()
@@ -542,9 +640,12 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
             operCatalogId = savedOpers[str(operId)]
             existingOper = self.checkCurrentNodeOpers(currentNode, operId)
             if existingOper:
+                self.operTreeViewModel.blockSignals(True)
                 self.updateOperation(currentNode, operId, mins)
+                self.operTreeViewModel.blockSignals(False)
             else:
                 self.appendOperationToBranch(currentNode, operId, mins, operCatalogId)
+
         if savedOpers:
             MM.showOnWidget(self, f"{len(savedOpers.keys())} операции успешно добавени.", "success")
         else:
@@ -711,6 +812,18 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
 
     # ----Tree Context Menu Setter---- #
 
+    def copyTreeOperations(self):
+        copiedOpers = self.operTreeView.copySelectedOperations()
+        if copiedOpers:
+            MM.showOnWidget(self, "Операциите са копирани.", "info")
+        else:
+            MM.showOnWidget(self, "Няма избрани операции за копиране.", "warning")
+
+    def pasteTreeOperations(self):
+        pastedOpers = self.operTreeView.pasteOperations()
+        if not pastedOpers:
+            MM.showOnWidget(self, "Няма копирани операции за поставяне.", "warning")
+
     def showCustomTreeMenu(self, pos):
 
         item = self.checkItem(pos)
@@ -723,10 +836,24 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
 
         editAction, addAction, deleteAction = self.setCustomMenuActions(nodeType)
 
+        copyAction = None
+        pasteAction = None
+
         menu = QMenu(self)
         addAction = menu.addAction(addAction)
         editAction = menu.addAction(editAction)
         deleteAction = menu.addAction(deleteAction)
+        if nodeType == "operation":
+            copyAction = menu.addAction("Копиране")
+
+        if nodeType in ("group", "struct"):
+
+            clipboard = QApplication.clipboard()
+            mimeData = clipboard.mimeData()
+            hasTableData = mimeData.hasFormat("application/x-operations-json")
+
+            pasteAction = menu.addAction("Поставяне")
+            pasteAction.setEnabled(hasTableData)
 
         action = menu.exec_(self.operTreeView.viewport().mapToGlobal(pos))
         if action == addAction:
@@ -735,6 +862,16 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
             self.editBranch(nodeType, item)
         elif action == deleteAction:
             self.deleteBranch(nodeType, item, operations)
+        elif action == copyAction:
+            copiedOpers = self.operTreeView.copySelectedOperations()
+            if copiedOpers:
+                MM.showOnWidget(self, "Операциите са копирани.", "info")
+            else:
+                MM.showOnWidget(self, "Няма избрани операции за копиране.", "warning")
+        elif action == pasteAction:
+            pastedOpers = self.operTreeView.pasteOperations(item)
+            if not pastedOpers:
+                MM.showOnWidget(self, "Няма копирани операции за поставяне.", "warning")
 
     def addBranch(self, nodeType, item):
         dialog = branchDialog()

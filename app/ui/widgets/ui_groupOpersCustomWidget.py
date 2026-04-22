@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'groupOpersCustomWidgettKNiKO.ui'
+## Form generated from reading UI file 'groupOpersCustomWidgetjktlOW.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -510,11 +510,6 @@ class Ui_customWidgetGroupOpers(object):
 
         self.horizontalLayout_19.addWidget(self.editModelCheckBox)
 
-        self.modelNameLabel = QLabel(self.widget_12)
-        self.modelNameLabel.setObjectName(u"modelNameLabel")
-
-        self.horizontalLayout_19.addWidget(self.modelNameLabel)
-
 
         self.horizontalLayout_21.addWidget(self.widget_12)
 
@@ -699,12 +694,19 @@ class Ui_customWidgetGroupOpers(object):
         self.verticalLayout_9.setSpacing(10)
         self.verticalLayout_9.setObjectName(u"verticalLayout_9")
         self.verticalLayout_9.setContentsMargins(0, 0, 0, 0)
-        self.widget = QWidget(self.operViewHolderWidget)
+        self.widget_9 = QWidget(self.operViewHolderWidget)
+        self.widget_9.setObjectName(u"widget_9")
+        self.widget_9.setMinimumSize(QSize(0, 40))
+        self.horizontalLayout_23 = QHBoxLayout(self.widget_9)
+        self.horizontalLayout_23.setSpacing(25)
+        self.horizontalLayout_23.setObjectName(u"horizontalLayout_23")
+        self.horizontalLayout_23.setContentsMargins(0, 10, 0, 0)
+        self.widget = QWidget(self.widget_9)
         self.widget.setObjectName(u"widget")
         self.horizontalLayout_17 = QHBoxLayout(self.widget)
         self.horizontalLayout_17.setSpacing(3)
         self.horizontalLayout_17.setObjectName(u"horizontalLayout_17")
-        self.horizontalLayout_17.setContentsMargins(0, 10, 0, 0)
+        self.horizontalLayout_17.setContentsMargins(0, 0, 0, 0)
         self.label_12 = QLabel(self.widget)
         self.label_12.setObjectName(u"label_12")
 
@@ -722,7 +724,31 @@ class Ui_customWidgetGroupOpers(object):
         self.horizontalLayout_17.addWidget(self.searchTreeHolderWidget)
 
 
-        self.verticalLayout_9.addWidget(self.widget, 0, Qt.AlignLeft|Qt.AlignTop)
+        self.horizontalLayout_23.addWidget(self.widget)
+
+        self.operTimesWidget = QWidget(self.widget_9)
+        self.operTimesWidget.setObjectName(u"operTimesWidget")
+        self.horizontalLayout_24 = QHBoxLayout(self.operTimesWidget)
+        self.horizontalLayout_24.setSpacing(20)
+        self.horizontalLayout_24.setObjectName(u"horizontalLayout_24")
+        self.horizontalLayout_24.setContentsMargins(0, 0, 0, 0)
+        self.saveOperTimesBtn = QPushButton(self.operTimesWidget)
+        self.saveOperTimesBtn.setObjectName(u"saveOperTimesBtn")
+
+        self.horizontalLayout_24.addWidget(self.saveOperTimesBtn)
+
+        self.refreshOperTimesBtn = QPushButton(self.operTimesWidget)
+        self.refreshOperTimesBtn.setObjectName(u"refreshOperTimesBtn")
+        self.refreshOperTimesBtn.setIcon(icon1)
+        self.refreshOperTimesBtn.setIconSize(QSize(18, 18))
+
+        self.horizontalLayout_24.addWidget(self.refreshOperTimesBtn)
+
+
+        self.horizontalLayout_23.addWidget(self.operTimesWidget)
+
+
+        self.verticalLayout_9.addWidget(self.widget_9, 0, Qt.AlignLeft)
 
         self.operViewWidget = QWidget(self.operViewHolderWidget)
         self.operViewWidget.setObjectName(u"operViewWidget")
@@ -773,8 +799,7 @@ class Ui_customWidgetGroupOpers(object):
         self.label.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0422\u044a\u0440\u0441\u0435\u043d\u0435: ", None))
         self.modelLabel.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u041c\u043e\u0434\u0435\u043b", None))
         self.newModelCheckBox.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0421\u044a\u0437\u0434\u0430\u0432\u0430\u043d\u0435 \u043d\u0430 \u043d\u043e\u0432 \u043c\u043e\u0434\u0435\u043b", None))
-        self.editModelCheckBox.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0420\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u0430\u043d\u0435 \u043d\u0430:", None))
-        self.modelNameLabel.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u041c\u043e\u0434\u0435\u043b", None))
+        self.editModelCheckBox.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0420\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u0430\u043d\u0435", None))
         self.deleteModelBtn.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0418\u0437\u0442\u0440\u0438\u0432\u0430\u043d\u0435", None))
         self.oldModelsBtn.setText(QCoreApplication.translate("customWidgetGroupOpers", u" \u0421\u0442\u0430\u0440\u0438 \u043c\u043e\u0434\u0435\u043b\u0438", None))
         self.label_5.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0414\u0430\u0442\u0430:", None))
@@ -792,5 +817,7 @@ class Ui_customWidgetGroupOpers(object):
         self.forProdCheckBox.setText("")
         self.saveBtn.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0417\u0430\u043f\u0430\u0437\u0432\u0430\u043d\u0435", None))
         self.label_12.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0422\u044a\u0440\u0441\u0435\u043d\u0435: ", None))
+        self.saveOperTimesBtn.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0417\u0430\u043f\u0430\u0437\u0432\u0430\u043d\u0435 \u043d\u0430 \u0432\u0440\u0435\u043c\u0435\u043d\u0430", None))
+        self.refreshOperTimesBtn.setText(QCoreApplication.translate("customWidgetGroupOpers", u" \u041e\u0442\u043a\u0430\u0437", None))
     # retranslateUi
 

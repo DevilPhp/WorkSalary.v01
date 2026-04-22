@@ -139,3 +139,15 @@ class GroupOperationsService:
         else:
             logger.error('Failed to delete selected operations from table')
             return False
+
+    @staticmethod
+    @handle_api_connection
+    def updateTreeOpersTimes(operations):
+        response = requests.post(f'{API_SERVER}/group_operations/update_tree_opers_times',
+                                 json={'operations': operations}).json()
+        if response['status'] =='success':
+            logger.info('Successfully updated tree operations times')
+            return True
+        else:
+            logger.error('Failed to update tree operations times')
+            return False
