@@ -8,7 +8,7 @@ from app.services.workerServices import WorkerServices as WoS
 class CustomWorkingPlaceDialog(QDialog, Ui_CustomWorkPlacesDialog):
     workPlaces = Signal(list)
 
-    def __init__(self, modelName, existingWorkPlaces, parent=None):
+    def __init__(self, modelName, existingWorkPlaces, isGroupsCalling=False, parent=None):
         super().__init__(parent)
         self.setupUi(self)
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
@@ -19,7 +19,13 @@ class CustomWorkingPlaceDialog(QDialog, Ui_CustomWorkPlacesDialog):
         shadow.setYOffset(2)
         shadow.setColor(QColor("#7f7f7f"))
         self.setGraphicsEffect(shadow)
+        self.isGroupsCalling = isGroupsCalling
         self.modelName = modelName
+
+        if self.isGroupsCalling:
+            self.mainTextLabel.setText("ГРУПИ")
+            self.questionTextLabel.setText("Добавяне на групи за позиция")
+
         self.workingPlaces = None
         self.cehCheckBoxesList = {}
         self.checkedCheckBoxes = []
@@ -38,7 +44,10 @@ class CustomWorkingPlaceDialog(QDialog, Ui_CustomWorkPlacesDialog):
 
     def populateWorkingPlaces(self):
         self.modelNameLabel.setText(self.modelName)
-        self.workingPlaces = WoS.getWorkingPlaces()
+        if not self.isGroupsCalling:
+            self.workingPlaces = WoS.getWorkingPlaces()
+        else:
+            self.workingPlaces = WoS.getNewOperationsGroups()
         if self.workingPlaces:
             for index, place in enumerate(self.workingPlaces):
                 row = index % 6

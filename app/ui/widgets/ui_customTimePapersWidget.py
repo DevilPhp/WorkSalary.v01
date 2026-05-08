@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customTimePapersWidgetjssBpN.ui'
+## Form generated from reading UI file 'customTimePapersWidgetKNpsba.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -737,8 +737,9 @@ class Ui_customTimePapersWidget(object):
 
         self.widget_5 = QWidget(self.operationsHolder)
         self.widget_5.setObjectName(u"widget_5")
+        self.widget_5.setMinimumSize(QSize(0, 0))
         self.horizontalLayout_29 = QHBoxLayout(self.widget_5)
-        self.horizontalLayout_29.setSpacing(30)
+        self.horizontalLayout_29.setSpacing(15)
         self.horizontalLayout_29.setObjectName(u"horizontalLayout_29")
         self.horizontalLayout_29.setContentsMargins(0, 0, 0, 0)
         self.widget_21 = QWidget(self.widget_5)
@@ -758,7 +759,7 @@ class Ui_customTimePapersWidget(object):
         self.timePaperDateEdit.setFrame(False)
         self.timePaperDateEdit.setAlignment(Qt.AlignCenter)
         self.timePaperDateEdit.setCorrectionMode(QAbstractSpinBox.CorrectToNearestValue)
-        self.timePaperDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 8, 25), QTime(0, 0, 0)))
+        self.timePaperDateEdit.setMinimumDateTime(QDateTime(QDate(1990, 8, 24), QTime(0, 0, 0)))
 
         self.horizontalLayout_15.addWidget(self.timePaperDateEdit)
 
@@ -777,6 +778,21 @@ class Ui_customTimePapersWidget(object):
 
 
         self.horizontalLayout_29.addWidget(self.widget_21)
+
+        self.widget_28 = QWidget(self.widget_5)
+        self.widget_28.setObjectName(u"widget_28")
+        self.horizontalLayout_39 = QHBoxLayout(self.widget_28)
+        self.horizontalLayout_39.setSpacing(0)
+        self.horizontalLayout_39.setObjectName(u"horizontalLayout_39")
+        self.horizontalLayout_39.setContentsMargins(0, 0, 0, 0)
+        self.oldModelsCheckBox = QCheckBox(self.widget_28)
+        self.oldModelsCheckBox.setObjectName(u"oldModelsCheckBox")
+        self.oldModelsCheckBox.setChecked(True)
+
+        self.horizontalLayout_39.addWidget(self.oldModelsCheckBox)
+
+
+        self.horizontalLayout_29.addWidget(self.widget_28)
 
 
         self.verticalLayout_2.addWidget(self.widget_5, 0, Qt.AlignLeft)
@@ -1042,7 +1058,7 @@ class Ui_customTimePapersWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 883, 225))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 883, 223))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -1317,6 +1333,7 @@ class Ui_customTimePapersWidget(object):
         self.label_25.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0414\u0430\u0442\u0430: ", None))
         self.timePaperDateEdit.setDisplayFormat(QCoreApplication.translate("customTimePapersWidget", u"dd.MM.yy '\u0433.'", None))
         self.calendarBtn.setText("")
+        self.oldModelsCheckBox.setText(QCoreApplication.translate("customTimePapersWidget", u"\u0421\u0442\u0430\u0440\u0438 \u043c\u043e\u0434\u0435\u043b\u0438", None))
         self.operationsGroupsCheckBox.setText(QCoreApplication.translate("customTimePapersWidget", u"\u041b\u0438\u0441\u0442 \u041e\u043f\u0435\u0440\u0430\u0446\u0438\u0438", None))
 #if QT_CONFIG(tooltip)
         self.refreshOpersGroupBtn.setToolTip("")

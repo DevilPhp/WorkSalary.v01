@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customProductionWidgetFhYsiD.ui'
+## Form generated from reading UI file 'customProductionWidgetqnZiDr.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -24,7 +24,7 @@ class Ui_customProductionWidget(object):
     def setupUi(self, customProductionWidget):
         if not customProductionWidget.objectName():
             customProductionWidget.setObjectName(u"customProductionWidget")
-        customProductionWidget.resize(800, 580)
+        customProductionWidget.resize(935, 580)
         customProductionWidget.setMinimumSize(QSize(800, 580))
         customProductionWidget.setStyleSheet(u"*{\n"
 "	background-color: #dfdfdf;\n"
@@ -247,11 +247,11 @@ class Ui_customProductionWidget(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.productionInfoHolder.sizePolicy().hasHeightForWidth())
         self.productionInfoHolder.setSizePolicy(sizePolicy)
-        self.productionInfoHolder.setMinimumSize(QSize(0, 0))
+        self.productionInfoHolder.setMinimumSize(QSize(800, 0))
         self.horizontalLayout_5 = QHBoxLayout(self.productionInfoHolder)
         self.horizontalLayout_5.setSpacing(10)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
-        self.horizontalLayout_5.setContentsMargins(5, 0, 0, 0)
+        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.widget_3 = QWidget(self.productionInfoHolder)
         self.widget_3.setObjectName(u"widget_3")
         self.horizontalLayout_6 = QHBoxLayout(self.widget_3)
@@ -262,26 +262,16 @@ class Ui_customProductionWidget(object):
         self.formLayout.setObjectName(u"formLayout")
         self.formLayout.setHorizontalSpacing(5)
         self.formLayout.setVerticalSpacing(3)
-        self.label = QLabel(self.widget_3)
-        self.label.setObjectName(u"label")
-
-        self.formLayout.setWidget(0, QFormLayout.LabelRole, self.label)
-
         self.label_2 = QLabel(self.widget_3)
         self.label_2.setObjectName(u"label_2")
 
-        self.formLayout.setWidget(1, QFormLayout.LabelRole, self.label_2)
-
-        self.yearComboBox = QComboBox(self.widget_3)
-        self.yearComboBox.setObjectName(u"yearComboBox")
-
-        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.yearComboBox)
+        self.formLayout.setWidget(0, QFormLayout.LabelRole, self.label_2)
 
         self.clientsComboBox = QComboBox(self.widget_3)
         self.clientsComboBox.setObjectName(u"clientsComboBox")
         self.clientsComboBox.setEditable(True)
 
-        self.formLayout.setWidget(1, QFormLayout.FieldRole, self.clientsComboBox)
+        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.clientsComboBox)
 
 
         self.horizontalLayout_6.addLayout(self.formLayout)
@@ -295,13 +285,62 @@ class Ui_customProductionWidget(object):
         self.verticalLayout_3.setSpacing(3)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.forProdCheckBox = QCheckBox(self.widget_6)
-        self.forProdCheckBox.setObjectName(u"forProdCheckBox")
+        self.widget_7 = QWidget(self.widget_6)
+        self.widget_7.setObjectName(u"widget_7")
+        self.widget_7.setMinimumSize(QSize(0, 0))
+        self.horizontalLayout_7 = QHBoxLayout(self.widget_7)
+        self.horizontalLayout_7.setSpacing(10)
+        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
+        self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
+        self.label_3 = QLabel(self.widget_7)
+        self.label_3.setObjectName(u"label_3")
 
-        self.verticalLayout_3.addWidget(self.forProdCheckBox)
+        self.horizontalLayout_7.addWidget(self.label_3)
+
+        self.searchWidget = QWidget(self.widget_7)
+        self.searchWidget.setObjectName(u"searchWidget")
+        self.searchWidget.setMinimumSize(QSize(250, 0))
+        self.horizontalLayout_8 = QHBoxLayout(self.searchWidget)
+        self.horizontalLayout_8.setSpacing(0)
+        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
+        self.horizontalLayout_8.setContentsMargins(0, 0, 0, 0)
+
+        self.horizontalLayout_7.addWidget(self.searchWidget)
 
 
-        self.horizontalLayout_5.addWidget(self.widget_6, 0, Qt.AlignBottom)
+        self.verticalLayout_3.addWidget(self.widget_7)
+
+
+        self.horizontalLayout_5.addWidget(self.widget_6)
+
+        self.widget_8 = QWidget(self.productionInfoHolder)
+        self.widget_8.setObjectName(u"widget_8")
+        self.horizontalLayout_9 = QHBoxLayout(self.widget_8)
+        self.horizontalLayout_9.setSpacing(0)
+        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
+        self.horizontalLayout_9.setContentsMargins(0, 0, 0, 0)
+        self.oldModelsCheckBox = QCheckBox(self.widget_8)
+        self.oldModelsCheckBox.setObjectName(u"oldModelsCheckBox")
+        self.oldModelsCheckBox.setChecked(False)
+
+        self.horizontalLayout_9.addWidget(self.oldModelsCheckBox)
+
+
+        self.horizontalLayout_5.addWidget(self.widget_8)
+
+        self.widget_9 = QWidget(self.productionInfoHolder)
+        self.widget_9.setObjectName(u"widget_9")
+        self.horizontalLayout_10 = QHBoxLayout(self.widget_9)
+        self.horizontalLayout_10.setSpacing(0)
+        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
+        self.horizontalLayout_10.setContentsMargins(0, 0, 0, 0)
+        self.posGroupsBtn = QPushButton(self.widget_9)
+        self.posGroupsBtn.setObjectName(u"posGroupsBtn")
+
+        self.horizontalLayout_10.addWidget(self.posGroupsBtn)
+
+
+        self.horizontalLayout_5.addWidget(self.widget_9)
 
 
         self.verticalLayout_4.addWidget(self.productionInfoHolder, 0, Qt.AlignLeft)
@@ -336,7 +375,7 @@ class Ui_customProductionWidget(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 788, 470))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 923, 489))
         self.verticalLayout_12 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -368,8 +407,9 @@ class Ui_customProductionWidget(object):
         self.userIcon.setText("")
         self.usernameLabel.setText(QCoreApplication.translate("customProductionWidget", u"admin", None))
         self.logoutBtn.setText("")
-        self.label.setText(QCoreApplication.translate("customProductionWidget", u"\u0413\u043e\u0434\u0438\u043d\u0430", None))
         self.label_2.setText(QCoreApplication.translate("customProductionWidget", u"\u041a\u043b\u0438\u0435\u043d\u0442", None))
-        self.forProdCheckBox.setText(QCoreApplication.translate("customProductionWidget", u"\u0417\u0430 \u043f\u0440\u043e\u0438\u0437\u0432\u043e\u0434\u0441\u0442\u0432\u043e", None))
+        self.label_3.setText(QCoreApplication.translate("customProductionWidget", u"\u0422\u044a\u0440\u0441\u0435\u043d\u0435:", None))
+        self.oldModelsCheckBox.setText(QCoreApplication.translate("customProductionWidget", u"\u0421\u0442\u0430\u0440\u0438 \u041c\u043e\u0434\u0435\u043b\u0438", None))
+        self.posGroupsBtn.setText(QCoreApplication.translate("customProductionWidget", u"\u0413\u0440\u0443\u043f\u0438 \u043a\u044a\u043c \u043f\u043e\u0437\u0438\u0446\u0438\u0438", None))
     # retranslateUi
 

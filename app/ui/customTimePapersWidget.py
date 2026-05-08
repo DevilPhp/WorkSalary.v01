@@ -136,12 +136,15 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         # self.workerNameLineEdit.doubleClicked.connect(self.test)
 
         self.clientModelsLineEdit.editingFinished.connect(self.updateModelInfo)
+        self.clientModelsLineEdit.textChanged.connect(self.setModelOperations)
 
         self.modelPiecesLineEdit.textChanged.connect(self.updateModelPieces)
         self.timeForPieceLineEdit.textChanged.connect(self.updateModelPieces)
         self.modelOperationLineEdit.editingFinished.connect(self.updateModelOperation)
 
         self.effectOperTimesBtn.clicked.connect(self.setModelOperationTimes)
+
+        self.oldModelsCheckBox.stateChanged.connect(self.setModels)
 
         self.workerNameLineEdit.selectAll()
         self.workerNameLineEdit.setFocus()
@@ -155,11 +158,18 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
     def loadInitialData(self):
         self.workers = WoS.getWorkers()
-        self.models = MoS.getClientsAndModels()
         self.workingShifts = WoS.getWorkingShifts()
         self.operationsGroups = OpS.getOperationsGroups()
-        self.setupWorkerAndModelsCompleter()
+        self.setModels()
+        self.setupWorkerCompleter()
         self.setupWorkingTimeWidgets()
+
+    def setModels(self):
+        if self.oldModelsCheckBox.isChecked():
+            self.models = MoS.getClientsAndModels()
+        else:
+            self.models = MoS.getNewModelsAndClients()
+        self.setupModelsCompleter()
 
     def setModelOperationTimes(self):
         if self.clientModelsLineEdit == '':
@@ -1044,13 +1054,15 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.overtimeEnd.setText('00:00')
             self.overtimeTotalMins.setText('0')
 
-    def setupWorkerAndModelsCompleter(self):
+    def setupWorkerCompleter(self):
         for worker in self.workers:
             self.workersInfo.append(f"{worker[0]['Име']} {worker[0]['Фамилия']} - {worker[0]['Номер']}")
         Utils.setupCompleter(self.workersInfo, self.workerNameLineEdit)
 
+    def setupModelsCompleter(self):
+        self.clientModels.clear()
         for client in self.models:
-            self.clientModels[f'{client[0]} : {client[1]}'] = client[2]
+            self.clientModels[f'{client["orderNo"]} : {client["client"]}'] = client['id']
         Utils.setupCompleter(self.clientModels.keys(), self.clientModelsLineEdit)
 
     def checkModel(self):
@@ -1060,45 +1072,55 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             MM.showOnWidget(self, "Избран е несъществуващ модел", 'error')
             return
 
+    def setModelOperations(self):
+        self.modelOperations.clear()
+
     def updateModelInfo(self):
         # print(self.currentModelText)
+        print('here')
         if self.clientModelsLineEdit.text() != '':
             completer = self.clientModelsLineEdit.completer()
             self.clientModelsLineEdit.setText(Utils.setReturnBtnForCompleter(completer))
         selectedText = self.clientModelsLineEdit.text()
+        # self.modelOperations.clear()
         # if self.currentModelText != selectedText:
         self.setModelInfo(selectedText)
         # else:
         #     self.modelOperationLineEdit.setFocus()
 
     def setModelInfo(self, selectedText):
-        # self.currentModelText = selectedText
-        if selectedText in self.clientModels.keys():
-            modelId = self.clientModels[selectedText]
-            # self.clientModelsLineEdit.blockSignals(True)
-            self.setOperationsGroups(modelId)
-            # self.clientModelsLineEdit.blockSignals(False)
-            if self.operationsGroupComboBox.count() > 0:
-                self.operationsGroupsHolder.setEnabled(True)
-            self.modelOperations.clear()
-            modelData = MoS.getModelOperations(modelId)
-            self.modelTotalPiecesLineEdit.setText(str(modelData[1]) if modelData[1] else '0')
-            operations = modelData[0]
-            for operation in operations:
-                # print(operation)
-                self.modelOperations[f'{operation[0]} : {operation[1]}'] = [
-                    round(operation[2], 2), operation[3], operation[4]
-                ]
-            Utils.setupCompleter(self.modelOperations.keys(), self.modelOperationLineEdit)
-            self.modelOperationLineEdit.setReadOnly(False)
-            self.modelOperationLineEdit.setFocus()
-            self.effectOperTimesBtn.setVisible(True)
-        else:
-            self.clientModelsLineEdit.clear()
-            # self.clientModelsLineEdit.setFocus()
-            self.effectOperTimesBtn.setVisible(False)
-            self.operationsGroupsHolder.setEnabled(False)
-            self.modelTotalPiecesLineEdit.clear()
+        if not self.modelOperations:
+            # self.currentModelText = selectedText
+            if selectedText in self.clientModels.keys():
+                modelId = self.clientModels[selectedText]
+                if self.oldModelsCheckBox.isChecked():
+                    # self.clientModelsLineEdit.blockSignals(True)
+                    self.setOperationsGroups(modelId)
+                    # self.clientModelsLineEdit.blockSignals(False)
+                    if self.operationsGroupComboBox.count() > 0:
+                        self.operationsGroupsHolder.setEnabled(True)
+                    modelData = MoS.getModelOperations(modelId)
+                else:
+                    modelData = MoS.getNewModelOperations(modelId)
+
+                self.modelTotalPiecesLineEdit.setText(str(modelData[1]) if modelData[1] else '0')
+                operations = modelData[0]
+                print(operations)
+                for operation in operations:
+                    print(operation[2])
+                    self.modelOperations[f'{operation[0]} : {operation[1]}'] = [
+                        round(operation[2], 2), operation[3], operation[4]
+                    ]
+                Utils.setupCompleter(self.modelOperations.keys(), self.modelOperationLineEdit)
+                self.modelOperationLineEdit.setReadOnly(False)
+                self.modelOperationLineEdit.setFocus()
+                self.effectOperTimesBtn.setVisible(True)
+            else:
+                self.clientModelsLineEdit.clear()
+                # self.clientModelsLineEdit.setFocus()
+                self.effectOperTimesBtn.setVisible(False)
+                self.operationsGroupsHolder.setEnabled(False)
+                self.modelTotalPiecesLineEdit.clear()
 
     def updateModelOperation(self):
         # self.modelOperationLineEdit.blockSignals(True)

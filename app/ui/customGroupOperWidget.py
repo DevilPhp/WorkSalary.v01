@@ -1,7 +1,7 @@
 from functools import partial
 
 from PySide6.QtCore import Signal, QTimer, QRegularExpression
-from PySide6.QtGui import QStandardItemModel, QStandardItem, QDoubleValidator, QShortcut, QKeySequence
+from PySide6.QtGui import QStandardItemModel, QStandardItem, QDoubleValidator, QShortcut, QKeySequence, QIntValidator
 from PySide6.QtWidgets import QMenu, QDialog, QAbstractScrollArea
 
 from app.ui.customSortingMenuWidget import CustomSortingMenuWidget
@@ -18,6 +18,7 @@ from app.models.customLineEditWidget import CustomLineEdit
 from app.ui.customAddOperationDialog import CustomAddOperationDialog as addOperDialog
 from app.ui.customAddingOpersDialog import CustomBranchDialog as branchDialog
 from app.ui.customYesNoMessage import CustomYesNowDialog
+from app.ui.addingCehoveDialog import CustomWorkingPlaceDialog
 from app.utils.utils import Utils
 
 
@@ -29,6 +30,7 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         super().__init__(parent)
         self.setupUi(self)
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose, True)
+        self.setWindowTitle('Модели и операции')
         self.mainWindow = mainWindow
         self.user = user
         self.usernameLabel.setText(user)
@@ -40,12 +42,16 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         self.struct = {}
         self.operCatalog = {}
         self.clients = {}
+        self.models = {}
         self.changedOperTimes = {}
+        self.workingPlaces = []
+        self.removedOperations = []
 
         self.clientNameLineEdit.setReadOnly(True)
         self.dateLineEdit.setReadOnly(True)
         self.modelInfoWidget.setEnabled(False)
         self.deleteModelBtn.setVisible(False)
+        self.editModelCheckBox.setVisible(False)
         self.operTimesWidget.setVisible(False)
 
         self.operTreeView = CustomTreeViewWithDrop(self)
@@ -58,6 +64,11 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         self.searchHolderWidget.layout().addWidget(self.searchLineEdit)
         self.searchTreeLineEdit = CustomLineEdit(self)
         self.searchTreeHolderWidget.layout().addWidget(self.searchTreeLineEdit)
+        self.modelsNameLineEdit = CustomLineEdit(self)
+        self.modelsNameWidget.layout().addWidget(self.modelsNameLineEdit)
+
+        intValidator = QIntValidator(0, 9999999)
+        self.piecesLineEdit.setValidator(intValidator)
 
         self.operTreeViewModel = QStandardItemModel()
         self.operTreeViewModel.setHorizontalHeaderLabels(["Операции", "Време"])
@@ -66,20 +77,21 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         self.proxyOperTreeView.setSearchColumns([0])
         self.operTreeView.setModel(self.proxyOperTreeView)
         # self.operTreeView.header().hide()
-        self.operTreeView.setColumnWidth(0, 450)
+        self.operTreeView.setColumnWidth(0, 500)
         self.operTableViewModel = QStandardItemModel()
-        self.tableOperDetailsNames = ['№', 'Вр.', 'Операция']
+        self.tableOperDetailsNames = ['№', 'Операция', 'Вр.']
 
         for i, tableHeaderName in enumerate(self.tableOperDetailsNames):
             self.operTableViewModel.setHorizontalHeaderItem(i, QStandardItem(tableHeaderName))
             self.operTableViewModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignHCenter)
             # self.operTableViewModel.horizontalHeaderItem(i).setTextAlignment(Qt.AlignmentFlag.AlignVCenter)
-        self.proxyModelOperDetailsTable = CaseInsensitiveProxyModel(numericColumns=[0, 1], parent=self)
+        self.proxyModelOperDetailsTable = CaseInsensitiveProxyModel(numericColumns=[0, 2], parent=self)
 
         self.setProxyModel(self.proxyModelOperDetailsTable, self.operTableViewModel, self.operationsTableView)
-        self.operationsTableView.horizontalHeader().setStretchLastSection(True)
+        # self.operationsTableView.horizontalHeader().setStretchLastSection(True)
         self.operationsTableView.setColumnWidth(0, 40)
-        self.operationsTableView.setColumnWidth(1, 50)
+        self.operationsTableView.setColumnWidth(1, 300)
+        self.operationsTableView.setColumnWidth(2, 40)
 
         self.operationsTableView.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.operationsTableView.customContextMenuRequested.connect(self.showCustomTableMenu)
@@ -114,12 +126,309 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         self.newModelCheckBox.stateChanged.connect(self.setNewModel)
         self.editModelCheckBox.stateChanged.connect(self.setEditModel)
         self.oldModelsBtn.clicked.connect(self.loadOldModelsPage)
+        self.forClientComboBox.currentIndexChanged.connect(self.updateEditNewCheckboxes)
 
         self.saveOperTimesBtn.clicked.connect(self.changeOperTimes)
         self.refreshOperTimesBtn.clicked.connect(self.refreshOperTimes)
+        self.saveBtn.clicked.connect(self.saveModelWithOperations)
+        self.deleteModelBtn.clicked.connect(self.deleteSelectedModel)
+
+        # self.modelNameLineEdit.editingFinished.connect(self.setModelInfo)
+        self.cehoveBtn.clicked.connect(self.showWorkingPlacesDialog)
+        self.modelsNameLineEdit.returnPressed.connect(self.setModelInfo)
 
         self.closeBtn.clicked.connect(self.close)
         self.logoutBtn.clicked.connect(self.logout)
+
+    # ------- MODEL OPERATIONS ------- #
+
+    def deleteSelectedModel(self):
+        modelName = self.modelsNameLineEdit.text()
+        if modelName == "":
+            MM.showOnWidget(self, "Моля, изберете модел.", "warning")
+            return
+        modelId = self.models[modelName]
+        dialog = CustomYesNowDialog(isNormalIcon=False)
+        dialog.setMessage(modelName, "Искате ли да изтриете модел:", 'deleting')
+        result = dialog.exec()
+        if result == QDialog.DialogCode.Accepted:
+            isDeleted = Ms.deleteModel(modelId, True)
+            if isDeleted == 1:
+                MM.showOnWidget(self, "Моделът е изтрит успешно.", "success")
+                self.loadInitialData(refreshOperTable=False, gettingClients=False)
+                self.resetModelInfo()
+                self.modelsNameLineEdit.clear()
+            elif isDeleted == 2:
+                MM.showOnWidget(self, "Моделът не може да бъде изтрит, съществува в листове за време.", "warning")
+                return
+            else:
+                MM.showOnWidget(self, "Грешка при изтриването на модел.", "error")
+                return
+
+    def setModelInfo(self):
+        modelText = self.modelsNameLineEdit.text()
+        if modelText != "":
+            if modelText in self.models:
+                self.editModelCheckBox.setVisible(True)
+                self.deleteModelBtn.setVisible(True)
+                modelId = self.models[modelText]
+                if modelId:
+                    modelData = Ms.getModelInfo(modelId, isNewModel=True)
+                    # print(modelData)
+                    if modelData:
+                        self.updateModelInfo(modelData["model"])
+                        self.setExistingModelOperations(modelData["operations"])
+                        self.workingPlaces = modelData["workingPlaces"]
+            else:
+                MM.showOnWidget(self, "Моделът не е намерен.", "warning")
+
+    def setExistingModelOperations(self, operations):
+        savedByCatalogId = {
+            int(op["catalogListId"]): op
+            for op in operations
+        }
+
+        try:
+            self.clearAllTreeChecks()
+
+            def walk(parentItem):
+                for row in range(parentItem.rowCount()):
+                    nameitem = parentItem.child(row, 0)
+                    timeItem = parentItem.child(row, 1)
+                    if nameitem is None:
+                        continue
+                    nodeType = nameitem.data(Qt.ItemDataRole.UserRole + 1)
+                    if nodeType == "operation":
+                        catalogId = nameitem.data(Qt.ItemDataRole.UserRole + 2)
+                        if catalogId in savedByCatalogId:
+                            savedRow = savedByCatalogId[catalogId]
+                            nameitem.setCheckState(Qt.CheckState.Checked)
+
+                            if timeItem is not None:
+                                savedTime = float(savedRow["time"])
+                                currentTime = timeItem.data(Qt.ItemDataRole.UserRole)
+                                if currentTime != savedTime:
+                                    self.operTreeView.blockSignals(True)
+                                    timeItem.setText(f"{savedTime:.2f}")
+                                    timeItem.setData(savedTime, Qt.ItemDataRole.UserRole)
+                                    self.operTreeView.blockSignals(False)
+                            self.expandParentsForItem(nameitem)
+                    if nameitem.hasChildren():
+                        walk(nameitem)
+
+            for row in range(self.operTreeViewModel.rowCount()):
+                rootItem = self.operTreeViewModel.item(row, 0)
+                if rootItem is not None:
+                    walk(rootItem)
+        finally:
+            print("Restoring checkboxes...")
+
+    def updateModelInfo(self, modelData):
+        self.modelNameLineEdit.setText(modelData["orderNo"])
+        self.clientNameLineEdit.setText(modelData["clientName"])
+        self.dateLineEdit.setText(modelData["dateCreated"])
+        if modelData["actual"]:
+            self.actualCheckBox.setCheckState(Qt.CheckState.Checked)
+        if modelData["forProduction"]:
+            self.forProdCheckBox.setCheckState(Qt.CheckState.Checked)
+        self.piecesLineEdit.setText(str(modelData["pieces"]))
+        self.forClientComboBox.setCurrentText(modelData["clientName"])
+        if modelData["comment"]:
+            self.commentLineEdit.setText(modelData["comment"])
+
+
+        # if self.modelNameLineEdit.text() != "":
+        #     text = self.modelNameLineEdit.text()
+        #     if text in self.models:
+        #         modelText = text.split(' : ')
+        #         modelName = modelText[0]
+        #         clientName = modelText[1]
+        #         modelId = self.models[text]
+        #         self.modelNameLineEdit.setText(modelName)
+        #         self.clientNameLineEdit.setText(clientName)
+
+    def updateEditNewCheckboxes(self):
+        clientText = self.forClientComboBox.currentText()
+        if self.modelsNameLineEdit.text() != "":
+            modelName = self.modelsNameLineEdit.text().split(' : ')[0]
+            clientName = self.modelsNameLineEdit.text().split(' : ')[1]
+            if clientText != clientName:
+                self.newModelCheckBox.setCheckState(Qt.CheckState.Checked)
+            elif clientText == clientName and modelName == self.modelNameLineEdit.text():
+                self.editModelCheckBox.setCheckState(Qt.CheckState.Checked)
+
+    def saveModelWithOperations(self):
+        if self.modelNameLineEdit.text() == "":
+            MM.showOnWidget(self, "Моля въведете има за модел.", "warning")
+            self.modelNameLineEdit.setFocus()
+            return
+
+        if self.forClientComboBox.currentText() != '':
+            if not self.forClientComboBox.currentText() in self.clients:
+                MM.showOnWidget(self, "Няма такъв клиент.", "warning")
+                return
+        else:
+            MM.showOnWidget(self, "Моля изберете клиент.", "warning")
+            return
+
+        modelPayload = self.buildModelPayload()
+        if not modelPayload:
+            MM.showOnWidget(self, "Моля изберете поне една операция.", "warning")
+            return
+
+        if self.editModelCheckBox.isChecked():
+            if self.removedOperations:
+                returnedOperations = Ms.checkIfOperationsCanBeDeleted(modelPayload['model']['modelId'],
+                                                                      self.removedOperations)
+                if returnedOperations:
+                    dialog = CustomYesNowDialog(isNormalIcon=False)
+                    message = "\n".join(op for op in returnedOperations)
+                    dialog.setMessage(modelPayload['model']['modelName'], message, 'warning')
+                    dialog.exec()
+
+        if self.newModelCheckBox.isChecked():
+            isExists = Ms.checkIfModelExistsForClient(modelPayload['model']['modelName'],
+                                                      modelPayload['model']['clientId'])
+            if isExists == 1:
+                MM.showOnWidget(self, "Модел с такова име за клиент съществува.", "warning")
+                return
+            elif not isExists:
+                MM.showOnWidget(self, "Грешка при запис на модел.", "error")
+                return
+            else:
+                modelId = Ms.saveNewModel(modelPayload)
+                if modelId:
+                    MM.showOnWidget(self, f"Модел: {modelPayload['model']['modelName']} е създаден успешно.",
+                                    "success")
+                    self.loadInitialData(refreshOperTable=False, gettingClients=False)
+                    self.resetModelInfo()
+                    self.modelsNameLineEdit.clear()
+                    self.editModelCheckBox.setVisible(False)
+                    self.deleteModelBtn.setVisible(False)
+                    self.workingPlaces = []
+                else:
+                    MM.showOnWidget(self, "Неуспешно създаване на модел.", "error")
+                    return
+
+    def buildModelPayload(self):
+        pieces = 0
+        if self.piecesLineEdit.text() != "":
+            pieces = int(self.piecesLineEdit.text())
+        yarn = None
+        if self.yarnLineEdit.text() != "":
+            yarn = self.yarnLineEdit.text().strip()
+        comment = None
+        if self.commentLineEdit.text() != "":
+            comment = self.commentLineEdit.text()
+        client = self.forClientComboBox.currentText()
+        clientId = self.clients[client]
+        modelName = self.modelNameLineEdit.text().strip()
+        actual = self.actualCheckBox.isChecked()
+        forProduction = self.forProdCheckBox.isChecked()
+        modelId = None
+        if self.editModelCheckBox.isChecked() and self.modelsNameLineEdit.text() != "":
+            name = f"{modelName} : {client}"
+            modelId = self.models[name]
+
+        operations = self.getCheckedTreeOperations()
+        if not operations:
+            return None
+
+        modelData = {
+            "modelId": modelId,
+            "modelName": modelName,
+            "clientId": clientId,
+            "actual": actual,
+            "forProduction": forProduction,
+            "pieces": pieces,
+            "yarn": yarn,
+            "comment": comment,
+            "user": self.user
+        }
+
+        payload = {
+            "model": modelData,
+            "operations": operations,
+            "workingPlaces": self.workingPlaces,
+        }
+
+        return payload
+
+    def getCheckedTreeOperations(self):
+        """
+        Walk through the whole tree and collect only checked operation rows.
+
+        Returns:
+            list[dict]: one dict per checked operation
+        """
+        checkedOperations = []
+
+        def walk(parentItem):
+            # Go through all child rows of the current parent
+            for row in range(parentItem.rowCount()):
+                nameItem = parentItem.child(row, 0)
+                timeItem = parentItem.child(row, 1)
+
+                if nameItem is None:
+                    continue
+
+                nodeType = nameItem.data(Qt.ItemDataRole.UserRole + 1)
+
+                # If this is an operation row, check if it is selected
+                if nodeType == "operation":
+                    if nameItem.checkState() == Qt.CheckState.Checked:
+                        checkedOperations.append({
+                            # Id from table newOperations.Id
+                            "operationId": nameItem.data(Qt.ItemDataRole.UserRole),
+
+                            # Id from operationCatalogLists.Id
+                            "operationCatalogListId": nameItem.data(Qt.ItemDataRole.UserRole + 2),
+
+                            # Visible operation name
+                            "operationName": nameItem.text(),
+
+                            # Current time shown in the tree
+                            "timeForOper": float(timeItem.data(Qt.ItemDataRole.UserRole) or 0),
+                        })
+
+                # Continue deeper if this row has children
+                if nameItem.hasChildren():
+                    walk(nameItem)
+
+        # Start from the root of the model
+        for row in range(self.operTreeViewModel.rowCount()):
+            rootItem = self.operTreeViewModel.item(row, 0)
+            if rootItem is not None:
+                walk(rootItem)
+
+        return checkedOperations
+
+    # ------- TREE OPERATIONS ------- #
+
+    def clearAllTreeChecks(self):
+        for row in range(self.operTreeViewModel.rowCount()):
+            rootItem = self.operTreeViewModel.item(row, 0)
+            if rootItem is not None:
+                nodeType = rootItem.data(Qt.ItemDataRole.UserRole + 1)
+                if nodeType != "type":
+                    continue
+                rootItem.setCheckState(Qt.CheckState.Unchecked)
+        self.operTreeView.collapseAll()
+
+    def expandParentsForItem(self, item):
+        """
+        Expand all parents of a source-model item in the tree view.
+        """
+        current = item.parent()
+
+        while current is not None:
+            sourceIndex = self.operTreeViewModel.indexFromItem(current)
+            proxyIndex = self.proxyOperTreeView.mapFromSource(sourceIndex)
+
+            if proxyIndex.isValid():
+                self.operTreeView.expand(proxyIndex)
+
+            current = current.parent()
 
     def refreshOperTimes(self):
         self.loadInitialData(refreshOperTable=False, gettingModels=False, gettingClients=False)
@@ -142,29 +451,6 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
                 self.changedOperTimes.clear()
                 self.operTimesWidget.setVisible(False)
 
-    def loadOldModelsPage(self):
-        self.oldModelsSignal.emit(True)
-
-    def setNewModel(self, state):
-        if state == 2:
-            if self.editModelCheckBox.isChecked():
-                self.editModelCheckBox.blockSignals(True)
-                self.editModelCheckBox.setCheckState(Qt.CheckState.Unchecked)
-                self.editModelCheckBox.blockSignals(False)
-            self.modelInfoWidget.setEnabled(True)
-        else:
-            self.modelInfoWidget.setEnabled(False)
-
-    def setEditModel(self, state):
-        if state == 2:
-            if self.newModelCheckBox.isChecked():
-                self.newModelCheckBox.blockSignals(True)
-                self.newModelCheckBox.setCheckState(Qt.CheckState.Unchecked)
-                self.newModelCheckBox.blockSignals(False)
-            self.modelInfoWidget.setEnabled(True)
-        else:
-            self.modelInfoWidget.setEnabled(False)
-
     def onTreeSearchTextChanged(self, text):
         self.proxyOperTreeView.setSearchText(text)
 
@@ -172,60 +458,6 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
             self.operTreeView.expandToDepth(2)  # or expandAll()
         else:
             self.operTreeView.collapseAll()
-
-    def setProxyModel(self, proxyModel, model, table):
-        proxyModel.setSourceModel(model)
-        filterableHeaderView = FilterableHeaderView(Qt.Orientation.Horizontal, table)
-        table.setHorizontalHeader(filterableHeaderView)
-        filterableHeaderView.filterRequested.connect(partial(self.updateFilter, proxyModel, filterableHeaderView))
-        table.setModel(proxyModel)
-
-    def updateFilter(self, proxyModel, header, column):
-        if column < 3:
-            # Create dictionaries to store column values and checked states if they don't exist
-            if not hasattr(self, 'columnValues'):
-                self.columnValues = {}
-            if not hasattr(self, 'checkedStates'):
-                self.checkedStates = {}
-            if column not in self.checkBoxFiltering:
-                self.checkBoxFiltering[column] = []
-
-            items = []
-            self.columnValues[column] = []
-
-            for row in range(proxyModel.rowCount()):
-                index = proxyModel.index(row, column)
-                value = proxyModel.data(index, Qt.ItemDataRole.DisplayRole)
-                if value not in self.columnValues[column]:
-                    self.columnValues[column].append(value)
-                    if value not in self.initialCheckBoxes:
-                        self.initialCheckBoxes[value] = column
-
-            for value in self.columnValues[column]:
-                items.append(value)
-
-            if items:
-                menu = CustomSortingMenuWidget(header)
-                for item in items:
-                    checked = item in self.checkBoxFiltering[column]
-                    menu.addItem(item, checked)
-                menu.setMenuSize(len(items))
-                menu.move(self.cursor().pos())
-                menu.checkedCheckbox.connect(partial(self.applyFilter, proxyModel))
-
-    def applyFilter(self, proxyModel, item):
-        col = self.initialCheckBoxes[item.text()]
-        if item.isChecked() and item.text() not in self.checkBoxFiltering[col]:
-            self.checkBoxFiltering[col].append(item.text())
-        elif not item.isChecked() and item.text() in self.checkBoxFiltering[col]:
-            self.checkBoxFiltering[col].remove(item.text())
-
-        if not self.checkBoxFiltering[col]:
-            if col in proxyModel.columnFilters:
-                del proxyModel.columnFilters[col]
-        else:
-            proxyModel.setFilterForColumn(col, self.checkBoxFiltering)
-        proxyModel.invalidateFilter()
 
     def getNodeType(self, item):
         """
@@ -292,6 +524,7 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         for row in range(parentItem.rowCount()):
             childItem = parentItem.child(row, 0)
             if childItem is not None:
+                self.setRemovedOperations(childItem, checked)
                 self.setItemChecked(childItem, checked)
                 self.setChildrenCheckedRecursive(childItem, checked)
 
@@ -450,10 +683,20 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         - checked -> check all parents
         - unchecked -> update parents based on remaining checked siblings
         """
+        self.setRemovedOperations(item, checked)
         if checked:
             self.checkParentsUpward(item)
         else:
             self.updateParentsAfterUncheck(item)
+
+    def setRemovedOperations(self, item, checked):
+        if (self.modelsNameLineEdit.text() != "" and
+                self.editModelCheckBox.isChecked() and
+                item.data(Qt.ItemDataRole.UserRole + 1) == "operation"):
+            if checked and item.data(Qt.ItemDataRole.UserRole + 2) in self.removedOperations:
+                self.removedOperations.remove(item.data(Qt.ItemDataRole.UserRole + 2))
+            elif not checked and item.data(Qt.ItemDataRole.UserRole + 2) not in self.removedOperations:
+                self.removedOperations.append(item.data(Qt.ItemDataRole.UserRole + 2))
 
     def handleTreeItemChanged(self, item):
         """
@@ -651,23 +894,6 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         else:
             MM.showOnWidget(self, f"{len(savedOpers.keys())} операции неуспешно добавени.", "error")
 
-    def saveOperationsToDB(self, data):
-        row = self.setRowsForDb(data)
-        return GoS.saveOperationsToDB(row)
-
-    def setRowsForDb(self, data):
-        row = {
-            "parentList": {
-                "ModelTypeId": data["parentList"][0]["id"],
-                "GaugeId": data["parentList"][1]["id"],
-                "GroupId": data["parentList"][2]["id"],
-                "StructureId": data["parentList"][3]["id"] if len(data["parentList"]) > 3 else None,
-                "UserCreated": self.user
-            },
-            "operList": data.get("operList", [])
-        }
-        return row
-
     def checkCurrentNodeOpers(self, currentNode, operId):
         for row in range(currentNode.rowCount()):
             item = currentNode.child(row, 0)
@@ -743,69 +969,6 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
                 branchItem.child(row, 1).setData(mins, Qt.ItemDataRole.UserRole)
                 break
 
-    def loadInitialData(self, refreshOperTable=True, refreshTable=False, gettingModels=True, gettingClients=True):
-        data = GoS.getInitialData()
-        # print(data)
-        if data:
-            if not refreshTable:
-                for key, value in data.items():
-                    if key == "modelTypes":
-                        self.setModelTypes(value)
-                    elif key == "guages":
-                        self.setGauges(value)
-                    elif key == "groups":
-                        self.setGroups(value)
-                    elif key == "structures":
-                        self.setStruct(value)
-                    elif key == "operations":
-                        if refreshOperTable:
-                            self.setOperations(value)
-                    elif key == "operCatalog":
-                        self.operCatalog = value
-
-                self.setTreeView()
-                self.refreshTreeView()
-            else:
-                for key, value in data.items():
-                    if key == "operations":
-                        self.setOperations(value)
-
-        if gettingModels:
-            models = Ms.getNewModelsAndClients()
-            if models:
-                modelsList = []
-                for model in models:
-                    modelsList.append(f'{model["OrderNo"]} : {model["client"]}')
-                Utils.setupCompleter(modelsList, self.modelNameLineEdit)
-
-        if gettingClients:
-            clients = Ms.getClients()
-            if clients:
-                self.forClientComboBox.clear()
-                self.forClientComboBox.setEditable(True)
-                for idClient, client in clients.items():
-                    self.clients[client] = int(idClient)
-                    self.forClientComboBox.addItem(client)
-                self.forClientComboBox.setCurrentIndex(-1)
-                Utils.setupCompleter(self.clients.keys(), self.forClientComboBox)
-
-    def setOperations(self, value):
-        self.operTableViewModel.setRowCount(0)
-        self.operations.clear()
-        self.operNamesById.clear()
-        for oper in value:
-            self.operations[oper["name"]] = [oper["id"], oper["number"]]
-            self.operNamesById[oper["id"]] = [oper["name"], oper["number"]]
-            operationName = QStandardItem(oper["name"])
-            operationNumber = QStandardItem(str(oper["number"]))
-            operationTime = QStandardItem(str(oper["time"]))
-            operationName.setData(oper["id"], Qt.ItemDataRole.UserRole)
-            operationName.setData("catalogOperation", Qt.ItemDataRole.UserRole + 1)
-            operationNumber.setData(oper["id"], Qt.ItemDataRole.UserRole)
-            operationTime.setData(oper["time"], Qt.ItemDataRole.UserRole)
-            self.operTableViewModel.appendRow([operationNumber, operationTime, operationName])
-        self.operationsTableView.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
-
     def addNewBranch(self, nodeType):
         if nodeType:
             self.addBranch(nodeType, None)
@@ -847,7 +1010,6 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
             copyAction = menu.addAction("Копиране")
 
         if nodeType in ("group", "struct"):
-
             clipboard = QApplication.clipboard()
             mimeData = clipboard.mimeData()
             hasTableData = mimeData.hasFormat("application/x-operations-json")
@@ -1054,6 +1216,25 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
 
         return editAction, addAction, deleteAction
 
+    # ------- TABLE OPERATIONS ------- #
+
+    def setOperations(self, value):
+        self.operTableViewModel.setRowCount(0)
+        self.operations.clear()
+        self.operNamesById.clear()
+        for oper in value:
+            self.operations[oper["name"]] = [oper["id"], oper["number"]]
+            self.operNamesById[oper["id"]] = [oper["name"], oper["number"]]
+            operationName = QStandardItem(oper["name"])
+            operationNumber = QStandardItem(str(oper["number"]))
+            operationTime = QStandardItem(str(oper["time"]))
+            operationName.setData(oper["id"], Qt.ItemDataRole.UserRole)
+            operationName.setData("catalogOperation", Qt.ItemDataRole.UserRole + 1)
+            operationNumber.setData(oper["id"], Qt.ItemDataRole.UserRole)
+            operationTime.setData(oper["time"], Qt.ItemDataRole.UserRole)
+            self.operTableViewModel.appendRow([operationNumber, operationName, operationTime])
+        self.operationsTableView.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
+
     # ----Table Context Menu Setter---- #
 
     def showCustomTableMenu(self, pos):
@@ -1178,6 +1359,198 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
                     MM.showOnWidget(self, f"Неуспешно изтрити операции.\n{name}", "error")
 
     # ---- UI Setting ---- #
+
+    def loadOldModelsPage(self):
+        self.oldModelsSignal.emit(True)
+
+    def showWorkingPlacesDialog(self):
+        modelName = self.modelNameLineEdit.text()
+        if modelName == "":
+            MM.showOnWidget(self, "Моля, въведете име на модела.", "warning")
+            return
+        dialog = CustomWorkingPlaceDialog(modelName, self.workingPlaces)
+        dialog.workPlaces.connect(self.setWorkingPlaces)
+        dialog.exec()
+
+    def setWorkingPlaces(self, workingPlaces):
+        self.workingPlaces = workingPlaces
+
+    def setNewModel(self, state):
+        if state == 2:
+            if self.editModelCheckBox.isChecked():
+                self.editModelCheckBox.blockSignals(True)
+                self.editModelCheckBox.setCheckState(Qt.CheckState.Unchecked)
+                self.editModelCheckBox.blockSignals(False)
+            self.modelInfoWidget.setEnabled(True)
+            self.actualCheckBox.setCheckState(Qt.CheckState.Checked)
+        else:
+            self.modelInfoWidget.setEnabled(False)
+            self.actualCheckBox.setCheckState(Qt.CheckState.Unchecked)
+            # self.resetModelInfo()
+            # self.clearAllTreeChecks()
+
+    def setEditModel(self, state):
+        if state == 2:
+            if self.newModelCheckBox.isChecked():
+                self.newModelCheckBox.blockSignals(True)
+                self.newModelCheckBox.setCheckState(Qt.CheckState.Unchecked)
+                self.newModelCheckBox.blockSignals(False)
+            self.modelInfoWidget.setEnabled(True)
+            if self.modelsNameLineEdit.text() == "":
+                self.actualCheckBox.setCheckState(Qt.CheckState.Unchecked)
+            # self.resetModelInfo(isEdit=True)
+        else:
+            self.modelInfoWidget.setEnabled(False)
+            # self.resetModelInfo()
+            # self.clearAllTreeChecks()
+
+    def resetModelInfo(self, isEdit=False):
+        self.modelNameLineEdit.clear()
+        self.piecesLineEdit.clear()
+        self.yarnLineEdit.clear()
+        self.commentLineEdit.clear()
+        self.actualCheckBox.setCheckState(Qt.CheckState.Unchecked)
+        self.forProdCheckBox.setCheckState(Qt.CheckState.Unchecked)
+        self.newModelCheckBox.blockSignals(True)
+        self.newModelCheckBox.setCheckState(Qt.CheckState.Unchecked)
+        self.newModelCheckBox.blockSignals(False)
+        if not isEdit:
+            self.editModelCheckBox.blockSignals(True)
+            self.editModelCheckBox.setCheckState(Qt.CheckState.Unchecked)
+            self.editModelCheckBox.blockSignals(False)
+        self.clientNameLineEdit.clear()
+        self.dateLineEdit.clear()
+        self.forClientComboBox.setCurrentIndex(-1)
+        self.modelInfoWidget.setEnabled(False)
+        self.deleteModelBtn.setVisible(False)
+        self.operTimesWidget.setVisible(False)
+        self.newModelCheckBox.setCheckState(Qt.CheckState.Unchecked)
+        self.editModelCheckBox.setCheckState(Qt.CheckState.Unchecked)
+
+    def setProxyModel(self, proxyModel, model, table):
+        proxyModel.setSourceModel(model)
+        filterableHeaderView = FilterableHeaderView(Qt.Orientation.Horizontal, table)
+        table.setHorizontalHeader(filterableHeaderView)
+        filterableHeaderView.filterRequested.connect(partial(self.updateFilter, proxyModel, filterableHeaderView))
+        table.setModel(proxyModel)
+
+    def updateFilter(self, proxyModel, header, column):
+        if column < 3:
+            # Create dictionaries to store column values and checked states if they don't exist
+            if not hasattr(self, 'columnValues'):
+                self.columnValues = {}
+            if not hasattr(self, 'checkedStates'):
+                self.checkedStates = {}
+            if column not in self.checkBoxFiltering:
+                self.checkBoxFiltering[column] = []
+
+            items = []
+            self.columnValues[column] = []
+
+            for row in range(proxyModel.rowCount()):
+                index = proxyModel.index(row, column)
+                value = proxyModel.data(index, Qt.ItemDataRole.DisplayRole)
+                if value not in self.columnValues[column]:
+                    self.columnValues[column].append(value)
+                    if value not in self.initialCheckBoxes:
+                        self.initialCheckBoxes[value] = column
+
+            for value in self.columnValues[column]:
+                items.append(value)
+
+            if items:
+                menu = CustomSortingMenuWidget(header)
+                for item in items:
+                    checked = item in self.checkBoxFiltering[column]
+                    menu.addItem(item, checked)
+                menu.setMenuSize(len(items))
+                menu.move(self.cursor().pos())
+                menu.checkedCheckbox.connect(partial(self.applyFilter, proxyModel))
+
+    def applyFilter(self, proxyModel, item):
+        col = self.initialCheckBoxes[item.text()]
+        if item.isChecked() and item.text() not in self.checkBoxFiltering[col]:
+            self.checkBoxFiltering[col].append(item.text())
+        elif not item.isChecked() and item.text() in self.checkBoxFiltering[col]:
+            self.checkBoxFiltering[col].remove(item.text())
+
+        if not self.checkBoxFiltering[col]:
+            if col in proxyModel.columnFilters:
+                del proxyModel.columnFilters[col]
+        else:
+            proxyModel.setFilterForColumn(col, self.checkBoxFiltering)
+        proxyModel.invalidateFilter()
+
+    def saveOperationsToDB(self, data):
+        row = self.setRowsForDb(data)
+        return GoS.saveOperationsToDB(row)
+
+    def setRowsForDb(self, data):
+        row = {
+            "parentList": {
+                "ModelTypeId": data["parentList"][0]["id"],
+                "GaugeId": data["parentList"][1]["id"],
+                "GroupId": data["parentList"][2]["id"],
+                "StructureId": data["parentList"][3]["id"] if len(data["parentList"]) > 3 else None,
+                "UserCreated": self.user
+            },
+            "operList": data.get("operList", [])
+        }
+        return row
+
+    def loadInitialData(self, refreshOperTable=True, refreshTable=False, gettingModels=True, gettingClients=True):
+        data = GoS.getInitialData()
+        # print(data)
+        if data:
+            if not refreshTable:
+                for key, value in data.items():
+                    if key == "modelTypes":
+                        self.setModelTypes(value)
+                    elif key == "guages":
+                        self.setGauges(value)
+                    elif key == "groups":
+                        self.setGroups(value)
+                    elif key == "structures":
+                        self.setStruct(value)
+                    elif key == "operations":
+                        if refreshOperTable:
+                            self.setOperations(value)
+                    elif key == "operCatalog":
+                        self.operCatalog = value
+
+                self.setTreeView()
+                self.refreshTreeView()
+            else:
+                for key, value in data.items():
+                    if key == "operations":
+                        self.setOperations(value)
+
+        if gettingModels:
+            self.getModels()
+
+        if gettingClients:
+            self.getClients()
+
+    def getClients(self):
+        clients = Ms.getClients()
+        if clients:
+            self.forClientComboBox.clear()
+            self.forClientComboBox.setEditable(True)
+            for idClient, client in clients.items():
+                self.clients[client] = int(idClient)
+                self.forClientComboBox.addItem(client)
+            self.forClientComboBox.setCurrentIndex(-1)
+            Utils.setupCompleter(self.clients.keys(), self.forClientComboBox)
+
+    def getModels(self):
+        models = Ms.getNewModelsAndClients()
+        if models:
+            modelsList = []
+            for model in models:
+                name = f'{model["orderNo"]} : {model["client"]}'
+                modelsList.append(name)
+                self.models[name] = model["id"]
+            Utils.setupCompleter(modelsList, self.modelsNameLineEdit)
 
     def setModelTypes(self, value):
         self.typeComboBox.clear()

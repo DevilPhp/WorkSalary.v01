@@ -27,6 +27,7 @@ from app.ui.customParametersWidget import CustomParametersWidget
 from app.ui.customArchiveWidget import CustomArchiveWidget
 from app.ui.customProductionWidget import CustomProductionWidget
 from app.ui.customGroupOperWidget import CustomGroupOperWidget
+from app.ui.customPositionGroupPage import CustomPositionGroupWidget
 import requests
 from config import API_SERVER
 
@@ -58,6 +59,7 @@ class MainWindow(QMainWindow):
         self.archivePage = None
         self.productionPage = None
         self.groupOperPage = None
+        self.posGroupsPage = None
         self.workerPaymentsDetails = {}
         self.openedWindows = []
         self.clipboardData = QApplication.clipboard()
@@ -117,6 +119,9 @@ class MainWindow(QMainWindow):
 
     def closeEvent(self, event):
         QApplication.quit()
+
+    def resetPositionGroupsPage(self):
+        self.posGroupsPage = None
 
     def resetProductionPage(self):
         self.productionPage = None
@@ -185,6 +190,17 @@ class MainWindow(QMainWindow):
 
     def setOldModlesPage(self):
         print("Old models page")
+
+    def setPositionGroupsPage(self):
+        if self.posGroupsPage is None:
+            if self.checkForServerConnection():
+                self.posGroupsPage = CustomPositionGroupWidget(self)
+                self.posGroupsPage.show()
+                self.posGroupsPage.destroyed.connect(self.resetPositionGroupsPage)
+            else:
+                self.logout(True)
+        else:
+            self.posGroupsPage.activateWindow()
 
     def setProductionPage(self):
         if self.productionPage is None:
@@ -360,6 +376,7 @@ class MainWindow(QMainWindow):
                 self.archivePage,
                 self.productionPage,
                 self.groupOperPage,
+                self.posGroupsPage
             ]
 
             pages.extend(self.workerPaymentsDetails.values())

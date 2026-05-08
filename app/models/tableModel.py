@@ -328,13 +328,17 @@ class ButtonDelegation(QStyledItemDelegate):
     """
     Delegate that draws a button in a table cell and detects clicks.
     """
+    def __init__(self, text, parent=None):
+        super().__init__(parent)
+        self.text = text
+
     def paint(self, painter, option, index):
         """
         Draw the button inside the cell.
         """
         button = QStyleOptionButton()
         button.rect = option.rect
-        button.text = "Цехове"
+        button.text = self.text
         button.state = QStyle.State_Enabled
 
         QApplication.style().drawControl(QStyle.CE_PushButton, button, painter)

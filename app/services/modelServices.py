@@ -149,6 +149,16 @@ class ModelService:
 
     @staticmethod
     @handle_api_connection
+    def getNewModelOperations(modelId):
+        response = requests.get(f'{API_SERVER}/model/get_new_model_operations/{modelId}').json()
+        if response['status'] =='success':
+            return response['data']
+        else:
+            logger.error(f'Failed to get new model {modelId} operations')
+            return None
+
+    @staticmethod
+    @handle_api_connection
     def getClientsAndModels():
         response = requests.get(f'{API_SERVER}/model/get_clients_and_models').json()
         if response['status'] =='success':
@@ -200,9 +210,11 @@ class ModelService:
 
     @staticmethod
     # @handle_api_connection
-    def checkIfOperationsCanBeDeleted(model, removedOperations):
+    def checkIfOperationsCanBeDeleted(model, removedOperations, isNewModel=False):
         response = requests.get(f'{API_SERVER}/model/check_if_operations_can_be_deleted',
-                                 json={'modelId': model['orderNo'], 'operations': removedOperations}).json()
+                                 json={'modelId': model['orderNo'],
+                                       'operations': removedOperations,
+                                       'isNewModel': isNewModel}).json()
         if response['status'] =='success':
             return response['cantBeDeleted']
         else:
@@ -279,8 +291,9 @@ class ModelService:
 
     @staticmethod
     @handle_api_connection
-    def deleteModel(modelId):
-        response = requests.post(f'{API_SERVER}/model/delete_model', json={'modelId': modelId}).json()
+    def deleteModel(modelId, isNewModel=False):
+        response = requests.post(f'{API_SERVER}/model/delete_model',
+                                 json={'modelId': modelId, 'isNewModel': isNewModel}).json()
         if response['status'] =='success':
             logger.info(f'Model {modelId} deleted successfully')
             return 1
@@ -290,6 +303,31 @@ class ModelService:
         else:
             logger.error(f'Failed to delete model {modelId}')
             return 0
+
+    @staticmethod
+    def saveNewModel(modelData):
+        response = requests.post(f'{API_SERVER}/model/save_new_model', json={'modelData': modelData}).json()
+        if response['status'] =='success':
+            logger.info(f'New model saved successfully')
+            return response['modelId']
+        else:
+            logger.error(f'Failed to save new model')
+            return None
+
+    @staticmethod
+    @handle_api_connection
+    def checkIfModelExistsForClient(modelName, clientId):
+        response = requests.get(f'{API_SERVER}/model/check_if_model_exists_for_client/{modelName}/{clientId}').json()
+        if response['status'] =='success':
+            if response['exists'] == 1:
+                logger.info(f'Model {modelName} exists for client {clientId}')
+                return 1
+            else:
+                logger.info(f'Model {modelName} does not exist for client {clientId}')
+                return 2
+        else:
+            logger.error(f'Failed to check if model {modelName} exists for client {clientId}')
+            return False
 
     @staticmethod
     @handle_api_connection
@@ -315,19 +353,33 @@ class ModelService:
 
     @staticmethod
     @handle_api_connection
-    def getProductionForClient(clientId, year):
-        response = requests.get(f'{API_SERVER}/model/get_production_for_client/{clientId}/{year}').json()
+    def getProductionForClient(clientId):
+        response = requests.get(f'{API_SERVER}/model/get_production_for_client/{clientId}').json()
         if response['status'] =='success':
-            logger.info(f'Production for client {clientId} and year {year} fetched successfully')
+            logger.info(f'Production for client {clientId} fetched successfully')
             return response['models']
         else:
-            logger.error(f'Failed to get production for client {clientId} and year {year}')
+            logger.error(f'Failed to get production for client {clientId}')
             return []
 
     @staticmethod
     @handle_api_connection
-    def getModelInfo(modelId):
-        response = requests.get(f'{API_SERVER}/model/get_model_info/{modelId}').json()
+    def getNewProductionForClient(clientId):
+        response = requests.get(f'{API_SERVER}/model/get_new_production_for_client/{clientId}').json()
+        if response['status'] =='success':
+            logger.info(f'New production for client {clientId} fetched successfully')
+            return response['models']
+        else:
+            logger.error(f'Failed to get new production for client {clientId}')
+            return []
+
+    @staticmethod
+    @handle_api_connection
+    def getModelInfo(modelId, isNewModel=False):
+        if isNewModel:
+            response = requests.get(f'{API_SERVER}/model/get_new_model_info/{modelId}').json()
+        else:
+            response = requests.get(f'{API_SERVER}/model/get_model_info/{modelId}').json()
         if response['status'] =='success':
             logger.info(f'Model info for {modelId} fetched successfully')
             return response['modelInfo']
@@ -411,9 +463,20 @@ class ModelService:
 
     @staticmethod
     @handle_api_connection
-    def addWorkingPlace(modelId, workingPlaces):
+    def getNewExistingWorkingPlaces(modelId):
+        response = requests.get(f'{API_SERVER}/model/get_new_existing_working_places/{modelId}').json()
+        if response['status'] == 'success':
+            logger.info('Retrieved new existing working places')
+            return response['workingPlaces']
+        else:
+            logger.error('Failed to get new existing working places')
+            return []
+
+    @staticmethod
+    @handle_api_connection
+    def addWorkingPlace(modelId, workingPlaces, isNewModel=True):
         response = requests.post(f'{API_SERVER}/model/add_working_place/{modelId}',
-                                 json={'workingPlaces': workingPlaces}).json()
+                                 json={'workingPlaces': workingPlaces, 'isNewModel': isNewModel}).json()
         if response['status'] =='success':
             logger.info(f'Added working place to model {modelId}')
             return True

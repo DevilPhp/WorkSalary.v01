@@ -65,10 +65,45 @@ QDialog{
 	color: #008b69;
 }
 
+#splitterWidget{
+	border-bottom: 2px dashed #324b4c;
+}
+
 QLineEdit{
 	border: none;
 	font-size: 9pt;
 	border-bottom: 1px solid #7c9399;
+}
+
+QComboBox{
+	background-color: #dfdfdf;
+	border-bottom: 2px solid #7c9399;
+	border-radius: 3px;
+}
+
+QComboBox::drop-down{
+	image: url(':/icons/app/assets/icons/Alt-Arrow-Down--Streamline-Solar-Broken.svg');
+	width: 16px;
+	height: 16px;
+}
+
+QComboBox:hover{
+	color: #2b2b2c;
+	font: 700 8pt &quot;Segoe UI&quot;;
+	border-radius: 0px;
+	alternate-background-color: #2c313c;
+}
+QComboBox::item:selected{
+	color: #2b2b2c;
+	font: 700 8pt &quot;Segoe UI&quot;;
+	border-radius: 0px;
+}
+QComboBox::item{
+	color: #324b4c;
+	font: 600 8pt &quot;Segoe UI&quot;;
+	height: 10px;  
+	border: 4px solid transparent;
+	padding: 0px 4px 0px 4px;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -274,6 +309,158 @@ QLineEdit{
                    </item>
                   </layout>
                  </widget>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QWidget" name="widget_3" native="true">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_6">
+               <property name="spacing">
+                <number>5</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>20</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QWidget" name="splitterWidget" native="true">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_8">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>10</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                 </layout>
+                </widget>
+               </item>
+               <item alignment="Qt::AlignLeft">
+                <widget class="QWidget" name="widget_5" native="true">
+                 <layout class="QVBoxLayout" name="verticalLayout_7">
+                  <property name="spacing">
+                   <number>5</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="QCheckBox" name="effectTPCheckBox">
+                    <property name="text">
+                     <string>Промяна на листове за време за месец:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item alignment="Qt::AlignLeft">
+                   <widget class="QComboBox" name="effectMonthComboBox">
+                    <property name="minimumSize">
+                     <size>
+                      <width>110</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <item>
+                     <property name="text">
+                      <string>Януари</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Февруари</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Март</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Април</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Май</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Юни</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Юли</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Август</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Септември</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Октомври</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Ноември</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Декември</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                 </layout>
                 </widget>
                </item>
               </layout>

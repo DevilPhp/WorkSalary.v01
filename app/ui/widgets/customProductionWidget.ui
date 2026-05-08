@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>935</width>
     <height>580</height>
    </rect>
   </property>
@@ -359,7 +359,7 @@ QComboBox::item{
         </property>
         <property name="minimumSize">
          <size>
-          <width>0</width>
+          <width>800</width>
           <height>0</height>
          </size>
         </property>
@@ -368,7 +368,7 @@ QComboBox::item{
           <number>10</number>
          </property>
          <property name="leftMargin">
-          <number>5</number>
+          <number>0</number>
          </property>
          <property name="topMargin">
           <number>0</number>
@@ -406,13 +406,6 @@ QComboBox::item{
                <number>3</number>
               </property>
               <item row="0" column="0">
-               <widget class="QLabel" name="label">
-                <property name="text">
-                 <string>Година</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
                <widget class="QLabel" name="label_2">
                 <property name="text">
                  <string>Клиент</string>
@@ -420,9 +413,6 @@ QComboBox::item{
                </widget>
               </item>
               <item row="0" column="1">
-               <widget class="QComboBox" name="yearComboBox"/>
-              </item>
-              <item row="1" column="1">
                <widget class="QComboBox" name="clientsComboBox">
                 <property name="editable">
                  <bool>true</bool>
@@ -434,7 +424,7 @@ QComboBox::item{
            </layout>
           </widget>
          </item>
-         <item alignment="Qt::AlignBottom">
+         <item>
           <widget class="QWidget" name="widget_6" native="true">
            <layout class="QVBoxLayout" name="verticalLayout_3">
             <property name="spacing">
@@ -453,9 +443,122 @@ QComboBox::item{
              <number>0</number>
             </property>
             <item>
-             <widget class="QCheckBox" name="forProdCheckBox">
+             <widget class="QWidget" name="widget_7" native="true">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_7">
+               <property name="spacing">
+                <number>10</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="label_3">
+                 <property name="text">
+                  <string>Търсене:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QWidget" name="searchWidget" native="true">
+                 <property name="minimumSize">
+                  <size>
+                   <width>250</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <layout class="QHBoxLayout" name="horizontalLayout_8">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="widget_8" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_9">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QCheckBox" name="oldModelsCheckBox">
               <property name="text">
-               <string>За производство</string>
+               <string>Стари Модели</string>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="widget_9" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_10">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="posGroupsBtn">
+              <property name="text">
+               <string>Групи към позиции</string>
               </property>
              </widget>
             </item>
@@ -532,8 +635,8 @@ QComboBox::item{
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>788</width>
-        <height>470</height>
+        <width>923</width>
+        <height>489</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_12">

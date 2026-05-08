@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'groupOpersCustomWidgetjktlOW.ui'
+## Form generated from reading UI file 'groupOpersCustomWidgetakYvFn.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -455,7 +455,7 @@ class Ui_customWidgetGroupOpers(object):
         self.widget_2.setSizePolicy(sizePolicy)
         self.widget_2.setMinimumSize(QSize(0, 0))
         self.verticalLayout_7 = QVBoxLayout(self.widget_2)
-        self.verticalLayout_7.setSpacing(0)
+        self.verticalLayout_7.setSpacing(3)
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
         self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
         self.widget_5 = QWidget(self.widget_2)
@@ -471,6 +471,40 @@ class Ui_customWidgetGroupOpers(object):
 
 
         self.verticalLayout_7.addWidget(self.widget_5, 0, Qt.AlignHCenter)
+
+        self.searchModelsWidget = QWidget(self.widget_2)
+        self.searchModelsWidget.setObjectName(u"searchModelsWidget")
+        self.searchModelsWidget.setMinimumSize(QSize(0, 0))
+        self.horizontalLayout_25 = QHBoxLayout(self.searchModelsWidget)
+        self.horizontalLayout_25.setSpacing(5)
+        self.horizontalLayout_25.setObjectName(u"horizontalLayout_25")
+        self.horizontalLayout_25.setContentsMargins(0, 0, 0, 10)
+        self.widget_14 = QWidget(self.searchModelsWidget)
+        self.widget_14.setObjectName(u"widget_14")
+        self.horizontalLayout_27 = QHBoxLayout(self.widget_14)
+        self.horizontalLayout_27.setSpacing(0)
+        self.horizontalLayout_27.setObjectName(u"horizontalLayout_27")
+        self.horizontalLayout_27.setContentsMargins(0, 0, 0, 0)
+        self.label_13 = QLabel(self.widget_14)
+        self.label_13.setObjectName(u"label_13")
+
+        self.horizontalLayout_27.addWidget(self.label_13)
+
+
+        self.horizontalLayout_25.addWidget(self.widget_14)
+
+        self.modelsNameWidget = QWidget(self.searchModelsWidget)
+        self.modelsNameWidget.setObjectName(u"modelsNameWidget")
+        self.modelsNameWidget.setMinimumSize(QSize(250, 0))
+        self.horizontalLayout_26 = QHBoxLayout(self.modelsNameWidget)
+        self.horizontalLayout_26.setSpacing(0)
+        self.horizontalLayout_26.setObjectName(u"horizontalLayout_26")
+        self.horizontalLayout_26.setContentsMargins(0, 0, 0, 0)
+
+        self.horizontalLayout_25.addWidget(self.modelsNameWidget)
+
+
+        self.verticalLayout_7.addWidget(self.searchModelsWidget, 0, Qt.AlignLeft)
 
         self.widget_3 = QWidget(self.widget_2)
         self.widget_3.setObjectName(u"widget_3")
@@ -798,6 +832,7 @@ class Ui_customWidgetGroupOpers(object):
         self.structComboBox.setPlaceholderText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0421\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0430", None))
         self.label.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0422\u044a\u0440\u0441\u0435\u043d\u0435: ", None))
         self.modelLabel.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u041c\u043e\u0434\u0435\u043b", None))
+        self.label_13.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0418\u043c\u0435 \u043d\u0430 \u043c\u043e\u0434\u0435\u043b: ", None))
         self.newModelCheckBox.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0421\u044a\u0437\u0434\u0430\u0432\u0430\u043d\u0435 \u043d\u0430 \u043d\u043e\u0432 \u043c\u043e\u0434\u0435\u043b", None))
         self.editModelCheckBox.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0420\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u0430\u043d\u0435", None))
         self.deleteModelBtn.setText(QCoreApplication.translate("customWidgetGroupOpers", u"\u0418\u0437\u0442\u0440\u0438\u0432\u0430\u043d\u0435", None))

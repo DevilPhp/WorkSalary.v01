@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customTimeChangeOpersDialogZmsAwK.ui'
+## Form generated from reading UI file 'customTimeChangeOpersDialoglULFfx.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -15,9 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QDialog, QHBoxLayout, QLabel,
-    QPushButton, QScrollArea, QSizePolicy, QVBoxLayout,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDialog,
+    QHBoxLayout, QLabel, QPushButton, QScrollArea,
+    QSizePolicy, QVBoxLayout, QWidget)
 import resources_rc
 
 class Ui_CustomTimeChangeOpersDialog(object):
@@ -68,10 +68,46 @@ class Ui_CustomTimeChangeOpersDialog(object):
 "	color: #008b69;\n"
 "}\n"
 "\n"
+"#splitterWidget{\n"
+"	border-bottom: 2px dashed #324b4c;\n"
+"}\n"
+"\n"
 "QLineEdit{\n"
 "	border: none;\n"
 "	font-size: 9pt;\n"
 "	border-bottom: 1px solid #7c9399;\n"
+"}\n"
+"\n"
+"QComboBox{\n"
+"	background-color: #dfdfdf;\n"
+"	border-bottom: 2px solid #7c9399;\n"
+"	border-radius: 3px;\n"
+"}\n"
+"\n"
+"QComboB"
+                        "ox::drop-down{\n"
+"	image: url(':/icons/app/assets/icons/Alt-Arrow-Down--Streamline-Solar-Broken.svg');\n"
+"	width: 16px;\n"
+"	height: 16px;\n"
+"}\n"
+"\n"
+"QComboBox:hover{\n"
+"	color: #2b2b2c;\n"
+"	font: 700 8pt \"Segoe UI\";\n"
+"	border-radius: 0px;\n"
+"	alternate-background-color: #2c313c;\n"
+"}\n"
+"QComboBox::item:selected{\n"
+"	color: #2b2b2c;\n"
+"	font: 700 8pt \"Segoe UI\";\n"
+"	border-radius: 0px;\n"
+"}\n"
+"QComboBox::item{\n"
+"	color: #324b4c;\n"
+"	font: 600 8pt \"Segoe UI\";\n"
+"	height: 10px;  \n"
+"	border: 4px solid transparent;\n"
+"	padding: 0px 4px 0px 4px;\n"
 "}")
         self.verticalLayout_2 = QVBoxLayout(CustomTimeChangeOpersDialog)
         self.verticalLayout_2.setSpacing(0)
@@ -157,6 +193,58 @@ class Ui_CustomTimeChangeOpersDialog(object):
 
         self.verticalLayout_4.addWidget(self.iconAndTextWidget, 0, Qt.AlignTop)
 
+        self.widget_3 = QWidget(self.widget_2)
+        self.widget_3.setObjectName(u"widget_3")
+        self.widget_3.setMinimumSize(QSize(0, 0))
+        self.verticalLayout_6 = QVBoxLayout(self.widget_3)
+        self.verticalLayout_6.setSpacing(5)
+        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
+        self.verticalLayout_6.setContentsMargins(0, 20, 0, 0)
+        self.splitterWidget = QWidget(self.widget_3)
+        self.splitterWidget.setObjectName(u"splitterWidget")
+        self.splitterWidget.setMinimumSize(QSize(0, 0))
+        self.verticalLayout_8 = QVBoxLayout(self.splitterWidget)
+        self.verticalLayout_8.setSpacing(0)
+        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
+        self.verticalLayout_8.setContentsMargins(0, 10, 0, 0)
+
+        self.verticalLayout_6.addWidget(self.splitterWidget)
+
+        self.widget_5 = QWidget(self.widget_3)
+        self.widget_5.setObjectName(u"widget_5")
+        self.verticalLayout_7 = QVBoxLayout(self.widget_5)
+        self.verticalLayout_7.setSpacing(5)
+        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
+        self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
+        self.effectTPCheckBox = QCheckBox(self.widget_5)
+        self.effectTPCheckBox.setObjectName(u"effectTPCheckBox")
+
+        self.verticalLayout_7.addWidget(self.effectTPCheckBox)
+
+        self.effectMonthComboBox = QComboBox(self.widget_5)
+        self.effectMonthComboBox.addItem("")
+        self.effectMonthComboBox.addItem("")
+        self.effectMonthComboBox.addItem("")
+        self.effectMonthComboBox.addItem("")
+        self.effectMonthComboBox.addItem("")
+        self.effectMonthComboBox.addItem("")
+        self.effectMonthComboBox.addItem("")
+        self.effectMonthComboBox.addItem("")
+        self.effectMonthComboBox.addItem("")
+        self.effectMonthComboBox.addItem("")
+        self.effectMonthComboBox.addItem("")
+        self.effectMonthComboBox.addItem("")
+        self.effectMonthComboBox.setObjectName(u"effectMonthComboBox")
+        self.effectMonthComboBox.setMinimumSize(QSize(110, 0))
+
+        self.verticalLayout_7.addWidget(self.effectMonthComboBox, 0, Qt.AlignLeft)
+
+
+        self.verticalLayout_6.addWidget(self.widget_5, 0, Qt.AlignLeft)
+
+
+        self.verticalLayout_4.addWidget(self.widget_3)
+
         self.buttonsWidget = QWidget(self.widget_2)
         self.buttonsWidget.setObjectName(u"buttonsWidget")
         sizePolicy.setHeightForWidth(self.buttonsWidget.sizePolicy().hasHeightForWidth())
@@ -215,6 +303,20 @@ class Ui_CustomTimeChangeOpersDialog(object):
         CustomTimeChangeOpersDialog.setWindowTitle(QCoreApplication.translate("CustomTimeChangeOpersDialog", u"CustomYesNoDialog", None))
         self.pushButton.setText("")
         self.label.setText(QCoreApplication.translate("CustomTimeChangeOpersDialog", u"\u0417\u0410\u041f\u0410\u0417\u0412\u0412\u0410\u041d\u0415 \u041d\u0410 \u041d\u041e\u0412\u0418 \u0412\u0420\u0415\u041c\u0415\u041d\u0410", None))
+        self.effectTPCheckBox.setText(QCoreApplication.translate("CustomTimeChangeOpersDialog", u"\u041f\u0440\u043e\u043c\u044f\u043d\u0430 \u043d\u0430 \u043b\u0438\u0441\u0442\u043e\u0432\u0435 \u0437\u0430 \u0432\u0440\u0435\u043c\u0435 \u0437\u0430 \u043c\u0435\u0441\u0435\u0446:", None))
+        self.effectMonthComboBox.setItemText(0, QCoreApplication.translate("CustomTimeChangeOpersDialog", u"\u042f\u043d\u0443\u0430\u0440\u0438", None))
+        self.effectMonthComboBox.setItemText(1, QCoreApplication.translate("CustomTimeChangeOpersDialog", u"\u0424\u0435\u0432\u0440\u0443\u0430\u0440\u0438", None))
+        self.effectMonthComboBox.setItemText(2, QCoreApplication.translate("CustomTimeChangeOpersDialog", u"\u041c\u0430\u0440\u0442", None))
+        self.effectMonthComboBox.setItemText(3, QCoreApplication.translate("CustomTimeChangeOpersDialog", u"\u0410\u043f\u0440\u0438\u043b", None))
+        self.effectMonthComboBox.setItemText(4, QCoreApplication.translate("CustomTimeChangeOpersDialog", u"\u041c\u0430\u0439", None))
+        self.effectMonthComboBox.setItemText(5, QCoreApplication.translate("CustomTimeChangeOpersDialog", u"\u042e\u043d\u0438", None))
+        self.effectMonthComboBox.setItemText(6, QCoreApplication.translate("CustomTimeChangeOpersDialog", u"\u042e\u043b\u0438", None))
+        self.effectMonthComboBox.setItemText(7, QCoreApplication.translate("CustomTimeChangeOpersDialog", u"\u0410\u0432\u0433\u0443\u0441\u0442", None))
+        self.effectMonthComboBox.setItemText(8, QCoreApplication.translate("CustomTimeChangeOpersDialog", u"\u0421\u0435\u043f\u0442\u0435\u043c\u0432\u0440\u0438", None))
+        self.effectMonthComboBox.setItemText(9, QCoreApplication.translate("CustomTimeChangeOpersDialog", u"\u041e\u043a\u0442\u043e\u043c\u0432\u0440\u0438", None))
+        self.effectMonthComboBox.setItemText(10, QCoreApplication.translate("CustomTimeChangeOpersDialog", u"\u041d\u043e\u0435\u043c\u0432\u0440\u0438", None))
+        self.effectMonthComboBox.setItemText(11, QCoreApplication.translate("CustomTimeChangeOpersDialog", u"\u0414\u0435\u043a\u0435\u043c\u0432\u0440\u0438", None))
+
         self.yesBtn.setText(QCoreApplication.translate("CustomTimeChangeOpersDialog", u"\u0414\u0410", None))
         self.noBtn.setText(QCoreApplication.translate("CustomTimeChangeOpersDialog", u"\u041d\u0415", None))
     # retranslateUi

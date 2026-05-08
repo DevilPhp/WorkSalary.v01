@@ -396,3 +396,47 @@ class WorkerServices:
             logger.error('Failed to get working places')
             return []
 
+    @staticmethod
+    @handle_api_connection
+    def getNewOperationsGroups():
+        response = requests.get(f'{API_SERVER}/worker/get_new_operations_groups').json()
+        if response['status'] =='success':
+            logger.info('Retrieved new operations groups')
+            return response['data']
+        else:
+            logger.error('Failed to get new operations groups')
+            return []
+
+    @staticmethod
+    @handle_api_connection
+    def getWorkersPositions():
+        response = requests.get(f'{API_SERVER}/worker/get_workers_positions').json()
+        if response['status'] =='success':
+            logger.info('Retrieved workers positions')
+            return response['data']
+        else:
+            logger.error('Failed to get workers positions')
+            return {}
+
+    @staticmethod
+    @handle_api_connection
+    def getGroupsForPosition(positionId):
+        response = requests.get(f'{API_SERVER}/worker/get_groups_for_position/{positionId}').json()
+        if response['status'] =='success':
+            logger.info(f"Groups for position: {positionId}")
+            return response['data']
+        else:
+            logger.error(f"Unable to get groups for position: {positionId}")
+            return []
+
+    @staticmethod
+    @handle_api_connection
+    def addGroupsForPosition(positionId, groups):
+        response = requests.post(f'{API_SERVER}/worker/add_groups_for_position',
+                                 json={'positionId': positionId, 'groups': groups}).json()
+        if response['status'] =='success':
+            logger.info(f"Groups added for position: {positionId}")
+            return True
+        else:
+            logger.error(f"Unable to add groups for position: {positionId}")
+            return False

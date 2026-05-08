@@ -6,6 +6,7 @@ from app.ui.messagesManager import MessageManager as MM
 from app.ui.widgets.ui_customProductionWidget import *
 from app.models.tableModel import CustomTableViewWithMultiSelection, ButtonDelegation
 from app.models.sortingModel import CaseInsensitiveProxyModel
+from app.models.customLineEditWidget import CustomLineEdit
 from app.services.modelServices import ModelService as Ms
 from app.utils.utils import Utils
 
@@ -25,6 +26,9 @@ class CustomProductionWidget(QWidget, Ui_customProductionWidget):
         self.clientsName = {}
         self.clientModels = None
         self.currentId = None
+
+        self.searchLineEdit = CustomLineEdit()
+        self.searchWidget.layout().addWidget(self.searchLineEdit)
 
         self.productionTableView = CustomTableViewWithMultiSelection(singleSelection=True)
         self.productionTableHolder.layout().addWidget(self.productionTableView)
@@ -48,27 +52,38 @@ class CustomProductionWidget(QWidget, Ui_customProductionWidget):
 
         self.setUpClientsComboBox()
 
-        self.buttonDelegate = ButtonDelegation(self.productionTableView)
+        self.buttonDelegate = ButtonDelegation("Цехове", self.productionTableView)
         self.buttonDelegate.clickedRow.connect(self.handleButtonClick)
 
-        self.clientsComboBox.currentIndexChanged.connect(self.setModelYears)
-        self.yearComboBox.currentIndexChanged.connect(self.refreshProductionTable)
+        self.clientsComboBox.currentIndexChanged.connect(self.refreshProductionTable)
+        self.oldModelsCheckBox.stateChanged.connect(self.refreshProductionTable)
+        # self.yearComboBox.currentIndexChanged.connect(self.refreshProductionTable)
         self.productionModel.itemChanged.connect(self.updateProductionModel)
 
-        self.closeBtn.clicked.connect(self.close)
+        self.searchLineEdit.textChanged.connect(self.proxyModelProduction.setSearchText)
+
+        self.posGroupsBtn.clicked.connect(self.openPosGroups)
+
+        self.closeBtn.clicked.connect(self.closeWindows)
         self.logoutBtn.clicked.connect(self.logout)
+
+    def openPosGroups(self):
+        self.mainWindow.setPositionGroupsPage()
 
     def handleButtonClick(self, row):
         model = self.productionTableView.model()
         self.currentId = model.index(row, 0).data(Qt.ItemDataRole.UserRole)
         modelName = model.index(row, 1).data(Qt.ItemDataRole.DisplayRole)
-        existingWorkPlaces = Ms.getExistingWorkingPlaces(self.currentId)
+        if self.oldModelsCheckBox.isChecked():
+            existingWorkPlaces = Ms.getExistingWorkingPlaces(self.currentId)
+        else:
+            existingWorkPlaces = Ms.getNewExistingWorkingPlaces(self.currentId)
         dialog = CustomWorkingPlaceDialog(modelName, existingWorkPlaces)
         dialog.workPlaces.connect(self.setWorkingPlaces)
         dialog.exec_()
 
     def setWorkingPlaces(self, workingPlaces):
-        if Ms.addWorkingPlace(self.currentId, workingPlaces):
+        if Ms.addWorkingPlace(self.currentId, workingPlaces, self.oldModelsCheckBox.isChecked()):
             MM.showOnWidget(self, 'Успешно добавени работни места', 'success')
         else:
             MM.showOnWidget(self, 'Грешка при добавяне на работни места', 'error')
@@ -90,10 +105,13 @@ class CustomProductionWidget(QWidget, Ui_customProductionWidget):
                 item.setData('Не в произ.', Qt.ItemDataRole.DisplayRole)
 
     def refreshProductionTable(self):
-        if self.yearComboBox.currentText() != '':
-            year = int(self.yearComboBox.currentText())
+        if self.clientsComboBox.currentText() != '':
+            # year = int(self.yearComboBox.currentText())
             clientId = self.clientsName[self.clientsComboBox.currentText()]
-            self.clientModels = Ms.getProductionForClient(clientId, year)
+            if self.oldModelsCheckBox.isChecked():
+                self.clientModels = Ms.getProductionForClient(clientId)
+            else:
+                self.clientModels = Ms.getNewProductionForClient(clientId)
         # print(self.clientModels)
 
         self.productionModel.setRowCount(0)
@@ -145,19 +163,6 @@ class CustomProductionWidget(QWidget, Ui_customProductionWidget):
                 count += 1
             self.productionTableView.setItemDelegateForColumn(4, self.buttonDelegate)
 
-    def setModelYears(self):
-        modelYears = Ms.getModelsYearsForClient(self.clientsName[self.clientsComboBox.currentText()])
-        sortedModelYears = sorted(modelYears, key=lambda x: int(x))
-        # self.yearComboBox.blockSignals(True)
-        self.yearComboBox.clear()
-        for year in sortedModelYears:
-            self.yearComboBox.addItem(str(year))
-        # self.yearComboBox.blockSignals(False)
-        # print(sortedModelYears)
-        self.yearComboBox.setCurrentIndex(len(sortedModelYears) - 1)
-        # self.yearComboBox.setCurrentIndex(-1)
-        # print(modelYears)
-
     def setUpClientsComboBox(self):
         self.clientsComboBox.clear()
         clients = Ms.getClients()
@@ -171,6 +176,11 @@ class CustomProductionWidget(QWidget, Ui_customProductionWidget):
             self.clientsComboBox.addItem(client)
 
         self.clientsComboBox.setCurrentIndex(-1)
+
+    def closeWindows(self):
+        if self.mainWindow.posGroupsPage:
+            self.mainWindow.posGroupsPage.close()
+        self.close()
 
     def logout(self):
         self.logoutSignal.emit(True)
