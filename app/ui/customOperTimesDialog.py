@@ -2,10 +2,11 @@ from PySide6.QtWidgets import QGraphicsDropShadowEffect
 
 from app.ui.widgets.ui_customTimeChangeOpersDialog import *
 from app.ui.widgets.ui_customOperTreeTimeWidget import *
+from datetime import datetime
 
 
 class CustomTimeChangeOpersDialog(QDialog, Ui_CustomTimeChangeOpersDialog):
-    def __init__(self, operations, parent=None):
+    def __init__(self, operations, showEffectModel=True, parent=None):
         super().__init__(parent)
         self.setupUi(self)
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
@@ -18,11 +19,26 @@ class CustomTimeChangeOpersDialog(QDialog, Ui_CustomTimeChangeOpersDialog):
         self.setGraphicsEffect(shadow)
 
         self.operations = operations
+        if showEffectModel:
+            self.effectModelsWidget.setVisible(True)
+        else:
+            self.effectModelsWidget.setVisible(False)
 
         self.setOperationsTimes()
+        self.currentMonth = datetime.now().month
+        self.effectMonthComboBox.setCurrentIndex(self.currentMonth - 1)
+        self.effectMonthComboBox.setEnabled(False)
+
+        self.effectTPCheckBox.stateChanged.connect(self.effectTPCheckBoxChanged)
 
         self.yesBtn.clicked.connect(self.accept)
         self.noBtn.clicked.connect(self.reject)
+
+    def effectTPCheckBoxChanged(self, state):
+        if state == 2:
+            self.effectMonthComboBox.setEnabled(True)
+        else:
+            self.effectMonthComboBox.setEnabled(False)
 
     def setOperationsTimes(self):
         for key, value in self.operations.items():

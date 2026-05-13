@@ -46,6 +46,8 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         self.changedOperTimes = {}
         self.workingPlaces = []
         self.removedOperations = []
+        self.existingModelOperations = []
+        self.changedModelOperations = {}
 
         self.clientNameLineEdit.setReadOnly(True)
         self.dateLineEdit.setReadOnly(True)
@@ -135,7 +137,7 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
 
         # self.modelNameLineEdit.editingFinished.connect(self.setModelInfo)
         self.cehoveBtn.clicked.connect(self.showWorkingPlacesDialog)
-        self.modelsNameLineEdit.returnPressed.connect(self.setModelInfo)
+        self.modelsNameLineEdit.editingFinished.connect(self.setModelInfo)
 
         self.closeBtn.clicked.connect(self.close)
         self.logoutBtn.clicked.connect(self.logout)
@@ -167,6 +169,10 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
 
     def setModelInfo(self):
         modelText = self.modelsNameLineEdit.text()
+        if modelText == "":
+            self.resetModelInfo()
+            self.clearAllTreeChecks()
+            return
         if modelText != "":
             if modelText in self.models:
                 self.editModelCheckBox.setVisible(True)
@@ -174,8 +180,8 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
                 modelId = self.models[modelText]
                 if modelId:
                     modelData = Ms.getModelInfo(modelId, isNewModel=True)
-                    # print(modelData)
                     if modelData:
+                        self.changedModelOperations.clear()
                         self.updateModelInfo(modelData["model"])
                         self.setExistingModelOperations(modelData["operations"])
                         self.workingPlaces = modelData["workingPlaces"]
@@ -183,6 +189,7 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
                 MM.showOnWidget(self, "Моделът не е намерен.", "warning")
 
     def setExistingModelOperations(self, operations):
+        self.existingModelOperations.clear()
         savedByCatalogId = {
             int(op["catalogListId"]): op
             for op in operations
@@ -207,6 +214,7 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
                             if timeItem is not None:
                                 savedTime = float(savedRow["time"])
                                 currentTime = timeItem.data(Qt.ItemDataRole.UserRole)
+                                self.existingModelOperations.append({catalogId: savedTime})
                                 if currentTime != savedTime:
                                     self.operTreeView.blockSignals(True)
                                     timeItem.setText(f"{savedTime:.2f}")
@@ -235,17 +243,6 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         self.forClientComboBox.setCurrentText(modelData["clientName"])
         if modelData["comment"]:
             self.commentLineEdit.setText(modelData["comment"])
-
-
-        # if self.modelNameLineEdit.text() != "":
-        #     text = self.modelNameLineEdit.text()
-        #     if text in self.models:
-        #         modelText = text.split(' : ')
-        #         modelName = modelText[0]
-        #         clientName = modelText[1]
-        #         modelId = self.models[text]
-        #         self.modelNameLineEdit.setText(modelName)
-        #         self.clientNameLineEdit.setText(clientName)
 
     def updateEditNewCheckboxes(self):
         clientText = self.forClientComboBox.currentText()
@@ -278,13 +275,35 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
 
         if self.editModelCheckBox.isChecked():
             if self.removedOperations:
-                returnedOperations = Ms.checkIfOperationsCanBeDeleted(modelPayload['model']['modelId'],
-                                                                      self.removedOperations)
+                returnedOperations = Ms.checkIfOperationsCanBeDeleted(modelPayload['model'],
+                                                                      self.removedOperations, isNewModel=True)
                 if returnedOperations:
                     dialog = CustomYesNowDialog(isNormalIcon=False)
-                    message = "\n".join(op for op in returnedOperations)
+                    message = "Следните операции не могат да бъдат изтрити:\n\n"
+                    message = message + "\n".join(op for op in returnedOperations)
+                    dialog.yesBtn.setText("Затваряне")
                     dialog.setMessage(modelPayload['model']['modelName'], message, 'warning')
                     dialog.exec()
+                    return
+            if self.changedModelOperations:
+                updatedModel = None
+                customDialog = timeChangeDialog(self.changedModelOperations, showEffectModel=False)
+                result = customDialog.exec()
+                if result == QDialog.DialogCode.Rejected or not result:
+                    return
+                if result == QDialog.DialogCode.Accepted:
+                    if customDialog.effectTPCheckBox.isChecked():
+                        currentMonth = customDialog.currentMonth
+                        if not Ms.effectTimePapers(modelPayload['model']['modelId'],
+                                               currentMonth, self.changedModelOperations):
+                            MM.showOnWidget(self, "Грешка при промяна на времената за операции", "error")
+                            return
+                        updatedModel = Ms.updateSelectedNewModel(modelPayload, self.removedOperations)
+            if not updatedModel:
+                MM.showOnWidget(self, "Грешка при редактиране на модел.", "error")
+                return
+            else:
+                MM.showOnWidget(self, "Моделът е редактиран успешно.", "success")
 
         if self.newModelCheckBox.isChecked():
             isExists = Ms.checkIfModelExistsForClient(modelPayload['model']['modelName'],
@@ -300,15 +319,17 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
                 if modelId:
                     MM.showOnWidget(self, f"Модел: {modelPayload['model']['modelName']} е създаден успешно.",
                                     "success")
-                    self.loadInitialData(refreshOperTable=False, gettingClients=False)
-                    self.resetModelInfo()
-                    self.modelsNameLineEdit.clear()
-                    self.editModelCheckBox.setVisible(False)
-                    self.deleteModelBtn.setVisible(False)
-                    self.workingPlaces = []
                 else:
                     MM.showOnWidget(self, "Неуспешно създаване на модел.", "error")
                     return
+        self.loadInitialData(refreshOperTable=False, gettingClients=False)
+        self.resetModelInfo()
+        self.modelsNameLineEdit.clear()
+        self.editModelCheckBox.setVisible(False)
+        self.deleteModelBtn.setVisible(False)
+        self.workingPlaces = []
+        self.changedModelOperations.clear()
+        self.existingModelOperations.clear()
 
     def buildModelPayload(self):
         pieces = 0
@@ -336,6 +357,7 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
 
         modelData = {
             "modelId": modelId,
+            "orderNo": modelId,
             "modelName": modelName,
             "clientId": clientId,
             "actual": actual,
@@ -440,6 +462,15 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         customDialog = timeChangeDialog(self.changedOperTimes)
         result = customDialog.exec()
         if result == QDialog.DialogCode.Accepted:
+            if customDialog.effectTPCheckBox.isChecked() or customDialog.effectModelsCheckBox.isChecked():
+                currentMonth = customDialog.currentMonth
+                effectModel = customDialog.effectModelsCheckBox.isChecked()
+                effectTimePapers = customDialog.effectTPCheckBox.isChecked()
+                if not Ms.effectTimePapersAndModelOperations(currentMonth, self.changedOperTimes,
+                                                              effectModel, effectTimePapers):
+                    MM.showOnWidget(self, "Грешка при промяна на времената за операции", "error")
+                    return
+            self.operTimesWidget.setVisible(False)
             if GoS.updateTreeOpersTimes(self.changedOperTimes):
                 MM.showOnWidget(self, "Времена за операции са променени успешно", "success")
                 if self.operTimesWidget.isVisible():
@@ -691,7 +722,6 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
 
     def setRemovedOperations(self, item, checked):
         if (self.modelsNameLineEdit.text() != "" and
-                self.editModelCheckBox.isChecked() and
                 item.data(Qt.ItemDataRole.UserRole + 1) == "operation"):
             if checked and item.data(Qt.ItemDataRole.UserRole + 2) in self.removedOperations:
                 self.removedOperations.remove(item.data(Qt.ItemDataRole.UserRole + 2))
@@ -809,7 +839,6 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
 
                         # Save the normalized float in UserRole
                         timeItem.setData(float(currentText), Qt.ItemDataRole.UserRole)
-
                         # Example:
                         # column 0 item may contain operation name and operation id
                         operName = nameItem.text()
@@ -823,23 +852,30 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
                         # Store changed operation in dict
                         # This avoids duplicates if user edits same row more than once
                         catalogListId = timeItem.data(Qt.ItemDataRole.UserRole + 1)
-                        if key not in self.changedOperTimes.keys():
-                            self.changedOperTimes[key] = {
-                                catalogListId:
-                                    {
+
+                        operToAdd = {
                                     "operId": operId,
                                     "operName": operName,
                                     "oldTime": originalValue,
                                     "newTime": float(currentText),
-                                    }
+                        }
+
+                        for existingOper in self.existingModelOperations:
+                            if catalogListId in existingOper:
+                                if existingOper[catalogListId] != float(currentText):
+                                    if key not in self.changedModelOperations.keys():
+                                        self.changedModelOperations[key] = {
+                                            catalogListId: operToAdd
+                                        }
+                                    else:
+                                        self.changedModelOperations[key][catalogListId] = operToAdd
+
+                        if key not in self.changedOperTimes.keys():
+                            self.changedOperTimes[key] = {
+                                catalogListId: operToAdd
                                 }
                         else:
-                            self.changedOperTimes[key][catalogListId] = {
-                                "operId": operId,
-                                "operName": operName,
-                                "oldTime": originalValue,
-                                "newTime": float(currentText),
-                            }
+                            self.changedOperTimes[key][catalogListId] = operToAdd
 
                 # Set formatted text in the cell
                 timeItem.setText(currentText)
@@ -1383,6 +1419,7 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
                 self.editModelCheckBox.blockSignals(False)
             self.modelInfoWidget.setEnabled(True)
             self.actualCheckBox.setCheckState(Qt.CheckState.Checked)
+            self.modelNameLineEdit.setReadOnly(False)
         else:
             self.modelInfoWidget.setEnabled(False)
             self.actualCheckBox.setCheckState(Qt.CheckState.Unchecked)
@@ -1396,6 +1433,7 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
                 self.newModelCheckBox.setCheckState(Qt.CheckState.Unchecked)
                 self.newModelCheckBox.blockSignals(False)
             self.modelInfoWidget.setEnabled(True)
+            self.modelNameLineEdit.setReadOnly(True)
             if self.modelsNameLineEdit.text() == "":
                 self.actualCheckBox.setCheckState(Qt.CheckState.Unchecked)
             # self.resetModelInfo(isEdit=True)
@@ -1426,6 +1464,7 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
         self.operTimesWidget.setVisible(False)
         self.newModelCheckBox.setCheckState(Qt.CheckState.Unchecked)
         self.editModelCheckBox.setCheckState(Qt.CheckState.Unchecked)
+        self.editModelCheckBox.setVisible(False)
 
     def setProxyModel(self, proxyModel, model, table):
         proxyModel.setSourceModel(model)
@@ -1500,7 +1539,6 @@ class CustomGroupOperWidget(QWidget, Ui_customWidgetGroupOpers):
 
     def loadInitialData(self, refreshOperTable=True, refreshTable=False, gettingModels=True, gettingClients=True):
         data = GoS.getInitialData()
-        # print(data)
         if data:
             if not refreshTable:
                 for key, value in data.items():

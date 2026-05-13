@@ -1,77 +1,29 @@
 import pandas as pd
 import requests
 from config import API_SERVER
-from app.database import engine
-from app.database import SessionLocal
-from app.database.workers import WorkerPosition, Worker
-from app.database.operations import Operation
+from app.logger import logger
+from app.utils.appUtils import handle_api_connection
 
 
-def fetchDataFromDb(tableName):
-    """ Fetches data from PostgreSQL table """
-    with engine.connect() as conn:
-        df = pd.read_sql(f'SELECT * FROM "{tableName}";', conn)
-    return df
-
-
+@handle_api_connection
 def fetchDataFromDbWithRelations(tableName):
-    """ Fetches data from PostgreSQL table with related data """
-    if tableName == 'workers':
-        session = SessionLocal()
-        try:
-            column = "Група"
-            df = fetchDataFromDb(tableName)
-            for index, item in enumerate(df[column]):
-                # print(f"index: {index}, item: {item}")
-                if not pd.isna(item):
-                    workerGroup = session.query(Worker).filter(Worker.Група == item).first()
-                    df.at[index, column] = workerGroup.cehove.Група
-            session.close()
-            return df
-        except Exception as e:
-            print(f"Error fetching data from database: {e}")
-            return fetchDataFromDb(tableName)
-        finally:
-            session.close()
+    """
+    Fetch table data with server-side relation processing.
+    """
 
-    elif tableName == 'operations':
-        session = SessionLocal()
-        try:
-            result = session.query(Operation).all()
-            data = []
-            for item in result:
-                data.append({
-                    'ОперацияNo': item.ОперацияNo,
-                    'Операция': item.Операция,
-                    'ОперацияТип': item.operationTypes[0].OperName if item.operationTypes else '',
-                })
-            df = pd.DataFrame(data)
-            return df
-        except Exception as e:
-            print(f"Error fetching data from database: {e}")
-        finally:
-            session.close()
+    response = requests.get(
+        f"{API_SERVER}/parameters/get_table_with_relations/{tableName}",
+        timeout=10
+    )
 
-    elif tableName == 'workerPositions':
-        session = SessionLocal()
-        try:
-            result = session.query(WorkerPosition).all()
+    response.raise_for_status()
+    result = response.json()
 
-            data = []
-            for item in result:
-                data.append({
-                    'ДлъжностКод': item.ДлъжностКод,
-                    'Длъжност': item.Длъжност,
-                    'Коефициент': item.Коефициент,
-                    'ВидОперация': item.operationType.OperName if item.operationType else ''
-                })
-            df = pd.DataFrame(data)
-            session.close()
-            return df
-        except Exception as e:
-            print(f"Error fetching data from database: {e}")
-            return fetchDataFromDb(tableName)
-        finally:
-            session.close()
-    else:
-        return fetchDataFromDb(tableName)
+    if result.get("status") != "success":
+        logger.error(f"Failed to fetch table with relations: {tableName}")
+        return pd.DataFrame()
+    logger.info(f"Fetched table with relations: {tableName}")
+    return pd.DataFrame(
+        result["data"],
+        columns=result["columns"]
+    )

@@ -9,7 +9,6 @@ from PySide6.QtWidgets import QMdiSubWindow
 
 from app.ui.customServerMessageDialog import CustomServerMessageDialog
 from app.ui.widgets.ui_MainWindow import *
-from app.database import createTable
 from app.ui.logInPage import LoginPage
 from app.ui.mainMenuPage import MainMenuPage
 from app.ui.workersPage import WorkersPageCustomWidget
@@ -69,7 +68,7 @@ class MainWindow(QMainWindow):
         LoginPage(self)
 
         MainMenuPage(self)
-        createTable()
+        # createTable()
         logger.info('Application started')
         # windows = ['clients', 'operations']
 
@@ -189,7 +188,7 @@ class MainWindow(QMainWindow):
             self.groupOperPage.activateWindow()
 
     def setOldModlesPage(self):
-        print("Old models page")
+        self.setModelOperPage()
 
     def setPositionGroupsPage(self):
         if self.posGroupsPage is None:

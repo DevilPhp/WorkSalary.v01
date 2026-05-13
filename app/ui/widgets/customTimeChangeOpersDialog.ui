@@ -366,6 +366,43 @@ QComboBox::item{
                 </widget>
                </item>
                <item alignment="Qt::AlignLeft">
+                <widget class="QWidget" name="effectModelsWidget" native="true">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_9">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="QCheckBox" name="effectModelsCheckBox">
+                    <property name="text">
+                     <string>Промяна на модели </string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item alignment="Qt::AlignLeft">
                 <widget class="QWidget" name="widget_5" native="true">
                  <layout class="QVBoxLayout" name="verticalLayout_7">
                   <property name="spacing">

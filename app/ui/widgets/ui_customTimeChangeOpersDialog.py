@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'customTimeChangeOpersDialoglULFfx.ui'
+## Form generated from reading UI file 'customTimeChangeOpersDialogzfCUHH.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.3
 ##
@@ -210,6 +210,22 @@ class Ui_CustomTimeChangeOpersDialog(object):
 
         self.verticalLayout_6.addWidget(self.splitterWidget)
 
+        self.effectModelsWidget = QWidget(self.widget_3)
+        self.effectModelsWidget.setObjectName(u"effectModelsWidget")
+        self.effectModelsWidget.setMinimumSize(QSize(0, 0))
+        self.verticalLayout_9 = QVBoxLayout(self.effectModelsWidget)
+        self.verticalLayout_9.setSpacing(0)
+        self.verticalLayout_9.setObjectName(u"verticalLayout_9")
+        self.verticalLayout_9.setContentsMargins(0, 0, 0, 0)
+        self.effectModelsCheckBox = QCheckBox(self.effectModelsWidget)
+        self.effectModelsCheckBox.setObjectName(u"effectModelsCheckBox")
+        self.effectModelsCheckBox.setChecked(True)
+
+        self.verticalLayout_9.addWidget(self.effectModelsCheckBox)
+
+
+        self.verticalLayout_6.addWidget(self.effectModelsWidget, 0, Qt.AlignLeft)
+
         self.widget_5 = QWidget(self.widget_3)
         self.widget_5.setObjectName(u"widget_5")
         self.verticalLayout_7 = QVBoxLayout(self.widget_5)
@@ -303,6 +319,7 @@ class Ui_CustomTimeChangeOpersDialog(object):
         CustomTimeChangeOpersDialog.setWindowTitle(QCoreApplication.translate("CustomTimeChangeOpersDialog", u"CustomYesNoDialog", None))
         self.pushButton.setText("")
         self.label.setText(QCoreApplication.translate("CustomTimeChangeOpersDialog", u"\u0417\u0410\u041f\u0410\u0417\u0412\u0412\u0410\u041d\u0415 \u041d\u0410 \u041d\u041e\u0412\u0418 \u0412\u0420\u0415\u041c\u0415\u041d\u0410", None))
+        self.effectModelsCheckBox.setText(QCoreApplication.translate("CustomTimeChangeOpersDialog", u"\u041f\u0440\u043e\u043c\u044f\u043d\u0430 \u043d\u0430 \u043c\u043e\u0434\u0435\u043b\u0438 ", None))
         self.effectTPCheckBox.setText(QCoreApplication.translate("CustomTimeChangeOpersDialog", u"\u041f\u0440\u043e\u043c\u044f\u043d\u0430 \u043d\u0430 \u043b\u0438\u0441\u0442\u043e\u0432\u0435 \u0437\u0430 \u0432\u0440\u0435\u043c\u0435 \u0437\u0430 \u043c\u0435\u0441\u0435\u0446:", None))
         self.effectMonthComboBox.setItemText(0, QCoreApplication.translate("CustomTimeChangeOpersDialog", u"\u042f\u043d\u0443\u0430\u0440\u0438", None))
         self.effectMonthComboBox.setItemText(1, QCoreApplication.translate("CustomTimeChangeOpersDialog", u"\u0424\u0435\u0432\u0440\u0443\u0430\u0440\u0438", None))

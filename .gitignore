@@ -5,7 +5,6 @@ __pycache__/
 # Ignore virtual environment
 venv/
 env/
-alembic/
 build/
 dist/
 data/
@@ -22,7 +21,6 @@ Thumbs.db
 
 # Ignore environment variables
 .env
-alembic.ini
 
 # Ignore log files
 *.log

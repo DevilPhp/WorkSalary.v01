@@ -136,7 +136,10 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
         # self.workerNameLineEdit.doubleClicked.connect(self.test)
 
         self.clientModelsLineEdit.editingFinished.connect(self.updateModelInfo)
-        self.clientModelsLineEdit.textChanged.connect(self.setModelOperations)
+        # self.clientModelsLineEdit.textChanged.connect(self.setModelOperations)
+
+        self._updatingClientModel = False
+        self._lastLoadedClientModelId = None
 
         self.modelPiecesLineEdit.textChanged.connect(self.updateModelPieces)
         self.timeForPieceLineEdit.textChanged.connect(self.updateModelPieces)
@@ -405,6 +408,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 # Get both display data and user role data if available
                 displayData = modelIndex.data(Qt.ItemDataRole.DisplayRole)
                 userData = modelIndex.data(Qt.ItemDataRole.UserRole)
+                isNewModel = modelIndex.data(Qt.ItemDataRole.UserRole + 1)
 
                 if col == 2:
                     if displayData == 'Почасова работа' or displayData == 'Извънредна работа':
@@ -417,7 +421,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
 
                 rowData[col] = {
                     'display': displayData,
-                    'userRole': userData
+                    'userRole': userData,
+                    'newModel': isNewModel,
                 }
 
             copiedData.append(rowData)
@@ -686,7 +691,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             else:
                 col2.setData(item[8], Qt.ItemDataRole.UserRole)
                 col3.setData(item[9], Qt.ItemDataRole.UserRole)
-
+                timePaperId.setData(item[10], Qt.ItemDataRole.UserRole + 1)
             row = [
                 timePaperId,
                 QStandardItem(str(item[1])),
@@ -1065,6 +1070,14 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.clientModels[f'{client["orderNo"]} : {client["client"]}'] = client['id']
         Utils.setupCompleter(self.clientModels.keys(), self.clientModelsLineEdit)
 
+        completer = self.clientModelsLineEdit.completer()
+        try:
+            completer.activated.disconnect()
+        except TypeError:
+            pass
+
+        completer.activated.connect(self.onClientModelCompleterActivated)
+
     def checkModel(self):
         if not self.clientModelsLineEdit.text() in self.clientModels.keys():
             self.clientModelsLineEdit.clear()
@@ -1072,55 +1085,103 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             MM.showOnWidget(self, "Избран е несъществуващ модел", 'error')
             return
 
-    def setModelOperations(self):
-        self.modelOperations.clear()
+    def onClientModelCompleterActivated(self, text):
+        self.selectClientModel(text)
 
     def updateModelInfo(self):
-        # print(self.currentModelText)
-        print('here')
-        if self.clientModelsLineEdit.text() != '':
-            completer = self.clientModelsLineEdit.completer()
-            self.clientModelsLineEdit.setText(Utils.setReturnBtnForCompleter(completer))
-        selectedText = self.clientModelsLineEdit.text()
-        # self.modelOperations.clear()
-        # if self.currentModelText != selectedText:
-        self.setModelInfo(selectedText)
-        # else:
-        #     self.modelOperationLineEdit.setFocus()
+
+        if self._updatingClientModel:
+            return
+
+        text = self.clientModelsLineEdit.text().strip()
+        if not text:
+            self.clearSelectedClientModel()
+            return
+
+        if text in self.clientModels:
+            self.selectClientModel(text)
+            return
+
+        completer = self.clientModelsLineEdit.completer()
+        selectedText = Utils.setReturnBtnForCompleter(completer)
+
+        if selectedText:
+            self.selectClientModel(selectedText)
+        else:
+            self.clearSelectedClientModel()
+            MM.showOnWidget(self, "Избран е несъществуващ модел", "error")
+
+    def selectClientModel(self, selectedText):
+        """
+        Sets the selected model and loads operations only once per model.
+        """
+        if selectedText not in self.clientModels:
+            self.clearSelectedClientModel()
+            MM.showOnWidget(self, "Избран е несъществуващ модел", "error")
+            return
+
+        modelId = self.clientModels[selectedText]
+
+        # Prevent loading the same model again
+        if self._lastLoadedClientModelId == modelId:
+            self.modelOperationLineEdit.setFocus()
+            return
+        self._updatingClientModel = True
+        try:
+            self.clientModelsLineEdit.blockSignals(True)
+            self.clientModelsLineEdit.setText(selectedText)
+            self.clientModelsLineEdit.blockSignals(False)
+
+            self._lastLoadedClientModelId = modelId
+            self.modelOperations.clear()
+
+            self.setModelInfo(selectedText)
+
+        finally:
+            self.clientModelsLineEdit.blockSignals(False)
+            self._updatingClientModel = False
+
+    def clearSelectedClientModel(self):
+        """
+        Clears current selected model data.
+        """
+        self._lastLoadedClientModelId = None
+        self.modelOperations.clear()
+        self.clientModelsLineEdit.clear()
+        self.effectOperTimesBtn.setVisible(False)
+        self.operationsGroupsHolder.setEnabled(False)
+        self.modelTotalPiecesLineEdit.clear()
 
     def setModelInfo(self, selectedText):
-        if not self.modelOperations:
-            # self.currentModelText = selectedText
-            if selectedText in self.clientModels.keys():
-                modelId = self.clientModels[selectedText]
-                if self.oldModelsCheckBox.isChecked():
-                    # self.clientModelsLineEdit.blockSignals(True)
-                    self.setOperationsGroups(modelId)
-                    # self.clientModelsLineEdit.blockSignals(False)
-                    if self.operationsGroupComboBox.count() > 0:
-                        self.operationsGroupsHolder.setEnabled(True)
-                    modelData = MoS.getModelOperations(modelId)
-                else:
-                    modelData = MoS.getNewModelOperations(modelId)
-
-                self.modelTotalPiecesLineEdit.setText(str(modelData[1]) if modelData[1] else '0')
-                operations = modelData[0]
-                print(operations)
-                for operation in operations:
-                    print(operation[2])
-                    self.modelOperations[f'{operation[0]} : {operation[1]}'] = [
-                        round(operation[2], 2), operation[3], operation[4]
-                    ]
-                Utils.setupCompleter(self.modelOperations.keys(), self.modelOperationLineEdit)
-                self.modelOperationLineEdit.setReadOnly(False)
-                self.modelOperationLineEdit.setFocus()
-                self.effectOperTimesBtn.setVisible(True)
+        # self.currentModelText = selectedText
+        if selectedText in self.clientModels.keys():
+            modelId = self.clientModels[selectedText]
+            if self.oldModelsCheckBox.isChecked():
+                # self.clientModelsLineEdit.blockSignals(True)
+                self.setOperationsGroups(modelId)
+                # self.clientModelsLineEdit.blockSignals(False)
+                if self.operationsGroupComboBox.count() > 0:
+                    self.operationsGroupsHolder.setEnabled(True)
+                modelData = MoS.getModelOperations(modelId)
             else:
-                self.clientModelsLineEdit.clear()
-                # self.clientModelsLineEdit.setFocus()
-                self.effectOperTimesBtn.setVisible(False)
-                self.operationsGroupsHolder.setEnabled(False)
-                self.modelTotalPiecesLineEdit.clear()
+                workerNo = int(self.workerNumberLineEdit.text())
+                modelData = MoS.getNewModelOperations(modelId, workerNo)
+
+            self.modelTotalPiecesLineEdit.setText(str(modelData[1]) if modelData[1] else '0')
+            operations = modelData[0]
+            self.modelOperations.clear()
+            count = 1
+            for operation in operations:
+                self.modelOperations[f'{count}-  {operation[0]} : {operation[1]}'] = [
+                    round(operation[2], 2), operation[3], operation[4]
+                ]
+                count += 1
+            Utils.setupCompleter(self.modelOperations.keys(), self.modelOperationLineEdit)
+            self.modelOperationLineEdit.setReadOnly(False)
+            self.modelOperationLineEdit.setFocus()
+            self.effectOperTimesBtn.setVisible(True)
+        else:
+            self.clearSelectedClientModel()
 
     def updateModelOperation(self):
         # self.modelOperationLineEdit.blockSignals(True)
@@ -1213,6 +1274,10 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                             'error')
             return
 
+        isNewModel = False
+        if not self.oldModelsCheckBox.isChecked():
+            isNewModel = True
+
         if copy and copyData:
             count = len(copyData)
         dataToAdd = []
@@ -1240,6 +1305,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                 orderId = None
             elif copy and copyData[i]:
                 if copyData[i]['3']['userRole'] and copyData[i]['2']['userRole']:
+                    isNewModel = (copyData[i]['0']['newModel'])
                     modelOperationId = int(copyData[i]['3']['userRole'])
                     orderId = int(copyData[i]['2']['userRole'])
                     modelOperationTime = float(copyData[i]['6']['display'])
@@ -1283,7 +1349,8 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                     'ModelOperationId': modelOperationId,
                     'Pieces': pieces if modelOperationId else 0,
                     'WorkingTimeMinutes': modelOperationTime,
-                    'nightMins': self.workingShifts[self.shiftNameLineEdit.currentText()][4]
+                    'nightMins': self.workingShifts[self.shiftNameLineEdit.currentText()][4],
+                    'isNewModel': isNewModel,
                 }
                 timePaper = WoS.addNewTimePaperAndOperation(timePaperData)
                 if operationsGroupForAdd or copy:
@@ -1298,6 +1365,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
                     'IsOvertime': overtime,
                     'WorkingTimeMinutes': modelOperationTime,
                     'user': self.user,
+                    'isNewModel': isNewModel,
                 }
                 dataToAdd.append(timePaperData)
         if dataToAdd:
@@ -1323,6 +1391,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
     def updateWorkerInfo(self):
         # self.workerNameLineEdit.blockSignals(True)
         self.clearOperationInfo(False)
+        self.clearSelectedClientModel()
         if self.workerNameLineEdit.text() != '':
             completer = self.workerNameLineEdit.completer()
             self.workerNameLineEdit.setText(Utils.setReturnBtnForCompleter(completer))
@@ -1334,6 +1403,7 @@ class CustomTimePapersWidget(QWidget, Ui_customTimePapersWidget):
             self.workerNameLineEdit.setText(workerName)
             self.workerLastNameLineEdit.setText(workerLastName)
             self.workerNumberLineEdit.setText(workerId)
+            # self.workerPosGroups =
 
             # self.checkForWorkerTimePaper(int(workerId))
 

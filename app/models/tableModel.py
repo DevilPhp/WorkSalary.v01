@@ -288,8 +288,8 @@ class CustomTableWithDrag(QTableView):
             # Read data from the source model row.
             # Column 0 = number/id
             # Column 1 = operation name
-            nameIndex = sourceModel.index(sourceRow, 2)
-            timeIndex = sourceModel.index(sourceRow, 1)
+            nameIndex = sourceModel.index(sourceRow, 1)
+            timeIndex = sourceModel.index(sourceRow, 2)
             operationId = sourceModel.data(nameIndex, Qt.ItemDataRole.UserRole)
             operationName = sourceModel.data(nameIndex, Qt.ItemDataRole.DisplayRole)
             operTime = sourceModel.data(timeIndex, Qt.ItemDataRole.UserRole)

@@ -149,8 +149,8 @@ class ModelService:
 
     @staticmethod
     @handle_api_connection
-    def getNewModelOperations(modelId):
-        response = requests.get(f'{API_SERVER}/model/get_new_model_operations/{modelId}').json()
+    def getNewModelOperations(modelId, workerNo):
+        response = requests.get(f'{API_SERVER}/model/get_new_model_operations/{modelId}/{workerNo}').json()
         if response['status'] =='success':
             return response['data']
         else:
@@ -305,6 +305,7 @@ class ModelService:
             return 0
 
     @staticmethod
+    @handle_api_connection
     def saveNewModel(modelData):
         response = requests.post(f'{API_SERVER}/model/save_new_model', json={'modelData': modelData}).json()
         if response['status'] =='success':
@@ -313,6 +314,46 @@ class ModelService:
         else:
             logger.error(f'Failed to save new model')
             return None
+
+    @staticmethod
+    @handle_api_connection
+    def updateSelectedNewModel(modelData, removedOperations):
+        response = requests.post(f'{API_SERVER}/model/update_selected_new_model',
+                                 json={'modelData': modelData, 'removedOperations': removedOperations}).json()
+        if response['status'] =='success':
+            logger.info(f'Selected new model updated successfully')
+            return True
+        else:
+            logger.error(f'Failed to update selected new model')
+            return False
+
+    @staticmethod
+    @handle_api_connection
+    def effectTimePapersAndModelOperations(month, operations, effectModels, effectTimePapers):
+        response = requests.post(f'{API_SERVER}/model/effect_time_papers_and_model_operations',
+                                 json={'month': month, 'operations': operations, 'effectModelOpers': effectModels,
+                                       'effectTimePapers': effectTimePapers}).json()
+        if response['status'] =='success':
+            if effectModels:
+                logger.info(f'Model operations updated successfully')
+            if effectTimePapers:
+                logger.info(f'Time papers updated successfully for month {month}')
+            return True
+        else:
+            logger.error(f'Failed to update time papers and model operations for month {month}')
+            return False
+
+    @staticmethod
+    @handle_api_connection
+    def effectTimePapers(modelId, month, operations):
+        response = requests.post(f'{API_SERVER}/model/effect_time_papers',
+                                 json={'modelId': modelId, 'operations': operations, 'month': month}).json()
+        if response['status'] =='success':
+            logger.info(f'Time papers for model {modelId} for {month} updated successfully')
+            return True
+        else:
+            logger.error(f'Failed to update time papers for model {modelId} for {month}')
+            return False
 
     @staticmethod
     @handle_api_connection
